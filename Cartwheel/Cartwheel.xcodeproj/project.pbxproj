@@ -37,8 +37,8 @@
 		730122F61AD775A300D55C06 /* CartwheelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartwheelTests.swift; sourceTree = "<group>"; };
 		730123001AD77BF000D55C06 /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		730123021AD8346800D55C06 /* Cartwheel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Cartwheel.entitlements; sourceTree = "<group>"; };
-		730123021AD8412800D55C06 /* PureLayout_Mac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout_Mac.framework; path = ../Carthage/Build/Mac/PureLayout_Mac.framework; sourceTree = "<group>"; };
-		730123041AD841DD00D55C06 /* CarthageKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CarthageKit.framework; path = ../CarthageKit.framework; sourceTree = "<group>"; };
+		730123021AD8412800D55C06 /* PureLayout_Mac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout_Mac.framework; path = Frameworks/PureLayout_Mac.framework; sourceTree = "<group>"; };
+		730123041AD841DD00D55C06 /* CarthageKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CarthageKit.framework; path = Frameworks/CarthageKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
