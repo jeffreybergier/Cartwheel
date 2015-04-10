@@ -12,8 +12,8 @@
 		730122EB1AD775A300D55C06 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730122E91AD775A300D55C06 /* MainMenu.xib */; };
 		730122F71AD775A300D55C06 /* CartwheelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730122F61AD775A300D55C06 /* CartwheelTests.swift */; };
 		730123011AD77BF000D55C06 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730123001AD77BF000D55C06 /* MainWindowController.swift */; };
-		730123031AD8412800D55C06 /* PureLayout_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730123021AD8412800D55C06 /* PureLayout_Mac.framework */; };
-		730123051AD841DD00D55C06 /* CarthageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730123041AD841DD00D55C06 /* CarthageKit.framework */; };
+		73D4874C1AD888C400102BD4 /* PureLayout_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730123021AD8412800D55C06 /* PureLayout_Mac.framework */; };
+		73D4874D1AD888C400102BD4 /* PureLayout_Mac.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730123021AD8412800D55C06 /* PureLayout_Mac.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,6 +25,20 @@
 			remoteInfo = Cartwheel;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		73D4874E1AD888C400102BD4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				73D4874D1AD888C400102BD4 /* PureLayout_Mac.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		730122E01AD775A300D55C06 /* Cartwheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cartwheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -38,7 +52,6 @@
 		730123001AD77BF000D55C06 /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		730123021AD8346800D55C06 /* Cartwheel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Cartwheel.entitlements; sourceTree = "<group>"; };
 		730123021AD8412800D55C06 /* PureLayout_Mac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout_Mac.framework; path = Frameworks/PureLayout_Mac.framework; sourceTree = "<group>"; };
-		730123041AD841DD00D55C06 /* CarthageKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CarthageKit.framework; path = Frameworks/CarthageKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,8 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				730123031AD8412800D55C06 /* PureLayout_Mac.framework in Frameworks */,
-				730123051AD841DD00D55C06 /* CarthageKit.framework in Frameworks */,
+				73D4874C1AD888C400102BD4 /* PureLayout_Mac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,7 +133,6 @@
 		730123061AD841F400D55C06 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				730123041AD841DD00D55C06 /* CarthageKit.framework */,
 				730123021AD8412800D55C06 /* PureLayout_Mac.framework */,
 			);
 			name = Frameworks;
@@ -137,6 +148,7 @@
 				730122DC1AD775A300D55C06 /* Sources */,
 				730122DD1AD775A300D55C06 /* Frameworks */,
 				730122DE1AD775A300D55C06 /* Resources */,
+				73D4874E1AD888C400102BD4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -176,9 +188,10 @@
 				TargetAttributes = {
 					730122DF1AD775A300D55C06 = {
 						CreatedOnToolsVersion = 6.3;
+						DevelopmentTeam = V6ESYGU6CV;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -283,7 +296,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -327,7 +340,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -350,12 +363,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Cartwheel/Cartwheel.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/jeffberg/Documents/SaturdayAppsGit/Cartwheel/Carthage/Build/Mac,
 					/Users/jeffberg/Documents/SaturdayAppsGit/Cartwheel,
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = Cartwheel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -367,12 +380,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Cartwheel/Cartwheel.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/jeffberg/Documents/SaturdayAppsGit/Cartwheel/Carthage/Build/Mac,
 					/Users/jeffberg/Documents/SaturdayAppsGit/Cartwheel,
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = Cartwheel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
