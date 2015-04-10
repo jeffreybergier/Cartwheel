@@ -12,6 +12,8 @@
 		730122EB1AD775A300D55C06 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730122E91AD775A300D55C06 /* MainMenu.xib */; };
 		730122F71AD775A300D55C06 /* CartwheelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730122F61AD775A300D55C06 /* CartwheelTests.swift */; };
 		730123011AD77BF000D55C06 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730123001AD77BF000D55C06 /* MainWindowController.swift */; };
+		730123031AD8412800D55C06 /* PureLayout_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730123021AD8412800D55C06 /* PureLayout_Mac.framework */; };
+		730123051AD841DD00D55C06 /* CarthageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730123041AD841DD00D55C06 /* CarthageKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +37,8 @@
 		730122F61AD775A300D55C06 /* CartwheelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartwheelTests.swift; sourceTree = "<group>"; };
 		730123001AD77BF000D55C06 /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		730123021AD8346800D55C06 /* Cartwheel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Cartwheel.entitlements; sourceTree = "<group>"; };
+		730123021AD8412800D55C06 /* PureLayout_Mac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout_Mac.framework; path = ../Carthage/Build/Mac/PureLayout_Mac.framework; sourceTree = "<group>"; };
+		730123041AD841DD00D55C06 /* CarthageKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CarthageKit.framework; path = ../CarthageKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +46,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				730123031AD8412800D55C06 /* PureLayout_Mac.framework in Frameworks */,
+				730123051AD841DD00D55C06 /* CarthageKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +66,7 @@
 			children = (
 				730122E21AD775A300D55C06 /* Cartwheel */,
 				730122F31AD775A300D55C06 /* CartwheelTests */,
+				730123061AD841F400D55C06 /* Frameworks */,
 				730122E11AD775A300D55C06 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,6 +116,15 @@
 				730122F51AD775A300D55C06 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		730123061AD841F400D55C06 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				730123041AD841DD00D55C06 /* CarthageKit.framework */,
+				730123021AD8412800D55C06 /* PureLayout_Mac.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,6 +352,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Cartwheel/Cartwheel.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/jeffberg/Documents/SaturdayAppsGit/Cartwheel/Carthage/Build/Mac,
+					/Users/jeffberg/Documents/SaturdayAppsGit/Cartwheel,
+				);
 				INFOPLIST_FILE = Cartwheel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -348,6 +369,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Cartwheel/Cartwheel.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/jeffberg/Documents/SaturdayAppsGit/Cartwheel/Carthage/Build/Mac,
+					/Users/jeffberg/Documents/SaturdayAppsGit/Cartwheel,
+				);
 				INFOPLIST_FILE = Cartwheel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -409,6 +435,7 @@
 				730122FC1AD775A300D55C06 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		730122FD1AD775A300D55C06 /* Build configuration list for PBXNativeTarget "CartwheelTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +444,7 @@
 				730122FF1AD775A300D55C06 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
