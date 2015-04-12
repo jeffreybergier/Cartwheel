@@ -1,8 +1,9 @@
 //
-// MainWindowController.swift
+// CartListViewController.swift
 // Cartwheel
 //
-// Created by Jeffrey Bergier on 4/9/15.
+// Created by Jeffrey Bergier on 4/12/15.
+// Copyright (c) 2015 Saturday Apps. All rights reserved.
 //
 // The MIT License (MIT)
 //
@@ -27,21 +28,18 @@
 // THE SOFTWARE.
 //
 
-import AppKit
+import Cocoa
 
-class MainWindowController: NSWindowController {
+class CartListViewController: NSViewController {
     
-    let mainWindow: NSWindow
-    
-    override init(window: NSWindow?) {
-        let styleMask: Int = NSTitledWindowMask | NSMiniaturizableWindowMask | NSClosableWindowMask | NSResizableWindowMask //| NSFullScreenWindowMask
-        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 400, height: 400), styleMask: styleMask, backing: NSBackingStoreType.Buffered, defer: true)
-        self.mainWindow = window
-        super.init(window: window)
+    override func loadView() {
+        //
+        
+        self.view = NSView()
+        self.view.wantsLayer = true
+        self.view.layer?.backgroundColor = NSColor.redColor().CGColor
+        //self.view.frame = self.view.window!.frame
+        println(self.view)
+        println(self.view.layer)
     }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }

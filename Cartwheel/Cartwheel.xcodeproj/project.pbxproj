@@ -11,9 +11,10 @@
 		730122E81AD775A300D55C06 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 730122E71AD775A300D55C06 /* Images.xcassets */; };
 		730122EB1AD775A300D55C06 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730122E91AD775A300D55C06 /* MainMenu.xib */; };
 		730122F71AD775A300D55C06 /* CartwheelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730122F61AD775A300D55C06 /* CartwheelTests.swift */; };
-		730123011AD77BF000D55C06 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730123001AD77BF000D55C06 /* MainWindowController.swift */; };
+		730123011AD77BF000D55C06 /* CartListWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730123001AD77BF000D55C06 /* CartListWindowController.swift */; };
 		733A8DF81AD9D72A00A8470C /* CarthageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 733A8DF71AD9D72A00A8470C /* CarthageKit.framework */; };
 		733A8DF91AD9D72A00A8470C /* CarthageKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 733A8DF71AD9D72A00A8470C /* CarthageKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		738E8CE41ADACD8A0082442A /* CartListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738E8CE31ADACD8A0082442A /* CartListViewController.swift */; };
 		73B09F691AD9B75A00D2B1A0 /* PureLayout_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B09F671AD9B68200D2B1A0 /* PureLayout_Mac.framework */; };
 		73B09F6A1AD9B75A00D2B1A0 /* PureLayout_Mac.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73B09F671AD9B68200D2B1A0 /* PureLayout_Mac.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -52,8 +53,9 @@
 		730122F01AD775A300D55C06 /* CartwheelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CartwheelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		730122F51AD775A300D55C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		730122F61AD775A300D55C06 /* CartwheelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartwheelTests.swift; sourceTree = "<group>"; };
-		730123001AD77BF000D55C06 /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
+		730123001AD77BF000D55C06 /* CartListWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListWindowController.swift; sourceTree = "<group>"; };
 		733A8DF71AD9D72A00A8470C /* CarthageKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = CarthageKit.framework; path = "/Users/jeffberg/Library/Developer/Xcode/DerivedData/Cartwheel-cnncxixzrllmecfvlpqibbuuscwu/Build/Products/Debug/CarthageKit.framework"; sourceTree = "<absolute>"; };
+		738E8CE31ADACD8A0082442A /* CartListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListViewController.swift; sourceTree = "<group>"; };
 		73B09F671AD9B68200D2B1A0 /* PureLayout_Mac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout_Mac.framework; path = ../Carthage/Build/Mac/PureLayout_Mac.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,7 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				730122E51AD775A300D55C06 /* AppDelegate.swift */,
-				730123001AD77BF000D55C06 /* MainWindowController.swift */,
+				738E8CDF1ADACCF30082442A /* CartListWindow */,
 				730122E71AD775A300D55C06 /* Images.xcassets */,
 				730122E91AD775A300D55C06 /* MainMenu.xib */,
 				730122E31AD775A300D55C06 /* Supporting Files */,
@@ -131,6 +133,39 @@
 				730122F51AD775A300D55C06 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		738E8CDF1ADACCF30082442A /* CartListWindow */ = {
+			isa = PBXGroup;
+			children = (
+				738E8CE01ADACD010082442A /* Controller */,
+				738E8CE11ADACD0B0082442A /* View */,
+				738E8CE21ADACD240082442A /* Model */,
+			);
+			name = CartListWindow;
+			sourceTree = "<group>";
+		};
+		738E8CE01ADACD010082442A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				730123001AD77BF000D55C06 /* CartListWindowController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		738E8CE11ADACD0B0082442A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				738E8CE31ADACD8A0082442A /* CartListViewController.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		738E8CE21ADACD240082442A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		73B09F661AD9B66200D2B1A0 /* Frameworks */ = {
@@ -242,7 +277,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				730123011AD77BF000D55C06 /* MainWindowController.swift in Sources */,
+				738E8CE41ADACD8A0082442A /* CartListViewController.swift in Sources */,
+				730123011AD77BF000D55C06 /* CartListWindowController.swift in Sources */,
 				730122E61AD775A300D55C06 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
