@@ -32,6 +32,9 @@
       location = "group:../../../Github/Carthage/Carthage/Checkouts/ReactiveCocoa/ReactiveCocoa.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:../../../Github/PureLayoutFork/PureLayout/PureLayout.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../../../Github/Carthage/Carthage/Checkouts/ReactiveTask/ReactiveTask.xcodeproj">
    </FileRef>
 </Workspace>

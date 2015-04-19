@@ -6,7 +6,7 @@
 //
 // The MIT License (MIT)
 //
-// Copyright (c) 2014 Jeffrey Bergier
+// Copyright (c) 2015 Jeffrey Bergier
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,24 +31,20 @@ import Cocoa
 
 class CartListWindowController: NSWindowController {
     
-    let currentWindow: NSWindow
-    let currentViewController: NSViewController
+    let viewController: CartListViewController
     
-    override init(window: NSWindow?) {
+    override init() {
         let styleMask: Int = NSTitledWindowMask | NSMiniaturizableWindowMask | NSClosableWindowMask | NSResizableWindowMask //| NSFullScreenWindowMask
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 400, height: 400), styleMask: styleMask, backing: NSBackingStoreType.Buffered, defer: true)
-        self.currentWindow = window
         
-        let viewController = CartListViewController()
-        self.currentViewController = viewController
+        self.viewController = CartListViewController()
         
         super.init(window: window)
-        self.currentViewController.view.frame = self.currentWindow.frame
-        self.currentWindow.contentView.addSubview(self.currentViewController.view)
+        self.viewController.window = window
+        self.window?.contentView = self.viewController.view
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }

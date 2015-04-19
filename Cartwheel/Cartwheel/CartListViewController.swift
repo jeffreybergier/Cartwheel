@@ -7,7 +7,7 @@
 //
 // The MIT License (MIT)
 //
-// Copyright (c) 2014 Jeffrey Bergier
+// Copyright (c) 2015 Jeffrey Bergier
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,17 +29,34 @@
 //
 
 import Cocoa
+import PureLayout_Mac
 
 class CartListViewController: NSViewController {
     
+    weak var window: NSWindow!
+    
+    private var constraints: [NSLayoutConstraint]?
+    private let contentView = NSView()
+    
     override func loadView() {
-        //
-        
         self.view = NSView()
-        self.view.wantsLayer = true
-        self.view.layer?.backgroundColor = NSColor.redColor().CGColor
-        //self.view.frame = self.view.window!.frame
-        println(self.view)
-        println(self.view.layer)
+        
+        self.contentView.wantsLayer = true
+        self.contentView.layer?.backgroundColor = NSColor.blueColor().CGColor
+        self.contentView.frame = NSRect(x: 10, y: 10, width: 30, height: 30)
+        self.view.addSubview(self.contentView)
+        
+        self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
+        
+        let toolbar = CLToolbar(identifier: "PreferencesToolbar")
+        toolbar.insertItemWithItemIdentifier("something", atIndex: 0)
+        self.window.toolbar = toolbar
+    }
+    
+}
+
+class CLToolbar: NSToolbar {
+    override func insertItemWithItemIdentifier(itemIdentifier: String, atIndex index: Int) {
+        super.insertItemWithItemIdentifier(itemIdentifier, atIndex: index)
     }
 }
