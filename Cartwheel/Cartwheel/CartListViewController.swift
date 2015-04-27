@@ -29,7 +29,6 @@
 //
 
 import Cocoa
-import PureLayout_Mac
 
 class CartListViewController: NSViewController {
     
@@ -45,7 +44,6 @@ class CartListViewController: NSViewController {
         self.contentView.layer?.backgroundColor = NSColor.blueColor().CGColor
         self.contentView.frame = NSRect(x: 10, y: 10, width: 30, height: 30)
         self.view.addSubview(self.contentView)
-        
         self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
         
         let toolbar = CLToolbar(identifier: "PreferencesToolbar")
