@@ -22,11 +22,15 @@
 		</data>
 		<key>Headers/PureLayoutDefines.h</key>
 		<data>
-		pnBf+lDdfLnDAkjF+CEY9isiTLU=
+		O7HiGygl6KbrrBmWT2skwGBVf14=
+		</data>
+		<key>Headers/PureLayout_iOS.h</key>
+		<data>
+		YAd1/E+UcKRaAK49qVvyqE9FP0k=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		iqmPKKXkHLVGO+2a4L9OkdfJJmQ=
+		7mkXo6/dqWV08cG6GsysXYBODQQ=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -57,7 +61,11 @@
 		</data>
 		<key>Headers/PureLayoutDefines.h</key>
 		<data>
-		pnBf+lDdfLnDAkjF+CEY9isiTLU=
+		O7HiGygl6KbrrBmWT2skwGBVf14=
+		</data>
+		<key>Headers/PureLayout_iOS.h</key>
+		<data>
+		YAd1/E+UcKRaAK49qVvyqE9FP0k=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>

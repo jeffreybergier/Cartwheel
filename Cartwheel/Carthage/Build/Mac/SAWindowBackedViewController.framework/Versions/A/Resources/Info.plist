@@ -7,17 +7,17 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
-	<string>PureLayout_Mac</string>
+	<string>SAWindowBackedViewController</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.smileyborg.PureLayout-Mac</string>
+	<string>com.saturdayapps.SAWindowBackedViewController</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>PureLayout_Mac</string>
+	<string>SAWindowBackedViewController</string>
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>0.1.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -36,5 +36,7 @@
 	<string>0631</string>
 	<key>DTXcodeBuild</key>
 	<string>6D1002</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2015 Saturday Apps. All rights reserved.</string>
 </dict>
 </plist>
