@@ -98,7 +98,6 @@
 		730122D71AD775A300D55C06 = {
 			isa = PBXGroup;
 			children = (
-				73BE4EE51AEECA630099DE6B /* CarthageKit.framework */,
 				730122E21AD775A300D55C06 /* Cartwheel */,
 				73B09F661AD9B66200D2B1A0 /* Frameworks */,
 				730122F31AD775A300D55C06 /* CartwheelTests */,
@@ -190,6 +189,7 @@
 		73B09F661AD9B66200D2B1A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				73BE4EE51AEECA630099DE6B /* CarthageKit.framework */,
 				73BE4EDF1AEECA4E0099DE6B /* SAWindowBackedViewController.framework */,
 				737AC61E1AEA106D001CE979 /* PureLayout_Mac.framework */,
 			);
