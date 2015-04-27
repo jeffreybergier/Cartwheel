@@ -1,2 +1,2 @@
 github "smileyborg/PureLayout"
-github "jeffreybergier/SAWindowBackedViewController"
+github "jeffreybergier/SAWindowBackedViewController" "swift1.1-compatible"
