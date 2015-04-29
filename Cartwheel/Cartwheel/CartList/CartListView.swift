@@ -1,5 +1,5 @@
 //
-//  AppDelegate.swift
+//  CartListView.swift
 //  Cartwheel
 //
 //  Created by Jeffrey Bergier on 4/27/15.
@@ -26,27 +26,20 @@
 //
 
 import Cocoa
+import PureLayout_Mac
 
-@NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
-
-    var cartListViewController: CartListViewController?
+class CartListView: NSView {
     
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
+    var tableViewContainer = CartListTableViewContainer(frame: NSRect(x: 0, y: 0, width: 100, height: 100))
+    weak var controller: CartListViewController?
         
-        let cartListView = CartListView()
-        let defaultFrame = NSRect(x: 100, y: 100, width: 400, height: 500)
-        let windowID = "CartListWindow"
+    func viewDidLoad() {
+        NSLog("CartListView Did Load")
+        self.wantsLayer = true
+        //self.layer?.backgroundColor = NSColor.redColor().CGColor
         
-        self.cartListViewController = CartListViewController(customView: cartListView, defaultFrame: defaultFrame, windowID: windowID)
-        self.cartListViewController!.windowController!.showWindow(self)
+        self.addSubview(self.tableViewContainer)
+        self.tableViewContainer.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
     }
-
-    func applicationWillTerminate(aNotification: NSNotification) {
-        // Insert code here to tear down your application
-    }
-
-
+    
 }
-

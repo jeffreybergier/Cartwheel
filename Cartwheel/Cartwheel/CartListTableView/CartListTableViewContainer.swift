@@ -1,5 +1,5 @@
 //
-//  AppDelegate.swift
+//  CartListTableView.swift
 //  Cartwheel
 //
 //  Created by Jeffrey Bergier on 4/27/15.
@@ -26,27 +26,38 @@
 //
 
 import Cocoa
+import PureLayout_Mac
 
-@NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
-
-    var cartListViewController: CartListViewController?
+class CartListTableViewContainer: NSView {
     
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
+    let scrollView: NSScrollView = NSScrollView()
+    let tableView: NSTableView = NSTableView()
+    let tableColumn: NSTableColumn = NSTableColumn(identifier: "CartListColumn")
+    
+    override init() {
+        super.init()
         
-        let cartListView = CartListView()
-        let defaultFrame = NSRect(x: 100, y: 100, width: 400, height: 500)
-        let windowID = "CartListWindow"
+        self.commonInitializer()
+    }
+    
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
         
-        self.cartListViewController = CartListViewController(customView: cartListView, defaultFrame: defaultFrame, windowID: windowID)
-        self.cartListViewController!.windowController!.showWindow(self)
+        self.commonInitializer()
+    }
+    
+    private func commonInitializer() {
+        self.tableView.addTableColumn(self.tableColumn)
+        self.tableView.registerNib(NSNib(nibNamed: "CartListTableCellViewController", bundle: nil)!, forIdentifier: "CartListTableCellViewController") // it seems basically impossible to use a custom cell not based on a nib. The NIB is blank and will continue to be blank.
+        self.scrollView.documentView = self.tableView
+        self.scrollView.hasVerticalScroller = true
+        self.addSubview(self.scrollView)
+        self.scrollView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
+        self.tableColumn.width = self.scrollView.frame.width
     }
 
-    func applicationWillTerminate(aNotification: NSNotification) {
-        // Insert code here to tear down your application
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
-
-
+    
 }
-

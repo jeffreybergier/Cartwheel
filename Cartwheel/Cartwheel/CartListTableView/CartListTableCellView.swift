@@ -1,8 +1,8 @@
 //
-//  AppDelegate.swift
+//  CartListTableCellView.swift
 //  Cartwheel
 //
-//  Created by Jeffrey Bergier on 4/27/15.
+//  Created by Jeffrey Bergier on 4/28/15.
 //
 //  Copyright (c) 2015 Jeffrey Bergier
 //
@@ -27,26 +27,17 @@
 
 import Cocoa
 
-@NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
-
-    var cartListViewController: CartListViewController?
+class CartListTableCellView: NSView {
     
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
+    let testLabel = NSTextField(frame: NSRect(x: 0, y: 0, width: 10, height: 10))
+    
+    func viewDidLoad() {
+        self.wantsLayer = true
+        self.layer?.backgroundColor = NSColor.lightGrayColor().CGColor
         
-        let cartListView = CartListView()
-        let defaultFrame = NSRect(x: 100, y: 100, width: 400, height: 500)
-        let windowID = "CartListWindow"
-        
-        self.cartListViewController = CartListViewController(customView: cartListView, defaultFrame: defaultFrame, windowID: windowID)
-        self.cartListViewController!.windowController!.showWindow(self)
+        self.addSubview(self.testLabel)
+        self.testLabel.frame = NSRect(x: 0, y: 0, width: 100, height: 30)
+        self.testLabel.stringValue = "Hello There"
     }
-
-    func applicationWillTerminate(aNotification: NSNotification) {
-        // Insert code here to tear down your application
-    }
-
-
+    
 }
-
