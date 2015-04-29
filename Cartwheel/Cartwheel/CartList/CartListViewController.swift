@@ -26,29 +26,36 @@
 //
 
 import Cocoa
-import SAWindowBackedViewController
+import PureLayout_Mac
 
-class CartListViewController: SAWindowBackedViewController {
+class CartListViewController: NSViewController {
+
+    var contentView = CartListView()
     
-    var cartListView: CartListView {
-        if let view = self.view as? CartListView {
-            return view
-        } else {
-            fatalError("CartListViewController: self.view is either NIL or not of type CartListView: \(self.view)")
-        }
-    }
+//    var cartListView: CartListView {
+//        if let view = self.view as? CartListView {
+//            return view
+//        } else {
+//            fatalError("CartListViewController: self.view is either NIL or not of type CartListView: \(self.view)")
+//        }
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // configure my view and add in the custom view
+        self.view.wantsLayer = true
+        self.view.addSubview(self.contentView)
+        self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
+        
         // configure the main view
-        self.cartListView.controller = self
-        self.cartListView.viewDidLoad()
+        self.contentView.controller = self
+        self.contentView.viewDidLoad()
         
         // set the delegate on the tableview
-        self.cartListView.tableViewContainer.tableView.setDataSource(self)
-        self.cartListView.tableViewContainer.tableView.setDelegate(self)
-        self.cartListView.tableViewContainer.tableView.reloadData()
+        self.contentView.interfaceElements.tableView.setDataSource(self)
+        self.contentView.interfaceElements.tableView.setDelegate(self)
+        self.contentView.interfaceElements.tableView.reloadData()
     }
     
 }

@@ -30,17 +30,17 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    var cartListViewController: CartListViewController?
+    var cartListWindowController: CartListWindowController?
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application
         
-        let cartListView = CartListView()
-        let defaultFrame = NSRect(x: 100, y: 100, width: 400, height: 500)
-        let windowID = "CartListWindow"
+//        let cartListView = CartListView()
+//        let defaultFrame = NSRect(x: 100, y: 100, width: 400, height: 500)
+//        let windowID = "CartListWindow"
         
-        self.cartListViewController = CartListViewController(customView: cartListView, defaultFrame: defaultFrame, windowID: windowID)
-        self.cartListViewController!.windowController!.showWindow(self)
+        self.cartListWindowController = CartListWindowController(windowNibName: "CartListWindowController")
+        self.cartListWindowController!.showWindow(self)
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {

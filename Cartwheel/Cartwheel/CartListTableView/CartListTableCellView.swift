@@ -35,7 +35,6 @@ class CartListTableCellView: NSView {
     func viewDidLoad() {
         self.wantsLayer = true
         
-        self.layer?.backgroundColor = NSColor.lightGrayColor().CGColor
         self.addSubview(self.interfaceViews.testLabel)
         self.interfaceViews.configureTestLabel()
     }
@@ -44,8 +43,15 @@ class CartListTableCellView: NSView {
         var testLabel = NSTextField()
         
         func configureTestLabel() {
-            self.testLabel.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
-            self.testLabel.stringValue = "Hello There"
+            if self.testLabel.superview != nil {
+                self.testLabel.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+                self.testLabel.bordered = false
+                (self.testLabel.cell() as? NSTextFieldCell)?.drawsBackground = false
+                self.testLabel.editable = false
+                self.testLabel.stringValue = "Hello There"
+            } else {
+                fatalError("CartListTableCellView: Tried to configure test label before it was in the view hierarchy.")
+            }
         }
     }
     
