@@ -40,7 +40,6 @@ class CartListViewController: SAWindowBackedViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NSLog("CartListViewController Did Load")
         
         // configure the main view
         self.cartListView.controller = self

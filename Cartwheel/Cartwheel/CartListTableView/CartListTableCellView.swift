@@ -26,18 +26,27 @@
 //
 
 import Cocoa
+import PureLayout_Mac
 
 class CartListTableCellView: NSView {
     
-    let testLabel = NSTextField(frame: NSRect(x: 0, y: 0, width: 10, height: 10))
+    let interfaceViews = interfaceView()
     
     func viewDidLoad() {
         self.wantsLayer = true
-        self.layer?.backgroundColor = NSColor.lightGrayColor().CGColor
         
-        self.addSubview(self.testLabel)
-        self.testLabel.frame = NSRect(x: 0, y: 0, width: 100, height: 30)
-        self.testLabel.stringValue = "Hello There"
+        self.layer?.backgroundColor = NSColor.lightGrayColor().CGColor
+        self.addSubview(self.interfaceViews.testLabel)
+        self.interfaceViews.configureTestLabel()
+    }
+    
+    struct interfaceView {
+        var testLabel = NSTextField()
+        
+        func configureTestLabel() {
+            self.testLabel.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
+            self.testLabel.stringValue = "Hello There"
+        }
     }
     
 }
