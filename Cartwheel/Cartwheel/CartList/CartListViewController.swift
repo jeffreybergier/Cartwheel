@@ -32,14 +32,6 @@ class CartListViewController: NSViewController {
 
     var contentView = CartListView()
     
-//    var cartListView: CartListView {
-//        if let view = self.view as? CartListView {
-//            return view
-//        } else {
-//            fatalError("CartListViewController: self.view is either NIL or not of type CartListView: \(self.view)")
-//        }
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

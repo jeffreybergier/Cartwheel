@@ -35,20 +35,21 @@ class CartListTableCellView: NSView {
     func viewDidLoad() {
         self.wantsLayer = true
         
-        self.addSubview(self.interfaceViews.testLabel)
+        self.addSubview(self.interfaceViews.primaryTextField)
         self.interfaceViews.configureTestLabel()
     }
     
     struct interfaceView {
-        var testLabel = NSTextField()
+        var primaryTextField = NSTextField()
         
         func configureTestLabel() {
-            if self.testLabel.superview != nil {
-                self.testLabel.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
-                self.testLabel.bordered = false
-                (self.testLabel.cell() as? NSTextFieldCell)?.drawsBackground = false
-                self.testLabel.editable = false
-                self.testLabel.stringValue = "Hello There"
+            if self.primaryTextField.superview != nil {
+                self.primaryTextField.autoPinEdgeToSuperviewEdge(ALEdge.Leading)
+                self.primaryTextField.autoAlignAxisToSuperviewAxis(ALAxis.Horizontal)
+                self.primaryTextField.bordered = true //change to false later
+                (self.primaryTextField.cell() as? NSTextFieldCell)?.drawsBackground = false
+                self.primaryTextField.editable = false
+                self.primaryTextField.stringValue = "Hello There"
             } else {
                 fatalError("CartListTableCellView: Tried to configure test label before it was in the view hierarchy.")
             }

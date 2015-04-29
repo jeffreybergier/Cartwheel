@@ -30,17 +30,17 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    var cartListWindowController: CartListWindowController?
+    private var cartListWindowController: CartListWindowController?
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
-        
-//        let cartListView = CartListView()
-//        let defaultFrame = NSRect(x: 100, y: 100, width: 400, height: 500)
-//        let windowID = "CartListWindow"
-        
         self.cartListWindowController = CartListWindowController(windowNibName: "CartListWindowController")
-        self.cartListWindowController!.showWindow(self)
+        self.cartListWindowController!.showWindow(self) // should crash if NIL at this point
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "cartListWindowControllerDidClose:", name: NSWindowWillCloseNotification, object: self.cartListWindowController!.window)
+    }
+    
+    @objc private func cartListWindowControllerDidClose(notification: NSNotification) {
+        self.cartListWindowController = nil // this allows the window to be deallocated
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {

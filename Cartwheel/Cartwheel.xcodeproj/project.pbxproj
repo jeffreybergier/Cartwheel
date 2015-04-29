@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		738464F81AEEEE8A0014AFB3 /* PureLayout_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 738464F41AEEEE800014AFB3 /* PureLayout_Mac.framework */; };
 		738464F91AEEEE8A0014AFB3 /* PureLayout_Mac.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 738464F41AEEEE800014AFB3 /* PureLayout_Mac.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		739421A61AEEF3EE005A816D /* SAWindowBackedViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739421A41AEEF3E6005A816D /* SAWindowBackedViewController.framework */; };
-		739421A71AEEF3EE005A816D /* SAWindowBackedViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739421A41AEEF3E6005A816D /* SAWindowBackedViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		73B4DD121AEEE527007342C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4DD111AEEE527007342C7 /* AppDelegate.swift */; };
 		73B4DD141AEEE527007342C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73B4DD131AEEE527007342C7 /* Images.xcassets */; };
 		73B4DD171AEEE527007342C7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B4DD151AEEE527007342C7 /* MainMenu.xib */; };
@@ -49,7 +47,6 @@
 				73B4DD451AEEE5A8007342C7 /* LlamaKit.framework in Embed Frameworks */,
 				73B4DD4D1AEEE5A8007342C7 /* ReactiveCocoa.framework in Embed Frameworks */,
 				73B4DD411AEEE5A8007342C7 /* CarthageKit.framework in Embed Frameworks */,
-				739421A71AEEF3EE005A816D /* SAWindowBackedViewController.framework in Embed Frameworks */,
 				73B4DD491AEEE5A8007342C7 /* PrettyColors.framework in Embed Frameworks */,
 				738464F91AEEEE8A0014AFB3 /* PureLayout_Mac.framework in Embed Frameworks */,
 				73B4DD3F1AEEE5A7007342C7 /* Argo.framework in Embed Frameworks */,
@@ -93,7 +90,6 @@
 				73B4DD441AEEE5A8007342C7 /* LlamaKit.framework in Frameworks */,
 				73B4DD4C1AEEE5A8007342C7 /* ReactiveCocoa.framework in Frameworks */,
 				73B4DD401AEEE5A8007342C7 /* CarthageKit.framework in Frameworks */,
-				739421A61AEEF3EE005A816D /* SAWindowBackedViewController.framework in Frameworks */,
 				73B4DD481AEEE5A8007342C7 /* PrettyColors.framework in Frameworks */,
 				738464F81AEEEE8A0014AFB3 /* PureLayout_Mac.framework in Frameworks */,
 				73B4DD3E1AEEE5A7007342C7 /* Argo.framework in Frameworks */,
@@ -179,9 +175,9 @@
 			isa = PBXGroup;
 			children = (
 				73FBF23A1AEF266500970223 /* CartListViewController.swift */,
-				73C2F3941AF06D78001B36DB /* CartListWindowController.swift */,
 				73FBF23C1AEF269500970223 /* CartListView.swift */,
 				73C2F3951AF06D78001B36DB /* CartListWindowController.xib */,
+				73C2F3941AF06D78001B36DB /* CartListWindowController.swift */,
 			);
 			name = CartList;
 			sourceTree = "<group>";

@@ -36,7 +36,6 @@ class CartListView: NSView {
     func viewDidLoad() {
         NSLog("CartListView Did Load")
         self.wantsLayer = true
-        //self.layer?.backgroundColor = NSColor.redColor().CGColor
         
         self.addSubview(self.interfaceElements.scrollView)
         self.interfaceElements.scrollView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
