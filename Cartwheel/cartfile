@@ -1,2 +1,3 @@
 github "smileyborg/PureLayout"
-github "jeffreybergier/SAWindowBackedViewController" "swift1.1-compatible"
+github "Carthage/Carthage"
+#github "jeffreybergier/SAWindowBackedViewController" "swift1.1-compatible"
