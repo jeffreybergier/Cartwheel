@@ -12,6 +12,14 @@ class CartListWindowController: NSWindowController {
 
     override func windowDidLoad() {
         super.windowDidLoad()
+        
         self.window!.collectionBehavior = NSWindowCollectionBehavior.FullScreenPrimary
+        
+        // configure the window
+        self.window?.minSize = NSSize(width: 380, height: 500)
+    }
+    
+    func window(window: NSWindow, didDecodeRestorableState state: NSCoder) {
+        // this is called when the window loads
     }
 }

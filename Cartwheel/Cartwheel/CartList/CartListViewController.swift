@@ -45,9 +45,9 @@ class CartListViewController: NSViewController {
         self.contentView.viewDidLoad()
         
         // set the delegate on the tableview
-        self.contentView.interfaceElements.tableView.setDataSource(self)
-        self.contentView.interfaceElements.tableView.setDelegate(self)
-        self.contentView.interfaceElements.tableView.reloadData()
+        self.contentView.ui.tableView.setDataSource(self)
+        self.contentView.ui.tableView.setDelegate(self)
+        self.contentView.ui.tableView.reloadData()
     }
     
 }

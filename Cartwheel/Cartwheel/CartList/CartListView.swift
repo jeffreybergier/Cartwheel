@@ -30,29 +30,41 @@ import PureLayout_Mac
 
 class CartListView: NSView {
     
-    let interfaceElements = InterfaceElements()
+    let ui = InterfaceElements()
     weak var controller: CartListViewController?
         
     func viewDidLoad() {
         NSLog("CartListView Did Load")
         self.wantsLayer = true
         
-        self.addSubview(self.interfaceElements.scrollView)
-        self.interfaceElements.scrollView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
-        
-        self.interfaceElements.tableView.addTableColumn(self.interfaceElements.tableColumn)
-        self.interfaceElements.tableView.registerNib(NSNib(nibNamed: "CartListTableCellViewController", bundle: nil)!, forIdentifier: "CartListTableCellViewController") // it seems basically impossible to use a custom cell not based on a nib. The NIB is blank and will continue to be blank.
-        self.interfaceElements.scrollView.documentView = self.interfaceElements.tableView
-        self.interfaceElements.scrollView.hasVerticalScroller = true
-        self.addSubview(self.interfaceElements.scrollView)
-        self.interfaceElements.scrollView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
-        self.interfaceElements.tableColumn.width = self.interfaceElements.scrollView.frame.width
-    }
+        self.addSubview(self.ui.scrollView)
+        self.ui.configureTableView()
+        }
     
     struct InterfaceElements {
+        // MARK: TableView
         var scrollView: NSScrollView = NSScrollView()
         var tableView: NSTableView = NSTableView()
         var tableColumn: NSTableColumn = NSTableColumn(identifier: "CartListColumn")
+        
+        func configureTableView() {
+            if self.scrollView.superview != nil {
+                self.scrollView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
+                
+                self.tableView.addTableColumn(self.tableColumn)
+                self.tableView.registerNib(NSNib(nibNamed: "CartListTableCellViewController", bundle: nil)!, forIdentifier: "CartListTableCellViewController") // it seems basically impossible to use a custom cell not based on a nib. The NIB is blank and will continue to be blank.
+                self.scrollView.documentView = self.tableView
+                self.scrollView.hasVerticalScroller = true
+                self.scrollView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
+                self.tableColumn.width = self.scrollView.frame.width
+
+            } else {
+                fatalError("CartListView: Tried to configure the TableView before it was in the view hierarchy.")
+            }
+        }
+        
+        // MARK: Edit Button
+        var editButton = NSButton()
     }
     
 }
