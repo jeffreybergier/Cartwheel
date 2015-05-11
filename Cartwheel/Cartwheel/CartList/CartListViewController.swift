@@ -52,6 +52,30 @@ class CartListViewController: NSViewController {
     
 }
 
+extension CartListViewController { // Handle Clicking Add Cartfile button
+    @objc private func didClickAddCartFileButton(sender: NSButton) {
+        NSLog("clicked button")
+    }
+}
+
+extension CartListViewController: NSTextFieldDelegate { 
+    override func controlTextDidChange(notification: NSNotification) {
+        if let userInfoDictionary = notification.userInfo,
+            let filterTextField = userInfoDictionary["NSFieldEditor"] as? NSTextView,
+            let stringValue = filterTextField.string {
+                NSLog("\(stringValue)")
+        }
+    }
+
+    override func controlTextDidEndEditing(notification: NSNotification) {
+        if let userInfoDictionary = notification.userInfo,
+            let filterTextField = userInfoDictionary["NSFieldEditor"] as? NSTextView,
+            let stringValue = filterTextField.string {
+                NSLog("\(stringValue)")
+        }
+    }
+}
+
 extension CartListViewController: NSTableViewDelegate {
     func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return 60

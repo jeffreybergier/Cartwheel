@@ -1,8 +1,8 @@
 //
-//  CartListWindowController.swift
+//  CWSwiftGlobals.swift
 //  Cartwheel
 //
-//  Created by Jeffrey Bergier on 4/28/15.
+//  Created by Jeffrey Bergier on 5/10/15.
 //
 //  Copyright (c) 2015 Jeffrey Bergier
 //
@@ -27,18 +27,8 @@
 
 import Cocoa
 
-class CartListWindowController: NSWindowController {
-
-    override func windowDidLoad() {
-        super.windowDidLoad()
-        
-        self.window!.collectionBehavior = NSWindowCollectionBehavior.FullScreenPrimary
-        
-        // configure the window
-        self.window?.minSize = NSSize(width: 380, height: 500)
-    }
-    
-    func window(window: NSWindow, didDecodeRestorableState state: NSCoder) {
-        // this is called when the window loads
+extension Array {
+    static func filterOptionals(array: [T?]) -> [T] {
+        return array.filter { $0 != nil }.map { $0! }
     }
 }
