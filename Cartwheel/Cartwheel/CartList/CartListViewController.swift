@@ -28,9 +28,12 @@
 import Cocoa
 import PureLayout_Mac
 
+
 class CartListViewController: NSViewController {
 
-    var contentView = CartListView()
+    private let dataSource = CWCartfileDataSource.sharedInstance
+    private var contentView = CartListView()
+    @IBOutlet private weak var window: NSWindow?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +51,9 @@ class CartListViewController: NSViewController {
         self.contentView.ui.tableView.setDataSource(self)
         self.contentView.ui.tableView.setDelegate(self)
         self.contentView.ui.tableView.reloadData()
+        
+        // Set the first responder
+        self.contentView.ui.filterField.becomeFirstResponder()
     }
     
 }
@@ -55,10 +61,43 @@ class CartListViewController: NSViewController {
 extension CartListViewController { // Handle Clicking Add Cartfile button
     @objc private func didClickAddCartFileButton(sender: NSButton) {
         NSLog("clicked button")
+        
+        if let window = self.window {
+            let fileChooser = NSOpenPanel()
+            fileChooser.canChooseFiles = true
+            fileChooser.canChooseDirectories = true
+            fileChooser.allowsMultipleSelection = false
+            
+            fileChooser.beginSheetModalForWindow(window, completionHandler: { (result) -> Void in
+                switch result {
+                case NSFileHandlingPanelOKButton:
+                    for object in fileChooser.URLs {
+                        if let url = object as? NSURL {
+                            println(url)
+                        }
+                    }
+                default:
+                    println("something bad happened with the file chooser")
+                }
+            })
+        }
+    
+//        NSOpenPanel *panel = [NSOpenPanel openPanel];
+//        [panel setCanChooseFiles:NO];
+//        [panel setCanChooseDirectories:YES];
+//        [panel setAllowsMultipleSelection:YES]; // yes if more than one dir is allowed
+//        
+//        NSInteger clicked = [panel runModal];
+//        
+//        if (clicked == NSFileHandlingPanelOKButton) {
+//            for (NSURL *url in [panel URLs]) {
+//                // do something with the url here.
+//            }
+//        }
     }
 }
 
-extension CartListViewController: NSTextFieldDelegate { 
+extension CartListViewController: NSTextFieldDelegate {
     override func controlTextDidChange(notification: NSNotification) {
         if let userInfoDictionary = notification.userInfo,
             let filterTextField = userInfoDictionary["NSFieldEditor"] as? NSTextView,
@@ -84,7 +123,7 @@ extension CartListViewController: NSTableViewDelegate {
 
 extension CartListViewController: NSTableViewDataSource {
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        return 60
+        return self.dataSource.cartFiles.count
     }
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7353B9331B001B140038861D /* ExperimentNIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7353B9321B001B140038861D /* ExperimentNIB.xib */; };
 		739C39251B0029680088FAD2 /* CWSwiftGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */; };
+		739C392A1B004D8F0088FAD2 /* CWCartfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */; };
 		73B4DD121AEEE527007342C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4DD111AEEE527007342C7 /* AppDelegate.swift */; };
 		73B4DD141AEEE527007342C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73B4DD131AEEE527007342C7 /* Images.xcassets */; };
 		73B4DD171AEEE527007342C7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B4DD151AEEE527007342C7 /* MainMenu.xib */; };
@@ -69,6 +70,7 @@
 		7353B9321B001B140038861D /* ExperimentNIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExperimentNIB.xib; sourceTree = "<group>"; };
 		738464F41AEEEE800014AFB3 /* PureLayout_Mac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout_Mac.framework; path = Carthage/Build/Mac/PureLayout_Mac.framework; sourceTree = SOURCE_ROOT; };
 		739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWSwiftGlobals.swift; sourceTree = "<group>"; };
+		739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWCartfileDataSource.swift; sourceTree = "<group>"; };
 		73B4DD0C1AEEE527007342C7 /* Cartwheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cartwheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73B4DD101AEEE527007342C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73B4DD111AEEE527007342C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -113,7 +115,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		732E37681AEF174000C5A5CA /* CarthageFrameworks */ = {
+		732E37681AEF174000C5A5CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				738464F41AEEEE800014AFB3 /* PureLayout_Mac.framework */,
@@ -127,7 +129,7 @@
 				73CA4CF41AFFF49E0041A537 /* Result.framework */,
 				73CA4CF51AFFF49E0041A537 /* Runes.framework */,
 			);
-			name = CarthageFrameworks;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		73B4DD031AEEE527007342C7 = {
@@ -151,12 +153,13 @@
 			children = (
 				73B4DD111AEEE527007342C7 /* AppDelegate.swift */,
 				739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */,
+				739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */,
 				73C2F38D1AF04F32001B36DB /* CartListTableView */,
 				73FBF2391AEF262900970223 /* CartList */,
 				73B4DD131AEEE527007342C7 /* Images.xcassets */,
 				7353B9321B001B140038861D /* ExperimentNIB.xib */,
 				73B4DD151AEEE527007342C7 /* MainMenu.xib */,
-				732E37681AEF174000C5A5CA /* CarthageFrameworks */,
+				732E37681AEF174000C5A5CA /* Frameworks */,
 				73B4DD0F1AEEE527007342C7 /* Supporting Files */,
 			);
 			path = Cartwheel;
@@ -274,6 +277,7 @@
 				73C2F38F1AF04F97001B36DB /* CartListTableCellView.swift in Sources */,
 				73B4DD121AEEE527007342C7 /* AppDelegate.swift in Sources */,
 				739C39251B0029680088FAD2 /* CWSwiftGlobals.swift in Sources */,
+				739C392A1B004D8F0088FAD2 /* CWCartfileDataSource.swift in Sources */,
 				73FBF23B1AEF266500970223 /* CartListViewController.swift in Sources */,
 				73FBF23D1AEF269500970223 /* CartListView.swift in Sources */,
 				73C2F3911AF05147001B36DB /* CartListTableCellViewController.swift in Sources */,

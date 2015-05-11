@@ -112,7 +112,6 @@ class CartListView: NSView {
     private func configureFilterField() {
         if self.ui.filterField.superview != nil {
             self.ui.filterField.delegate = self.controller
-            self.ui.filterField.becomeFirstResponder()
         } else {
             fatalError("CartListView: Tried to configure the filterField before it was in the view hierarchy.")
         }
