@@ -35,14 +35,15 @@ class CartListView: NSView {
     weak var controller: CartListViewController?
     
     func viewDidLoad() {
-        NSLog("CartListView Did Load")
         self.wantsLayer = true
         
         self.addSubview(self.ui.scrollView)
         self.addSubview(self.ui.addButton)
+        self.addSubview(self.ui.createNewButton)
         self.addSubview(self.ui.filterField)
         self.configureTableView()
         self.configureAddButton()
+        self.configureCreateNewButton()
         self.configureFilterField()
         
         self.configureConstraints()
@@ -58,10 +59,15 @@ class CartListView: NSView {
             self.ui.addButton.autoPinEdgeToSuperviewEdge(.Top , withInset: defaultInset)
             self.ui.addButton.autoPinEdgeToSuperviewEdge(.Leading , withInset: smallInset)
             
+            // Constraints for the create new button
+            self.ui.createNewButton.autoPinEdgeToSuperviewEdge(.Top, withInset: defaultInset)
+            self.ui.createNewButton.autoPinEdge(.Left, toEdge: .Right, ofView: self.ui.addButton, withOffset: defaultInset)
+            
             // constraints for FilterField
             self.ui.filterField.autoPinEdgeToSuperviewEdge(.Trailing, withInset: smallInset)
             self.ui.filterField.autoPinEdgeToSuperviewEdge(.Top, withInset: defaultInset)
-            self.ui.filterField.autoSetDimension(.Width, toSize: filterFieldWidth)
+            self.ui.filterField.autoMatchDimension(.Width, toDimension: .Width, ofView: self.ui.filterField.superview, withMultiplier: 0.4)
+            self.ui.filterField.autoPinEdge(.Left, toEdge: .Right, ofView: self.ui.createNewButton, withOffset: defaultInset, relation: NSLayoutRelation.GreaterThanOrEqual)
 
             // Constraints for table
             self.ui.scrollView.autoPinEdgeToSuperviewEdge(.Leading , withInset: 0)
@@ -80,20 +86,7 @@ class CartListView: NSView {
             }
         }
         
-        let manualConstraints: [NSLayoutConstraint] = {
-            let constraintBetweenAddButtonAndFilterField = NSLayoutConstraint(item: self.ui.filterField,
-                attribute: NSLayoutAttribute.Leading,
-                relatedBy: NSLayoutRelation.GreaterThanOrEqual,
-                toItem: self.ui.addButton,
-                attribute: NSLayoutAttribute.Trailing,
-                multiplier: 1.0,
-                constant: defaultInset)
-            
-            return [constraintBetweenAddButtonAndFilterField]
-        }()
-        
         self.viewConstraints += Array.filterOptionals(optionalPureLayoutConstraints)
-        self.viewConstraints += manualConstraints
         self.addConstraints(self.viewConstraints)
     }
     
@@ -101,9 +94,21 @@ class CartListView: NSView {
         if self.ui.addButton.superview != nil {
             self.ui.addButton.setButtonType(.MomentaryPushInButton)
             self.ui.addButton.bezelStyle = .RoundedBezelStyle
-            self.ui.addButton.title = NSLocalizedString("+ Add Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
+            self.ui.addButton.title = NSLocalizedString("Add Cart", comment: "Button to Add a Cartfile to Cartwheel")
             self.ui.addButton.target = self.controller
             self.ui.addButton.action = "didClickAddCartFileButton:"
+        } else {
+            fatalError("CartListView: Tried to configure the AddButton before it was in the view hierarchy.")
+        }
+    }
+    
+    private func configureCreateNewButton() {
+        if self.ui.createNewButton.superview != nil {
+            self.ui.createNewButton.setButtonType(.MomentaryPushInButton)
+            self.ui.createNewButton.bezelStyle = .RoundedBezelStyle
+            self.ui.createNewButton.title = NSLocalizedString("Create Cart", comment: "Button to Add a Cartfile to Cartwheel")
+            self.ui.createNewButton.target = self.controller
+            self.ui.createNewButton.action = "didClickCreateNewCartFileButton:"
         } else {
             fatalError("CartListView: Tried to configure the AddButton before it was in the view hierarchy.")
         }
@@ -135,6 +140,7 @@ class CartListView: NSView {
         var tableView: NSTableView = NSTableView()
         var tableColumn: NSTableColumn = NSTableColumn(identifier: "CartListColumn")
         var addButton = NSButton()
+        var createNewButton = NSButton()
         var filterField = NSSearchField()
     }
 }
