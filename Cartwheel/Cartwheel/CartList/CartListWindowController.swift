@@ -36,6 +36,7 @@ class CartListWindowController: NSWindowController {
         
         // configure the window
         self.window?.minSize = NSSize(width: 380, height: 500)
+        self.window?.title = NSLocalizedString("Gratuity", comment: "Gratuity Main List View Window Title")
     }
     
     func window(window: NSWindow, didDecodeRestorableState state: NSCoder) {

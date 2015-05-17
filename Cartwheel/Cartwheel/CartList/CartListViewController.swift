@@ -60,8 +60,6 @@ class CartListViewController: NSViewController {
 
 extension CartListViewController { // Handle Clicking Add Cartfile button
     @objc private func didClickAddCartFileButton(sender: NSButton) {
-        NSLog("clicked button")
-        
         if let window = self.window {
             let fileChooser = NSOpenPanel()
             fileChooser.canChooseFiles = true
@@ -73,27 +71,31 @@ extension CartListViewController { // Handle Clicking Add Cartfile button
                 case NSFileHandlingPanelOKButton:
                     for object in fileChooser.URLs {
                         if let url = object as? NSURL {
-                            println(url)
+                            self.parseURL(url)
                         }
                     }
                 default:
-                    println("something bad happened with the file chooser")
+                    NSLog("CartListViewController: File Chooser was cancelled or dismissed for another reason.")
                 }
             })
         }
+    }
     
-//        NSOpenPanel *panel = [NSOpenPanel openPanel];
-//        [panel setCanChooseFiles:NO];
-//        [panel setCanChooseDirectories:YES];
-//        [panel setAllowsMultipleSelection:YES]; // yes if more than one dir is allowed
-//        
-//        NSInteger clicked = [panel runModal];
-//        
-//        if (clicked == NSFileHandlingPanelOKButton) {
-//            for (NSURL *url in [panel URLs]) {
-//                // do something with the url here.
-//            }
-//        }
+    @objc private func didClickCreateNewCartFileButton(sender: NSButton) {
+        NSLog("Create new cartfile")
+    }
+    
+    private func parseURL(url: NSURL) {
+        NSLog("\(url)")
+        NSLog("\(url.lastPathComponent)")
+        
+        if url.lastPathComponent?.lowercaseString == "cartfile" {
+            println("single cartfile selected")
+            let variable = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)
+            println(variable)
+        } else {
+            println("folder selected")
+        }
     }
 }
 

@@ -30,30 +30,30 @@ import PureLayout_Mac
 
 class CartListTableCellView: NSView {
     
-    let interfaceViews = interfaceView()
+    let ui = interfaceView()
     
     func viewDidLoad() {
         self.wantsLayer = true
         
-        self.addSubview(self.interfaceViews.primaryTextField)
-        self.interfaceViews.configureTestLabel()
+        self.addSubview(self.ui.primaryTextField)
+        self.configureTestLabel()
+    }
+    
+    private func configureTestLabel() {
+        if self.ui.primaryTextField.superview != nil {
+            self.ui.primaryTextField.autoPinEdgeToSuperviewEdge(ALEdge.Leading)
+            self.ui.primaryTextField.autoAlignAxisToSuperviewAxis(ALAxis.Horizontal)
+            self.ui.primaryTextField.bordered = true //change to false later
+            (self.ui.primaryTextField.cell() as? NSTextFieldCell)?.drawsBackground = false
+            self.ui.primaryTextField.editable = false
+            self.ui.primaryTextField.stringValue = "Hello There"
+        } else {
+            fatalError("CartListTableCellView: Tried to configure test label before it was in the view hierarchy.")
+        }
     }
     
     struct interfaceView {
         var primaryTextField = NSTextField()
-        
-        func configureTestLabel() {
-            if self.primaryTextField.superview != nil {
-                self.primaryTextField.autoPinEdgeToSuperviewEdge(ALEdge.Leading)
-                self.primaryTextField.autoAlignAxisToSuperviewAxis(ALAxis.Horizontal)
-                self.primaryTextField.bordered = true //change to false later
-                (self.primaryTextField.cell() as? NSTextFieldCell)?.drawsBackground = false
-                self.primaryTextField.editable = false
-                self.primaryTextField.stringValue = "Hello There"
-            } else {
-                fatalError("CartListTableCellView: Tried to configure test label before it was in the view hierarchy.")
-            }
-        }
     }
     
 }

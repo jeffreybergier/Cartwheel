@@ -94,7 +94,7 @@ class CartListView: NSView {
         if self.ui.addButton.superview != nil {
             self.ui.addButton.setButtonType(.MomentaryPushInButton)
             self.ui.addButton.bezelStyle = .RoundedBezelStyle
-            self.ui.addButton.title = NSLocalizedString("Add Cart", comment: "Button to Add a Cartfile to Cartwheel")
+            self.ui.addButton.title = NSLocalizedString("Add Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
             self.ui.addButton.target = self.controller
             self.ui.addButton.action = "didClickAddCartFileButton:"
         } else {
@@ -106,7 +106,7 @@ class CartListView: NSView {
         if self.ui.createNewButton.superview != nil {
             self.ui.createNewButton.setButtonType(.MomentaryPushInButton)
             self.ui.createNewButton.bezelStyle = .RoundedBezelStyle
-            self.ui.createNewButton.title = NSLocalizedString("Create Cart", comment: "Button to Add a Cartfile to Cartwheel")
+            self.ui.createNewButton.title = NSLocalizedString("Create Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
             self.ui.createNewButton.target = self.controller
             self.ui.createNewButton.action = "didClickCreateNewCartFileButton:"
         } else {
