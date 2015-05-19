@@ -47,6 +47,9 @@ class CartListViewController: NSViewController {
         self.contentView.controller = self
         self.contentView.viewDidLoad()
         
+        // prepare fake data
+        self.prepareFakeData()
+        
         // set the delegate on the tableview
         self.contentView.ui.tableView.setDataSource(self)
         self.contentView.ui.tableView.setDelegate(self)
@@ -56,6 +59,18 @@ class CartListViewController: NSViewController {
         self.contentView.ui.filterField.becomeFirstResponder()
     }
     
+    private func prepareFakeData() {
+        let fakeDataArray = [
+            CWCartfile(locationOnDisk: NSURL(string: "fakeurlcartfile1")!),
+            CWCartfile(locationOnDisk: NSURL(string: "fakeurlcartfile2")!),
+            CWCartfile(locationOnDisk: NSURL(string: "fakeurlcartfile3")!),
+            CWCartfile(locationOnDisk: NSURL(string: "fakeurlcartfile4")!)
+        ]
+        
+        fakeDataArray.map { (cartfile) -> Void in
+            self.dataSource.addCartfile(cartfile)
+        }
+    }
 }
 
 extension CartListViewController { // Handle Clicking Add Cartfile button
@@ -125,7 +140,7 @@ extension CartListViewController: NSTableViewDelegate {
 
 extension CartListViewController: NSTableViewDataSource {
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        return self.dataSource.cartFiles.count
+        return self.dataSource.cartfiles.count
     }
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {

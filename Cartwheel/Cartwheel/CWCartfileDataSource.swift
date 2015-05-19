@@ -39,12 +39,13 @@ class CWCartfileDataSource {
             }
             let blankData = NSKeyedArchiver.archivedDataWithRootObject(cartfiles)
             if self.fileManager.createFileAtPath(self.cartfilesArrayPath, contents: blankData, attributes: nil) == true {
+                println("Saved file successfully")
             } else {
                 fatalError("CWCartfileDataSource: Tried to save cartFiles to disk and failed.")
             }
         }
     }
-    var cartiles: [CWCartfile] {
+    var cartfiles: [CWCartfile] {
         get {
             if let cartFiles = _cartfiles {
                 return cartFiles
@@ -54,7 +55,7 @@ class CWCartfileDataSource {
                         if let dataOnDisk = self.fileManager.contentsAtPath(self.appSupportPath),
                             let cartfilesArray = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? [CWCartfile] {
                                 _cartfiles = cartfilesArray
-                             return cartfilesArray
+                                return cartfilesArray
                         }
                     }
                 }
@@ -65,7 +66,11 @@ class CWCartfileDataSource {
     }
     
     func addCartfile(newFile: CWCartfile) {
-        
+        if let _ = _cartfiles {
+            _cartfiles! += [newFile]
+        } else {
+            _cartfiles = [newFile]
+        }
     }
     
     let fileManager = NSFileManager.defaultManager()
@@ -110,27 +115,5 @@ class CWCartfileDataSource {
         }
         
         return Static.instance!
-    }
-    
-    class CWCartfile: NSObject, NSCoding {
-        var locationOnDisk: NSURL
-        
-        init(locationOnDisk: NSURL) {
-            self.locationOnDisk = locationOnDisk
-            super.init()
-        }
-        
-        @objc required init(coder aDecoder: NSCoder) {
-            let locationOnDisk: AnyObject? = aDecoder.decodeObjectForKey("locationOnDisk")
-            if let locationOnDisk = locationOnDisk as? NSURL {
-                self.locationOnDisk = locationOnDisk
-            } else {
-                fatalError("CWCartfile: Failed to initalize from NSCoder")
-            }
-        }
-        
-        @objc func encodeWithCoder(aCoder: NSCoder) {
-            aCoder.encodeObject(self.locationOnDisk, forKey: "locationOnDisk")
-        }
     }
 }
