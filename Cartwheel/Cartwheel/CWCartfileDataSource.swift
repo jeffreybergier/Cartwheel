@@ -29,79 +29,65 @@ import Foundation
 
 class CWCartfileDataSource {
     
-    private var _cartfiles: [CWCartfile]? {
+    // MARK: Internal Properties
+    
+    private(set) var cartfiles = [CWCartfile]() {
         didSet {
-            let cartfiles: [CWCartfile]
-            if let verifiedCartfiles = _cartfiles {
-                cartfiles = verifiedCartfiles
-            } else {
-                cartfiles = []
+            if self.cartfileStorageFolderExists() == false {
+                NSLog("CWCartfileDataSource: Cartfile storage folder does not exist, creating it.")
+                self.createCartfileStorageFolder()
             }
-            let blankData = NSKeyedArchiver.archivedDataWithRootObject(cartfiles)
-            if self.fileManager.createFileAtPath(self.cartfilesArrayPath, contents: blankData, attributes: nil) == true {
-                println("Saved file successfully")
-            } else {
-                fatalError("CWCartfileDataSource: Tried to save cartFiles to disk and failed.")
+            
+            var writeToDiskError: NSError?
+            NSKeyedArchiver.archivedDataWithRootObject(self.cartfiles).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.cartfilesArrayFileName), options: nil, error: &writeToDiskError)
+            
+            if let error = writeToDiskError {
+                NSLog("CWCartfileDataSource: Error saving cartfiles to disk: \(error)")
             }
-        }
-    }
-    var cartfiles: [CWCartfile] {
-        get {
-            if let cartFiles = _cartfiles {
-                return cartFiles
-            } else {
-                if self.pathExists(fileManager: self.fileManager, path: self.appSupportPath) == true {
-                    if self.fileManager.fileExistsAtPath(self.cartfilesArrayPath) == true {
-                        if let dataOnDisk = self.fileManager.contentsAtPath(self.appSupportPath),
-                            let cartfilesArray = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? [CWCartfile] {
-                                _cartfiles = cartfilesArray
-                                return cartfilesArray
-                        }
-                    }
-                }
-            }
-            _cartfiles = []
-            return []
         }
     }
     
-    func addCartfile(newFile: CWCartfile) {
-        if let _ = _cartfiles {
-            _cartfiles! += [newFile]
-        } else {
-            _cartfiles = [newFile]
-        }
+    // MARK: Internal Methods
+    
+    func addCartfile(newCartfiles: CWCartfile) {
+        self.cartfiles += [newCartfiles]
     }
     
-    let fileManager = NSFileManager.defaultManager()
-    let appSupportPath: String = {
+    // MARK: Handle Saving Cartfiles to disk
+    
+    private let fileManager = NSFileManager.defaultManager()
+    private let cartfilesArrayFileName = "cartfiles.array"
+    private let cartfileStorageFolder: NSURL = {
         let array = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)
-        
-        if let directoryURLString = array.last as? String {
-            return directoryURLString + "/" + "Cartwheel" + "/"
-        } else {
-            fatalError("App support directory not returned by file manager")
-        }
+        return NSURL(fileURLWithPath: (array.last as! String).stringByAppendingPathComponent("Cartwheel"))!
     }()
     
-    lazy var cartfilesArrayPath: String = {
-        return self.appSupportPath + "cartfiles.array"
-    }()
+    private func cartfileStorageFolderExists() -> Bool {
+        return self.fileManager.fileExistsAtPath(self.cartfileStorageFolder.path!)
+    }
     
-    private func pathExists(#fileManager: NSFileManager, path: String) -> Bool {
-        var success = false
-        
-        if fileManager.fileExistsAtPath(path) == false {
-            if fileManager.createDirectoryAtPath(path, withIntermediateDirectories: false, attributes: nil, error: nil) == true {
-                success = true
+    private func createCartfileStorageFolder() -> Bool {
+        return self.fileManager.createDirectoryAtPath(self.cartfileStorageFolder.path!, withIntermediateDirectories: true, attributes: nil, error: nil)
+    }
+    
+    // MARK: Handle Launching and Singleton
+    
+    private func readCartfilesFromDisk() -> [CWCartfile] {
+        let fileURL = self.cartfileStorageFolder.URLByAppendingPathComponent(self.cartfilesArrayFileName)
+        var fileReachableError: NSError?
+        //if self.fileManager.fileExistsAtPath(fileURL.path!) == true {
+        if fileURL.checkResourceIsReachableAndReturnError(&fileReachableError) == true {
+            var readFromDiskError: NSError?
+            if let dataOnDisk = NSData(contentsOfURL: fileURL, options: nil, error: &readFromDiskError),
+                let cartfilesArray = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? [CWCartfile] {
+                    return cartfilesArray
             } else {
-                success = false
+                NSLog("CWCartfileDataSource: Error reading Cartfiles from disk: \(readFromDiskError)")
             }
         } else {
-            success = true
+            NSLog("CWCartfileDataSource: Error reading Cartfiles from disk: \(fileReachableError)")
         }
-        
-        return success
+        return []
     }
     
     class var sharedInstance: CWCartfileDataSource {
@@ -112,6 +98,7 @@ class CWCartfileDataSource {
         
         dispatch_once(&Static.token) {
             Static.instance = CWCartfileDataSource()
+            Static.instance?.cartfiles = Static.instance!.readCartfilesFromDisk()
         }
         
         return Static.instance!
