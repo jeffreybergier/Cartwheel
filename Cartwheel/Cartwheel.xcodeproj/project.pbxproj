@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7353B9331B001B140038861D /* ExperimentNIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7353B9321B001B140038861D /* ExperimentNIB.xib */; };
+		7366ED351B0D801200AB6E77 /* CartwheelDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */; };
 		738E43D01B0AFAA000BB3670 /* CWCartfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738E43CF1B0AFAA000BB3670 /* CWCartfile.swift */; };
 		739C39251B0029680088FAD2 /* CWSwiftGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */; };
 		739C392A1B004D8F0088FAD2 /* CWCartfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */; };
@@ -70,6 +71,7 @@
 		730091411B093A7F00719208 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		731994EC1AF2B7EE003B422B /* Cartwheel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Cartwheel.entitlements; sourceTree = "<group>"; };
 		7353B9321B001B140038861D /* ExperimentNIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExperimentNIB.xib; sourceTree = "<group>"; };
+		7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CartwheelDefaults.plist; sourceTree = "<group>"; };
 		738464F41AEEEE800014AFB3 /* PureLayout_Mac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout_Mac.framework; path = Carthage/Build/Mac/PureLayout_Mac.framework; sourceTree = SOURCE_ROOT; };
 		738E43CF1B0AFAA000BB3670 /* CWCartfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWCartfile.swift; sourceTree = "<group>"; };
 		739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWSwiftGlobals.swift; sourceTree = "<group>"; };
@@ -135,6 +137,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7366ED311B0D7B9300AB6E77 /* CWCartfileDataSource */ = {
+			isa = PBXGroup;
+			children = (
+				739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */,
+				738E43CF1B0AFAA000BB3670 /* CWCartfile.swift */,
+			);
+			name = CWCartfileDataSource;
+			sourceTree = "<group>";
+		};
 		73B4DD031AEEE527007342C7 = {
 			isa = PBXGroup;
 			children = (
@@ -156,11 +167,11 @@
 			isa = PBXGroup;
 			children = (
 				73B4DD111AEEE527007342C7 /* AppDelegate.swift */,
-				739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */,
-				739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */,
-				738E43CF1B0AFAA000BB3670 /* CWCartfile.swift */,
-				73C2F38D1AF04F32001B36DB /* CartListTableView */,
+				7366ED311B0D7B9300AB6E77 /* CWCartfileDataSource */,
 				73FBF2391AEF262900970223 /* CartList */,
+				73C2F38D1AF04F32001B36DB /* CartListTableView */,
+				739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */,
+				7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */,
 				73B4DD131AEEE527007342C7 /* Images.xcassets */,
 				7353B9321B001B140038861D /* ExperimentNIB.xib */,
 				73B4DD151AEEE527007342C7 /* MainMenu.xib */,
@@ -267,6 +278,7 @@
 				73B4DD141AEEE527007342C7 /* Images.xcassets in Resources */,
 				73C2F3931AF057BF001B36DB /* CartListTableCellViewController.xib in Resources */,
 				73C2F3971AF06D78001B36DB /* CartListWindowController.xib in Resources */,
+				7366ED351B0D801200AB6E77 /* CartwheelDefaults.plist in Resources */,
 				73B4DD171AEEE527007342C7 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

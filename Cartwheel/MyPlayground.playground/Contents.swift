@@ -2,42 +2,21 @@
 
 import Cocoa
 
-let fileManager = NSFileManager.defaultManager()
-
-let appSupportPath: String = {
-    let array = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)
-    
-    if let directoryURLString = array.last as? String {
-        return directoryURLString + "/" + "Cartwheel" + "/"
-    } else {
-        fatalError("App support directory not returned by file manager")
-    }
-    }()
-
-let cartfilesArrayPath: String = {
-    return appSupportPath + "cartfiles.array"
-    }()
-
-func directoryExists(#fileManager: NSFileManager, #path: String) -> Bool {
-    var success = false
-    
-    if fileManager.fileExistsAtPath(path) == false {
-        println("Directory does not exist. Going to make it")
-        if fileManager.createDirectoryAtPath(path, withIntermediateDirectories: false, attributes: nil, error: nil) == true {
-            println("Directory Created Successfully")
-            success = true
-        } else {
-            println("Directory Creation Failed") // Handle errors
-            success = false
+// MARK: Defaults.plist file
+let defaults: [String : AnyObject]? = {
+    var dataError: NSError?
+    var plistError: NSError?
+    if let url = NSBundle.mainBundle().URLForResource("CartwheelDefaults", withExtension: "plist") {
+        if let data = NSData(contentsOfURL: url, options: nil, error: &dataError) {
+            if let plist = NSPropertyListSerialization.propertyListWithData(data, options: NSPropertyListReadOptions.allZeros, format: nil, error: &plistError) as? [String : AnyObject] {
+                for (key, value) in plist {
+                    println("Key: \(key) -> Value: \(value)")
+                }
+                return plist
+            }
         }
-    } else {
-        println("Directory already exists")
-        success = true
     }
-    
-    return success
-}
+    return nil
+}()
 
-if directoryExists(fileManager: fileManager, path: appSupportPath) == true {
-    println("if statement succeeded")
-}
+println(defaults)

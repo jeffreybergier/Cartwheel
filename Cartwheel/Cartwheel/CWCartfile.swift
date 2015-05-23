@@ -37,16 +37,13 @@ class CWCartfile: NSObject, NSCoding {
     
     // MARK: NSCoding
     
-    @objc required init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         let locationOnDisk: AnyObject? = aDecoder.decodeObjectForKey("locationOnDisk")
-        if let locationOnDisk = locationOnDisk as? NSURL {
-            self.locationOnDisk = locationOnDisk
-        } else {
-            fatalError("CWCartfile: Failed to initalize from NSCoder")
-        }
+        self.locationOnDisk = locationOnDisk as! NSURL
+        super.init()
     }
     
-    @objc func encodeWithCoder(aCoder: NSCoder) {
+    func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.locationOnDisk, forKey: "locationOnDisk")
     }
 }

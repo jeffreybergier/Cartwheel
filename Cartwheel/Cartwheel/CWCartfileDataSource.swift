@@ -31,7 +31,7 @@ class CWCartfileDataSource {
     
     // MARK: Internal Properties
     
-    private(set) var cartfiles = [CWCartfile]() {
+    private(set) var cartfiles = Set<CWCartfile>() {
         didSet {
             if self.cartfileStorageFolderExists() == false {
                 NSLog("CWCartfileDataSource: Cartfile storage folder does not exist, creating it.")
@@ -49,8 +49,8 @@ class CWCartfileDataSource {
     
     // MARK: Internal Methods
     
-    func addCartfile(newCartfiles: CWCartfile) {
-        self.cartfiles += [newCartfiles]
+    func addCartfile(newCartfile: CWCartfile) {
+        self.cartfiles.insert(newCartfile)
     }
     
     // MARK: Handle Saving Cartfiles to disk
@@ -72,14 +72,14 @@ class CWCartfileDataSource {
     
     // MARK: Handle Launching and Singleton
     
-    private func readCartfilesFromDisk() -> [CWCartfile] {
+    private func readCartfilesFromDisk() -> Set<CWCartfile> {
         let fileURL = self.cartfileStorageFolder.URLByAppendingPathComponent(self.cartfilesArrayFileName)
         var fileReachableError: NSError?
         //if self.fileManager.fileExistsAtPath(fileURL.path!) == true {
         if fileURL.checkResourceIsReachableAndReturnError(&fileReachableError) == true {
             var readFromDiskError: NSError?
             if let dataOnDisk = NSData(contentsOfURL: fileURL, options: nil, error: &readFromDiskError),
-                let cartfilesArray = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? [CWCartfile] {
+                let cartfilesArray = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? Set<CWCartfile> {
                     return cartfilesArray
             } else {
                 NSLog("CWCartfileDataSource: Error reading Cartfiles from disk: \(readFromDiskError)")
