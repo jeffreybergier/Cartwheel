@@ -53,6 +53,12 @@ class CWCartfileDataSource {
         self.cartfiles.insert(newCartfile)
     }
     
+    func addCartfiles(newCartfiles: [CWCartfile]) {
+        for cartfile in cartfiles {
+            self.cartfiles.insert(cartfile)
+        }
+    }
+    
     // MARK: Handle Saving Cartfiles to disk
     
     private let fileManager = NSFileManager.defaultManager()

@@ -86,7 +86,7 @@ extension CartListViewController { // Handle Clicking Add Cartfile button
                 case NSFileHandlingPanelOKButton:
                     for object in fileChooser.URLs {
                         if let url = object as? NSURL {
-                            self.parseURL(url)
+                            let cartfiles = self.parseCartfilesFromURL(url)
                         }
                     }
                 default:
@@ -100,17 +100,54 @@ extension CartListViewController { // Handle Clicking Add Cartfile button
         NSLog("Create new cartfile")
     }
     
-    private func parseURL(url: NSURL) {
-        NSLog("\(url)")
-        NSLog("\(url.lastPathComponent)")
-        
+    private func parseCartfilesFromURL(url: NSURL) -> [CWCartfile]? {
         if url.lastPathComponent?.lowercaseString == "cartfile" {
-            println("single cartfile selected")
-            let variable = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)
-            println(variable)
+            return [CWCartfile(locationOnDisk: url)]
         } else {
-            println("folder selected")
+            var isDirectory: ObjCBool = false
+            NSFileManager.defaultManager().fileExistsAtPath(url.path!, isDirectory: &isDirectory)
+            if let cartfiles = self.parseCartfilesByEnumeratingURL(url, directoryRecursionDepth: 0, initialCartfiles: nil) {
+                self.dataSource.addCartfiles(cartfiles)
+                self.contentView.ui.tableView.reloadData()
+            }
         }
+        return nil
+    }
+    
+    private func parseCartfilesByEnumeratingURL(parentURL: NSURL, directoryRecursionDepth: Int, initialCartfiles: [CWCartfile]?) -> [CWCartfile]? {
+        let fileManager = NSFileManager.defaultManager()
+        let keys = [NSURLIsDirectoryKey]
+        let options: NSDirectoryEnumerationOptions = .SkipsHiddenFiles | .SkipsPackageDescendants | .SkipsSubdirectoryDescendants
+        
+        let enumerator = fileManager.enumeratorAtURL(parentURL, includingPropertiesForKeys: keys, options: options) {
+            (url: NSURL?, error: NSError?) -> Bool in
+            NSLog("CartListViewController: NSEnumerator Error: \(error) with URL: \(url)")
+            return true
+        }
+        
+        var cartfiles = [CWCartfile]()
+        if directoryRecursionDepth < 4 {
+            if let enumeratorArray = enumerator?.allObjects {
+                for object in enumeratorArray {
+                    if let url = object as? NSURL,
+                        let urlResources = url.resourceValuesForKeys(keys, error: nil),
+                        let isDirectory = urlResources[NSURLIsDirectoryKey] as? Bool {
+                            if isDirectory == false {
+                                if url.lastPathComponent?.lowercaseString == "cartfile" {
+                                    cartfiles += [CWCartfile(locationOnDisk: url)]
+                                    println("Cartfile found! URL: \(url)")
+                                }
+                            } else {
+                                if let recursiveCartfiles = self.parseCartfilesByEnumeratingURL(url, directoryRecursionDepth: directoryRecursionDepth + 1, initialCartfiles: cartfiles) {
+                                    cartfiles += recursiveCartfiles
+                                }
+                            }
+                    }
+                }
+            }
+        }
+        
+        return cartfiles
     }
 }
 
