@@ -104,7 +104,7 @@ extension CartListViewController { // Handle Clicking Add Cartfile button
     }
     
     private func parseCartfilesFromURL(url: NSURL) -> [CWCartfile]? {
-        if url.lastPathComponent?.lowercaseString == self.dataSource.defaultsPlist.cartfileListSaveLocation {
+        if url.lastPathComponent?.lowercaseString == self.dataSource.defaultsPlist.cartfileFileName {
             return [CWCartfile(locationOnDisk: url)]
         } else {
             var isDirectory: ObjCBool = false
@@ -118,39 +118,38 @@ extension CartListViewController { // Handle Clicking Add Cartfile button
     }
     
     private func parseCartfilesByEnumeratingURL(parentURL: NSURL, directoryRecursionDepth: Int, initialCartfiles: [CWCartfile]?) -> [CWCartfile]? {
-        let fileManager = NSFileManager.defaultManager()
-        let keys = [NSURLIsDirectoryKey]
-        let options: NSDirectoryEnumerationOptions = .SkipsHiddenFiles | .SkipsPackageDescendants | .SkipsSubdirectoryDescendants
-        
-        let enumerator = fileManager.enumeratorAtURL(parentURL, includingPropertiesForKeys: keys, options: options) {
-            (url: NSURL?, error: NSError?) -> Bool in
-            NSLog("CartListViewController: NSEnumerator Error: \(error) with URL: \(url)")
-            return true
-        }
-        
-        var cartfiles = [CWCartfile]()
-        if directoryRecursionDepth < self.dataSource.defaultsPlist.cartfileDirectorySearchRecursion {
-            if let enumeratorArray = enumerator?.allObjects {
-                for object in enumeratorArray {
-                    if let url = object as? NSURL,
-                        let urlResources = url.resourceValuesForKeys(keys, error: nil),
-                        let isDirectory = urlResources[NSURLIsDirectoryKey] as? Bool {
-                            if isDirectory == false {
-                                if url.lastPathComponent?.lowercaseString == "cartfile" {
-                                    cartfiles += [CWCartfile(locationOnDisk: url)]
-                                    println("Cartfile found! URL: \(url)")
-                                }
-                            } else {
-                                if let recursiveCartfiles = self.parseCartfilesByEnumeratingURL(url, directoryRecursionDepth: directoryRecursionDepth + 1, initialCartfiles: cartfiles) {
-                                    cartfiles += recursiveCartfiles
-                                }
+        if directoryRecursionDepth <= self.dataSource.defaultsPlist.cartfileDirectorySearchRecursion {
+            
+            let fileManager = NSFileManager.defaultManager()
+            let keys = [NSURLIsDirectoryKey]
+            let options: NSDirectoryEnumerationOptions = .SkipsHiddenFiles | .SkipsPackageDescendants | .SkipsSubdirectoryDescendants
+            
+            let enumerator = fileManager.enumeratorAtURL(parentURL, includingPropertiesForKeys: keys, options: options) {
+                (url: NSURL?, error: NSError?) -> Bool in
+                NSLog("CartListViewController: NSEnumerator Error: \(error) with URL: \(url)")
+                return true
+            }
+            
+            var cartfiles = [CWCartfile]()
+            for object in enumerator!.allObjects {
+                if let url = object as? NSURL,
+                    let urlResources = url.resourceValuesForKeys(keys, error: nil),
+                    let urlIsDirectory = urlResources[NSURLIsDirectoryKey] as? Bool {
+                        if urlIsDirectory == false {
+                            if url.lastPathComponent?.lowercaseString == self.dataSource.defaultsPlist.cartfileFileName.lowercaseString {
+                                cartfiles += [CWCartfile(locationOnDisk: url)]
+                                println("Cartfile found at URL: \(url)")
                             }
-                    }
+                        } else {
+                            if let recursiveCartfiles = self.parseCartfilesByEnumeratingURL(url, directoryRecursionDepth: directoryRecursionDepth + 1, initialCartfiles: cartfiles) {
+                                cartfiles += recursiveCartfiles
+                            }
+                        }
                 }
             }
+            return cartfiles
         }
-        
-        return cartfiles
+        return nil
     }
 }
 

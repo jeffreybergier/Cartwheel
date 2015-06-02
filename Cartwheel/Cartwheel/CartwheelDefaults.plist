@@ -3,8 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>CartfileListSaveLocation</key>
-	<string>cartfiles.bin</string>
+	<string>Cartwheel</string>
 	<key>CartfileDirectorySearchRecursion</key>
 	<integer>4</integer>
+	<key>CartfileFileName</key>
+	<string>cartfile</string>
+	<key>CartfileListSaveName</key>
+	<string>cartfiles.bin</string>
 </dict>
 </plist>

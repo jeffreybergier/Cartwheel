@@ -40,7 +40,7 @@ class CWCartfileDataSource {
             }
             
             var writeToDiskError: NSError?
-            NSKeyedArchiver.archivedDataWithRootObject(self.cartfiles).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.cartfilesArrayFileName), options: nil, error: &writeToDiskError)
+            NSKeyedArchiver.archivedDataWithRootObject(self.cartfiles).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName), options: nil, error: &writeToDiskError)
             
             if let error = writeToDiskError {
                 NSLog("CWCartfileDataSource: Error saving cartfiles to disk: \(error)")
@@ -61,10 +61,9 @@ class CWCartfileDataSource {
     // MARK: Handle Saving Cartfiles to disk
     
     private let fileManager = NSFileManager.defaultManager()
-    private let cartfilesArrayFileName = "cartfiles.array"
     private let cartfileStorageFolder: NSURL = {
         let array = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)
-        return NSURL(fileURLWithPath: (array.last as! String).stringByAppendingPathComponent("Cartwheel"))!
+        return NSURL(fileURLWithPath: (array.last as! String).stringByAppendingPathComponent(CWDefaultsPlist().cartfileListSaveLocation))!
     }()
     
     private func cartfileStorageFolderExists() -> Bool {
@@ -78,7 +77,7 @@ class CWCartfileDataSource {
     // MARK: Handle Launching and Singleton
     
     private func readCartfilesFromDisk() -> Set<CWCartfile> {
-        let fileURL = self.cartfileStorageFolder.URLByAppendingPathComponent(self.cartfilesArrayFileName)
+        let fileURL = self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName)
         var fileReachableError: NSError?
         //if self.fileManager.fileExistsAtPath(fileURL.path!) == true {
         if fileURL.checkResourceIsReachableAndReturnError(&fileReachableError) == true {

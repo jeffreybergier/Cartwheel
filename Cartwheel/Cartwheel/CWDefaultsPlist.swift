@@ -30,11 +30,15 @@ import Foundation
 struct CWDefaultsPlist {
     var cartfileDirectorySearchRecursion: Int
     var cartfileListSaveLocation: String
+    var cartfileFileName: String
+    var cartfileListSaveName: String
     
     init() {
         // declare the needed values
         let cartfileDirectorySearchRecursion: NSNumber?
         let cartfileListSaveLocation: String?
+        let cartfileFileName: String?
+        let cartfileListSaveName: String?
         
         // read the plist from disk
         var dataError: NSError?
@@ -46,16 +50,22 @@ struct CWDefaultsPlist {
                 // parse the plist
                 cartfileDirectorySearchRecursion = plist["CartfileDirectorySearchRecursion"] as? NSNumber
                 cartfileListSaveLocation = plist["CartfileListSaveLocation"] as? String
+                cartfileFileName = plist["CartfileFileName"] as? String
+                cartfileListSaveName = plist["CartfileListSaveName"] as? String
         } else {
             // handle errors
             cartfileDirectorySearchRecursion = nil
             cartfileListSaveLocation = nil
+            cartfileFileName = nil
+            cartfileListSaveName = nil
             NSLog("CWDefaultsPlist: Error Reading Plist from Disk. Using Defaults. PlistError: \(plistError) – DataError: \(dataError)")
         }
         
         // populate properties with values
-        self.cartfileDirectorySearchRecursion = cartfileDirectorySearchRecursion?.integerValue ?? 4
-        self.cartfileListSaveLocation = cartfileListSaveLocation ?? "cartfiles.bin"
+        self.cartfileDirectorySearchRecursion = cartfileDirectorySearchRecursion?.integerValue !! 4
+        self.cartfileListSaveLocation = cartfileListSaveLocation !! "Cartwheel"
+        self.cartfileFileName = cartfileFileName !! "cartfile"
+        self.cartfileListSaveName = cartfileListSaveName !! "cartfiles.bin"
     }
 }
 
