@@ -67,32 +67,35 @@ class CartListViewController: NSViewController {
             CWCartfile(locationOnDisk: NSURL(string: "fakeurlcartfile4")!)
         ]
         
-        fakeDataArray.map { (cartfile) -> Void in
-            self.dataSource.addCartfile(cartfile)
-        }
+        self.dataSource.addCartfiles(fakeDataArray)
     }
 }
 
 extension CartListViewController { // Handle Clicking Add Cartfile button
     @objc private func didClickAddCartFileButton(sender: NSButton) {
-        if let window = self.window {
-            let fileChooser = NSOpenPanel()
-            fileChooser.canChooseFiles = true
-            fileChooser.canChooseDirectories = true
-            fileChooser.allowsMultipleSelection = false
-            
-            fileChooser.beginSheetModalForWindow(window, completionHandler: { (result) -> Void in
-                switch result {
-                case NSFileHandlingPanelOKButton:
-                    for object in fileChooser.URLs {
-                        if let url = object as? NSURL {
-                            let cartfiles = self.parseCartfilesFromURL(url)
-                        }
+        let fileChooser = NSOpenPanel()
+        fileChooser.canChooseFiles = true
+        fileChooser.canChooseDirectories = true
+        fileChooser.allowsMultipleSelection = true
+        
+        fileChooser.beginSheetModalForWindow(self.window!) { (untypedResult) -> Void in
+            let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
+            switch result {
+            case .OKButton:
+                for object in fileChooser.URLs {
+                    var changedDataSource = false
+                    if let url = object as? NSURL,
+                        let cartfiles = self.parseCartfilesFromURL(url) {
+                            changedDataSource = true
+                            self.dataSource.addCartfiles(cartfiles)
                     }
-                default:
-                    NSLog("CartListViewController: File Chooser was cancelled or dismissed for another reason.")
+                    if changedDataSource == true {
+                        self.contentView.ui.tableView.reloadData()
+                    }
                 }
-            })
+            case .CancelButton:
+                NSLog("CartListViewController: File Chooser was cancelled by user.")
+            }
         }
     }
     
@@ -101,7 +104,7 @@ extension CartListViewController { // Handle Clicking Add Cartfile button
     }
     
     private func parseCartfilesFromURL(url: NSURL) -> [CWCartfile]? {
-        if url.lastPathComponent?.lowercaseString == "cartfile" {
+        if url.lastPathComponent?.lowercaseString == self.dataSource.defaultsPlist.cartfileListSaveLocation {
             return [CWCartfile(locationOnDisk: url)]
         } else {
             var isDirectory: ObjCBool = false
@@ -126,7 +129,7 @@ extension CartListViewController { // Handle Clicking Add Cartfile button
         }
         
         var cartfiles = [CWCartfile]()
-        if directoryRecursionDepth < 4 {
+        if directoryRecursionDepth < self.dataSource.defaultsPlist.cartfileDirectorySearchRecursion {
             if let enumeratorArray = enumerator?.allObjects {
                 for object in enumeratorArray {
                     if let url = object as? NSURL,

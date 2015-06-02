@@ -32,3 +32,24 @@ extension Array {
         return array.filter { $0 != nil }.map { $0! }
     }
 }
+
+extension Array {
+    subscript (safe index: Int) -> Element? {
+        return index < count && index >= 0 ? self[Int(index)] : nil
+    }
+}
+
+enum NSFileHandlingPanelResponse: Int {
+    case CancelButton = 0, OKButton
+}
+
+extension NSFileHandlingPanelResponse: Printable {
+    var description: String {
+        switch self {
+        case CancelButton:
+            return "NSFileHandlingPanelResponse.CancelButton"
+        case OKButton:
+            return "NSFileHandlingPanelResponse.OKButton"
+        }
+    }
+}

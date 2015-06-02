@@ -31,6 +31,7 @@ class CWCartfileDataSource {
     
     // MARK: Internal Properties
     
+    var defaultsPlist = CWDefaultsPlist()
     private(set) var cartfiles = Set<CWCartfile>() {
         didSet {
             if self.cartfileStorageFolderExists() == false {
@@ -53,10 +54,8 @@ class CWCartfileDataSource {
         self.cartfiles.insert(newCartfile)
     }
     
-    func addCartfiles(newCartfiles: [CWCartfile]) {
-        for cartfile in cartfiles {
-            self.cartfiles.insert(cartfile)
-        }
+    func addCartfiles<S: SequenceType where S.Generator.Element == CWCartfile>(newCartfiles: S) {
+        self.cartfiles.unionInPlace(newCartfiles)
     }
     
     // MARK: Handle Saving Cartfiles to disk

@@ -52,7 +52,7 @@ class CWCartfile: NSObject, NSCoding {
 
 extension CWCartfile: Printable {
     override var description: String {
-        return "CWCartfile" + " " + (NSString(format: "%p:", self) as String) + " " + "\(self.locationOnDisk.path)"
+        return "CWCartfile" + " " + (NSString(format: "%p:", self) as String) + " " + "\(self.locationOnDisk)"
     }
 }
 
