@@ -78,20 +78,25 @@ class CWCartfileDataSource {
     
     private func readCartfilesFromDisk() -> Set<CWCartfile> {
         let fileURL = self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName)
+        
         var fileReachableError: NSError?
-        //if self.fileManager.fileExistsAtPath(fileURL.path!) == true {
-        if fileURL.checkResourceIsReachableAndReturnError(&fileReachableError) == true {
+        let fileURLIsReachable = fileURL.checkResourceIsReachableAndReturnError(&fileReachableError)
+        if let error = fileReachableError {
+            NSLog("CWCartfileDataSource: Error reading Cartfiles from disk: \(error)")
+        }
+        
+        if fileURLIsReachable == true {
             var readFromDiskError: NSError?
             if let dataOnDisk = NSData(contentsOfURL: fileURL, options: nil, error: &readFromDiskError),
                 let cartfilesArray = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? Set<CWCartfile> {
                     return cartfilesArray
-            } else {
+            }
+            if let error = readFromDiskError {
                 NSLog("CWCartfileDataSource: Error reading Cartfiles from disk: \(readFromDiskError)")
             }
-        } else {
-            NSLog("CWCartfileDataSource: Error reading Cartfiles from disk: \(fileReachableError)")
         }
-        return []
+        
+        return Set<CWCartfile>()
     }
     
     class var sharedInstance: CWCartfileDataSource {
