@@ -40,7 +40,8 @@ class CWCartfileDataSource {
             }
             
             var writeToDiskError: NSError?
-            NSKeyedArchiver.archivedDataWithRootObject(self.cartfiles).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName), options: nil, error: &writeToDiskError)
+            let encodableCartfiles = self.cartfiles.map { $0.encodableCopy() }
+            NSKeyedArchiver.archivedDataWithRootObject(encodableCartfiles).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName), options: nil, error: &writeToDiskError)
             
             if let error = writeToDiskError {
                 NSLog("CWCartfileDataSource: Error saving cartfiles to disk: \(error)")
@@ -88,8 +89,8 @@ class CWCartfileDataSource {
         if fileURLIsReachable == true {
             var readFromDiskError: NSError?
             if let dataOnDisk = NSData(contentsOfURL: fileURL, options: nil, error: &readFromDiskError),
-                let cartfilesArray = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? Set<CWCartfile> {
-                    return cartfilesArray
+                let cartfiles = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? Set<CWEncodableCartfile> {
+                    return cartfiles.map { $0.decodedCartfile() }
             }
             if let error = readFromDiskError {
                 NSLog("CWCartfileDataSource: Error reading Cartfiles from disk: \(readFromDiskError)")

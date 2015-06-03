@@ -26,16 +26,59 @@
 //
 
 import Foundation
+import CarthageKit // need to transition to built in cartfile struct
 
-class CWCartfile: NSObject, NSCoding {
+// MARK: CWCartfile Struct
+
+struct CWCartfile {
     var locationOnDisk: NSURL
+    var parentFolderName: String {
+        return ""
+    }
     
     init(locationOnDisk: NSURL) {
         self.locationOnDisk = locationOnDisk
+    }
+}
+
+// MARK: Printable
+
+extension CWCartfile: Printable {
+    var description: String {
+        return "CWCartfile: \(self.locationOnDisk)"
+    }
+}
+
+// MARK: Hashable
+
+extension CWCartfile: Hashable {
+    var hashValue: Int {
+        return self.locationOnDisk.path!.hashValue
+    }
+}
+
+// MARK: Equatable
+
+func ==(lhs: CWCartfile, rhs: CWCartfile) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}
+
+// MARK: CWEncodableCartfile
+
+extension CWCartfile {
+    func encodableCopy() -> CWEncodableCartfile {
+        return CWEncodableCartfile(cartfile: self)
+    }
+}
+
+class CWEncodableCartfile: NSObject, NSCoding {
+    
+    let locationOnDisk: NSURL
+    
+    init(cartfile: CWCartfile) {
+        self.locationOnDisk = cartfile.locationOnDisk
         super.init()
     }
-    
-    // MARK: NSCoding
     
     required init(coder aDecoder: NSCoder) {
         let locationOnDisk: AnyObject? = aDecoder.decodeObjectForKey("locationOnDisk")
@@ -46,26 +89,8 @@ class CWCartfile: NSObject, NSCoding {
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.locationOnDisk, forKey: "locationOnDisk")
     }
-}
-
-// MARK: Printable
-
-extension CWCartfile: Printable {
-    override var description: String {
-        return "CWCartfile" + " " + (NSString(format: "%p:", self) as String) + " " + "\(self.locationOnDisk)"
+    
+    func decodedCartfile() -> CWCartfile {
+        return CWCartfile(locationOnDisk: self.locationOnDisk)
     }
-}
-
-// MARK: Hashable
-
-extension CWCartfile: Hashable {
-    override var hashValue: Int {
-        return self.locationOnDisk.path!.hashValue
-    }
-}
-
-// MARK: Equatable
-
-func ==(lhs: CWCartfile, rhs: CWCartfile) -> Bool {
-    return lhs.hashValue == rhs.hashValue
 }

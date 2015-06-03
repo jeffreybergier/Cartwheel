@@ -27,6 +27,8 @@
 
 import Foundation
 
+// MARK: Extensions of Built in Types
+
 extension Array {
     static func filterOptionals(array: [T?]) -> [T] {
         return array.filter { $0 != nil }.map { $0! }
@@ -35,9 +37,25 @@ extension Array {
 
 extension Array {
     subscript (safe index: Int) -> Element? {
-        return index < count && index >= 0 ? self[Int(index)] : nil
+        return index < count && index >= 0 ? self[index] : nil
+    }
+    
+    subscript (unsafe index: Int) -> Element {
+        return self[index]
+    }
+    
+    subscript (yolo index: Int) -> Element { // YOLO! Crashes if out of range
+        return self[index]
     }
 }
+
+extension Set {
+    func map<U>(transform: (T) -> U) -> Set<U> {
+        return Set<U>(Swift.map(self, transform))
+    }
+}
+
+// MARK: Custom Enums
 
 enum NSFileHandlingPanelResponse: Int {
     case CancelButton = 0, OKButton
@@ -54,12 +72,12 @@ extension NSFileHandlingPanelResponse: Printable {
     }
 }
 
-// Operator Overloading!!
+// MARK: Operator Overloads
+
+infix operator !! { associativity right precedence 110 }
 // AssertingNilCoalescing operator crashes when LHS is nil when App is in Debug Build.
 // When App is in release build, it performs ?? operator
 // Crediting http://blog.human-friendly.com/theanswer-equals-maybeanswer-or-a-good-alternative
-
-infix operator !! { associativity right precedence 110 }
 public func !!<A>(lhs:A?, @autoclosure rhs:()->A)->A {
     assert(lhs != nil)
     return lhs ?? rhs()

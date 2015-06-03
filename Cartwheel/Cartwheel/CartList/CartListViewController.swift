@@ -28,7 +28,6 @@
 import Cocoa
 import PureLayout_Mac
 
-
 class CartListViewController: NSViewController {
 
     private let dataSource = CWCartfileDataSource.sharedInstance

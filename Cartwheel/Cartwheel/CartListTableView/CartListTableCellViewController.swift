@@ -27,6 +27,7 @@
 
 import Cocoa
 import PureLayout_Mac
+import CarthageKit
 
 class CartListTableCellViewController: NSTableCellView {
     
@@ -40,11 +41,9 @@ class CartListTableCellViewController: NSTableCellView {
     }
     
     private func prepareCellForNewModelObject() {
-    
     }
     
     private func updateCellWithNewModelObject() {
-    
     }
     
     override func awakeFromNib() {
