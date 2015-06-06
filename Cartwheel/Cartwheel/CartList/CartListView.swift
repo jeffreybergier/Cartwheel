@@ -41,10 +41,10 @@ class CartListView: NSView {
         self.addSubview(self.ui.addButton)
         self.addSubview(self.ui.createNewButton)
         self.addSubview(self.ui.filterField)
-        self.configureTableView()
-        self.configureAddButton()
-        self.configureCreateNewButton()
-        self.configureFilterField()
+        self.configure(tableView: self.ui.tableView, scrollView: self.ui.scrollView, tableColumn: self.ui.tableColumn)
+        self.configure(addButton: self.ui.addButton)
+        self.configure(createNewButton: self.ui.createNewButton)
+        self.configure(filterField: self.ui.filterField)
         
         self.configureConstraints()
     }
@@ -90,46 +90,46 @@ class CartListView: NSView {
         self.addConstraints(self.viewConstraints)
     }
     
-    private func configureAddButton() {
-        if self.ui.addButton.superview != nil {
-            self.ui.addButton.setButtonType(.MomentaryPushInButton)
-            self.ui.addButton.bezelStyle = .RoundedBezelStyle
-            self.ui.addButton.title = NSLocalizedString("Add Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
-            self.ui.addButton.target = self.controller
-            self.ui.addButton.action = "didClickAddCartFileButton:"
+    private func configure(#addButton: NSButton) {
+        if let _ = addButton.superview {
+            addButton.setButtonType(.MomentaryPushInButton)
+            addButton.bezelStyle = .RoundedBezelStyle
+            addButton.title = NSLocalizedString("Add Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
+            addButton.target = self.controller
+            addButton.action = "didClickAddCartFileButton:"
         } else {
             fatalError("CartListView: Tried to configure the AddButton before it was in the view hierarchy.")
         }
     }
     
-    private func configureCreateNewButton() {
-        if self.ui.createNewButton.superview != nil {
-            self.ui.createNewButton.setButtonType(.MomentaryPushInButton)
-            self.ui.createNewButton.bezelStyle = .RoundedBezelStyle
-            self.ui.createNewButton.title = NSLocalizedString("Create Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
-            self.ui.createNewButton.target = self.controller
-            self.ui.createNewButton.action = "didClickCreateNewCartFileButton:"
+    private func configure(#createNewButton: NSButton) {
+        if let _ = createNewButton.superview {
+            createNewButton.setButtonType(.MomentaryPushInButton)
+            createNewButton.bezelStyle = .RoundedBezelStyle
+            createNewButton.title = NSLocalizedString("Create Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
+            createNewButton.target = self.controller
+            createNewButton.action = "didClickCreateNewCartFileButton:"
         } else {
             fatalError("CartListView: Tried to configure the AddButton before it was in the view hierarchy.")
         }
     }
     
-    private func configureFilterField() {
-        if self.ui.filterField.superview != nil {
+    private func configure(#filterField: NSSearchField) {
+        if let _ = self.ui.filterField.superview {
             self.ui.filterField.delegate = self.controller
         } else {
             fatalError("CartListView: Tried to configure the filterField before it was in the view hierarchy.")
         }
     }
     
-    func configureTableView() {
-        if self.ui.scrollView.superview != nil {
-            self.ui.tableView.addTableColumn(self.ui.tableColumn)
-            self.ui.tableView.registerNib(NSNib(nibNamed: "CartListTableCellViewController", bundle: nil)!, forIdentifier: "CartListTableCellViewController") // it seems basically impossible to use a custom cell not based on a nib. The NIB is blank and will continue to be blank.
-            self.ui.scrollView.documentView = self.ui.tableView
-            self.ui.scrollView.hasVerticalScroller = true
-            self.ui.tableColumn.width = self.ui.scrollView.frame.width
-            self.ui.tableView.headerView = nil
+    func configure(#tableView: NSTableView, scrollView: NSScrollView, tableColumn: NSTableColumn) {
+        if let _ = scrollView.superview {
+            tableView.addTableColumn(self.ui.tableColumn)
+            tableView.registerNib(NSNib(nibNamed: "CartListTableCellViewController", bundle: nil)!, forIdentifier: "CartListTableCellViewController") // it seems basically impossible to use a custom cell not based on a nib. The NIB is blank and will continue to be blank.
+            scrollView.documentView = self.ui.tableView
+            scrollView.hasVerticalScroller = true
+            tableColumn.width = self.ui.scrollView.frame.width
+            tableView.headerView = nil
         } else {
             fatalError("CartListView: Tried to configure the TableView before it was in the view hierarchy.")
         }

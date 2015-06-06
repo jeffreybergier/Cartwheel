@@ -31,29 +31,46 @@ import PureLayout_Mac
 class CartListTableCellView: NSView {
     
     let ui = interfaceView()
+    var viewConstraints = [NSLayoutConstraint]()
     
     func viewDidLoad() {
         self.wantsLayer = true
         
-        self.addSubview(self.ui.primaryTextField)
-        self.configureTestLabel()
+        self.addSubview(self.ui.cartfileTitleLabel)
+        self.configure(cartfileTitleLabel: self.ui.cartfileTitleLabel)
+        self.configureLayoutConstraints()
     }
     
-    private func configureTestLabel() {
-        if self.ui.primaryTextField.superview != nil {
-            self.ui.primaryTextField.autoPinEdgeToSuperviewEdge(ALEdge.Leading)
-            self.ui.primaryTextField.autoAlignAxisToSuperviewAxis(ALAxis.Horizontal)
-            self.ui.primaryTextField.bordered = true //change to false later
-            (self.ui.primaryTextField.cell() as? NSTextFieldCell)?.drawsBackground = false
-            self.ui.primaryTextField.editable = false
-            self.ui.primaryTextField.stringValue = "Hello There"
+    private func configureLayoutConstraints() {
+        let pureLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
+            self.ui.cartfileTitleLabel.autoPinEdgeToSuperviewEdge(ALEdge.Leading)
+            self.ui.cartfileTitleLabel.autoAlignAxisToSuperviewAxis(ALAxis.Horizontal)
+        }
+        
+        let optionalPureLayoutConstraints = pureLayoutConstraints.map { (object) -> NSLayoutConstraint? in
+            if let constraint = object as? NSLayoutConstraint {
+                return constraint
+            } else {
+                return nil
+            }
+        }
+        
+        self.viewConstraints += Array.filterOptionals(optionalPureLayoutConstraints)
+        self.addConstraints(self.viewConstraints)
+    }
+    
+    private func configure(#cartfileTitleLabel: NSTextField) {
+        if let _ = cartfileTitleLabel.superview {
+            cartfileTitleLabel.bordered = false
+            (cartfileTitleLabel.cell() as? NSTextFieldCell)?.drawsBackground = false
+            cartfileTitleLabel.editable = false
         } else {
             fatalError("CartListTableCellView: Tried to configure test label before it was in the view hierarchy.")
         }
     }
     
     struct interfaceView {
-        var primaryTextField = NSTextField()
+        var cartfileTitleLabel = NSTextField()
     }
     
 }

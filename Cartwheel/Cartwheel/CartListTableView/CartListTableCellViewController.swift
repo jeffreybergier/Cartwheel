@@ -33,7 +33,7 @@ class CartListTableCellViewController: NSTableCellView {
     
     private let contentView = CartListTableCellView()
     
-    var modelObject: AnyObject? {
+    var cartfileURL: CWCartfile? {
         didSet {
             self.prepareCellForNewModelObject()
             self.updateCellWithNewModelObject()
@@ -44,6 +44,11 @@ class CartListTableCellViewController: NSTableCellView {
     }
     
     private func updateCellWithNewModelObject() {
+        if let cartfileURL = self.cartfileURL,
+            let pathComponents = cartfileURL.pathComponents,
+            let containingFolder = pathComponents[pathComponents.count - 2] as? String {
+                self.contentView.ui.cartfileTitleLabel.stringValue = containingFolder
+        }
     }
     
     override func awakeFromNib() {

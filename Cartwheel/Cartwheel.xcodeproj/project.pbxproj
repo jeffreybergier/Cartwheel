@@ -9,19 +9,34 @@
 /* Begin PBXBuildFile section */
 		7353B9331B001B140038861D /* ExperimentNIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7353B9321B001B140038861D /* ExperimentNIB.xib */; };
 		7366ED351B0D801200AB6E77 /* CartwheelDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */; };
-		738E43D01B0AFAA000BB3670 /* CWCartfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738E43CF1B0AFAA000BB3670 /* CWCartfile.swift */; };
 		739203881B1E5CF60024DE8C /* CWDefaultsPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739203871B1E5CF60024DE8C /* CWDefaultsPlist.swift */; };
 		739C39251B0029680088FAD2 /* CWSwiftGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */; };
 		739C392A1B004D8F0088FAD2 /* CWCartfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */; };
+		73B4587A1B22B2D000A417AF /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739203891B1EA12F0024DE8C /* Argo.framework */; };
+		73B4587B1B22B2D000A417AF /* Argo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739203891B1EA12F0024DE8C /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73B4587C1B22B2D000A417AF /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038A1B1EA12F0024DE8C /* Box.framework */; };
+		73B4587D1B22B2D000A417AF /* Box.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038A1B1EA12F0024DE8C /* Box.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73B4587E1B22B2D000A417AF /* CarthageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038B1B1EA12F0024DE8C /* CarthageKit.framework */; };
+		73B4587F1B22B2D000A417AF /* CarthageKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038B1B1EA12F0024DE8C /* CarthageKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73B458801B22B2D000A417AF /* Commandant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038C1B1EA12F0024DE8C /* Commandant.framework */; };
+		73B458811B22B2D000A417AF /* Commandant.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038C1B1EA12F0024DE8C /* Commandant.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73B458821B22B2D000A417AF /* PrettyColors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038D1B1EA12F0024DE8C /* PrettyColors.framework */; };
+		73B458831B22B2D000A417AF /* PrettyColors.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038D1B1EA12F0024DE8C /* PrettyColors.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73B458841B22B2D000A417AF /* PureLayout_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038E1B1EA12F0024DE8C /* PureLayout_Mac.framework */; };
+		73B458851B22B2D000A417AF /* PureLayout_Mac.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038E1B1EA12F0024DE8C /* PureLayout_Mac.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73B458861B22B2D000A417AF /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038F1B1EA12F0024DE8C /* ReactiveCocoa.framework */; };
+		73B458871B22B2D000A417AF /* ReactiveCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038F1B1EA12F0024DE8C /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73B458881B22B2D000A417AF /* ReactiveTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739203901B1EA12F0024DE8C /* ReactiveTask.framework */; };
+		73B458891B22B2D000A417AF /* ReactiveTask.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739203901B1EA12F0024DE8C /* ReactiveTask.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73B4588A1B22B2D000A417AF /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739203911B1EA12F0024DE8C /* Result.framework */; };
+		73B4588B1B22B2D000A417AF /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739203911B1EA12F0024DE8C /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73B4588C1B22B2D000A417AF /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739203921B1EA12F0024DE8C /* Runes.framework */; };
+		73B4588D1B22B2D000A417AF /* Runes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739203921B1EA12F0024DE8C /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73B4588E1B22B2D000A417AF /* XCGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739203931B1EA12F0024DE8C /* XCGLogger.framework */; };
+		73B4588F1B22B2D000A417AF /* XCGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739203931B1EA12F0024DE8C /* XCGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		73B4DD121AEEE527007342C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4DD111AEEE527007342C7 /* AppDelegate.swift */; };
 		73B4DD141AEEE527007342C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73B4DD131AEEE527007342C7 /* Images.xcassets */; };
 		73B4DD171AEEE527007342C7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B4DD151AEEE527007342C7 /* MainMenu.xib */; };
-		73BD3C6B1B1EC5EF000A147B /* CarthageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038B1B1EA12F0024DE8C /* CarthageKit.framework */; };
-		73BD3C6C1B1EC5EF000A147B /* CarthageKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038B1B1EA12F0024DE8C /* CarthageKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		73BD3C711B1EC5EF000A147B /* PureLayout_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038E1B1EA12F0024DE8C /* PureLayout_Mac.framework */; };
-		73BD3C721B1EC5EF000A147B /* PureLayout_Mac.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038E1B1EA12F0024DE8C /* PureLayout_Mac.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		73BD3C7B1B1EC5EF000A147B /* XCGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739203931B1EA12F0024DE8C /* XCGLogger.framework */; };
-		73BD3C7C1B1EC5EF000A147B /* XCGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739203931B1EA12F0024DE8C /* XCGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		73C2F38F1AF04F97001B36DB /* CartListTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C2F38E1AF04F97001B36DB /* CartListTableCellView.swift */; };
 		73C2F3911AF05147001B36DB /* CartListTableCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C2F3901AF05147001B36DB /* CartListTableCellViewController.swift */; };
 		73C2F3931AF057BF001B36DB /* CartListTableCellViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C2F3921AF057BF001B36DB /* CartListTableCellViewController.xib */; };
@@ -32,15 +47,23 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		73BD3C7D1B1EC5EF000A147B /* Embed Frameworks */ = {
+		73B458901B22B2D000A417AF /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				73BD3C6C1B1EC5EF000A147B /* CarthageKit.framework in Embed Frameworks */,
-				73BD3C721B1EC5EF000A147B /* PureLayout_Mac.framework in Embed Frameworks */,
-				73BD3C7C1B1EC5EF000A147B /* XCGLogger.framework in Embed Frameworks */,
+				73B458891B22B2D000A417AF /* ReactiveTask.framework in Embed Frameworks */,
+				73B4587D1B22B2D000A417AF /* Box.framework in Embed Frameworks */,
+				73B458831B22B2D000A417AF /* PrettyColors.framework in Embed Frameworks */,
+				73B4588B1B22B2D000A417AF /* Result.framework in Embed Frameworks */,
+				73B4587F1B22B2D000A417AF /* CarthageKit.framework in Embed Frameworks */,
+				73B458811B22B2D000A417AF /* Commandant.framework in Embed Frameworks */,
+				73B458871B22B2D000A417AF /* ReactiveCocoa.framework in Embed Frameworks */,
+				73B458851B22B2D000A417AF /* PureLayout_Mac.framework in Embed Frameworks */,
+				73B4588F1B22B2D000A417AF /* XCGLogger.framework in Embed Frameworks */,
+				73B4588D1B22B2D000A417AF /* Runes.framework in Embed Frameworks */,
+				73B4587B1B22B2D000A417AF /* Argo.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,9 +109,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73BD3C6B1B1EC5EF000A147B /* CarthageKit.framework in Frameworks */,
-				73BD3C711B1EC5EF000A147B /* PureLayout_Mac.framework in Frameworks */,
-				73BD3C7B1B1EC5EF000A147B /* XCGLogger.framework in Frameworks */,
+				73B458881B22B2D000A417AF /* ReactiveTask.framework in Frameworks */,
+				73B4587C1B22B2D000A417AF /* Box.framework in Frameworks */,
+				73B458821B22B2D000A417AF /* PrettyColors.framework in Frameworks */,
+				73B4588A1B22B2D000A417AF /* Result.framework in Frameworks */,
+				73B4587E1B22B2D000A417AF /* CarthageKit.framework in Frameworks */,
+				73B458801B22B2D000A417AF /* Commandant.framework in Frameworks */,
+				73B458861B22B2D000A417AF /* ReactiveCocoa.framework in Frameworks */,
+				73B458841B22B2D000A417AF /* PureLayout_Mac.framework in Frameworks */,
+				73B4588E1B22B2D000A417AF /* XCGLogger.framework in Frameworks */,
+				73B4588C1B22B2D000A417AF /* Runes.framework in Frameworks */,
+				73B4587A1B22B2D000A417AF /* Argo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,8 +148,8 @@
 			isa = PBXGroup;
 			children = (
 				739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */,
-				738E43CF1B0AFAA000BB3670 /* CWCartfile.swift */,
 				739203871B1E5CF60024DE8C /* CWDefaultsPlist.swift */,
+				738E43CF1B0AFAA000BB3670 /* CWCartfile.swift */,
 			);
 			name = CWCartfileDataSource;
 			sourceTree = "<group>";
@@ -198,7 +229,7 @@
 				73B4DD081AEEE527007342C7 /* Sources */,
 				73B4DD091AEEE527007342C7 /* Frameworks */,
 				73B4DD0A1AEEE527007342C7 /* Resources */,
-				73BD3C7D1B1EC5EF000A147B /* Embed Frameworks */,
+				73B458901B22B2D000A417AF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -274,7 +305,6 @@
 				739203881B1E5CF60024DE8C /* CWDefaultsPlist.swift in Sources */,
 				739C392A1B004D8F0088FAD2 /* CWCartfileDataSource.swift in Sources */,
 				73FBF23B1AEF266500970223 /* CartListViewController.swift in Sources */,
-				738E43D01B0AFAA000BB3670 /* CWCartfile.swift in Sources */,
 				73FBF23D1AEF269500970223 /* CartListView.swift in Sources */,
 				73C2F3911AF05147001B36DB /* CartListTableCellViewController.swift in Sources */,
 			);

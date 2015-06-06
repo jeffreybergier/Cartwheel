@@ -5,7 +5,7 @@
 	<key>CartfileListSaveLocation</key>
 	<string>Cartwheel</string>
 	<key>CartfileDirectorySearchRecursion</key>
-	<integer>4</integer>
+	<integer>10</integer>
 	<key>CartfileFileName</key>
 	<string>cartfile</string>
 	<key>CartfileListSaveName</key>

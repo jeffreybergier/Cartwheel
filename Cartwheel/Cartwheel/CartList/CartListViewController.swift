@@ -46,9 +46,6 @@ class CartListViewController: NSViewController {
         self.contentView.controller = self
         self.contentView.viewDidLoad()
         
-        // prepare fake data
-        self.prepareFakeData()
-        
         // set the delegate on the tableview
         self.contentView.ui.tableView.setDataSource(self)
         self.contentView.ui.tableView.setDelegate(self)
@@ -56,17 +53,6 @@ class CartListViewController: NSViewController {
         
         // Set the first responder
         self.contentView.ui.filterField.becomeFirstResponder()
-    }
-    
-    private func prepareFakeData() {
-        let fakeDataArray = [
-            CWCartfile(locationOnDisk: NSURL(string: "fakeurlcartfile1")!),
-            CWCartfile(locationOnDisk: NSURL(string: "fakeurlcartfile2")!),
-            CWCartfile(locationOnDisk: NSURL(string: "fakeurlcartfile3")!),
-            CWCartfile(locationOnDisk: NSURL(string: "fakeurlcartfile4")!)
-        ]
-        
-        self.dataSource.addCartfiles(fakeDataArray)
     }
 }
 
@@ -104,7 +90,7 @@ extension CartListViewController { // Handle Clicking Add Cartfile button
     
     private func parseCartfilesFromURL(url: NSURL) -> [CWCartfile]? {
         if url.lastPathComponent?.lowercaseString == self.dataSource.defaultsPlist.cartfileFileName {
-            return [CWCartfile(locationOnDisk: url)]
+            return [url]
         } else {
             var isDirectory: ObjCBool = false
             NSFileManager.defaultManager().fileExistsAtPath(url.path!, isDirectory: &isDirectory)
@@ -136,7 +122,7 @@ extension CartListViewController { // Handle Clicking Add Cartfile button
                     let urlIsDirectory = urlResources[NSURLIsDirectoryKey] as? Bool {
                         if urlIsDirectory == false {
                             if url.lastPathComponent?.lowercaseString == self.dataSource.defaultsPlist.cartfileFileName.lowercaseString {
-                                cartfiles += [CWCartfile(locationOnDisk: url)]
+                                cartfiles += [url]
                                 println("Cartfile found at URL: \(url)")
                             }
                         } else {
@@ -183,6 +169,7 @@ extension CartListViewController: NSTableViewDataSource {
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let cell = tableView.makeViewWithIdentifier("CartListTableCellViewController", owner: self) as? CartListTableCellViewController
+        cell?.cartfileURL = self.dataSource.cartfiles[advance(self.dataSource.cartfiles.startIndex, row)]
         return cell
     }
 }

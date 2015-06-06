@@ -26,7 +26,6 @@
 //
 
 import Foundation
-import CarthageKit // need to transition to built in cartfile struct
 
 // MARK: CWCartfile Struct
 
