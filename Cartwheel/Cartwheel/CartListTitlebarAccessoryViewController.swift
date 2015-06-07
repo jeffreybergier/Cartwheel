@@ -38,19 +38,13 @@ class CartListTitlebarAccessoryViewController: NSTitlebarAccessoryViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Add in the Contentview and Configure it
         self.view.addSubview(self.contentView)
         self.contentView.controller = self
         self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
         self.contentView.viewDidLoad()
     }
-    
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        
-        // Set the first responder
-        self.contentView.ui.filterField.becomeFirstResponder()
-    }
-    
 }
 
 // MARK: Handle Toolbar Buttons
