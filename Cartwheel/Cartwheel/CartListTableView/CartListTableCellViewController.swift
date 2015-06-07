@@ -32,6 +32,11 @@ import CarthageKit
 class CartListTableCellViewController: NSTableCellView {
     
     private let contentView = CartListTableCellView()
+    var isLastCell = false {
+        didSet {
+            self.contentView.isLastCell = self.isLastCell
+        }
+    }
     
     var cartfileURL: CWCartfile? {
         didSet {
@@ -41,6 +46,7 @@ class CartListTableCellViewController: NSTableCellView {
     }
     
     private func prepareCellForNewModelObject() {
+        
     }
     
     private func updateCellWithNewModelObject() {

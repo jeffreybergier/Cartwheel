@@ -32,12 +32,18 @@ class CartListTableCellView: NSView {
     
     let ui = interfaceView()
     var viewConstraints = [NSLayoutConstraint]()
+    var isLastCell = false {
+        didSet {
+            self.ui.separatorView.hidden = self.isLastCell
+        }
+    }
     
     func viewDidLoad() {
         self.wantsLayer = true
         
-        self.addSubview(self.ui.cartfileTitleLabel)
+        self.ui.allViews().map { self.addSubview($0) }
         self.configure(cartfileTitleLabel: self.ui.cartfileTitleLabel)
+        self.configure(separatorView: self.ui.separatorView)
         self.configureLayoutConstraints()
     }
     
@@ -47,7 +53,12 @@ class CartListTableCellView: NSView {
         
         let pureLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
             self.ui.cartfileTitleLabel.autoPinEdgeToSuperviewEdge(ALEdge.Leading, withInset: defaultInset)
-            self.ui.cartfileTitleLabel.autoAlignAxisToSuperviewAxis(ALAxis.Horizontal)
+            self.ui.cartfileTitleLabel.autoAlignAxis(ALAxis.Horizontal, toSameAxisOfView: self, withOffset: -2)
+            
+            self.ui.separatorView.autoPinEdgeToSuperviewEdge(.Bottom, withInset: 0)
+            self.ui.separatorView.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset * 2)
+            self.ui.separatorView.autoPinEdgeToSuperviewEdge(.Trailing, withInset: 0)
+            self.ui.separatorView.autoSetDimension(.Height, toSize: 1)
         }
         
         let optionalPureLayoutConstraints = pureLayoutConstraints.map { (object) -> NSLayoutConstraint? in
@@ -67,13 +78,27 @@ class CartListTableCellView: NSView {
             cartfileTitleLabel.bordered = false
             (cartfileTitleLabel.cell() as? NSTextFieldCell)?.drawsBackground = false
             cartfileTitleLabel.editable = false
+            cartfileTitleLabel.font = NSFont.systemFontOfSize(NSFont.systemFontSize())
         } else {
             fatalError("CartListTableCellView: Tried to configure test label before it was in the view hierarchy.")
         }
     }
     
+    private func configure(#separatorView: NSVisualEffectView) {
+        if let _ = separatorView.superview {
+            separatorView.material = .Dark
+        } else {
+            fatalError("CartListTableCellView: Tried to configure separatorView before it was in the view hierarchy.")
+        }
+    }
+    
     struct interfaceView {
         var cartfileTitleLabel = NSTextField()
+        var separatorView = NSVisualEffectView()
+        
+        func allViews() -> [NSView] {
+            return [cartfileTitleLabel, separatorView]
+        }
     }
     
 }

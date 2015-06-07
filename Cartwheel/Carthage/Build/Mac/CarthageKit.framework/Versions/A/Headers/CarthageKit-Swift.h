@@ -84,17 +84,11 @@ typedef struct _NSZone NSZone;
 #endif
 #if defined(__has_feature) && __has_feature(modules)
 @import Foundation;
-@import Darwin;
 @import Foundation.NSURLSession;
 #endif
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
 #pragma clang diagnostic ignored "-Wduplicate-method-arg"
-
-@interface NSData (SWIFT_EXTENSION(CarthageKit))
-- (void)writeToFile:(FILE * __null_unspecified)filePointer;
-@end
-
 
 @interface NSFileManager (SWIFT_EXTENSION(CarthageKit))
 @end

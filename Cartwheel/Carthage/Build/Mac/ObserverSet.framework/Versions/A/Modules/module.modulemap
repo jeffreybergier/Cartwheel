@@ -1,0 +1,10 @@
+framework module ObserverSet {
+  umbrella header "ObserverSet.h"
+
+  export *
+  module * { export * }
+}
+
+module ObserverSet.Swift {
+    header "ObserverSet-Swift.h"
+}

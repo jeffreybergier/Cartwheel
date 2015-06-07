@@ -29,23 +29,21 @@ import Cocoa
 
 class CartListWindowController: NSWindowController {
     
-    let titlebarAccessoryViewController = CartListTitlebarAccessoryViewController()
-
+    private let titlebarAccessoryViewController = CartListTitlebarAccessoryViewController()
+    @IBOutlet private weak var cartListViewController: CartListViewController?
+    
     override func windowDidLoad() {
         super.windowDidLoad()
         
-        self.window?.title = NSLocalizedString("Gratuity", comment: "Gratuity Main List View Window Title")
+        self.titlebarAccessoryViewController.window = self.window!
+        self.titlebarAccessoryViewController.mainViewController = self.cartListViewController!
+        
         self.window?.collectionBehavior = NSWindowCollectionBehavior.FullScreenPrimary
         self.window?.minSize = NSSize(width: 380, height: 500)
         self.window?.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)!
-        self.window?.titleVisibility = NSWindowTitleVisibility.Hidden
         self.window?.addTitlebarAccessoryViewController(self.titlebarAccessoryViewController)
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-
+        self.window?.styleMask = self.window!.styleMask | NSFullSizeContentViewWindowMask
+        self.window?.title = NSLocalizedString("Cartwheel", comment: "Cartwheel name for window title")
     }
     
     func window(window: NSWindow, didDecodeRestorableState state: NSCoder) {

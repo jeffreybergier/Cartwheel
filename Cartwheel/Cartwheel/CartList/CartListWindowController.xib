@@ -6,6 +6,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CartListWindowController" customModule="Cartwheel" customModuleProvider="target">
             <connections>
+                <outlet property="cartListViewController" destination="tZL-9L-v3E" id="5fu-WY-TnH"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>

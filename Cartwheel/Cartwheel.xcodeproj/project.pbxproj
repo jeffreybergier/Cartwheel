@@ -36,6 +36,10 @@
 		73B4588F1B22B2D000A417AF /* XCGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739203931B1EA12F0024DE8C /* XCGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		73B4589E1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4589C1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift */; };
 		73B4589F1B240F6900A417AF /* CartListTitlebarAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B4589D1B240F6900A417AF /* CartListTitlebarAccessoryViewController.xib */; };
+		73B458A11B249E6500A417AF /* CartListTitlebarAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B458A01B249E6500A417AF /* CartListTitlebarAccessoryView.swift */; };
+		73B458AD1B24BBE700A417AF /* ObserverSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B458AC1B24BBE700A417AF /* ObserverSet.framework */; };
+		73B458AE1B24BBF700A417AF /* ObserverSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B458AC1B24BBE700A417AF /* ObserverSet.framework */; };
+		73B458AF1B24BBF700A417AF /* ObserverSet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73B458AC1B24BBE700A417AF /* ObserverSet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		73B4DD121AEEE527007342C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4DD111AEEE527007342C7 /* AppDelegate.swift */; };
 		73B4DD141AEEE527007342C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73B4DD131AEEE527007342C7 /* Images.xcassets */; };
 		73B4DD171AEEE527007342C7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B4DD151AEEE527007342C7 /* MainMenu.xib */; };
@@ -60,6 +64,7 @@
 				73B458831B22B2D000A417AF /* PrettyColors.framework in Embed Frameworks */,
 				73B4588B1B22B2D000A417AF /* Result.framework in Embed Frameworks */,
 				73B4587F1B22B2D000A417AF /* CarthageKit.framework in Embed Frameworks */,
+				73B458AF1B24BBF700A417AF /* ObserverSet.framework in Embed Frameworks */,
 				73B458811B22B2D000A417AF /* Commandant.framework in Embed Frameworks */,
 				73B458871B22B2D000A417AF /* ReactiveCocoa.framework in Embed Frameworks */,
 				73B458851B22B2D000A417AF /* PureLayout_Mac.framework in Embed Frameworks */,
@@ -94,6 +99,8 @@
 		739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWCartfileDataSource.swift; sourceTree = "<group>"; };
 		73B4589C1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListTitlebarAccessoryViewController.swift; sourceTree = "<group>"; };
 		73B4589D1B240F6900A417AF /* CartListTitlebarAccessoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CartListTitlebarAccessoryViewController.xib; sourceTree = "<group>"; };
+		73B458A01B249E6500A417AF /* CartListTitlebarAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListTitlebarAccessoryView.swift; sourceTree = "<group>"; };
+		73B458AC1B24BBE700A417AF /* ObserverSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObserverSet.framework; path = Carthage/Build/Mac/ObserverSet.framework; sourceTree = SOURCE_ROOT; };
 		73B4DD0C1AEEE527007342C7 /* Cartwheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cartwheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73B4DD101AEEE527007342C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73B4DD111AEEE527007342C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -113,11 +120,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73B458AE1B24BBF700A417AF /* ObserverSet.framework in Frameworks */,
 				73B458881B22B2D000A417AF /* ReactiveTask.framework in Frameworks */,
 				73B4587C1B22B2D000A417AF /* Box.framework in Frameworks */,
 				73B458821B22B2D000A417AF /* PrettyColors.framework in Frameworks */,
 				73B4588A1B22B2D000A417AF /* Result.framework in Frameworks */,
 				73B4587E1B22B2D000A417AF /* CarthageKit.framework in Frameworks */,
+				73B458AD1B24BBE700A417AF /* ObserverSet.framework in Frameworks */,
 				73B458801B22B2D000A417AF /* Commandant.framework in Frameworks */,
 				73B458861B22B2D000A417AF /* ReactiveCocoa.framework in Frameworks */,
 				73B458841B22B2D000A417AF /* PureLayout_Mac.framework in Frameworks */,
@@ -133,6 +142,7 @@
 		732E37681AEF174000C5A5CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				73B458AC1B24BBE700A417AF /* ObserverSet.framework */,
 				739203891B1EA12F0024DE8C /* Argo.framework */,
 				7392038A1B1EA12F0024DE8C /* Box.framework */,
 				7392038B1B1EA12F0024DE8C /* CarthageKit.framework */,
@@ -158,13 +168,97 @@
 			name = CWCartfileDataSource;
 			sourceTree = "<group>";
 		};
-		73B458971B240BD100A417AF /* CartListToolBar */ = {
+		73B458971B240BD100A417AF /* Toolbar */ = {
+			isa = PBXGroup;
+			children = (
+				73B458A21B24B3ED00A417AF /* Controllers */,
+				73B458A31B24B3FE00A417AF /* Views */,
+				73B458A41B24B40800A417AF /* Unused but Needed */,
+			);
+			name = Toolbar;
+			sourceTree = "<group>";
+		};
+		73B458A21B24B3ED00A417AF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				73B4589C1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		73B458A31B24B3FE00A417AF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				73B458A01B249E6500A417AF /* CartListTitlebarAccessoryView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		73B458A41B24B40800A417AF /* Unused but Needed */ = {
+			isa = PBXGroup;
+			children = (
 				73B4589D1B240F6900A417AF /* CartListTitlebarAccessoryViewController.xib */,
 			);
-			name = CartListToolBar;
+			name = "Unused but Needed";
+			sourceTree = "<group>";
+		};
+		73B458A51B24B42700A417AF /* Main Window */ = {
+			isa = PBXGroup;
+			children = (
+				73B458A61B24B46300A417AF /* Controllers */,
+				73B458A81B24B49200A417AF /* Views */,
+				73B458A71B24B48600A417AF /* Unused but Needed */,
+			);
+			name = "Main Window";
+			sourceTree = "<group>";
+		};
+		73B458A61B24B46300A417AF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				73FBF23A1AEF266500970223 /* CartListViewController.swift */,
+				73C2F3941AF06D78001B36DB /* CartListWindowController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		73B458A71B24B48600A417AF /* Unused but Needed */ = {
+			isa = PBXGroup;
+			children = (
+				73C2F3951AF06D78001B36DB /* CartListWindowController.xib */,
+			);
+			name = "Unused but Needed";
+			sourceTree = "<group>";
+		};
+		73B458A81B24B49200A417AF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				73FBF23C1AEF269500970223 /* CartListView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		73B458A91B24B4EC00A417AF /* Cell Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				73C2F3901AF05147001B36DB /* CartListTableCellViewController.swift */,
+			);
+			name = "Cell Controllers";
+			sourceTree = "<group>";
+		};
+		73B458AA1B24B50F00A417AF /* Cell Views */ = {
+			isa = PBXGroup;
+			children = (
+				73C2F38E1AF04F97001B36DB /* CartListTableCellView.swift */,
+			);
+			name = "Cell Views";
+			sourceTree = "<group>";
+		};
+		73B458AB1B24B51700A417AF /* Unused but Needed */ = {
+			isa = PBXGroup;
+			children = (
+				73C2F3921AF057BF001B36DB /* CartListTableCellViewController.xib */,
+			);
+			name = "Unused but Needed";
 			sourceTree = "<group>";
 		};
 		73B4DD031AEEE527007342C7 = {
@@ -189,8 +283,7 @@
 			children = (
 				73B4DD111AEEE527007342C7 /* AppDelegate.swift */,
 				7366ED311B0D7B9300AB6E77 /* CWCartfileDataSource */,
-				73FBF2391AEF262900970223 /* CartList */,
-				73C2F38D1AF04F32001B36DB /* CartListTableView */,
+				73FBF2391AEF262900970223 /* CartList Main Window */,
 				739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */,
 				7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */,
 				73B4DD131AEEE527007342C7 /* Images.xcassets */,
@@ -211,26 +304,24 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		73C2F38D1AF04F32001B36DB /* CartListTableView */ = {
+		73C2F38D1AF04F32001B36DB /* TableView Cells */ = {
 			isa = PBXGroup;
 			children = (
-				73C2F3901AF05147001B36DB /* CartListTableCellViewController.swift */,
-				73C2F38E1AF04F97001B36DB /* CartListTableCellView.swift */,
-				73C2F3921AF057BF001B36DB /* CartListTableCellViewController.xib */,
+				73B458A91B24B4EC00A417AF /* Cell Controllers */,
+				73B458AA1B24B50F00A417AF /* Cell Views */,
+				73B458AB1B24B51700A417AF /* Unused but Needed */,
 			);
-			name = CartListTableView;
+			name = "TableView Cells";
 			sourceTree = "<group>";
 		};
-		73FBF2391AEF262900970223 /* CartList */ = {
+		73FBF2391AEF262900970223 /* CartList Main Window */ = {
 			isa = PBXGroup;
 			children = (
-				73B458971B240BD100A417AF /* CartListToolBar */,
-				73FBF23A1AEF266500970223 /* CartListViewController.swift */,
-				73FBF23C1AEF269500970223 /* CartListView.swift */,
-				73C2F3951AF06D78001B36DB /* CartListWindowController.xib */,
-				73C2F3941AF06D78001B36DB /* CartListWindowController.swift */,
+				73B458A51B24B42700A417AF /* Main Window */,
+				73B458971B240BD100A417AF /* Toolbar */,
+				73C2F38D1AF04F32001B36DB /* TableView Cells */,
 			);
-			name = CartList;
+			name = "CartList Main Window";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -314,6 +405,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73B4589E1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift in Sources */,
+				73B458A11B249E6500A417AF /* CartListTitlebarAccessoryView.swift in Sources */,
 				73C2F3961AF06D78001B36DB /* CartListWindowController.swift in Sources */,
 				73C2F38F1AF04F97001B36DB /* CartListTableCellView.swift in Sources */,
 				73B4DD121AEEE527007342C7 /* AppDelegate.swift in Sources */,

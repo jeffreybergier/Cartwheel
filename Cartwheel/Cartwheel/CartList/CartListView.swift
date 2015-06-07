@@ -36,16 +36,9 @@ class CartListView: NSVisualEffectView {
     
     func viewDidLoad() {
         self.wantsLayer = true
-        self.material = NSVisualEffectMaterial.Dark
         
         self.addSubview(self.ui.scrollView)
-        self.addSubview(self.ui.addButton)
-        self.addSubview(self.ui.createNewButton)
-        self.addSubview(self.ui.filterField)
         self.configure(tableView: self.ui.tableView, scrollView: self.ui.scrollView, tableColumn: self.ui.tableColumn)
-        self.configure(addButton: self.ui.addButton)
-        self.configure(createNewButton: self.ui.createNewButton)
-        self.configure(filterField: self.ui.filterField)
         
         self.configureConstraints()
     }
@@ -56,27 +49,8 @@ class CartListView: NSVisualEffectView {
         let filterFieldWidth = CGFloat(200)
         
         let pureLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
-            // Constraints for Add Button
-            self.ui.addButton.autoPinEdgeToSuperviewEdge(.Top , withInset: defaultInset)
-            self.ui.addButton.autoPinEdgeToSuperviewEdge(.Leading , withInset: smallInset)
-            
-            // Constraints for the create new button
-            self.ui.createNewButton.autoPinEdgeToSuperviewEdge(.Top, withInset: defaultInset)
-            self.ui.createNewButton.autoPinEdge(.Left, toEdge: .Right, ofView: self.ui.addButton, withOffset: defaultInset)
-            
-            // constraints for FilterField
-            self.ui.filterField.autoPinEdgeToSuperviewEdge(.Trailing, withInset: smallInset)
-            self.ui.filterField.autoPinEdgeToSuperviewEdge(.Top, withInset: defaultInset)
-            self.ui.filterField.autoMatchDimension(.Width, toDimension: .Width, ofView: self.ui.filterField.superview, withMultiplier: 0.4)
-            self.ui.filterField.autoPinEdge(.Left, toEdge: .Right, ofView: self.ui.createNewButton, withOffset: defaultInset, relation: NSLayoutRelation.GreaterThanOrEqual)
-
             // Constraints for table
-            self.ui.scrollView.autoPinEdgeToSuperviewEdge(.Leading , withInset: 0)
-            self.ui.scrollView.autoPinEdgeToSuperviewEdge(.Trailing , withInset: 0)
-            self.ui.scrollView.autoPinEdgeToSuperviewEdge(.Bottom , withInset: 0)
-            
-            // Constraints for Interacting Elements
-            self.ui.scrollView.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.ui.addButton, withOffset: defaultInset)
+            self.ui.scrollView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
         }
         
         let optionalPureLayoutConstraints = pureLayoutConstraints.map { (object) -> NSLayoutConstraint? in
@@ -89,38 +63,6 @@ class CartListView: NSVisualEffectView {
         
         self.viewConstraints += Array.filterOptionals(optionalPureLayoutConstraints)
         self.addConstraints(self.viewConstraints)
-    }
-    
-    private func configure(#addButton: NSButton) {
-        if let _ = addButton.superview {
-            addButton.setButtonType(.MomentaryPushInButton)
-            addButton.bezelStyle = .RoundedBezelStyle
-            addButton.title = NSLocalizedString("Add Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
-            addButton.target = self.controller
-            addButton.action = "didClickAddCartFileButton:"
-        } else {
-            fatalError("CartListView: Tried to configure the AddButton before it was in the view hierarchy.")
-        }
-    }
-    
-    private func configure(#createNewButton: NSButton) {
-        if let _ = createNewButton.superview {
-            createNewButton.setButtonType(.MomentaryPushInButton)
-            createNewButton.bezelStyle = .RoundedBezelStyle
-            createNewButton.title = NSLocalizedString("Create Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
-            createNewButton.target = self.controller
-            createNewButton.action = "didClickCreateNewCartFileButton:"
-        } else {
-            fatalError("CartListView: Tried to configure the AddButton before it was in the view hierarchy.")
-        }
-    }
-    
-    private func configure(#filterField: NSSearchField) {
-        if let _ = self.ui.filterField.superview {
-            self.ui.filterField.delegate = self.controller
-        } else {
-            fatalError("CartListView: Tried to configure the filterField before it was in the view hierarchy.")
-        }
     }
     
     func configure(#tableView: NSTableView, scrollView: NSScrollView, tableColumn: NSTableColumn) {
@@ -143,8 +85,5 @@ class CartListView: NSVisualEffectView {
         var scrollView: NSScrollView = NSScrollView()
         var tableView: NSTableView = NSTableView()
         var tableColumn: NSTableColumn = NSTableColumn(identifier: "CartListColumn")
-        var addButton = NSButton()
-        var createNewButton = NSButton()
-        var filterField = NSSearchField()
     }
 }
