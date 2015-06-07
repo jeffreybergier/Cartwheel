@@ -28,7 +28,7 @@
 import Cocoa
 import PureLayout_Mac
 
-class CartListView: NSView {
+class CartListView: NSVisualEffectView {
     
     let ui = InterfaceElements()
     var viewConstraints = [NSLayoutConstraint]()
@@ -36,6 +36,7 @@ class CartListView: NSView {
     
     func viewDidLoad() {
         self.wantsLayer = true
+        self.material = NSVisualEffectMaterial.Dark
         
         self.addSubview(self.ui.scrollView)
         self.addSubview(self.ui.addButton)
@@ -130,6 +131,9 @@ class CartListView: NSView {
             scrollView.hasVerticalScroller = true
             tableColumn.width = self.ui.scrollView.frame.width
             tableView.headerView = nil
+            tableView.selectionHighlightStyle = NSTableViewSelectionHighlightStyle.None
+            tableView.backgroundColor = NSColor.clearColor()
+            scrollView.drawsBackground = false
         } else {
             fatalError("CartListView: Tried to configure the TableView before it was in the view hierarchy.")
         }

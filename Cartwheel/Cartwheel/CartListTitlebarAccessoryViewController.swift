@@ -1,8 +1,8 @@
 //
-//  CartListWindowController.swift
+//  CartListTitlebarAccessoryViewController.swift
 //  Cartwheel
 //
-//  Created by Jeffrey Bergier on 4/28/15.
+//  Created by Jeffrey Bergier on 6/6/15.
 //
 //  Copyright (c) 2015 Jeffrey Bergier
 //
@@ -27,28 +27,10 @@
 
 import Cocoa
 
-class CartListWindowController: NSWindowController {
-    
-    let titlebarAccessoryViewController = CartListTitlebarAccessoryViewController()
-
-    override func windowDidLoad() {
-        super.windowDidLoad()
-        
-        self.window?.title = NSLocalizedString("Gratuity", comment: "Gratuity Main List View Window Title")
-        self.window?.collectionBehavior = NSWindowCollectionBehavior.FullScreenPrimary
-        self.window?.minSize = NSSize(width: 380, height: 500)
-        self.window?.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)!
-        self.window?.titleVisibility = NSWindowTitleVisibility.Hidden
-        self.window?.addTitlebarAccessoryViewController(self.titlebarAccessoryViewController)
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-
-    }
-    
-    func window(window: NSWindow, didDecodeRestorableState state: NSCoder) {
-        // this is called when the window loads
+@objc(CartListTitlebarAccessoryViewController) // this is required so the NIB can be found by cocoa
+class CartListTitlebarAccessoryViewController: NSTitlebarAccessoryViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do view setup here.
     }
 }

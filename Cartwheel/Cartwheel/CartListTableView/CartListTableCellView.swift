@@ -42,8 +42,11 @@ class CartListTableCellView: NSView {
     }
     
     private func configureLayoutConstraints() {
+        let defaultInset = CGFloat(8.0)
+        let smallInset = round(defaultInset / 1.5)
+        
         let pureLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
-            self.ui.cartfileTitleLabel.autoPinEdgeToSuperviewEdge(ALEdge.Leading)
+            self.ui.cartfileTitleLabel.autoPinEdgeToSuperviewEdge(ALEdge.Leading, withInset: defaultInset)
             self.ui.cartfileTitleLabel.autoAlignAxisToSuperviewAxis(ALAxis.Horizontal)
         }
         
