@@ -47,13 +47,12 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
     
     override func layout() {
         // configure the titlebar height
+        super.layout()
         
         self.ui.addButton.sizeToFit()
         let buttonHeight = self.ui.addButton.frame.height
         let totalHeight = 8 + buttonHeight
         self.superview!.frame.size.height = totalHeight
-        
-        super.layout()
     }
     
     private func configureConstraints() {

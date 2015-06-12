@@ -7,39 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		730BBCAC1B2A5CBD009DFCA0 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC941B2A5CB3009DFCA0 /* Argo.framework */; };
+		730BBCAD1B2A5CBD009DFCA0 /* Argo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC941B2A5CB3009DFCA0 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		730BBCAE1B2A5CBD009DFCA0 /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC951B2A5CB3009DFCA0 /* Box.framework */; };
+		730BBCAF1B2A5CBD009DFCA0 /* Box.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC951B2A5CB3009DFCA0 /* Box.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		730BBCB01B2A5CBD009DFCA0 /* CarthageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC961B2A5CB3009DFCA0 /* CarthageKit.framework */; };
+		730BBCB11B2A5CBD009DFCA0 /* CarthageKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC961B2A5CB3009DFCA0 /* CarthageKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		730BBCB21B2A5CBD009DFCA0 /* Commandant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC971B2A5CB3009DFCA0 /* Commandant.framework */; };
+		730BBCB31B2A5CBD009DFCA0 /* Commandant.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC971B2A5CB3009DFCA0 /* Commandant.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		730BBCB41B2A5CBD009DFCA0 /* PrettyColors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC991B2A5CB3009DFCA0 /* PrettyColors.framework */; };
+		730BBCB51B2A5CBD009DFCA0 /* PrettyColors.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC991B2A5CB3009DFCA0 /* PrettyColors.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		730BBCB61B2A5CBD009DFCA0 /* PureLayout_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC9A1B2A5CB3009DFCA0 /* PureLayout_Mac.framework */; };
+		730BBCB71B2A5CBD009DFCA0 /* PureLayout_Mac.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC9A1B2A5CB3009DFCA0 /* PureLayout_Mac.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		730BBCB81B2A5CBD009DFCA0 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC9B1B2A5CB3009DFCA0 /* ReactiveCocoa.framework */; };
+		730BBCB91B2A5CBD009DFCA0 /* ReactiveCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC9B1B2A5CB3009DFCA0 /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		730BBCBA1B2A5CBD009DFCA0 /* ReactiveTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC9C1B2A5CB3009DFCA0 /* ReactiveTask.framework */; };
+		730BBCBB1B2A5CBD009DFCA0 /* ReactiveTask.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC9C1B2A5CB3009DFCA0 /* ReactiveTask.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		730BBCBC1B2A5CBD009DFCA0 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC9D1B2A5CB3009DFCA0 /* Result.framework */; };
+		730BBCBD1B2A5CBD009DFCA0 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC9D1B2A5CB3009DFCA0 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		730BBCBE1B2A5CBD009DFCA0 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC9E1B2A5CB3009DFCA0 /* Runes.framework */; };
+		730BBCBF1B2A5CBD009DFCA0 /* Runes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC9E1B2A5CB3009DFCA0 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		730BBCC01B2A5CBD009DFCA0 /* XCGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC9F1B2A5CB3009DFCA0 /* XCGLogger.framework */; };
+		730BBCC11B2A5CBD009DFCA0 /* XCGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730BBC9F1B2A5CB3009DFCA0 /* XCGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7353B9331B001B140038861D /* ExperimentNIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7353B9321B001B140038861D /* ExperimentNIB.xib */; };
 		7366ED351B0D801200AB6E77 /* CartwheelDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */; };
 		739203881B1E5CF60024DE8C /* CWDefaultsPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739203871B1E5CF60024DE8C /* CWDefaultsPlist.swift */; };
 		739C39251B0029680088FAD2 /* CWSwiftGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */; };
 		739C392A1B004D8F0088FAD2 /* CWCartfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */; };
-		73B4587A1B22B2D000A417AF /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739203891B1EA12F0024DE8C /* Argo.framework */; };
-		73B4587B1B22B2D000A417AF /* Argo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739203891B1EA12F0024DE8C /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		73B4587C1B22B2D000A417AF /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038A1B1EA12F0024DE8C /* Box.framework */; };
-		73B4587D1B22B2D000A417AF /* Box.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038A1B1EA12F0024DE8C /* Box.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		73B4587E1B22B2D000A417AF /* CarthageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038B1B1EA12F0024DE8C /* CarthageKit.framework */; };
-		73B4587F1B22B2D000A417AF /* CarthageKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038B1B1EA12F0024DE8C /* CarthageKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		73B458801B22B2D000A417AF /* Commandant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038C1B1EA12F0024DE8C /* Commandant.framework */; };
-		73B458811B22B2D000A417AF /* Commandant.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038C1B1EA12F0024DE8C /* Commandant.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		73B458821B22B2D000A417AF /* PrettyColors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038D1B1EA12F0024DE8C /* PrettyColors.framework */; };
-		73B458831B22B2D000A417AF /* PrettyColors.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038D1B1EA12F0024DE8C /* PrettyColors.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		73B458841B22B2D000A417AF /* PureLayout_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038E1B1EA12F0024DE8C /* PureLayout_Mac.framework */; };
-		73B458851B22B2D000A417AF /* PureLayout_Mac.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038E1B1EA12F0024DE8C /* PureLayout_Mac.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		73B458861B22B2D000A417AF /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038F1B1EA12F0024DE8C /* ReactiveCocoa.framework */; };
-		73B458871B22B2D000A417AF /* ReactiveCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7392038F1B1EA12F0024DE8C /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		73B458881B22B2D000A417AF /* ReactiveTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739203901B1EA12F0024DE8C /* ReactiveTask.framework */; };
-		73B458891B22B2D000A417AF /* ReactiveTask.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739203901B1EA12F0024DE8C /* ReactiveTask.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		73B4588A1B22B2D000A417AF /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739203911B1EA12F0024DE8C /* Result.framework */; };
-		73B4588B1B22B2D000A417AF /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739203911B1EA12F0024DE8C /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		73B4588C1B22B2D000A417AF /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739203921B1EA12F0024DE8C /* Runes.framework */; };
-		73B4588D1B22B2D000A417AF /* Runes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739203921B1EA12F0024DE8C /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		73B4588E1B22B2D000A417AF /* XCGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739203931B1EA12F0024DE8C /* XCGLogger.framework */; };
-		73B4588F1B22B2D000A417AF /* XCGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739203931B1EA12F0024DE8C /* XCGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		73B4589E1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4589C1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift */; };
 		73B4589F1B240F6900A417AF /* CartListTitlebarAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B4589D1B240F6900A417AF /* CartListTitlebarAccessoryViewController.xib */; };
 		73B458A11B249E6500A417AF /* CartListTitlebarAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B458A01B249E6500A417AF /* CartListTitlebarAccessoryView.swift */; };
-		73B458AD1B24BBE700A417AF /* ObserverSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B458AC1B24BBE700A417AF /* ObserverSet.framework */; };
-		73B458AE1B24BBF700A417AF /* ObserverSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B458AC1B24BBE700A417AF /* ObserverSet.framework */; };
-		73B458AF1B24BBF700A417AF /* ObserverSet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73B458AC1B24BBE700A417AF /* ObserverSet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		73B4DD121AEEE527007342C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4DD111AEEE527007342C7 /* AppDelegate.swift */; };
 		73B4DD141AEEE527007342C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73B4DD131AEEE527007342C7 /* Images.xcassets */; };
 		73B4DD171AEEE527007342C7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B4DD151AEEE527007342C7 /* MainMenu.xib */; };
@@ -53,24 +50,23 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		73B458901B22B2D000A417AF /* Embed Frameworks */ = {
+		738945A91B292A1900A5F935 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				73B458891B22B2D000A417AF /* ReactiveTask.framework in Embed Frameworks */,
-				73B4587D1B22B2D000A417AF /* Box.framework in Embed Frameworks */,
-				73B458831B22B2D000A417AF /* PrettyColors.framework in Embed Frameworks */,
-				73B4588B1B22B2D000A417AF /* Result.framework in Embed Frameworks */,
-				73B4587F1B22B2D000A417AF /* CarthageKit.framework in Embed Frameworks */,
-				73B458AF1B24BBF700A417AF /* ObserverSet.framework in Embed Frameworks */,
-				73B458811B22B2D000A417AF /* Commandant.framework in Embed Frameworks */,
-				73B458871B22B2D000A417AF /* ReactiveCocoa.framework in Embed Frameworks */,
-				73B458851B22B2D000A417AF /* PureLayout_Mac.framework in Embed Frameworks */,
-				73B4588F1B22B2D000A417AF /* XCGLogger.framework in Embed Frameworks */,
-				73B4588D1B22B2D000A417AF /* Runes.framework in Embed Frameworks */,
-				73B4587B1B22B2D000A417AF /* Argo.framework in Embed Frameworks */,
+				730BBCBB1B2A5CBD009DFCA0 /* ReactiveTask.framework in Embed Frameworks */,
+				730BBCAF1B2A5CBD009DFCA0 /* Box.framework in Embed Frameworks */,
+				730BBCB51B2A5CBD009DFCA0 /* PrettyColors.framework in Embed Frameworks */,
+				730BBCBD1B2A5CBD009DFCA0 /* Result.framework in Embed Frameworks */,
+				730BBCB11B2A5CBD009DFCA0 /* CarthageKit.framework in Embed Frameworks */,
+				730BBCB31B2A5CBD009DFCA0 /* Commandant.framework in Embed Frameworks */,
+				730BBCB91B2A5CBD009DFCA0 /* ReactiveCocoa.framework in Embed Frameworks */,
+				730BBCB71B2A5CBD009DFCA0 /* PureLayout_Mac.framework in Embed Frameworks */,
+				730BBCC11B2A5CBD009DFCA0 /* XCGLogger.framework in Embed Frameworks */,
+				730BBCBF1B2A5CBD009DFCA0 /* Runes.framework in Embed Frameworks */,
+				730BBCAD1B2A5CBD009DFCA0 /* Argo.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,28 +75,28 @@
 
 /* Begin PBXFileReference section */
 		730091411B093A7F00719208 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
+		730BBC941B2A5CB3009DFCA0 /* Argo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Argo.framework; path = Carthage/Build/Mac/Argo.framework; sourceTree = SOURCE_ROOT; };
+		730BBC951B2A5CB3009DFCA0 /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = Carthage/Build/Mac/Box.framework; sourceTree = SOURCE_ROOT; };
+		730BBC961B2A5CB3009DFCA0 /* CarthageKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CarthageKit.framework; path = Carthage/Build/Mac/CarthageKit.framework; sourceTree = SOURCE_ROOT; };
+		730BBC971B2A5CB3009DFCA0 /* Commandant.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Commandant.framework; path = Carthage/Build/Mac/Commandant.framework; sourceTree = SOURCE_ROOT; };
+		730BBC981B2A5CB3009DFCA0 /* ObserverSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObserverSet.framework; path = Carthage/Build/Mac/ObserverSet.framework; sourceTree = SOURCE_ROOT; };
+		730BBC991B2A5CB3009DFCA0 /* PrettyColors.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PrettyColors.framework; path = Carthage/Build/Mac/PrettyColors.framework; sourceTree = SOURCE_ROOT; };
+		730BBC9A1B2A5CB3009DFCA0 /* PureLayout_Mac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout_Mac.framework; path = Carthage/Build/Mac/PureLayout_Mac.framework; sourceTree = SOURCE_ROOT; };
+		730BBC9B1B2A5CB3009DFCA0 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/Mac/ReactiveCocoa.framework; sourceTree = SOURCE_ROOT; };
+		730BBC9C1B2A5CB3009DFCA0 /* ReactiveTask.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveTask.framework; path = Carthage/Build/Mac/ReactiveTask.framework; sourceTree = SOURCE_ROOT; };
+		730BBC9D1B2A5CB3009DFCA0 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = SOURCE_ROOT; };
+		730BBC9E1B2A5CB3009DFCA0 /* Runes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Runes.framework; path = Carthage/Build/Mac/Runes.framework; sourceTree = SOURCE_ROOT; };
+		730BBC9F1B2A5CB3009DFCA0 /* XCGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCGLogger.framework; path = Carthage/Build/Mac/XCGLogger.framework; sourceTree = SOURCE_ROOT; };
 		731994EC1AF2B7EE003B422B /* Cartwheel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Cartwheel.entitlements; sourceTree = "<group>"; };
 		7353B9321B001B140038861D /* ExperimentNIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExperimentNIB.xib; sourceTree = "<group>"; };
 		7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CartwheelDefaults.plist; sourceTree = "<group>"; };
 		738E43CF1B0AFAA000BB3670 /* CWCartfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWCartfile.swift; sourceTree = "<group>"; };
 		739203871B1E5CF60024DE8C /* CWDefaultsPlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWDefaultsPlist.swift; sourceTree = "<group>"; };
-		739203891B1EA12F0024DE8C /* Argo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Argo.framework; path = Carthage/Build/Mac/Argo.framework; sourceTree = SOURCE_ROOT; };
-		7392038A1B1EA12F0024DE8C /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = Carthage/Build/Mac/Box.framework; sourceTree = SOURCE_ROOT; };
-		7392038B1B1EA12F0024DE8C /* CarthageKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CarthageKit.framework; path = Carthage/Build/Mac/CarthageKit.framework; sourceTree = SOURCE_ROOT; };
-		7392038C1B1EA12F0024DE8C /* Commandant.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Commandant.framework; path = Carthage/Build/Mac/Commandant.framework; sourceTree = SOURCE_ROOT; };
-		7392038D1B1EA12F0024DE8C /* PrettyColors.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PrettyColors.framework; path = Carthage/Build/Mac/PrettyColors.framework; sourceTree = SOURCE_ROOT; };
-		7392038E1B1EA12F0024DE8C /* PureLayout_Mac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout_Mac.framework; path = Carthage/Build/Mac/PureLayout_Mac.framework; sourceTree = SOURCE_ROOT; };
-		7392038F1B1EA12F0024DE8C /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/Mac/ReactiveCocoa.framework; sourceTree = SOURCE_ROOT; };
-		739203901B1EA12F0024DE8C /* ReactiveTask.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveTask.framework; path = Carthage/Build/Mac/ReactiveTask.framework; sourceTree = SOURCE_ROOT; };
-		739203911B1EA12F0024DE8C /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = SOURCE_ROOT; };
-		739203921B1EA12F0024DE8C /* Runes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Runes.framework; path = Carthage/Build/Mac/Runes.framework; sourceTree = SOURCE_ROOT; };
-		739203931B1EA12F0024DE8C /* XCGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCGLogger.framework; path = Carthage/Build/Mac/XCGLogger.framework; sourceTree = SOURCE_ROOT; };
 		739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWSwiftGlobals.swift; sourceTree = "<group>"; };
 		739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWCartfileDataSource.swift; sourceTree = "<group>"; };
 		73B4589C1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListTitlebarAccessoryViewController.swift; sourceTree = "<group>"; };
 		73B4589D1B240F6900A417AF /* CartListTitlebarAccessoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CartListTitlebarAccessoryViewController.xib; sourceTree = "<group>"; };
 		73B458A01B249E6500A417AF /* CartListTitlebarAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListTitlebarAccessoryView.swift; sourceTree = "<group>"; };
-		73B458AC1B24BBE700A417AF /* ObserverSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObserverSet.framework; path = Carthage/Build/Mac/ObserverSet.framework; sourceTree = SOURCE_ROOT; };
 		73B4DD0C1AEEE527007342C7 /* Cartwheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cartwheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73B4DD101AEEE527007342C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73B4DD111AEEE527007342C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -120,19 +116,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73B458AE1B24BBF700A417AF /* ObserverSet.framework in Frameworks */,
-				73B458881B22B2D000A417AF /* ReactiveTask.framework in Frameworks */,
-				73B4587C1B22B2D000A417AF /* Box.framework in Frameworks */,
-				73B458821B22B2D000A417AF /* PrettyColors.framework in Frameworks */,
-				73B4588A1B22B2D000A417AF /* Result.framework in Frameworks */,
-				73B4587E1B22B2D000A417AF /* CarthageKit.framework in Frameworks */,
-				73B458AD1B24BBE700A417AF /* ObserverSet.framework in Frameworks */,
-				73B458801B22B2D000A417AF /* Commandant.framework in Frameworks */,
-				73B458861B22B2D000A417AF /* ReactiveCocoa.framework in Frameworks */,
-				73B458841B22B2D000A417AF /* PureLayout_Mac.framework in Frameworks */,
-				73B4588E1B22B2D000A417AF /* XCGLogger.framework in Frameworks */,
-				73B4588C1B22B2D000A417AF /* Runes.framework in Frameworks */,
-				73B4587A1B22B2D000A417AF /* Argo.framework in Frameworks */,
+				730BBCBA1B2A5CBD009DFCA0 /* ReactiveTask.framework in Frameworks */,
+				730BBCAE1B2A5CBD009DFCA0 /* Box.framework in Frameworks */,
+				730BBCB41B2A5CBD009DFCA0 /* PrettyColors.framework in Frameworks */,
+				730BBCBC1B2A5CBD009DFCA0 /* Result.framework in Frameworks */,
+				730BBCB01B2A5CBD009DFCA0 /* CarthageKit.framework in Frameworks */,
+				730BBCB21B2A5CBD009DFCA0 /* Commandant.framework in Frameworks */,
+				730BBCB81B2A5CBD009DFCA0 /* ReactiveCocoa.framework in Frameworks */,
+				730BBCB61B2A5CBD009DFCA0 /* PureLayout_Mac.framework in Frameworks */,
+				730BBCC01B2A5CBD009DFCA0 /* XCGLogger.framework in Frameworks */,
+				730BBCBE1B2A5CBD009DFCA0 /* Runes.framework in Frameworks */,
+				730BBCAC1B2A5CBD009DFCA0 /* Argo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,18 +136,18 @@
 		732E37681AEF174000C5A5CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				73B458AC1B24BBE700A417AF /* ObserverSet.framework */,
-				739203891B1EA12F0024DE8C /* Argo.framework */,
-				7392038A1B1EA12F0024DE8C /* Box.framework */,
-				7392038B1B1EA12F0024DE8C /* CarthageKit.framework */,
-				7392038C1B1EA12F0024DE8C /* Commandant.framework */,
-				7392038D1B1EA12F0024DE8C /* PrettyColors.framework */,
-				7392038E1B1EA12F0024DE8C /* PureLayout_Mac.framework */,
-				7392038F1B1EA12F0024DE8C /* ReactiveCocoa.framework */,
-				739203901B1EA12F0024DE8C /* ReactiveTask.framework */,
-				739203911B1EA12F0024DE8C /* Result.framework */,
-				739203921B1EA12F0024DE8C /* Runes.framework */,
-				739203931B1EA12F0024DE8C /* XCGLogger.framework */,
+				730BBC941B2A5CB3009DFCA0 /* Argo.framework */,
+				730BBC951B2A5CB3009DFCA0 /* Box.framework */,
+				730BBC961B2A5CB3009DFCA0 /* CarthageKit.framework */,
+				730BBC971B2A5CB3009DFCA0 /* Commandant.framework */,
+				730BBC981B2A5CB3009DFCA0 /* ObserverSet.framework */,
+				730BBC991B2A5CB3009DFCA0 /* PrettyColors.framework */,
+				730BBC9A1B2A5CB3009DFCA0 /* PureLayout_Mac.framework */,
+				730BBC9B1B2A5CB3009DFCA0 /* ReactiveCocoa.framework */,
+				730BBC9C1B2A5CB3009DFCA0 /* ReactiveTask.framework */,
+				730BBC9D1B2A5CB3009DFCA0 /* Result.framework */,
+				730BBC9E1B2A5CB3009DFCA0 /* Runes.framework */,
+				730BBC9F1B2A5CB3009DFCA0 /* XCGLogger.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -334,7 +328,7 @@
 				73B4DD081AEEE527007342C7 /* Sources */,
 				73B4DD091AEEE527007342C7 /* Frameworks */,
 				73B4DD0A1AEEE527007342C7 /* Resources */,
-				73B458901B22B2D000A417AF /* Embed Frameworks */,
+				738945A91B292A1900A5F935 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -351,11 +345,12 @@
 		73B4DD041AEEE527007342C7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "Saturday Apps";
 				TargetAttributes = {
 					73B4DD0B1AEEE527007342C7 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = V6ESYGU6CV;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -517,7 +512,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Cartwheel/Cartwheel.entitlements;
-				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -535,7 +529,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Cartwheel/Cartwheel.entitlements;
-				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
