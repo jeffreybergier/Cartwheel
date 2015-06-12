@@ -59,6 +59,28 @@ extension CartListViewController: NSTableViewDelegate {
     func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return 50
     }
+    
+    func selectionShouldChangeInTableView(tableView: NSTableView) -> Bool {
+        tableView.selectedRowIndexes.enumerateIndexesUsingBlock() { (rowIndex, stop) -> Void in
+            let cell = tableView.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
+            cell?.cellWasDeselected()
+        }
+        return true
+    }
+    
+    func tableView(tableView: NSTableView, shouldSelectRow rowIndex: Int) -> Bool {
+        let cell = tableView.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
+        cell?.cellWasHighlighted()
+        return true
+    }
+    
+    func tableViewSelectionDidChange(notification: NSNotification) {
+        let tableView = notification.object as? NSTableView
+        tableView?.selectedRowIndexes.enumerateIndexesUsingBlock() { (rowIndex, stop) -> Void in
+            let cell = tableView!.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
+            cell?.cellWasSelected()
+        }
+    }
 }
 
 // MARK: NSTableViewDataSource

@@ -64,4 +64,22 @@ class CartListTableCellViewController: NSTableCellView {
         self.contentView.viewDidLoad()
     }
     
+    func cellWasDeselected() {
+        println("\(self) was de-selected")
+    }
+    
+    func cellWasSelected() {
+        println("\(self) was selected")
+    }
+    
+    func cellWasHighlighted() {
+        println("\(self) was highlighted")
+    }
+    
+}
+
+extension CartListTableCellViewController: Printable {
+    override var description: String {
+        return "CartListTableCellViewController \(self.contentView.ui.cartfileTitleLabel.stringValue):"
+    }
 }
