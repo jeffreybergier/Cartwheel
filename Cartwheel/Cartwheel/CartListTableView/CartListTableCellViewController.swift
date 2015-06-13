@@ -46,7 +46,7 @@ class CartListTableCellViewController: NSTableCellView {
     }
     
     private func prepareCellForNewModelObject() {
-        
+        self.contentView.clearCellView()
     }
     
     private func updateCellWithNewModelObject() {
@@ -54,6 +54,8 @@ class CartListTableCellViewController: NSTableCellView {
             let pathComponents = cartfileURL.pathComponents,
             let containingFolder = pathComponents[pathComponents.count - 2] as? String {
                 self.contentView.ui.cartfileTitleLabel.stringValue = containingFolder
+        } else {
+            self.contentView.clearCellView()
         }
     }
     
@@ -64,22 +66,27 @@ class CartListTableCellViewController: NSTableCellView {
         self.contentView.viewDidLoad()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.cartfileURL = nil
+        println("\(self): Preparing for Reuse")
+    }
+    
     func cellWasDeselected() {
-        println("\(self) was de-selected")
+        self.contentView.cellWasDeselected()
     }
     
     func cellWasSelected() {
-        println("\(self) was selected")
+        self.contentView.cellWasSelected()
     }
     
     func cellWasHighlighted() {
-        println("\(self) was highlighted")
+        self.contentView.cellWasHighlighted()
     }
-    
 }
 
 extension CartListTableCellViewController: Printable {
     override var description: String {
-        return "CartListTableCellViewController \(self.contentView.ui.cartfileTitleLabel.stringValue):"
+        return "CartListTableCellViewController " + (NSString(format: "<%p> ", self) as String) + "\(self.contentView.ui.cartfileTitleLabel.stringValue):"
     }
 }

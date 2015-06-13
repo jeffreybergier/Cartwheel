@@ -93,7 +93,7 @@ extension CartListViewController: NSTableViewDataSource {
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let cell = tableView.makeViewWithIdentifier("CartListTableCellViewController", owner: self) as? CartListTableCellViewController
         cell?.isLastCell = row >= self.dataSource.cartfiles.count - 1 ? true : false
-        cell?.cartfileURL = self.dataSource.cartfiles[advance(self.dataSource.cartfiles.startIndex, row)]
+        cell?.cartfileURL = self.dataSource.cartfiles[safe: row]
         return cell
     }
 }

@@ -92,6 +92,26 @@ class CartListTableCellView: NSView {
         }
     }
     
+    func clearCellView() {
+        self.layer?.backgroundColor = NSColor.clearColor().CGColor
+        self.ui.cartfileTitleLabel.stringValue = ""
+    }
+    
+    func cellWasDeselected() {
+        println("\(self) was de-selected")
+        self.layer?.backgroundColor = NSColor.clearColor().CGColor
+    }
+    
+    func cellWasSelected() {
+        println("\(self) was selected")
+        self.layer?.backgroundColor = NSColor.blueColor().CGColor
+    }
+    
+    func cellWasHighlighted() {
+        println("\(self) was highlighted")
+        self.layer?.backgroundColor = NSColor.redColor().CGColor
+    }
+    
     struct interfaceView {
         var cartfileTitleLabel = NSTextField()
         var separatorView = NSVisualEffectView()
@@ -100,5 +120,10 @@ class CartListTableCellView: NSView {
             return [cartfileTitleLabel, separatorView]
         }
     }
-    
+}
+
+extension CartListTableCellView: Printable {
+    override var description: String {
+        return "CartListTableCellView \(self.ui.cartfileTitleLabel.stringValue):"
+    }
 }

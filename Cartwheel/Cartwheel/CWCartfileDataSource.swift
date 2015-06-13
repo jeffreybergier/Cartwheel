@@ -32,7 +32,7 @@ class CWCartfileDataSource {
     // MARK: Internal Properties
     
     var defaultsPlist = CWDefaultsPlist()
-    private(set) var cartfiles = Set<CWCartfile>() {
+    private(set) var cartfiles = [CWCartfile]() {
         didSet {
             if self.cartfileStorageFolderExists() == false {
                 NSLog("CWCartfileDataSource: Cartfile storage folder does not exist, creating it.")
@@ -51,11 +51,19 @@ class CWCartfileDataSource {
     // MARK: Internal Methods
     
     func addCartfile(newCartfile: CWCartfile) {
-        self.cartfiles.insert(newCartfile)
+        let existingFilesSet = Set(self.cartfiles)
+        if existingFilesSet.indexOf(newCartfile) == nil {
+            self.cartfiles += [newCartfile]
+        }
     }
     
     func addCartfiles<S: SequenceType where S.Generator.Element == CWCartfile>(newCartfiles: S) {
-        self.cartfiles.unionInPlace(newCartfiles)
+        let oldCartfiles = Set(self.cartfiles)
+        for cartfile in newCartfiles {
+            if oldCartfiles.indexOf(cartfile) == nil {
+                self.cartfiles += [cartfile]
+            }
+        }
     }
     
     // MARK: Handle Saving Cartfiles to disk
@@ -76,7 +84,7 @@ class CWCartfileDataSource {
     
     // MARK: Handle Launching and Singleton
     
-    private func readCartfilesFromDisk() -> Set<CWCartfile> {
+    private func readCartfilesFromDisk() -> [CWCartfile] {
         let fileURL = self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName)
         
         var fileReachableError: NSError?
@@ -88,7 +96,7 @@ class CWCartfileDataSource {
         if fileURLIsReachable == true {
             var readFromDiskError: NSError?
             if let dataOnDisk = NSData(contentsOfURL: fileURL, options: nil, error: &readFromDiskError),
-                let cartfiles = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? Set<CWCartfile> {
+                let cartfiles = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? [CWCartfile] {
                     return cartfiles
             }
             if let error = readFromDiskError {
@@ -96,7 +104,7 @@ class CWCartfileDataSource {
             }
         }
         
-        return Set<CWCartfile>()
+        return [CWCartfile]()
     }
     
     class var sharedInstance: CWCartfileDataSource {
