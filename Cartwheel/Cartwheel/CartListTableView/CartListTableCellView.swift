@@ -32,18 +32,21 @@ class CartListTableCellView: NSView {
     
     let ui = interfaceView()
     var viewConstraints = [NSLayoutConstraint]()
+    weak var controller: NSTableCellView?
     var isLastCell = false {
         didSet {
             self.ui.separatorView.hidden = self.isLastCell
         }
     }
     
-    func viewDidLoad() {
+    func viewDidLoadWithController(controller: NSTableCellView?) {
         self.wantsLayer = true
         
+        self.controller = controller
         self.ui.allViews().map { self.addSubview($0) }
         self.configure(cartfileTitleLabel: self.ui.cartfileTitleLabel)
         self.configure(separatorView: self.ui.separatorView)
+        self.configure(updateButton: self.ui.updateButton)
         self.configureLayoutConstraints()
     }
     
@@ -54,6 +57,9 @@ class CartListTableCellView: NSView {
         let pureLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
             self.ui.cartfileTitleLabel.autoPinEdgeToSuperviewEdge(ALEdge.Leading, withInset: defaultInset)
             self.ui.cartfileTitleLabel.autoAlignAxis(ALAxis.Horizontal, toSameAxisOfView: self, withOffset: -2)
+            
+            self.ui.updateButton.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
+            self.ui.updateButton.autoAlignAxisToSuperviewAxis(.Horizontal)
             
             self.ui.separatorView.autoPinEdgeToSuperviewEdge(.Bottom, withInset: 0)
             self.ui.separatorView.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset * 2)
@@ -92,32 +98,45 @@ class CartListTableCellView: NSView {
         }
     }
     
+    private func configure(#updateButton: NSButton) {
+        if let _ = updateButton.superview {
+            updateButton.setButtonType(.MomentaryPushInButton)
+            updateButton.bezelStyle = .RoundedBezelStyle
+            updateButton.title = NSLocalizedString("Update", comment: "Button to perform carthage update")
+            updateButton.target = self.controller
+            updateButton.action = "didClickCreateNewCartFileButton:"
+            (updateButton.cell() as? NSButtonCell)?.backgroundColor = NSColor.clearColor()
+        } else {
+            fatalError("CartListTableCellView: Tried to configure updateButton before it was in the view hierarchy.")
+        }
+    }
+    
     func clearCellView() {
-        self.layer?.backgroundColor = NSColor.clearColor().CGColor
         self.ui.cartfileTitleLabel.stringValue = ""
+        self.cellWasDeselected()
     }
     
     func cellWasDeselected() {
-        println("\(self) was de-selected")
         self.layer?.backgroundColor = NSColor.clearColor().CGColor
+        self.ui.updateButton.hidden = true
     }
     
     func cellWasSelected() {
-        println("\(self) was selected")
-        self.layer?.backgroundColor = NSColor.blueColor().CGColor
+        self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.3).CGColor
+        self.ui.updateButton.hidden = false
     }
     
     func cellWasHighlighted() {
-        println("\(self) was highlighted")
-        self.layer?.backgroundColor = NSColor.redColor().CGColor
+        self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.5).CGColor
     }
     
     struct interfaceView {
         var cartfileTitleLabel = NSTextField()
         var separatorView = NSVisualEffectView()
+        var updateButton = NSButton()
         
         func allViews() -> [NSView] {
-            return [cartfileTitleLabel, separatorView]
+            return [cartfileTitleLabel, separatorView, updateButton]
         }
     }
 }

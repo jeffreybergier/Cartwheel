@@ -63,7 +63,7 @@ class CartListTableCellViewController: NSTableCellView {
         super.awakeFromNib()
         self.addSubview(self.contentView)
         self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
-        self.contentView.viewDidLoad()
+        self.contentView.viewDidLoadWithController(self)
     }
     
     override func prepareForReuse() {
