@@ -29,7 +29,7 @@ import Cocoa
 import PureLayout_Mac
 import CarthageKit
 
-class CartListTableCellViewController: NSTableCellView {
+class CartListTableCellViewController: NSTableRowView {
     
     private let contentView = CartListTableCellView()
     var isLastCell = false {

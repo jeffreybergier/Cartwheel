@@ -32,14 +32,14 @@ class CartListTableCellView: NSView {
     
     let ui = interfaceView()
     var viewConstraints = [NSLayoutConstraint]()
-    weak var controller: NSTableCellView?
+    weak var controller: NSView?
     var isLastCell = false {
         didSet {
             self.ui.separatorView.hidden = self.isLastCell
         }
     }
     
-    func viewDidLoadWithController(controller: NSTableCellView?) {
+    func viewDidLoadWithController(controller: NSView?) {
         self.wantsLayer = true
         
         self.controller = controller
