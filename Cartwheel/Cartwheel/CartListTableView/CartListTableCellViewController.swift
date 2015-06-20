@@ -32,17 +32,22 @@ import CarthageKit
 class CartListTableCellViewController: NSTableRowView {
     
     private let contentView = CartListTableCellView()
-    var isLastCell = false {
-        didSet {
-            self.contentView.isLastCell = self.isLastCell
-        }
-    }
     
     var cartfileURL: CWCartfile? {
         didSet {
             self.prepareCellForNewModelObject()
             self.updateCellWithNewModelObject()
         }
+    }
+    
+    override func drawSelectionInRect(dirtyRect: NSRect) {
+        println("CartListTableCellViewController: \(self): drawSelectionInRect called")
+        super.drawSelectionInRect(dirtyRect)
+    }
+    
+    override func drawSeparatorInRect(dirtyRect: NSRect) {
+        println("CartListTableCellViewController: \(self): drawSeparatorInRect called")
+        super.drawSeparatorInRect(dirtyRect)
     }
     
     private func prepareCellForNewModelObject() {
@@ -72,17 +77,17 @@ class CartListTableCellViewController: NSTableRowView {
         println("\(self): Preparing for Reuse")
     }
     
-    func cellWasDeselected() {
-        self.contentView.cellWasDeselected()
-    }
-    
-    func cellWasSelected() {
-        self.contentView.cellWasSelected()
-    }
-    
-    func cellWasHighlighted() {
-        self.contentView.cellWasHighlighted()
-    }
+//    func cellWasDeselected() {
+//        self.contentView.cellWasDeselected()
+//    }
+//    
+//    func cellWasSelected() {
+//        self.contentView.cellWasSelected()
+//    }
+//    
+//    func cellWasHighlighted() {
+//        self.contentView.cellWasHighlighted()
+//    }
 }
 
 extension CartListTableCellViewController: Printable {

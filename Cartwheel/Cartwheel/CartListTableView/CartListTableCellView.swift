@@ -33,11 +33,6 @@ class CartListTableCellView: NSView {
     let ui = interfaceView()
     var viewConstraints = [NSLayoutConstraint]()
     weak var controller: NSView?
-    var isLastCell = false {
-        didSet {
-            self.ui.separatorView.hidden = self.isLastCell
-        }
-    }
     
     func viewDidLoadWithController(controller: NSView?) {
         self.wantsLayer = true
@@ -45,7 +40,6 @@ class CartListTableCellView: NSView {
         self.controller = controller
         self.ui.allViews().map { self.addSubview($0) }
         self.configure(cartfileTitleLabel: self.ui.cartfileTitleLabel)
-        self.configure(separatorView: self.ui.separatorView)
         self.configure(updateButton: self.ui.updateButton)
         self.configureLayoutConstraints()
     }
@@ -60,11 +54,6 @@ class CartListTableCellView: NSView {
             
             self.ui.updateButton.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
             self.ui.updateButton.autoAlignAxisToSuperviewAxis(.Horizontal)
-            
-            self.ui.separatorView.autoPinEdgeToSuperviewEdge(.Bottom, withInset: 0)
-            self.ui.separatorView.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset * 2)
-            self.ui.separatorView.autoPinEdgeToSuperviewEdge(.Trailing, withInset: 0)
-            self.ui.separatorView.autoSetDimension(.Height, toSize: 1)
         }
         
         let optionalPureLayoutConstraints = pureLayoutConstraints.map { (object) -> NSLayoutConstraint? in
@@ -113,30 +102,29 @@ class CartListTableCellView: NSView {
     
     func clearCellView() {
         self.ui.cartfileTitleLabel.stringValue = ""
-        self.cellWasDeselected()
+        //self.cellWasDeselected()
     }
     
-    func cellWasDeselected() {
-        self.layer?.backgroundColor = NSColor.clearColor().CGColor
-        self.ui.updateButton.hidden = true
-    }
-    
-    func cellWasSelected() {
-        self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.3).CGColor
-        self.ui.updateButton.hidden = false
-    }
-    
-    func cellWasHighlighted() {
-        self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.5).CGColor
-    }
+//    func cellWasDeselected() {
+//        self.layer?.backgroundColor = NSColor.clearColor().CGColor
+//        self.ui.updateButton.hidden = true
+//    }
+//    
+//    func cellWasSelected() {
+//        self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.3).CGColor
+//        self.ui.updateButton.hidden = false
+//    }
+//    
+//    func cellWasHighlighted() {
+//        self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.5).CGColor
+//    }
     
     struct interfaceView {
         var cartfileTitleLabel = NSTextField()
-        var separatorView = NSVisualEffectView()
         var updateButton = NSButton()
         
         func allViews() -> [NSView] {
-            return [cartfileTitleLabel, separatorView, updateButton]
+            return [cartfileTitleLabel, updateButton]
         }
     }
 }

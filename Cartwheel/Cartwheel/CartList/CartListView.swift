@@ -73,8 +73,9 @@ class CartListView: NSVisualEffectView {
             scrollView.hasVerticalScroller = true
             tableColumn.width = self.ui.scrollView.frame.width
             tableView.headerView = nil
-            tableView.selectionHighlightStyle = NSTableViewSelectionHighlightStyle.None
+            tableView.selectionHighlightStyle = NSTableViewSelectionHighlightStyle.SourceList
             tableView.allowsMultipleSelection = true
+            tableView.gridStyleMask = NSTableViewGridLineStyle.SolidHorizontalGridLineMask
             tableView.backgroundColor = NSColor.clearColor()
             scrollView.drawsBackground = false
         } else {

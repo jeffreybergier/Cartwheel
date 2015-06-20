@@ -60,27 +60,27 @@ extension CartListViewController: NSTableViewDelegate {
         return 50
     }
     
-    func selectionShouldChangeInTableView(tableView: NSTableView) -> Bool {
-        tableView.selectedRowIndexes.enumerateIndexesUsingBlock() { (rowIndex, stop) -> Void in
-            let cell = tableView.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
-            cell?.cellWasDeselected()
-        }
-        return true
-    }
-    
-    func tableView(tableView: NSTableView, shouldSelectRow rowIndex: Int) -> Bool {
-        let cell = tableView.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
-        cell?.cellWasHighlighted()
-        return true
-    }
-    
-    func tableViewSelectionDidChange(notification: NSNotification) {
-        let tableView = notification.object as? NSTableView
-        tableView?.selectedRowIndexes.enumerateIndexesUsingBlock() { (rowIndex, stop) -> Void in
-            let cell = tableView!.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
-            cell?.cellWasSelected()
-        }
-    }
+//    func selectionShouldChangeInTableView(tableView: NSTableView) -> Bool {
+//        tableView.selectedRowIndexes.enumerateIndexesUsingBlock() { (rowIndex, stop) -> Void in
+//            let cell = tableView.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
+//            cell?.cellWasDeselected()
+//        }
+//        return true
+//    }
+//    
+//    func tableView(tableView: NSTableView, shouldSelectRow rowIndex: Int) -> Bool {
+//        let cell = tableView.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
+//        cell?.cellWasHighlighted()
+//        return true
+//    }
+//    
+//    func tableViewSelectionDidChange(notification: NSNotification) {
+//        let tableView = notification.object as? NSTableView
+//        tableView?.selectedRowIndexes.enumerateIndexesUsingBlock() { (rowIndex, stop) -> Void in
+//            let cell = tableView!.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
+//            cell?.cellWasSelected()
+//        }
+//    }
 }
 
 // MARK: NSTableViewDataSource
@@ -92,7 +92,6 @@ extension CartListViewController: NSTableViewDataSource {
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let cell = tableView.makeViewWithIdentifier("CartListTableCellViewController", owner: self) as? CartListTableCellViewController
-        cell?.isLastCell = row >= self.dataSource.cartfiles.count - 1 ? true : false
         cell?.cartfileURL = self.dataSource.cartfiles[safe: row]
         return cell
     }
