@@ -32,7 +32,7 @@ class CartListView: NSVisualEffectView {
     
     let ui = InterfaceElements()
     var viewConstraints = [NSLayoutConstraint]()
-    weak var controller: CartListViewController?
+    weak var controller: CartListWindowController?
     
     func viewDidLoad() {
         self.wantsLayer = true

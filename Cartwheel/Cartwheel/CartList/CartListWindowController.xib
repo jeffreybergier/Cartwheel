@@ -6,7 +6,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CartListWindowController" customModule="Cartwheel" customModuleProvider="target">
             <connections>
-                <outlet property="cartListViewController" destination="tZL-9L-v3E" id="5fu-WY-TnH"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -26,11 +25,5 @@
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
         </window>
-        <viewController id="tZL-9L-v3E" customClass="CartListViewController" customModule="Cartwheel" customModuleProvider="target">
-            <connections>
-                <outlet property="view" destination="se5-gp-TjO" id="R1l-D8-Nfx"/>
-                <outlet property="window" destination="F0z-JX-Cv5" id="jz0-Uo-3GC"/>
-            </connections>
-        </viewController>
     </objects>
 </document>

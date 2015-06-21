@@ -34,7 +34,7 @@ class CartListTitlebarAccessoryViewController: NSTitlebarAccessoryViewController
     private let contentView = CartListTitlebarAccessoryView()
     private let dataSource = CWCartfileDataSource.sharedInstance
     weak var window: NSWindow?
-    weak var mainViewController: CartListViewController?
+    weak var mainViewController: CartListWindowController?
 
     override func viewDidLoad() {
         super.viewDidLoad()

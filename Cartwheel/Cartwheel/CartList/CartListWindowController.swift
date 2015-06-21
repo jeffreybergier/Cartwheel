@@ -29,14 +29,15 @@ import Cocoa
 
 class CartListWindowController: NSWindowController {
     
-    @IBOutlet private weak var cartListViewController: CartListViewController?
+    var contentView = CartListView()
+    private let dataSource = CWCartfileDataSource.sharedInstance
     
     override func windowDidLoad() {
         super.windowDidLoad()
         
         let titlebarAccessoryViewController = CartListTitlebarAccessoryViewController()
         titlebarAccessoryViewController.window = self.window
-        titlebarAccessoryViewController.mainViewController = self.cartListViewController
+        titlebarAccessoryViewController.mainViewController = self
         
         self.window?.collectionBehavior = NSWindowCollectionBehavior.FullScreenPrimary
         self.window?.minSize = NSSize(width: 380, height: 500)
@@ -44,9 +45,65 @@ class CartListWindowController: NSWindowController {
         self.window?.addTitlebarAccessoryViewController(titlebarAccessoryViewController)
         self.window?.styleMask = self.window!.styleMask | NSFullSizeContentViewWindowMask
         self.window?.title = NSLocalizedString("Cartwheel", comment: "Cartwheel name for window title")
+        
+        // configure my view and add in the custom view
+        self.window?.contentView = self.contentView
+        //self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
+        
+        // configure the main view
+        self.contentView.controller = self
+        self.contentView.viewDidLoad()
+        
+        // set the delegate on the tableview
+        self.contentView.ui.tableView.setDataSource(self)
+        self.contentView.ui.tableView.setDelegate(self)
+        self.contentView.ui.tableView.reloadData()
     }
     
     func window(window: NSWindow, didDecodeRestorableState state: NSCoder) {
         // this is called when the window loads
+    }
+}
+
+extension CartListWindowController: NSTableViewDelegate {
+    func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        return 50
+    }
+    
+    func selectionShouldChangeInTableView(tableView: NSTableView) -> Bool {
+        tableView.selectedRowIndexes.enumerateIndexesUsingBlock() { (rowIndex, stop) -> Void in
+            let cell = tableView.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
+            cell?.cellWasDeselected()
+        }
+        return true
+    }
+    
+    func tableView(tableView: NSTableView, shouldSelectRow rowIndex: Int) -> Bool {
+        let cell = tableView.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
+        cell?.cellWasHighlighted()
+        return true
+    }
+    
+    func tableViewSelectionDidChange(notification: NSNotification) {
+        let tableView = notification.object as? NSTableView
+        tableView?.selectedRowIndexes.enumerateIndexesUsingBlock() { (rowIndex, stop) -> Void in
+            let cell = tableView!.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
+            cell?.cellWasSelected()
+        }
+    }
+}
+
+// MARK: NSTableViewDataSource
+
+extension CartListWindowController: NSTableViewDataSource {
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+        return self.dataSource.cartfiles.count
+    }
+    
+    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let cell = tableView.makeViewWithIdentifier("CartListTableCellViewController", owner: self) as? CartListTableCellViewController
+        cell?.isLastCell = row >= self.dataSource.cartfiles.count - 1 ? true : false
+        cell?.cartfileURL = self.dataSource.cartfiles[safe: row]
+        return cell
     }
 }
