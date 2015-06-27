@@ -48,12 +48,16 @@ class CartListWindowController: NSWindowController {
         self.window?.title = NSLocalizedString("Cartwheel", comment: "Cartwheel name for window title")
         
         // configure my view and add in the custom view
-        self.window?.contentView = self.contentView
+        self.window!.contentView = self.contentView
         
         // configure the main view
         self.contentView.controller = self
         self.contentView.viewDidLoad()
         
+        // register for notifications on window resize
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowDidChangeSize:", name: NSWindowDidEndLiveResizeNotification, object: self.window)
+        
+        // this is called when the window loads
         // set the delegate on the tableview
         self.contentView.ui.tableView.setDataSource(self)
         self.contentView.ui.tableView.setDelegate(self)
@@ -61,7 +65,15 @@ class CartListWindowController: NSWindowController {
     }
     
     func window(window: NSWindow, didDecodeRestorableState state: NSCoder) {
-        // this is called when the window loads
+        // call reload table data here because this happens after window geometry is set
+        // this reduces errors for autolayout and makes it so the cell width is known when calculating height
+        let visibleRows = self.contentView.ui.tableView.rowsInRect(self.contentView.ui.tableView.visibleRect)
+        self.contentView.ui.tableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(indexesInRange: visibleRows))
+    }
+    
+    @objc private func windowDidChangeSize(notification: NSNotification) {
+        let visibleRows = self.contentView.ui.tableView.rowsInRect(self.contentView.ui.tableView.visibleRect)
+        self.contentView.ui.tableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(indexesInRange: visibleRows))
     }
     
     private lazy var cellHeightCalculationView: CartListTableCellView = {
