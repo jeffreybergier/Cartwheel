@@ -25,20 +25,49 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
 import AppKit
-import CarthageKit
 
 // MARK: Fixing Broken AppKit Stuff
 
-enum CWLayoutPriority: NSLayoutPriority {
-    case Required = 1000
-    case DefaultHigh = 750
-    case DragThatCanResizeWindow = 510
-    case WindowSizeStayPut = 500
-    case DragThatCannotResizeWindow = 490
-    case DefaultLow = 250
-    case FittingSizeCompression = 50
+struct CWLayoutPriority {
+    static var Required: NSLayoutPriority = 1000
+    static var DefaultHigh: NSLayoutPriority = 750
+    static var DragThatCanResizeWindow: NSLayoutPriority = 510
+    static var WindowSizeStayPut: NSLayoutPriority = 500
+    static var DragThatCannotResizeWindow: NSLayoutPriority = 490
+    static var DefaultLow: NSLayoutPriority = 250
+    static var FittingSizeCompression: NSLayoutPriority = 50
+}
+
+extension NSView {
+    func writeScreenShotToDiskWithName(name: String) -> NSError? {
+        // Capture original invisibility state
+        let originalHiddenState = self.hidden
+        let originalAlphaState = self.alphaValue
+        
+        // change view to be fully visible for screenshot
+        self.hidden = false
+        self.alphaValue = 1.0
+        
+        // create URL in App Support directory
+        let appSupport = (NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true).last as! String) + "/Cartwheel"
+        let appSupportURL = NSURL(fileURLWithPath: appSupport, isDirectory: true)
+        let screenshotFileURL = appSupportURL!.URLByAppendingPathComponent(name + ".tiff")
+        
+        // capture screenshot
+        let screenshot = NSImage(data: self.dataWithPDFInsideRect(self.bounds))
+        
+        // save to disk
+        var error: NSError?
+        screenshot?.TIFFRepresentation?.writeToURL(screenshotFileURL, options: NSDataWritingOptions.AtomicWrite, error: &error)
+        
+        // Restore invisiblity state
+        self.hidden = originalHiddenState
+        self.alphaValue = originalAlphaState
+        
+        // return error (if any)
+        return error
+    }
 }
 
 // MARK: NSURL == CWCartfile

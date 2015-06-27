@@ -64,7 +64,7 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
             self.ui.stackView.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
             self.ui.stackView.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
             
-            NSView.autoSetPriority(CWLayoutPriority.DefaultLow.rawValue, forConstraints: {
+            NSView.autoSetPriority(CWLayoutPriority.DefaultLow, forConstraints: {
                 self.ui.filterField.autoSetDimension(.Width, toSize: filterFieldMaxWidth, relation: .LessThanOrEqual)
             })
         }

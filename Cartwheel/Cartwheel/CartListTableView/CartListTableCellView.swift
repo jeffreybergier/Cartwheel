@@ -30,22 +30,17 @@ import PureLayout_Mac
 
 class CartListTableCellView: NSView {
     
-    let ui = interfaceView()
+    let ui = InterfaceElements()
     var viewConstraints = [NSLayoutConstraint]()
     weak var controller: NSView?
-    var isLastCell = false {
-        didSet {
-            self.ui.separatorView.hidden = self.isLastCell
-        }
-    }
     
     func viewDidLoadWithController(controller: NSView?) {
         self.wantsLayer = true
         
         self.controller = controller
-        self.ui.allViews().map { self.addSubview($0) }
+        self.addSubview(self.ui.stackView)
+        self.configure(stackView: self.ui.stackView, withViews: self.ui.allViewsWithinStackView)
         self.configure(cartfileTitleLabel: self.ui.cartfileTitleLabel)
-        self.configure(separatorView: self.ui.separatorView)
         self.configure(updateButton: self.ui.updateButton)
         self.configureLayoutConstraints()
     }
@@ -55,16 +50,9 @@ class CartListTableCellView: NSView {
         let smallInset = round(defaultInset / 1.5)
         
         let pureLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
-            self.ui.cartfileTitleLabel.autoPinEdgeToSuperviewEdge(ALEdge.Leading, withInset: defaultInset)
-            self.ui.cartfileTitleLabel.autoAlignAxis(ALAxis.Horizontal, toSameAxisOfView: self, withOffset: -2)
-            
-            self.ui.updateButton.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
-            self.ui.updateButton.autoAlignAxisToSuperviewAxis(.Horizontal)
-            
-            self.ui.separatorView.autoPinEdgeToSuperviewEdge(.Bottom, withInset: 0)
-            self.ui.separatorView.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset * 2)
-            self.ui.separatorView.autoPinEdgeToSuperviewEdge(.Trailing, withInset: 0)
-            self.ui.separatorView.autoSetDimension(.Height, toSize: 1)
+            self.ui.stackView.autoPinEdgeToSuperviewEdge(.Top, withInset: smallInset)
+            self.ui.stackView.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
+            self.ui.stackView.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
         }
         
         let optionalPureLayoutConstraints = pureLayoutConstraints.map { (object) -> NSLayoutConstraint? in
@@ -75,7 +63,7 @@ class CartListTableCellView: NSView {
             }
         }
         
-        self.viewConstraints += Array.filterOptionals(optionalPureLayoutConstraints)
+        self.viewConstraints = Array.filterOptionals(optionalPureLayoutConstraints)
         self.addConstraints(self.viewConstraints)
     }
     
@@ -90,14 +78,6 @@ class CartListTableCellView: NSView {
         }
     }
     
-    private func configure(#separatorView: NSVisualEffectView) {
-        if let _ = separatorView.superview {
-            separatorView.material = .Dark
-        } else {
-            fatalError("CartListTableCellView: Tried to configure separatorView before it was in the view hierarchy.")
-        }
-    }
-    
     private func configure(#updateButton: NSButton) {
         if let _ = updateButton.superview {
             updateButton.setButtonType(.MomentaryPushInButton)
@@ -108,6 +88,21 @@ class CartListTableCellView: NSView {
             (updateButton.cell() as? NSButtonCell)?.backgroundColor = NSColor.clearColor()
         } else {
             fatalError("CartListTableCellView: Tried to configure updateButton before it was in the view hierarchy.")
+        }
+    }
+    
+    private func configure(#stackView: NSStackView, withViews views: [NSView]) {
+        if let _ = stackView.superview {
+            stackView.orientation = .Horizontal
+            for view in views {
+                if let view = view as? NSButton {
+                    stackView.addView(view, inGravity: .Bottom)
+                } else {
+                    stackView.addView(view, inGravity: .Top)
+                }
+            }
+        } else {
+            fatalError("CartListView: Tried to configure the filterField before it was in the view hierarchy.")
         }
     }
     
@@ -130,13 +125,20 @@ class CartListTableCellView: NSView {
         self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.5).CGColor
     }
     
-    struct interfaceView {
+    struct InterfaceElements {
         var cartfileTitleLabel = NSTextField()
-        var separatorView = NSVisualEffectView()
         var updateButton = NSButton()
+        var stackView = NSStackView()
+        var allViewsWithinStackView: [NSView]
+        var allViews: [NSView]
         
-        func allViews() -> [NSView] {
-            return [cartfileTitleLabel, separatorView, updateButton]
+        init() {
+            let allViewsWithinStackView: [NSView] = [self.cartfileTitleLabel, self.updateButton]
+            self.allViewsWithinStackView = allViewsWithinStackView
+            self.allViews = allViewsWithinStackView + [stackView]
+            for view in self.allViews {
+                view.translatesAutoresizingMaskIntoConstraints = false
+            }
         }
     }
 }

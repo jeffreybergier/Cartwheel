@@ -32,11 +32,6 @@ import CarthageKit
 class CartListTableCellViewController: NSTableRowView {
     
     private let contentView = CartListTableCellView()
-    var isLastCell = false {
-        didSet {
-            self.contentView.isLastCell = self.isLastCell
-        }
-    }
     
     var cartfileURL: CWCartfile? {
         didSet {

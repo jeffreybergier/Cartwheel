@@ -26,6 +26,7 @@
 //
 
 import Cocoa
+import PureLayout_Mac
 
 class CartListWindowController: NSWindowController {
     
@@ -48,7 +49,6 @@ class CartListWindowController: NSWindowController {
         
         // configure my view and add in the custom view
         self.window?.contentView = self.contentView
-        //self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
         
         // configure the main view
         self.contentView.controller = self
@@ -63,11 +63,44 @@ class CartListWindowController: NSWindowController {
     func window(window: NSWindow, didDecodeRestorableState state: NSCoder) {
         // this is called when the window loads
     }
+    
+    private lazy var cellHeightCalculationView: CartListTableCellView = {
+        // this cell is used to let the table calculate the height of each cell dynamically based on the content
+        // the top of the cell is locked to the bottom of the window
+        let view = CartListTableCellView()
+        let defaultInset = CGFloat(8.0)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(view)
+        view.hidden = true
+        view.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.contentView, withOffset: 0)
+        view.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
+        view.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
+        view.autoSetDimension(.Height, toSize: 100)
+        view.viewDidLoadWithController(nil)
+        view.ui.cartfileTitleLabel.stringValue = "TestString"
+        return view
+    }()
 }
 
 extension CartListWindowController: NSTableViewDelegate {
+    
     func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return 50
+        if let cartfileURL = self.dataSource.cartfiles[safe: row],
+            let pathComponents = cartfileURL.pathComponents,
+            let containingFolder = pathComponents[pathComponents.count - 2] as? String {
+                self.cellHeightCalculationView.ui.cartfileTitleLabel.stringValue = containingFolder
+        } else {
+            self.cellHeightCalculationView.clearCellView()
+        }
+        self.cellHeightCalculationView.needsLayout = true
+        self.cellHeightCalculationView.layoutSubtreeIfNeeded()
+        
+        let defaultInset = CGFloat(8.0)
+        let smallInset = round(defaultInset / 1.5)
+        let viewHeight = self.cellHeightCalculationView.ui.stackView.frame.size.height
+        let cellHeight = (smallInset * 2) + viewHeight
+        
+        return cellHeight
     }
     
     func selectionShouldChangeInTableView(tableView: NSTableView) -> Bool {
@@ -102,7 +135,6 @@ extension CartListWindowController: NSTableViewDataSource {
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let cell = tableView.makeViewWithIdentifier("CartListTableCellViewController", owner: self) as? CartListTableCellViewController
-        cell?.isLastCell = row >= self.dataSource.cartfiles.count - 1 ? true : false
         cell?.cartfileURL = self.dataSource.cartfiles[safe: row]
         return cell
     }
