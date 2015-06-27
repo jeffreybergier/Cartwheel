@@ -46,9 +46,9 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
     
     override func layout() {
         // configure the titlebar height
-//        let buttonHeight = self.ui.stackView.frame.height
-//        let totalHeight = 8 + buttonHeight
-//        self.superview!.frame.size.height = totalHeight
+        let stackViewHeight = self.ui.stackView.frame.height
+        let totalHeight = 12 + stackViewHeight
+        self.superview?.frame.size.height = totalHeight
         
         super.layout()
     }
@@ -56,10 +56,17 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
     private func configureConstraints() {
         let defaultInset = CGFloat(8.0)
         let smallInset = round(defaultInset / 1.5)
+        let filterFieldMaxWidth = CGFloat(400)
         let filterFieldWidth = CGFloat(200)
         
         let pureLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
-            self.ui.stackView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsets(top: 0, left: defaultInset, bottom: 0, right: defaultInset))
+            self.ui.stackView.autoPinEdgeToSuperviewEdge(.Top, withInset: smallInset)
+            self.ui.stackView.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
+            self.ui.stackView.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
+            
+            NSView.autoSetPriority(CWLayoutPriority.DefaultLow.rawValue, forConstraints: {
+                self.ui.filterField.autoSetDimension(.Width, toSize: filterFieldMaxWidth, relation: .LessThanOrEqual)
+            })
         }
         
         let optionalPureLayoutConstraints = pureLayoutConstraints.map { (optionalConstraint) -> NSLayoutConstraint? in
@@ -70,17 +77,12 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
             }
         }
         
-        for constraint in optionalPureLayoutConstraints {
-            constraint?.priority = 1000
-        }
-        
-        self.viewConstraints += Array.filterOptionals(optionalPureLayoutConstraints)
+        self.viewConstraints = Array.filterOptionals(optionalPureLayoutConstraints)
         self.addConstraints(self.viewConstraints)
     }
     
     private func configure(#addButton: NSButton) {
         if let _ = addButton.superview {
-            addButton.setContentCompressionResistancePriority(1000, forOrientation: .Vertical)
             addButton.setButtonType(.MomentaryPushInButton)
             addButton.bezelStyle = .RoundedBezelStyle
             addButton.title = NSLocalizedString("Add Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
@@ -114,9 +116,12 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
     private func configure(#stackView: NSStackView, withViews views: [NSView]) {
         if let _ = stackView.superview {
             stackView.orientation = .Horizontal
-            stackView.setContentHuggingPriority(1000, forOrientation: .Vertical)
             for view in views {
-                stackView.addView(view, inGravity: .Top)
+                if let view = view as? NSSearchField {
+                    stackView.addView(view, inGravity: .Bottom)
+                } else {
+                    stackView.addView(view, inGravity: .Top)
+                }
             }
         } else {
             fatalError("CartListView: Tried to configure the filterField before it was in the view hierarchy.")

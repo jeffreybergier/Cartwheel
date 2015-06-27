@@ -26,7 +26,20 @@
 //
 
 import Foundation
+import AppKit
 import CarthageKit
+
+// MARK: Fixing Broken AppKit Stuff
+
+enum CWLayoutPriority: NSLayoutPriority {
+    case Required = 1000
+    case DefaultHigh = 750
+    case DragThatCanResizeWindow = 510
+    case WindowSizeStayPut = 500
+    case DragThatCannotResizeWindow = 490
+    case DefaultLow = 250
+    case FittingSizeCompression = 50
+}
 
 // MARK: NSURL == CWCartfile
 
