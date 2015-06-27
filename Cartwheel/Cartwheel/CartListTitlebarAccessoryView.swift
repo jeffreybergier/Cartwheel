@@ -35,9 +35,8 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
     func viewDidLoad() {
         self.wantsLayer = true
         
-        self.addSubview(self.ui.addButton)
-        self.addSubview(self.ui.createNewButton)
-        self.addSubview(self.ui.filterField)
+        self.addSubview(self.ui.stackView)
+        self.configure(stackView: self.ui.stackView, withViews: self.ui.allViewsWithinStackView)
         self.configure(addButton: self.ui.addButton)
         self.configure(createNewButton: self.ui.createNewButton)
         self.configure(filterField: self.ui.filterField)
@@ -47,9 +46,9 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
     
     override func layout() {
         // configure the titlebar height
-        let buttonHeight = self.ui.addButton.frame.height
-        let totalHeight = 8 + buttonHeight
-        self.superview!.frame.size.height = totalHeight
+//        let buttonHeight = self.ui.stackView.frame.height
+//        let totalHeight = 8 + buttonHeight
+//        self.superview!.frame.size.height = totalHeight
         
         super.layout()
     }
@@ -60,27 +59,19 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
         let filterFieldWidth = CGFloat(200)
         
         let pureLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
-            // Constraints for Add Button
-            self.ui.addButton.autoPinEdgeToSuperviewEdge(.Top , withInset: defaultInset)
-            self.ui.addButton.autoPinEdgeToSuperviewEdge(.Leading , withInset: smallInset)
-            
-            // Constraints for the create new button
-            self.ui.createNewButton.autoPinEdgeToSuperviewEdge(.Top, withInset: defaultInset)
-            self.ui.createNewButton.autoPinEdge(.Left, toEdge: .Right, ofView: self.ui.addButton, withOffset: defaultInset)
-            
-            // constraints for FilterField
-            self.ui.filterField.autoPinEdgeToSuperviewEdge(.Trailing, withInset: smallInset)
-            self.ui.filterField.autoPinEdgeToSuperviewEdge(.Top, withInset: defaultInset)
-            self.ui.filterField.autoMatchDimension(.Width, toDimension: .Width, ofView: self.ui.filterField.superview, withMultiplier: 0.4)
-            self.ui.filterField.autoPinEdge(.Left, toEdge: .Right, ofView: self.ui.createNewButton, withOffset: defaultInset, relation: NSLayoutRelation.GreaterThanOrEqual)
+            self.ui.stackView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsets(top: 0, left: defaultInset, bottom: 0, right: defaultInset))
         }
         
-        let optionalPureLayoutConstraints = pureLayoutConstraints.map { (object) -> NSLayoutConstraint? in
-            if let constraint = object as? NSLayoutConstraint {
+        let optionalPureLayoutConstraints = pureLayoutConstraints.map { (optionalConstraint) -> NSLayoutConstraint? in
+            if let constraint = optionalConstraint as? NSLayoutConstraint {
                 return constraint
             } else {
                 return nil
             }
+        }
+        
+        for constraint in optionalPureLayoutConstraints {
+            constraint?.priority = 1000
         }
         
         self.viewConstraints += Array.filterOptionals(optionalPureLayoutConstraints)
@@ -89,6 +80,7 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
     
     private func configure(#addButton: NSButton) {
         if let _ = addButton.superview {
+            addButton.setContentCompressionResistancePriority(1000, forOrientation: .Vertical)
             addButton.setButtonType(.MomentaryPushInButton)
             addButton.bezelStyle = .RoundedBezelStyle
             addButton.title = NSLocalizedString("Add Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
@@ -112,8 +104,20 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
     }
     
     private func configure(#filterField: NSSearchField) {
-        if let _ = self.ui.filterField.superview {
-            self.ui.filterField.delegate = self.controller
+        if let _ = filterField.superview {
+            filterField.delegate = self.controller
+        } else {
+            fatalError("CartListView: Tried to configure the filterField before it was in the view hierarchy.")
+        }
+    }
+    
+    private func configure(#stackView: NSStackView, withViews views: [NSView]) {
+        if let _ = stackView.superview {
+            stackView.orientation = .Horizontal
+            stackView.setContentHuggingPriority(1000, forOrientation: .Vertical)
+            for view in views {
+                stackView.addView(view, inGravity: .Top)
+            }
         } else {
             fatalError("CartListView: Tried to configure the filterField before it was in the view hierarchy.")
         }
@@ -123,5 +127,18 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
         var addButton = NSButton()
         var createNewButton = NSButton()
         var filterField = NSSearchField()
+        var stackView = NSStackView()
+        var allViewsWithinStackView: [NSView]
+        var allViews: [NSView]
+        
+        init() {
+            let allViewsWithinStackView: [NSView] = [self.addButton, self.createNewButton, self.filterField]
+            self.allViewsWithinStackView = allViewsWithinStackView
+            self.allViews = allViewsWithinStackView + [stackView]
+            for view in self.allViews {
+                view.translatesAutoresizingMaskIntoConstraints = false
+            }
+        }
     }
+
 }
