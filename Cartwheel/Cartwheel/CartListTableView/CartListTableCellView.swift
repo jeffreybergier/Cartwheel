@@ -30,6 +30,8 @@ import PureLayout_Mac
 
 class CartListTableCellView: NSView {
     
+    // MARK: Load and Configure the Views for this Row
+    
     let ui = InterfaceElements()
     var viewConstraints = [NSLayoutConstraint]()
     weak var controller: NSView?
@@ -108,22 +110,25 @@ class CartListTableCellView: NSView {
     
     func clearCellView() {
         self.ui.cartfileTitleLabel.stringValue = ""
-        self.cellWasDeselected()
+        //self.cellWasDeselected()
     }
     
-    func cellWasDeselected() {
-        self.layer?.backgroundColor = NSColor.clearColor().CGColor
-        self.ui.updateButton.hidden = true
-    }
+    // MARK: Handle Legacy View Selection Behavior
     
-    func cellWasSelected() {
-        self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.3).CGColor
-        self.ui.updateButton.hidden = false
-    }
-    
-    func cellWasHighlighted() {
-        self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.5).CGColor
-    }
+//
+//    func cellWasDeselected() {
+//        self.layer?.backgroundColor = NSColor.clearColor().CGColor
+//        self.ui.updateButton.hidden = true
+//    }
+//    
+//    func cellWasSelected() {
+//        self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.3).CGColor
+//        self.ui.updateButton.hidden = false
+//    }
+//    
+//    func cellWasHighlighted() {
+//        self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.5).CGColor
+//    }
     
     struct InterfaceElements {
         var cartfileTitleLabel = NSTextField()
@@ -142,6 +147,9 @@ class CartListTableCellView: NSView {
         }
     }
 }
+
+
+// MARK: Protocol Extensions
 
 extension CartListTableCellView: Printable {
     override var description: String {

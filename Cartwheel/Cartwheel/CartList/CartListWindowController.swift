@@ -57,8 +57,9 @@ class CartListWindowController: NSWindowController {
         // register for notifications on window resize
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowDidChangeSize:", name: NSWindowDidEndLiveResizeNotification, object: self.window)
         
-        // this is called when the window loads
         // set the delegate on the tableview
+        self.contentView.ui.tableView.registerNib(NSNib(nibNamed: "CartListTableCellViewController", bundle: nil)!, forIdentifier: "CartListTableCellViewController")
+        self.contentView.ui.tableView.registerNib(NSNib(nibNamed: "CartListTableRowView", bundle: nil)!, forIdentifier: "CartListTableRowView") // it seems basically impossible to use a custom cell not based on a nib. The NIB is blank and will continue to be blank.
         self.contentView.ui.tableView.setDataSource(self)
         self.contentView.ui.tableView.setDelegate(self)
         self.contentView.ui.tableView.reloadData()
@@ -95,7 +96,6 @@ class CartListWindowController: NSWindowController {
 }
 
 extension CartListWindowController: NSTableViewDelegate {
-    
     func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         if let cartfileURL = self.dataSource.cartfiles[safe: row],
             let pathComponents = cartfileURL.pathComponents,
@@ -110,31 +110,9 @@ extension CartListWindowController: NSTableViewDelegate {
         let defaultInset = CGFloat(8.0)
         let smallInset = round(defaultInset / 1.5)
         let viewHeight = self.cellHeightCalculationView.ui.stackView.frame.size.height
-        let cellHeight = (smallInset * 2) + viewHeight
+        let cellHeight = (smallInset * 2) + viewHeight + 1 // the +1 fixes issues in the view debugger
         
         return cellHeight
-    }
-    
-    func selectionShouldChangeInTableView(tableView: NSTableView) -> Bool {
-        tableView.selectedRowIndexes.enumerateIndexesUsingBlock() { (rowIndex, stop) -> Void in
-            let cell = tableView.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
-            cell?.cellWasDeselected()
-        }
-        return true
-    }
-    
-    func tableView(tableView: NSTableView, shouldSelectRow rowIndex: Int) -> Bool {
-        let cell = tableView.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
-        cell?.cellWasHighlighted()
-        return true
-    }
-    
-    func tableViewSelectionDidChange(notification: NSNotification) {
-        let tableView = notification.object as? NSTableView
-        tableView?.selectedRowIndexes.enumerateIndexesUsingBlock() { (rowIndex, stop) -> Void in
-            let cell = tableView!.viewAtColumn(0, row: rowIndex, makeIfNecessary: false) as? CartListTableCellViewController
-            cell?.cellWasSelected()
-        }
     }
 }
 
@@ -143,6 +121,11 @@ extension CartListWindowController: NSTableViewDelegate {
 extension CartListWindowController: NSTableViewDataSource {
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return self.dataSource.cartfiles.count
+    }
+    
+    func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+        let rowView = tableView.makeViewWithIdentifier("CartListTableRowView", owner: self) as? CartListTableRowView
+        return rowView
     }
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {

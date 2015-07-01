@@ -29,8 +29,8 @@ import Cocoa
 import PureLayout_Mac
 import CarthageKit
 
-class CartListTableCellViewController: NSTableRowView {
-    
+class CartListTableCellViewController: NSTableCellView {
+        
     private let contentView = CartListTableCellView()
     
     var cartfileURL: CWCartfile? {
@@ -65,18 +65,6 @@ class CartListTableCellViewController: NSTableRowView {
         super.prepareForReuse()
         self.cartfileURL = nil
         println("\(self): Preparing for Reuse")
-    }
-    
-    func cellWasDeselected() {
-        self.contentView.cellWasDeselected()
-    }
-    
-    func cellWasSelected() {
-        self.contentView.cellWasSelected()
-    }
-    
-    func cellWasHighlighted() {
-        self.contentView.cellWasHighlighted()
     }
 }
 

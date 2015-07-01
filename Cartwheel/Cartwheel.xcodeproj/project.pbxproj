@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		732909AA1B437F6200A75914 /* CartListTableRowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732909A91B437F6200A75914 /* CartListTableRowView.xib */; };
+		732909AC1B437F7300A75914 /* CartListTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732909AB1B437F7300A75914 /* CartListTableRowView.swift */; };
 		734A46DA1B2D0599002A1C26 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C41B2D0590002A1C26 /* Argo.framework */; };
 		734A46DB1B2D0599002A1C26 /* Argo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C41B2D0590002A1C26 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		734A46DC1B2D0599002A1C26 /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C51B2D0590002A1C26 /* Box.framework */; };
@@ -75,6 +77,8 @@
 /* Begin PBXFileReference section */
 		730091411B093A7F00719208 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		731994EC1AF2B7EE003B422B /* Cartwheel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Cartwheel.entitlements; sourceTree = "<group>"; };
+		732909A91B437F6200A75914 /* CartListTableRowView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CartListTableRowView.xib; sourceTree = "<group>"; };
+		732909AB1B437F7300A75914 /* CartListTableRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListTableRowView.swift; sourceTree = "<group>"; };
 		734A46C41B2D0590002A1C26 /* Argo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Argo.framework; path = Carthage/Build/Mac/Argo.framework; sourceTree = SOURCE_ROOT; };
 		734A46C51B2D0590002A1C26 /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = Carthage/Build/Mac/Box.framework; sourceTree = SOURCE_ROOT; };
 		734A46C61B2D0590002A1C26 /* CarthageKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CarthageKit.framework; path = Carthage/Build/Mac/CarthageKit.framework; sourceTree = SOURCE_ROOT; };
@@ -230,6 +234,7 @@
 			isa = PBXGroup;
 			children = (
 				73C2F3901AF05147001B36DB /* CartListTableCellViewController.swift */,
+				732909AB1B437F7300A75914 /* CartListTableRowView.swift */,
 			);
 			name = "Cell Controller";
 			sourceTree = "<group>";
@@ -246,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				73C2F3921AF057BF001B36DB /* CartListTableCellViewController.xib */,
+				732909A91B437F6200A75914 /* CartListTableRowView.xib */,
 			);
 			name = "Unused but Needed";
 			sourceTree = "<group>";
@@ -379,6 +385,7 @@
 			files = (
 				7353B9331B001B140038861D /* ExperimentNIB.xib in Resources */,
 				73B4DD141AEEE527007342C7 /* Images.xcassets in Resources */,
+				732909AA1B437F6200A75914 /* CartListTableRowView.xib in Resources */,
 				73C2F3931AF057BF001B36DB /* CartListTableCellViewController.xib in Resources */,
 				73C2F3971AF06D78001B36DB /* CartListWindowController.xib in Resources */,
 				7366ED351B0D801200AB6E77 /* CartwheelDefaults.plist in Resources */,
@@ -396,6 +403,7 @@
 			files = (
 				73B4589E1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift in Sources */,
 				73B458A11B249E6500A417AF /* CartListTitlebarAccessoryView.swift in Sources */,
+				732909AC1B437F7300A75914 /* CartListTableRowView.swift in Sources */,
 				73C2F3961AF06D78001B36DB /* CartListWindowController.swift in Sources */,
 				73C2F38F1AF04F97001B36DB /* CartListTableCellView.swift in Sources */,
 				73B4DD121AEEE527007342C7 /* AppDelegate.swift in Sources */,

@@ -68,12 +68,11 @@ class CartListView: NSVisualEffectView {
     func configure(#tableView: NSTableView, scrollView: NSScrollView, tableColumn: NSTableColumn) {
         if let _ = scrollView.superview {
             tableView.addTableColumn(self.ui.tableColumn)
-            tableView.registerNib(NSNib(nibNamed: "CartListTableCellViewController", bundle: nil)!, forIdentifier: "CartListTableCellViewController") // it seems basically impossible to use a custom cell not based on a nib. The NIB is blank and will continue to be blank.
             scrollView.documentView = self.ui.tableView
             scrollView.hasVerticalScroller = true
             tableColumn.width = self.ui.scrollView.frame.width
             tableView.headerView = nil
-            tableView.selectionHighlightStyle = NSTableViewSelectionHighlightStyle.None
+            tableView.selectionHighlightStyle = NSTableViewSelectionHighlightStyle.Regular
             tableView.allowsMultipleSelection = true
             tableView.backgroundColor = NSColor.clearColor()
             scrollView.drawsBackground = false
