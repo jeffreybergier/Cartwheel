@@ -124,13 +124,18 @@ extension CartListWindowController: NSTableViewDataSource {
     }
     
     func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
-        let rowView = tableView.makeViewWithIdentifier("CartListTableRowView", owner: self) as? CartListTableRowView
+        let rowView = tableView.makeViewWithIdentifier("CartListTableRowView", owner: nil) as? CartListTableRowView
         return rowView
     }
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let cell = tableView.makeViewWithIdentifier("CartListTableCellViewController", owner: self) as? CartListTableCellViewController
-        cell?.cartfileURL = self.dataSource.cartfiles[safe: row]
-        return cell
+        // Create and configure CellView
+        let cellView = tableView.makeViewWithIdentifier("CartListTableCellViewController", owner: nil) as? CartListTableCellViewController
+        cellView?.cartfileURL = self.dataSource.cartfiles[safe: row]
+        
+        // Retrieve RowView and give it a reference to the CellView
+        let rowView = tableView.rowViewAtRow(row, makeIfNecessary: false) as? CartListTableRowView
+        rowView!.cellViewController = cellView
+        return cellView
     }
 }

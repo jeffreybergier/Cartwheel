@@ -34,12 +34,12 @@ class CartListTableCellView: NSView {
     
     let ui = InterfaceElements()
     var viewConstraints = [NSLayoutConstraint]()
-    weak var controller: NSView?
+    weak var cellViewController: CartListTableCellViewController?
     
-    func viewDidLoadWithController(controller: NSView?) {
+    func viewDidLoadWithController(controller: CartListTableCellViewController?) {
         self.wantsLayer = true
         
-        self.controller = controller
+        self.cellViewController = controller
         self.addSubview(self.ui.stackView)
         self.configure(stackView: self.ui.stackView, withViews: self.ui.allViewsWithinStackView)
         self.configure(cartfileTitleLabel: self.ui.cartfileTitleLabel)
@@ -85,7 +85,7 @@ class CartListTableCellView: NSView {
             updateButton.setButtonType(.MomentaryPushInButton)
             updateButton.bezelStyle = .RoundedBezelStyle
             updateButton.title = NSLocalizedString("Update", comment: "Button to perform carthage update")
-            updateButton.target = self.controller
+            updateButton.target = self.cellViewController
             updateButton.action = "didClickCreateNewCartFileButton:"
             (updateButton.cell() as? NSButtonCell)?.backgroundColor = NSColor.clearColor()
         } else {
@@ -115,20 +115,7 @@ class CartListTableCellView: NSView {
     
     // MARK: Handle Legacy View Selection Behavior
     
-//
-//    func cellWasDeselected() {
-//        self.layer?.backgroundColor = NSColor.clearColor().CGColor
-//        self.ui.updateButton.hidden = true
-//    }
-//    
-//    func cellWasSelected() {
-//        self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.3).CGColor
-//        self.ui.updateButton.hidden = false
-//    }
-//    
-//    func cellWasHighlighted() {
-//        self.layer?.backgroundColor = NSColor.whiteColor().colorWithAlphaComponent(0.5).CGColor
-//    }
+
     
     struct InterfaceElements {
         var cartfileTitleLabel = NSTextField()
@@ -149,10 +136,15 @@ class CartListTableCellView: NSView {
 }
 
 
-// MARK: Protocol Extensions
+// MARK: Handle Printable
 
 extension CartListTableCellView: Printable {
     override var description: String {
-        return "CartListTableCellView \(self.ui.cartfileTitleLabel.stringValue):"
+        if let cartfileURL = self.cellViewController?.cartfileURL,
+            let pathComponents = cartfileURL.pathComponents,
+            let containingFolder = pathComponents[pathComponents.count - 2] as? String {
+                return "CartListTableCellView for Cell with Cartfile Named: \(containingFolder)"
+        }
+        return super.description
     }
 }

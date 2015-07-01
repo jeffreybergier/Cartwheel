@@ -28,17 +28,26 @@ import Cocoa
 
 class CartListTableRowView: NSTableRowView {
     
+    weak var cellViewController: CartListTableCellViewController?
+    
+    // MARK: Handle Intialization
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.wantsLayer = true
     }
     
-     // MARK: Handle Selecting a Row
+    // MARK: Handle Selecting a Row
     
-        override func drawSelectionInRect(dirtyRect: NSRect) {
-            super.drawSelectionInRect(dirtyRect)
-            println("\(self) drawSelectionInRect: \(dirtyRect)")
-        }
+    override func drawSelectionInRect(dirtyRect: NSRect) {
+        super.drawSelectionInRect(dirtyRect)
+    }
+    
+    // MARK: Handle Line Separators
+    
+    override func drawSeparatorInRect(dirtyRect: NSRect) {
+        super.drawSeparatorInRect(dirtyRect)
+    }
     
     // MARK: Handle Mouse Hover Events
     
@@ -51,14 +60,14 @@ class CartListTableRowView: NSTableRowView {
     // Implementing a tracking area is required for mouseEntering and mouseExiting events
     private lazy var trackingArea: NSTrackingArea = NSTrackingArea(rect: NSRect.zeroRect, options: .InVisibleRect | .ActiveAlways | .MouseEnteredAndExited, owner: self, userInfo: nil)
     
-        override func drawBackgroundInRect(dirtyRect: NSRect) {
-            super.drawBackgroundInRect(dirtyRect)
-            if self.mouseInView == true {
-                self.layer?.backgroundColor = NSColor.redColor().CGColor
-            } else {
-                self.layer?.backgroundColor = NSColor.clearColor().CGColor
-            }
+    override func drawBackgroundInRect(dirtyRect: NSRect) {
+        super.drawBackgroundInRect(dirtyRect)
+        if self.mouseInView == true {
+            self.cellViewController?.didHighlight()
+        } else {
+            self.cellViewController?.didDehighlight()
         }
+    }
     
     override func updateTrackingAreas() {
         // setting the tracking areas is required for mouseEntered and mouseExited to be called
@@ -75,6 +84,17 @@ class CartListTableRowView: NSTableRowView {
     override func mouseExited(theEvent: NSEvent) {
         self.mouseInView = false
     }
+}
 
-    
+// MARK: Handle Printable
+
+extension CartListTableRowView: Printable {
+    override var description: String {
+        if let cartfileURL = self.cellViewController?.cartfileURL,
+            let pathComponents = cartfileURL.pathComponents,
+            let containingFolder = pathComponents[pathComponents.count - 2] as? String {
+                return "CartListTableRowView for Cell with Cartfile Named: \(containingFolder)"
+        }
+        return super.description
+    }
 }

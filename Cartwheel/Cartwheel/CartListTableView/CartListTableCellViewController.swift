@@ -31,7 +31,7 @@ import CarthageKit
 
 class CartListTableCellViewController: NSTableCellView {
         
-    private let contentView = CartListTableCellView()
+    let contentView = CartListTableCellView()
     
     var cartfileURL: CWCartfile? {
         didSet {
@@ -68,8 +68,27 @@ class CartListTableCellViewController: NSTableCellView {
     }
 }
 
+// MARK: Handle Printable
+
 extension CartListTableCellViewController: Printable {
     override var description: String {
-        return "CartListTableCellViewController " + (NSString(format: "<%p> ", self) as String) + "\(self.contentView.ui.cartfileTitleLabel.stringValue):"
+        if let cartfileURL = self.cartfileURL,
+            let pathComponents = cartfileURL.pathComponents,
+            let containingFolder = pathComponents[pathComponents.count - 2] as? String {
+                return "CartListTableCellViewController for Cell with Cartfile Named: \(containingFolder)"
+        }
+        return super.description
+    }
+}
+
+// MARK: Handle Highlights
+
+extension CartListTableCellViewController {
+    func didHighlight() {
+        
+    }
+    
+    func didDehighlight() {
+        
     }
 }

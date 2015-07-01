@@ -299,21 +299,21 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		73C2F38D1AF04F32001B36DB /* TableView Cells */ = {
+		73C2F38D1AF04F32001B36DB /* TableView Cells/Rows */ = {
 			isa = PBXGroup;
 			children = (
 				73B458A91B24B4EC00A417AF /* Cell Controller */,
 				73B458AA1B24B50F00A417AF /* Cell Views */,
 				73B458AB1B24B51700A417AF /* Unused but Needed */,
 			);
-			name = "TableView Cells";
+			name = "TableView Cells/Rows";
 			sourceTree = "<group>";
 		};
 		73FBF2391AEF262900970223 /* CartList Main Window */ = {
 			isa = PBXGroup;
 			children = (
 				73B458A51B24B42700A417AF /* Main Window */,
-				73C2F38D1AF04F32001B36DB /* TableView Cells */,
+				73C2F38D1AF04F32001B36DB /* TableView Cells/Rows */,
 				73B458971B240BD100A417AF /* Toolbar */,
 			);
 			name = "CartList Main Window";
