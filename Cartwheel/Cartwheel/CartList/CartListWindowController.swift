@@ -36,10 +36,12 @@ class CartListWindowController: NSWindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
         
+        // configure titlebar view controller
         let titlebarAccessoryViewController = CartListTitlebarAccessoryViewController()
         titlebarAccessoryViewController.window = self.window
         titlebarAccessoryViewController.mainViewController = self
         
+        // configure the window
         self.window?.collectionBehavior = NSWindowCollectionBehavior.FullScreenPrimary
         self.window?.minSize = NSSize(width: 380, height: 500)
         self.window?.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)!
@@ -49,32 +51,25 @@ class CartListWindowController: NSWindowController {
         
         // configure my view and add in the custom view
         self.window!.contentView = self.contentView
-        
-        // configure the main view
-        self.contentView.controller = self
-        self.contentView.viewDidLoad()
+        self.contentView.configureViewWithController(self)
         
         // register for notifications on window resize
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowDidChangeSize:", name: NSWindowDidEndLiveResizeNotification, object: self.window)
         
-        // set the delegate on the tableview
-        self.contentView.ui.tableView.registerNib(NSNib(nibNamed: "CartListTableCellViewController", bundle: nil)!, forIdentifier: "CartListTableCellViewController")
-        self.contentView.ui.tableView.registerNib(NSNib(nibNamed: "CartListTableRowView", bundle: nil)!, forIdentifier: "CartListTableRowView") // it seems basically impossible to use a custom cell not based on a nib. The NIB is blank and will continue to be blank.
-        self.contentView.ui.tableView.setDataSource(self)
-        self.contentView.ui.tableView.setDelegate(self)
-        self.contentView.ui.tableView.reloadData()
+        // Register Blank nibs so Cell Reuse Works
+        self.contentView.registerTableViewNIB("CartListTableCellViewController")
+        self.contentView.registerTableViewNIB("CartListTableRowView")
+        
+        // Reload TableView Data
+        self.contentView.reloadTableViewData()
     }
     
     func window(window: NSWindow, didDecodeRestorableState state: NSCoder) {
-        // call reload table data here because this happens after window geometry is set
-        // this reduces errors for autolayout and makes it so the cell width is known when calculating height
-        let visibleRows = self.contentView.ui.tableView.rowsInRect(self.contentView.ui.tableView.visibleRect)
-        self.contentView.ui.tableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(indexesInRange: visibleRows))
+        self.contentView.noteHeightOfVisibleRowsChanged()
     }
     
     @objc private func windowDidChangeSize(notification: NSNotification) {
-        let visibleRows = self.contentView.ui.tableView.rowsInRect(self.contentView.ui.tableView.visibleRect)
-        self.contentView.ui.tableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(indexesInRange: visibleRows))
+        self.contentView.noteHeightOfVisibleRowsChanged()
     }
     
     private lazy var cellHeightCalculationView: CartListTableCellView = {
@@ -90,7 +85,7 @@ class CartListWindowController: NSWindowController {
         view.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
         view.autoSetDimension(.Height, toSize: 100)
         view.viewDidLoadWithController(nil)
-        view.ui.cartfileTitleLabel.stringValue = "TestString"
+        view.populatePrimaryTextFieldWithString("TestString")
         return view
     }()
 }
@@ -100,16 +95,16 @@ extension CartListWindowController: NSTableViewDelegate {
         if let cartfileURL = self.dataSource.cartfiles[safe: row],
             let pathComponents = cartfileURL.pathComponents,
             let containingFolder = pathComponents[pathComponents.count - 2] as? String {
-                self.cellHeightCalculationView.ui.cartfileTitleLabel.stringValue = containingFolder
+                self.cellHeightCalculationView.populatePrimaryTextFieldWithString(containingFolder)
         } else {
-            self.cellHeightCalculationView.clearCellView()
+            self.cellHeightCalculationView.clearContents()
         }
         self.cellHeightCalculationView.needsLayout = true
         self.cellHeightCalculationView.layoutSubtreeIfNeeded()
         
         let defaultInset = CGFloat(8.0)
         let smallInset = round(defaultInset / 1.5)
-        let viewHeight = self.cellHeightCalculationView.ui.stackView.frame.size.height
+        let viewHeight = self.cellHeightCalculationView.viewHeightForTableRowHeightCalculation
         let cellHeight = (smallInset * 2) + viewHeight + 1 // the +1 fixes issues in the view debugger
         
         return cellHeight
@@ -120,7 +115,13 @@ extension CartListWindowController: NSTableViewDelegate {
 
 extension CartListWindowController: NSTableViewDataSource {
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        return self.dataSource.cartfiles.count
+        let count = self.dataSource.cartfiles.count
+        if count > 0 {
+            self.contentView.tableViewHasRows(true)
+        } else {
+            self.contentView.tableViewHasRows(false)
+        }
+        return count
     }
     
     func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {

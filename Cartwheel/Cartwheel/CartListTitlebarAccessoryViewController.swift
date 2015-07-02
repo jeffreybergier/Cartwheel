@@ -68,7 +68,8 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
                             self.dataSource.addCartfiles(cartfiles)
                     }
                     if changedDataSource == true {
-                        self.mainViewController?.contentView.ui.tableView.reloadData()
+                        // TODO: Refactor this to use Data Model Observing
+                        self.mainViewController?.contentView.reloadTableViewData()
                     }
                 }
             case .CancelButton:
@@ -89,7 +90,7 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
             NSFileManager.defaultManager().fileExistsAtPath(url.path!, isDirectory: &isDirectory)
             if let cartfiles = self.parseCartfilesByEnumeratingURL(url, directoryRecursionDepth: 0, initialCartfiles: nil) {
                 self.dataSource.addCartfiles(cartfiles)
-                self.mainViewController?.contentView.ui.tableView.reloadData()
+                self.mainViewController?.contentView.reloadTableViewData()
             }
         }
         return nil

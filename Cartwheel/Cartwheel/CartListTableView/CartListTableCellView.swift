@@ -32,20 +32,38 @@ class CartListTableCellView: NSView {
     
     // MARK: Load and Configure the Views for this Row
     
-    let ui = InterfaceElements()
-    var viewConstraints = [NSLayoutConstraint]()
-    weak var cellViewController: CartListTableCellViewController?
+    private let ui = InterfaceElements()
+    private var viewConstraints = [NSLayoutConstraint]()
+    private weak var cellViewController: CartListTableCellViewController?
     
     func viewDidLoadWithController(controller: CartListTableCellViewController?) {
         self.wantsLayer = true
         
         self.cellViewController = controller
         self.addSubview(self.ui.stackView)
-        self.configure(stackView: self.ui.stackView, withViews: self.ui.allViewsWithinStackView)
-        self.configure(cartfileTitleLabel: self.ui.cartfileTitleLabel)
-        self.configure(updateButton: self.ui.updateButton)
+        self.configureStackView(self.ui.stackView, withViews: self.ui.allViewsWithinStackView)
+        self.configurePrimartTextField(self.ui.primaryTextField)
+        self.configurePrimaryButton(self.ui.primaryButton)
         self.configureLayoutConstraints()
     }
+    
+    // MARK: Handle View Contents
+    
+    func clearContents() {
+        self.ui.primaryTextField.stringValue = ""
+    }
+    
+    func populatePrimaryTextFieldWithString(newPrimaryTextFieldString: String) {
+        self.ui.primaryTextField.stringValue = newPrimaryTextFieldString
+    }
+    
+    // MARK: Special Property used to Calculate Row Height
+    
+    var viewHeightForTableRowHeightCalculation: CGFloat {
+        return self.ui.stackView.frame.size.height
+    }
+    
+    // MARK: Handle View Configuration
     
     private func configureLayoutConstraints() {
         let defaultInset = CGFloat(8.0)
@@ -69,31 +87,31 @@ class CartListTableCellView: NSView {
         self.addConstraints(self.viewConstraints)
     }
     
-    private func configure(#cartfileTitleLabel: NSTextField) {
-        if let _ = cartfileTitleLabel.superview {
-            cartfileTitleLabel.bordered = false
-            (cartfileTitleLabel.cell() as? NSTextFieldCell)?.drawsBackground = false
-            cartfileTitleLabel.editable = false
-            cartfileTitleLabel.font = NSFont.systemFontOfSize(NSFont.systemFontSize())
+    private func configurePrimartTextField(primartTextField: NSTextField) {
+        if let _ = primartTextField.superview {
+            primartTextField.bordered = false
+            (primartTextField.cell() as? NSTextFieldCell)?.drawsBackground = false
+            primartTextField.editable = false
+            primartTextField.font = NSFont.systemFontOfSize(NSFont.systemFontSize())
         } else {
-            fatalError("CartListTableCellView: Tried to configure test label before it was in the view hierarchy.")
+            fatalError("\(self): Tried to configure test label before it was in the view hierarchy.")
         }
     }
     
-    private func configure(#updateButton: NSButton) {
-        if let _ = updateButton.superview {
-            updateButton.setButtonType(.MomentaryPushInButton)
-            updateButton.bezelStyle = .RoundedBezelStyle
-            updateButton.title = NSLocalizedString("Update", comment: "Button to perform carthage update")
-            updateButton.target = self.cellViewController
-            updateButton.action = "didClickCreateNewCartFileButton:"
-            (updateButton.cell() as? NSButtonCell)?.backgroundColor = NSColor.clearColor()
+    private func configurePrimaryButton(primaryButton: NSButton) {
+        if let _ = primaryButton.superview {
+            primaryButton.setButtonType(.MomentaryPushInButton)
+            primaryButton.bezelStyle = .RoundedBezelStyle
+            primaryButton.title = NSLocalizedString("Update", comment: "Button to perform carthage update")
+            primaryButton.target = self.cellViewController
+            primaryButton.action = "didClickCreateNewCartFileButton:"
+            (primaryButton.cell() as? NSButtonCell)?.backgroundColor = NSColor.clearColor()
         } else {
-            fatalError("CartListTableCellView: Tried to configure updateButton before it was in the view hierarchy.")
+            fatalError("\(self): Tried to configure updateButton before it was in the view hierarchy.")
         }
     }
     
-    private func configure(#stackView: NSStackView, withViews views: [NSView]) {
+    private func configureStackView(stackView: NSStackView, withViews views: [NSView]) {
         if let _ = stackView.superview {
             stackView.orientation = .Horizontal
             for view in views {
@@ -104,28 +122,19 @@ class CartListTableCellView: NSView {
                 }
             }
         } else {
-            fatalError("CartListView: Tried to configure the filterField before it was in the view hierarchy.")
+            fatalError("\(self): Tried to configure the filterField before it was in the view hierarchy.")
         }
     }
     
-    func clearCellView() {
-        self.ui.cartfileTitleLabel.stringValue = ""
-        //self.cellWasDeselected()
-    }
-    
-    // MARK: Handle Legacy View Selection Behavior
-    
-
-    
     struct InterfaceElements {
-        var cartfileTitleLabel = NSTextField()
-        var updateButton = NSButton()
+        var primaryTextField = NSTextField()
+        var primaryButton = NSButton()
         var stackView = NSStackView()
         var allViewsWithinStackView: [NSView]
         var allViews: [NSView]
         
         init() {
-            let allViewsWithinStackView: [NSView] = [self.cartfileTitleLabel, self.updateButton]
+            let allViewsWithinStackView: [NSView] = [self.primaryTextField, self.primaryButton]
             self.allViewsWithinStackView = allViewsWithinStackView
             self.allViews = allViewsWithinStackView + [stackView]
             for view in self.allViews {

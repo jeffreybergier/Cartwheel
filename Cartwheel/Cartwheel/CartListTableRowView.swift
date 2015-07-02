@@ -65,7 +65,7 @@ class CartListTableRowView: NSTableRowView {
         if self.mouseInView == true {
             self.cellViewController?.didHighlight()
         } else {
-            self.cellViewController?.didDehighlight()
+            self.cellViewController?.didUnhighlight()
         }
     }
     

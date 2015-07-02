@@ -41,16 +41,16 @@ class CartListTableCellViewController: NSTableCellView {
     }
     
     private func prepareCellForNewModelObject() {
-        self.contentView.clearCellView()
+        self.contentView.clearContents()
     }
     
     private func updateCellWithNewModelObject() {
         if let cartfileURL = self.cartfileURL,
             let pathComponents = cartfileURL.pathComponents,
             let containingFolder = pathComponents[pathComponents.count - 2] as? String {
-                self.contentView.ui.cartfileTitleLabel.stringValue = containingFolder
+                self.contentView.populatePrimaryTextFieldWithString(containingFolder)
         } else {
-            self.contentView.clearCellView()
+            self.contentView.clearContents()
         }
     }
     
@@ -65,6 +65,12 @@ class CartListTableCellViewController: NSTableCellView {
         super.prepareForReuse()
         self.cartfileURL = nil
         println("\(self): Preparing for Reuse")
+    }
+    
+    // MARK: Special Property used to Calculate Row Height
+    
+    var viewHeightForTableRowHeightCalculation: CGFloat {
+        return self.contentView.viewHeightForTableRowHeightCalculation
     }
 }
 
@@ -88,7 +94,7 @@ extension CartListTableCellViewController {
         
     }
     
-    func didDehighlight() {
+    func didUnhighlight() {
         
     }
 }

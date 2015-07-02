@@ -30,18 +30,46 @@ import PureLayout_Mac
 
 class CartListView: NSVisualEffectView {
     
-    let ui = InterfaceElements()
-    var viewConstraints = [NSLayoutConstraint]()
-    weak var controller: CartListWindowController?
+    // MARK: Handle Initialization
     
-    func viewDidLoad() {
+    private let ui = InterfaceElements()
+    private var viewConstraints = [NSLayoutConstraint]()
+    private weak var controller: CartListWindowController?
+    
+    
+    func configureViewWithController(controller: CartListWindowController?) {
         self.wantsLayer = true
         
         self.addSubview(self.ui.scrollView)
         self.configure(tableView: self.ui.tableView, scrollView: self.ui.scrollView, tableColumn: self.ui.tableColumn)
         
+        self.controller = controller
+        self.ui.tableView.setDataSource(controller)
+        self.ui.tableView.setDelegate(controller)
+        
         self.configureConstraints()
     }
+    
+    // MARK: Handle External TableView
+    
+    func tableViewHasRows(hasRows: Bool) {
+        self.ui.tableView.gridStyleMask = hasRows ? .SolidHorizontalGridLineMask : .GridNone
+    }
+    
+    func reloadTableViewData() {
+        self.ui.tableView.reloadData()
+    }
+    
+    func registerTableViewNIB(nibName: String) {
+        self.ui.tableView.registerNib(NSNib(nibNamed: nibName, bundle: nil)!, forIdentifier: nibName)
+    }
+    
+    func noteHeightOfVisibleRowsChanged() {
+        let visibleRows = self.ui.tableView.rowsInRect(self.ui.tableView.visibleRect)
+        self.ui.tableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(indexesInRange: visibleRows))
+    }
+    
+    // MARK: Handle Configuring The SubViews
     
     private func configureConstraints() {
         let defaultInset = CGFloat(8.0)
@@ -49,7 +77,6 @@ class CartListView: NSVisualEffectView {
         let filterFieldWidth = CGFloat(200)
         
         let pureLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
-            // Constraints for table
             self.ui.scrollView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
         }
         
