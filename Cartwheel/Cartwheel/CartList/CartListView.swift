@@ -36,7 +36,6 @@ class CartListView: NSVisualEffectView {
     private var viewConstraints = [NSLayoutConstraint]()
     private weak var controller: CartListWindowController?
     
-    
     func configureViewWithController(controller: CartListWindowController?) {
         self.wantsLayer = true
         
@@ -44,10 +43,19 @@ class CartListView: NSVisualEffectView {
         self.configure(tableView: self.ui.tableView, scrollView: self.ui.scrollView, tableColumn: self.ui.tableColumn)
         
         self.controller = controller
-        self.ui.tableView.setDataSource(controller)
         self.ui.tableView.setDelegate(controller)
+        self.ui.tableView.setDataSource(controller)
         
         self.configureConstraints()
+    }
+    
+    // MARK: Handle View Has Appeared On Screen
+    
+    var viewHasAppearedOnScreen = false
+    
+    override func layout() {
+        super.layout()
+        println("\(self) layout")
     }
     
     // MARK: Handle External TableView

@@ -28,7 +28,9 @@
 import Cocoa
 import PureLayout_Mac
 
-class CartListWindowController: NSWindowController {
+class CartListWindowController: NSWindowController, NSTableViewDataSource, NSTableViewDelegate {
+    
+    // MARK: Handle Initialization
     
     var contentView = CartListView()
     private let dataSource = CWCartfileDataSource.sharedInstance
@@ -49,28 +51,46 @@ class CartListWindowController: NSWindowController {
         self.window?.styleMask = self.window!.styleMask | NSFullSizeContentViewWindowMask
         self.window?.title = NSLocalizedString("Cartwheel", comment: "Cartwheel name for window title")
         
+        // Register Blank nibs so Cell Reuse Works
+        self.contentView.registerTableViewNIB("CartListTableCellViewController")
+        self.contentView.registerTableViewNIB("CartListTableRowView")
+        
         // configure my view and add in the custom view
-        self.window!.contentView = self.contentView
+        self.window?.contentView = self.contentView
         self.contentView.configureViewWithController(self)
         
         // register for notifications on window resize
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowDidChangeSize:", name: NSWindowDidEndLiveResizeNotification, object: self.window)
         
-        // Register Blank nibs so Cell Reuse Works
-        self.contentView.registerTableViewNIB("CartListTableCellViewController")
-        self.contentView.registerTableViewNIB("CartListTableRowView")
-        
-        // Reload TableView Data
-        self.contentView.reloadTableViewData()
+        // this notification is used to know when the window appears on screen
+        // this is needed to avoid autolayout warnings with the table
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowDidBecomeMain:", name: NSWindowDidBecomeMainNotification, object: self.window)
     }
+    
+    // MARK: Autolayout Hack
+    // this code makes it so the table does not try to layout cells until it appears on screen
+    private var windowDidAppearOnce = false
+    @objc private func windowDidBecomeMain(notification: NSNotification) {
+        if self.windowDidAppearOnce == false {
+            self.windowDidAppearOnce = true
+            self.contentView.reloadTableViewData()
+        }
+        println("window did become main")
+    }
+    
+    // MARK: Handle window resizing
+    
+    @objc private func windowDidChangeSize(notification: NSNotification) {
+        self.contentView.noteHeightOfVisibleRowsChanged()
+    }
+    
+    // MARK: Handle Restoring from Previous State
     
     func window(window: NSWindow, didDecodeRestorableState state: NSCoder) {
         self.contentView.noteHeightOfVisibleRowsChanged()
     }
     
-    @objc private func windowDidChangeSize(notification: NSNotification) {
-        self.contentView.noteHeightOfVisibleRowsChanged()
-    }
+    // MARK: NSTableViewDelegate
     
     private lazy var cellHeightCalculationView: CartListTableCellView = {
         // this cell is used to let the table calculate the height of each cell dynamically based on the content
@@ -88,9 +108,7 @@ class CartListWindowController: NSWindowController {
         view.populatePrimaryTextFieldWithString("TestString")
         return view
     }()
-}
-
-extension CartListWindowController: NSTableViewDelegate {
+    
     func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         if let cartfileURL = self.dataSource.cartfiles[safe: row],
             let pathComponents = cartfileURL.pathComponents,
@@ -109,23 +127,21 @@ extension CartListWindowController: NSTableViewDelegate {
         
         return cellHeight
     }
-}
-
-// MARK: NSTableViewDataSource
-
-extension CartListWindowController: NSTableViewDataSource {
+    
+    // MARK: NSTableViewDataSource
+    
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        let count = self.dataSource.cartfiles.count
-        if count > 0 {
-            self.contentView.tableViewHasRows(true)
-        } else {
-            self.contentView.tableViewHasRows(false)
-        }
-        return count
+        // this line tells the tableview to add / remove gridlines when the table is full / empty
+        self.dataSource.cartfiles.count > 0 ? self.contentView.tableViewHasRows(true) : self.contentView.tableViewHasRows(false)
+        
+        // this line returns 0 if the window has not yet appeared on screen.
+        // this avoids autolayout warning issues.
+        return self.windowDidAppearOnce ? self.dataSource.cartfiles.count : 0
     }
     
     func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
         let rowView = tableView.makeViewWithIdentifier("CartListTableRowView", owner: nil) as? CartListTableRowView
+        rowView?.isLastRow = row < self.dataSource.cartfiles.count - 1 ? false : true
         return rowView
     }
     

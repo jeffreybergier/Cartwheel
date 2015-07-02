@@ -28,9 +28,9 @@ import Cocoa
 
 class CartListTableRowView: NSTableRowView {
     
-    weak var cellViewController: CartListTableCellViewController?
-    
     // MARK: Handle Intialization
+    
+    weak var cellViewController: CartListTableCellViewController?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -45,8 +45,14 @@ class CartListTableRowView: NSTableRowView {
     
     // MARK: Handle Line Separators
     
+    var isLastRow = false
     override func drawSeparatorInRect(dirtyRect: NSRect) {
-        super.drawSeparatorInRect(dirtyRect)
+        if self.isLastRow == false {
+            println("\(self): Drawing Normal Separator")
+            super.drawSeparatorInRect(dirtyRect)
+        } else {
+            println("\(self): Should be Drawing No Separator")
+        }
     }
     
     // MARK: Handle Mouse Hover Events
@@ -83,18 +89,5 @@ class CartListTableRowView: NSTableRowView {
     
     override func mouseExited(theEvent: NSEvent) {
         self.mouseInView = false
-    }
-}
-
-// MARK: Handle Printable
-
-extension CartListTableRowView: Printable {
-    override var description: String {
-        if let cartfileURL = self.cellViewController?.cartfileURL,
-            let pathComponents = cartfileURL.pathComponents,
-            let containingFolder = pathComponents[pathComponents.count - 2] as? String {
-                return "CartListTableRowView for Cell with Cartfile Named: \(containingFolder)"
-        }
-        return super.description
     }
 }

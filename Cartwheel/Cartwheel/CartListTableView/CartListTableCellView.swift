@@ -138,22 +138,9 @@ class CartListTableCellView: NSView {
             self.allViewsWithinStackView = allViewsWithinStackView
             self.allViews = allViewsWithinStackView + [stackView]
             for view in self.allViews {
+                view.wantsLayer = true
                 view.translatesAutoresizingMaskIntoConstraints = false
             }
         }
-    }
-}
-
-
-// MARK: Handle Printable
-
-extension CartListTableCellView: Printable {
-    override var description: String {
-        if let cartfileURL = self.cellViewController?.cartfileURL,
-            let pathComponents = cartfileURL.pathComponents,
-            let containingFolder = pathComponents[pathComponents.count - 2] as? String {
-                return "CartListTableCellView for Cell with Cartfile Named: \(containingFolder)"
-        }
-        return super.description
     }
 }
