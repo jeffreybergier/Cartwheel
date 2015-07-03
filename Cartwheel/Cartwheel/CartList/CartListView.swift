@@ -34,31 +34,26 @@ class CartListView: NSVisualEffectView {
     
     private let ui = InterfaceElements()
     private var viewConstraints = [NSLayoutConstraint]()
-    private weak var controller: CartListWindowController?
+    private weak var controller: NSViewController?
     
-    func configureViewWithController(controller: CartListWindowController?) {
+    func configureViewWithController(controller: NSViewController?, tableViewDataSource: NSTableViewDataSource?, tableViewDelegate: NSTableViewDelegate?) {
         self.wantsLayer = true
         
         self.addSubview(self.ui.scrollView)
         self.configure(tableView: self.ui.tableView, scrollView: self.ui.scrollView, tableColumn: self.ui.tableColumn)
         
         self.controller = controller
-        self.ui.tableView.setDelegate(controller)
-        self.ui.tableView.setDataSource(controller)
+        self.ui.tableView.setDelegate(tableViewDelegate)
+        self.ui.tableView.setDataSource(tableViewDataSource)
         
         self.configureConstraints()
     }
     
-    // MARK: Handle View Has Appeared On Screen
-    
-    var viewHasAppearedOnScreen = false
-    
-    override func layout() {
-        super.layout()
-        println("\(self) layout")
-    }
-    
     // MARK: Handle External TableView
+    
+    func updateTableViewRowHeight(newHeight: CGFloat) {
+        self.ui.tableView.rowHeight = newHeight
+    }
     
     func tableViewHasRows(hasRows: Bool) {
         self.ui.tableView.gridStyleMask = hasRows ? .SolidHorizontalGridLineMask : .GridNone
@@ -109,6 +104,7 @@ class CartListView: NSVisualEffectView {
             tableView.headerView = nil
             tableView.selectionHighlightStyle = .Regular
             tableView.gridStyleMask = .SolidHorizontalGridLineMask
+            tableView.rowSizeStyle = .Custom
             tableView.allowsMultipleSelection = true
             tableView.backgroundColor = NSColor.clearColor()
             scrollView.drawsBackground = false

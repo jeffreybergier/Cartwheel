@@ -34,16 +34,23 @@ class CartListTitlebarAccessoryViewController: NSTitlebarAccessoryViewController
     private let contentView = CartListTitlebarAccessoryView()
     private let dataSource = CWCartfileDataSource.sharedInstance
     weak var window: NSWindow?
-    weak var mainViewController: CartListWindowController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Add in the Contentview and Configure it
         self.view.addSubview(self.contentView)
-        self.contentView.controller = self
         self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
-        self.contentView.viewDidLoad()
+        self.contentView.viewDidLoadWithController(self)
+        
+        // configure titles for controls
+        self.contentView.setMiddleButtonTitle(NSLocalizedString("Create Cartfile", comment: "Button to Add a Cartfile to Cartwheel"))
+        self.contentView.setLeftButtonTitle(NSLocalizedString("Add Cartfile", comment: "Button to Add a Cartfile to Cartwheel"))
+        
+        // configure target action for controls
+        self.contentView.setMiddleButtonAction("didClickCreateNewCartFileButton:", forTarget: self)
+        self.contentView.setLeftButtonAction("didClickAddCartFileButton:", forTarget: self)
+        self.contentView.setSearchFieldDelegate(self)
     }
 }
 
@@ -67,10 +74,6 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
                             changedDataSource = true
                             self.dataSource.addCartfiles(cartfiles)
                     }
-                    if changedDataSource == true {
-                        // TODO: Refactor this to use Data Model Observing
-                        self.mainViewController?.contentView.reloadTableViewData()
-                    }
                 }
             case .CancelButton:
                 NSLog("CartListViewController: File Chooser was cancelled by user.")
@@ -90,7 +93,6 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
             NSFileManager.defaultManager().fileExistsAtPath(url.path!, isDirectory: &isDirectory)
             if let cartfiles = self.parseCartfilesByEnumeratingURL(url, directoryRecursionDepth: 0, initialCartfiles: nil) {
                 self.dataSource.addCartfiles(cartfiles)
-                self.mainViewController?.contentView.reloadTableViewData()
             }
         }
         return nil

@@ -100,6 +100,10 @@ extension Array {
     subscript (yolo index: Int) -> Element { // YOLO! Crashes if out of range
         return self[index]
     }
+    
+    func lastIndex() -> Int {
+        return self.count - 1
+    }
 }
 
 extension Set {

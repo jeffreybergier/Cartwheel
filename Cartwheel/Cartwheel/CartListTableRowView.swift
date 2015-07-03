@@ -45,14 +45,8 @@ class CartListTableRowView: NSTableRowView {
     
     // MARK: Handle Line Separators
     
-    var isLastRow = false
     override func drawSeparatorInRect(dirtyRect: NSRect) {
-        if self.isLastRow == false {
-            println("\(self): Drawing Normal Separator")
-            super.drawSeparatorInRect(dirtyRect)
-        } else {
-            println("\(self): Should be Drawing No Separator")
-        }
+        super.drawSeparatorInRect(dirtyRect)
     }
     
     // MARK: Handle Mouse Hover Events

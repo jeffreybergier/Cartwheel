@@ -28,29 +28,19 @@ import PureLayout_Mac
 
 class CartListTitlebarAccessoryView: NSVisualEffectView {
     
-    let ui = InterfaceElements()
-    var viewConstraints = [NSLayoutConstraint]()
-    weak var controller: CartListTitlebarAccessoryViewController?
+    // MARK: Handle Intialization
+    
+    private let ui = InterfaceElements()
+    private var viewConstraints = [NSLayoutConstraint]()
 
-    func viewDidLoad() {
+    func viewDidLoadWithController(controller: NSViewController?) {
         self.wantsLayer = true
         
         self.addSubview(self.ui.stackView)
-        self.configure(stackView: self.ui.stackView, withViews: self.ui.allViewsWithinStackView)
-        self.configure(addButton: self.ui.addButton)
-        self.configure(createNewButton: self.ui.createNewButton)
-        self.configure(filterField: self.ui.filterField)
-        
+        self.configureStackView(self.ui.stackView, withViews: self.ui.allViewsWithinStackView)
+        self.configureDefaultButtonStyleForButton(self.ui.leftButton)
+        self.configureDefaultButtonStyleForButton(self.ui.middleButton)
         self.configureConstraints()
-    }
-    
-    override func layout() {
-        // configure the titlebar height
-        let stackViewHeight = self.ui.stackView.frame.height
-        let totalHeight = 12 + stackViewHeight
-        self.superview?.frame.size.height = totalHeight
-        
-        super.layout()
     }
     
     private func configureConstraints() {
@@ -65,7 +55,7 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
             self.ui.stackView.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
             
             NSView.autoSetPriority(CWLayoutPriority.DefaultLow, forConstraints: {
-                self.ui.filterField.autoSetDimension(.Width, toSize: filterFieldMaxWidth, relation: .LessThanOrEqual)
+                self.ui.searchField.autoSetDimension(.Width, toSize: filterFieldMaxWidth, relation: .LessThanOrEqual)
             })
         }
         
@@ -81,63 +71,69 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
         self.addConstraints(self.viewConstraints)
     }
     
-    private func configure(#addButton: NSButton) {
-        if let _ = addButton.superview {
-            addButton.setButtonType(.MomentaryPushInButton)
-            addButton.bezelStyle = .RoundedBezelStyle
-            addButton.title = NSLocalizedString("Add Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
-            addButton.target = self.controller
-            addButton.action = "didClickAddCartFileButton:"
-        } else {
-            fatalError("CartListView: Tried to configure the AddButton before it was in the view hierarchy.")
-        }
+    // MARK: Handle Sizing Vertical View Based on Autolayout
+    
+    override func layout() {
+        // configure the titlebar height
+        let stackViewHeight = self.ui.stackView.frame.height
+        let totalHeight = 12 + stackViewHeight
+        self.superview?.frame.size.height = totalHeight
+        
+        super.layout()
     }
     
-    private func configure(#createNewButton: NSButton) {
-        if let _ = createNewButton.superview {
-            createNewButton.setButtonType(.MomentaryPushInButton)
-            createNewButton.bezelStyle = .RoundedBezelStyle
-            createNewButton.title = NSLocalizedString("Create Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
-            createNewButton.target = self.controller
-            createNewButton.action = "didClickCreateNewCartFileButton:"
-        } else {
-            fatalError("CartListView: Tried to configure the AddButton before it was in the view hierarchy.")
-        }
+    // MARK: Public Interface for the Controller
+    
+    func setSearchFieldDelegate(delegate: NSTextFieldDelegate) {
+        self.ui.searchField.delegate = delegate
     }
     
-    private func configure(#filterField: NSSearchField) {
-        if let _ = filterField.superview {
-            filterField.delegate = self.controller
-        } else {
-            fatalError("CartListView: Tried to configure the filterField before it was in the view hierarchy.")
-        }
+    func setLeftButtonTitle(newTitle: String) {
+        self.ui.leftButton.title = newTitle
     }
     
-    private func configure(#stackView: NSStackView, withViews views: [NSView]) {
-        if let _ = stackView.superview {
-            stackView.orientation = .Horizontal
-            for view in views {
-                if let view = view as? NSSearchField {
-                    stackView.addView(view, inGravity: .Bottom)
-                } else {
-                    stackView.addView(view, inGravity: .Top)
-                }
+    func setMiddleButtonTitle(newTitle: String) {
+        self.ui.middleButton.title = newTitle
+    }
+    
+    func setLeftButtonAction(action: Selector, forTarget target: NSObject) {
+        self.ui.leftButton.target = target
+        self.ui.leftButton.action = action
+    }
+    
+    func setMiddleButtonAction(action: Selector, forTarget target: NSObject) {
+        self.ui.middleButton.target = target
+        self.ui.middleButton.action = action
+    }
+    
+    // MARK: Configure Subviews
+    
+    private func configureDefaultButtonStyleForButton(button: NSButton) {
+        button.setButtonType(.MomentaryPushInButton)
+        button.bezelStyle = .RoundedBezelStyle
+    }
+    
+    private func configureStackView(stackView: NSStackView, withViews views: [NSView]) {
+        stackView.orientation = .Horizontal
+        for view in views {
+            if let view = view as? NSSearchField {
+                stackView.addView(view, inGravity: .Bottom)
+            } else {
+                stackView.addView(view, inGravity: .Top)
             }
-        } else {
-            fatalError("CartListView: Tried to configure the filterField before it was in the view hierarchy.")
         }
     }
     
     struct InterfaceElements {
-        var addButton = NSButton()
-        var createNewButton = NSButton()
-        var filterField = NSSearchField()
+        var leftButton = NSButton()
+        var middleButton = NSButton()
+        var searchField = NSSearchField()
         var stackView = NSStackView()
         var allViewsWithinStackView: [NSView]
         var allViews: [NSView]
         
         init() {
-            let allViewsWithinStackView: [NSView] = [self.addButton, self.createNewButton, self.filterField]
+            let allViewsWithinStackView: [NSView] = [self.leftButton, self.middleButton, self.searchField]
             self.allViewsWithinStackView = allViewsWithinStackView
             self.allViews = allViewsWithinStackView + [stackView]
             for view in self.allViews {

@@ -34,9 +34,9 @@ class CartListTableCellView: NSView {
     
     private let ui = InterfaceElements()
     private var viewConstraints = [NSLayoutConstraint]()
-    private weak var cellViewController: CartListTableCellViewController?
+    private weak var cellViewController: NSTableCellView?
     
-    func viewDidLoadWithController(controller: CartListTableCellViewController?) {
+    func viewDidLoadWithController(controller: NSTableCellView?) {
         self.wantsLayer = true
         
         self.cellViewController = controller
