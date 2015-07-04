@@ -83,15 +83,3 @@ class CartListTableCellViewController: NSTableCellView {
         return self.contentView.viewHeightForTableRowHeightCalculation
     }
 }
-
-// MARK: Handle Highlights
-
-extension CartListTableCellViewController {
-    func didHighlight() {
-        
-    }
-    
-    func didUnhighlight() {
-        
-    }
-}

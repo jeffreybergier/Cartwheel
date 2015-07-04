@@ -40,7 +40,10 @@ class CartListTableRowView: NSTableRowView {
     // MARK: Handle Selecting a Row
     
     override func drawSelectionInRect(dirtyRect: NSRect) {
-        super.drawSelectionInRect(dirtyRect)
+        let selectionPath = NSBezierPath(roundedRect: dirtyRect, xRadius: 0, yRadius: 0)
+        let fillColor: Void = NSColor.blackColor().colorWithAlphaComponent(0.4).setFill()
+        //let debugFillColor: Void = NSColor.redColor().setFill()
+        selectionPath.fill()
     }
     
     // MARK: Handle Line Separators
@@ -59,13 +62,13 @@ class CartListTableRowView: NSTableRowView {
     
     // Implementing a tracking area is required for mouseEntering and mouseExiting events
     private lazy var trackingArea: NSTrackingArea = NSTrackingArea(rect: NSRect.zeroRect, options: .InVisibleRect | .ActiveAlways | .MouseEnteredAndExited, owner: self, userInfo: nil)
-    
     override func drawBackgroundInRect(dirtyRect: NSRect) {
-        super.drawBackgroundInRect(dirtyRect)
-        if self.mouseInView == true {
-            self.cellViewController?.didHighlight()
+        if self.mouseInView == true && self.selected == false {
+            let selectionPath = NSBezierPath(roundedRect: dirtyRect, xRadius: 0, yRadius: 0)
+            let fillColor: Void = NSColor.whiteColor().colorWithAlphaComponent(0.15).setFill()
+            selectionPath.fill()
         } else {
-            self.cellViewController?.didUnhighlight()
+            super.drawBackgroundInRect(dirtyRect)
         }
     }
     
