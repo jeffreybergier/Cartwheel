@@ -112,6 +112,16 @@ extension Set {
     }
 }
 
+extension NSButton {
+    class func buttonWithDefaultStyle() -> NSButton {
+        let button = NSButton()
+        button.wantsLayer = true
+        button.setButtonType(.MomentaryPushInButton)
+        button.bezelStyle = .RoundedBezelStyle
+        return button
+    }
+}
+
 // MARK: Custom Enums
 
 enum NSFileHandlingPanelResponse: Int {

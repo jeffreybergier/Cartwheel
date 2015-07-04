@@ -48,7 +48,6 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
         self.contentView.registerTableViewNIB("CartListTableRowView")
         
         // configure my view and add in the custom view
-        self.view = self.contentView
         self.contentView.configureViewWithController(self, tableViewDataSource: self, tableViewDelegate: self)
         
         // configure default cellHeight
@@ -56,7 +55,9 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
         self.contentView.updateTableViewRowHeight(rowHeight)
         
         // register for notifications on window resize
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowDidChangeSize:", name: NSWindowDidEndLiveResizeNotification, object: self.parentWindowController?.window)
+        if let parentWindowController = self.parentWindowController {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowDidChangeSize:", name: NSWindowDidEndLiveResizeNotification, object: parentWindowController.window)
+        }
     }
     
     private var viewDidAppearOnce = false
@@ -72,6 +73,7 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
     
     @objc private func windowDidChangeSize(notification: NSNotification) {
         self.contentView.noteHeightOfVisibleRowsChanged()
+        self.contentView.setTableViewEdgeInsets(NSEdgeInsets(top: 50, left: 0, bottom: 0, right: 0))
     }
     
     // MARK: NSTableViewDelegate
@@ -88,8 +90,8 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
         view.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
         view.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
         view.autoSetDimension(.Height, toSize: 100)
-        view.viewDidLoadWithController(nil)
-        view.populatePrimaryTextFieldWithString("TestString")
+        view.viewDidLoad()
+        view.setPrimaryTextFieldString("TestString")
         return view
     }()
     
@@ -99,9 +101,9 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
         if let cartfileURL = self.dataSource.cartfiles[safe: row],
             let pathComponents = cartfileURL.pathComponents,
             let containingFolder = pathComponents[pathComponents.count - 2] as? String {
-                self.cellHeightCalculationView.populatePrimaryTextFieldWithString(containingFolder)
+                self.cellHeightCalculationView.setPrimaryTextFieldString(containingFolder)
         } else {
-            self.cellHeightCalculationView.clearContents()
+            self.cellHeightCalculationView.clearCellContents()
         }
         self.cellHeightCalculationView.needsLayout = true
         self.cellHeightCalculationView.layoutSubtreeIfNeeded()

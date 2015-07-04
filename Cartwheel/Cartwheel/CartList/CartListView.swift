@@ -28,7 +28,7 @@
 import Cocoa
 import PureLayout_Mac
 
-class CartListView: NSVisualEffectView {
+class CartListView: NSView {
     
     // MARK: Handle Initialization
     
@@ -72,6 +72,10 @@ class CartListView: NSVisualEffectView {
         self.ui.tableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(indexesInRange: visibleRows))
     }
     
+    func setTableViewEdgeInsets(newInsets: NSEdgeInsets) {
+        self.ui.scrollView.automaticallyAdjustsContentInsets = true
+    }
+    
     // MARK: Handle Configuring The SubViews
     
     private func configureConstraints() {
@@ -96,21 +100,17 @@ class CartListView: NSVisualEffectView {
     }
     
     func configure(#tableView: NSTableView, scrollView: NSScrollView, tableColumn: NSTableColumn) {
-        if let _ = scrollView.superview {
-            tableView.addTableColumn(self.ui.tableColumn)
-            scrollView.documentView = self.ui.tableView
-            scrollView.hasVerticalScroller = true
-            tableColumn.width = self.ui.scrollView.frame.width
-            tableView.headerView = nil
-            tableView.selectionHighlightStyle = .Regular
-            tableView.gridStyleMask = .SolidHorizontalGridLineMask
-            tableView.rowSizeStyle = .Custom
-            tableView.allowsMultipleSelection = true
-            tableView.backgroundColor = NSColor.clearColor()
-            scrollView.drawsBackground = false
-        } else {
-            fatalError("CartListView: Tried to configure the TableView before it was in the view hierarchy.")
-        }
+        tableView.addTableColumn(self.ui.tableColumn)
+        scrollView.documentView = self.ui.tableView
+        scrollView.hasVerticalScroller = true
+        tableColumn.width = self.ui.scrollView.frame.width
+        tableView.headerView = nil
+        tableView.selectionHighlightStyle = .Regular
+        tableView.gridStyleMask = .SolidHorizontalGridLineMask
+        tableView.rowSizeStyle = .Custom
+        tableView.allowsMultipleSelection = true
+        tableView.backgroundColor = NSColor.clearColor()
+        scrollView.drawsBackground = false
     }
     
     struct InterfaceElements {

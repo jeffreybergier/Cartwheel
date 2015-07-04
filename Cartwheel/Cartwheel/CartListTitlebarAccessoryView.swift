@@ -26,7 +26,7 @@
 import Cocoa
 import PureLayout_Mac
 
-class CartListTitlebarAccessoryView: NSVisualEffectView {
+class CartListTitlebarAccessoryView: NSView {
     
     // MARK: Handle Intialization
     
@@ -38,8 +38,6 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
         
         self.addSubview(self.ui.stackView)
         self.configureStackView(self.ui.stackView, withViews: self.ui.allViewsWithinStackView)
-        self.configureDefaultButtonStyleForButton(self.ui.leftButton)
-        self.configureDefaultButtonStyleForButton(self.ui.middleButton)
         self.configureConstraints()
     }
     
@@ -108,11 +106,6 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
     
     // MARK: Configure Subviews
     
-    private func configureDefaultButtonStyleForButton(button: NSButton) {
-        button.setButtonType(.MomentaryPushInButton)
-        button.bezelStyle = .RoundedBezelStyle
-    }
-    
     private func configureStackView(stackView: NSStackView, withViews views: [NSView]) {
         stackView.orientation = .Horizontal
         for view in views {
@@ -125,8 +118,8 @@ class CartListTitlebarAccessoryView: NSVisualEffectView {
     }
     
     struct InterfaceElements {
-        var leftButton = NSButton()
-        var middleButton = NSButton()
+        var leftButton = NSButton.buttonWithDefaultStyle()
+        var middleButton = NSButton.buttonWithDefaultStyle()
         var searchField = NSSearchField()
         var stackView = NSStackView()
         var allViewsWithinStackView: [NSView]

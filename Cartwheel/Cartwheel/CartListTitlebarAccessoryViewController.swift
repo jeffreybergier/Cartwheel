@@ -34,11 +34,11 @@ class CartListTitlebarAccessoryViewController: NSTitlebarAccessoryViewController
     private let contentView = CartListTitlebarAccessoryView()
     private let dataSource = CWCartfileDataSource.sharedInstance
     weak var window: NSWindow?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Add in the Contentview and Configure it
+        //Add in the Contentview and Configure it
         self.view.addSubview(self.contentView)
         self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
         self.contentView.viewDidLoadWithController(self)

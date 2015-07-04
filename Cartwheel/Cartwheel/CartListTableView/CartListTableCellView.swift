@@ -34,36 +34,15 @@ class CartListTableCellView: NSView {
     
     private let ui = InterfaceElements()
     private var viewConstraints = [NSLayoutConstraint]()
-    private weak var cellViewController: NSTableCellView?
     
-    func viewDidLoadWithController(controller: NSTableCellView?) {
+    func viewDidLoad() {
         self.wantsLayer = true
         
-        self.cellViewController = controller
         self.addSubview(self.ui.stackView)
         self.configureStackView(self.ui.stackView, withViews: self.ui.allViewsWithinStackView)
         self.configurePrimartTextField(self.ui.primaryTextField)
-        self.configurePrimaryButton(self.ui.primaryButton)
         self.configureLayoutConstraints()
     }
-    
-    // MARK: Handle View Contents
-    
-    func clearContents() {
-        self.ui.primaryTextField.stringValue = ""
-    }
-    
-    func populatePrimaryTextFieldWithString(newPrimaryTextFieldString: String) {
-        self.ui.primaryTextField.stringValue = newPrimaryTextFieldString
-    }
-    
-    // MARK: Special Property used to Calculate Row Height
-    
-    var viewHeightForTableRowHeightCalculation: CGFloat {
-        return self.ui.stackView.frame.size.height
-    }
-    
-    // MARK: Handle View Configuration
     
     private func configureLayoutConstraints() {
         let defaultInset = CGFloat(8.0)
@@ -87,48 +66,54 @@ class CartListTableCellView: NSView {
         self.addConstraints(self.viewConstraints)
     }
     
-    private func configurePrimartTextField(primartTextField: NSTextField) {
-        if let _ = primartTextField.superview {
-            primartTextField.bordered = false
-            (primartTextField.cell() as? NSTextFieldCell)?.drawsBackground = false
-            primartTextField.editable = false
-            primartTextField.font = NSFont.systemFontOfSize(NSFont.systemFontSize())
-        } else {
-            fatalError("\(self): Tried to configure test label before it was in the view hierarchy.")
-        }
+    // MARK: Public Interface for Controller
+    
+    func clearCellContents() {
+        self.ui.primaryTextField.stringValue = ""
     }
     
-    private func configurePrimaryButton(primaryButton: NSButton) {
-        if let _ = primaryButton.superview {
-            primaryButton.setButtonType(.MomentaryPushInButton)
-            primaryButton.bezelStyle = .RoundedBezelStyle
-            primaryButton.title = NSLocalizedString("Update", comment: "Button to perform carthage update")
-            primaryButton.target = self.cellViewController
-            primaryButton.action = "didClickCreateNewCartFileButton:"
-            (primaryButton.cell() as? NSButtonCell)?.backgroundColor = NSColor.clearColor()
-        } else {
-            fatalError("\(self): Tried to configure updateButton before it was in the view hierarchy.")
-        }
+    func setPrimaryTextFieldString(newString: String) {
+        self.ui.primaryTextField.stringValue = newString
+    }
+    
+    func setPrimaryButtonTitle(newTitle: String) {
+        self.ui.primaryButton.title = newTitle
+    }
+    
+    func setPrimaryButtonAction(action: Selector, forTarget target: NSObject) {
+        self.ui.primaryButton.target = target
+        self.ui.primaryButton.action = action
+    }
+    
+    // MARK: Special Property used to Calculate Row Height
+    
+    var viewHeightForTableRowHeightCalculation: CGFloat {
+        return self.ui.stackView.frame.size.height
+    }
+    
+    // MARK: Handle Subview Configuration
+    
+    private func configurePrimartTextField(primartTextField: NSTextField) {
+        primartTextField.bordered = false
+        (primartTextField.cell() as? NSTextFieldCell)?.drawsBackground = false
+        primartTextField.editable = false
+        primartTextField.font = NSFont.systemFontOfSize(NSFont.systemFontSize())
     }
     
     private func configureStackView(stackView: NSStackView, withViews views: [NSView]) {
-        if let _ = stackView.superview {
-            stackView.orientation = .Horizontal
-            for view in views {
-                if let view = view as? NSButton {
-                    stackView.addView(view, inGravity: .Bottom)
-                } else {
-                    stackView.addView(view, inGravity: .Top)
-                }
+        stackView.orientation = .Horizontal
+        for view in views {
+            if let view = view as? NSButton {
+                stackView.addView(view, inGravity: .Bottom)
+            } else {
+                stackView.addView(view, inGravity: .Top)
             }
-        } else {
-            fatalError("\(self): Tried to configure the filterField before it was in the view hierarchy.")
         }
     }
     
     struct InterfaceElements {
         var primaryTextField = NSTextField()
-        var primaryButton = NSButton()
+        var primaryButton = NSButton.buttonWithDefaultStyle()
         var stackView = NSStackView()
         var allViewsWithinStackView: [NSView]
         var allViews: [NSView]

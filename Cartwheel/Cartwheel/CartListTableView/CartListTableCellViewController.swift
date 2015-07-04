@@ -41,24 +41,34 @@ class CartListTableCellViewController: NSTableCellView {
     }
     
     private func prepareCellForNewModelObject() {
-        self.contentView.clearContents()
+        self.contentView.clearCellContents()
     }
     
     private func updateCellWithNewModelObject() {
         if let cartfileURL = self.cartfileURL,
             let pathComponents = cartfileURL.pathComponents,
             let containingFolder = pathComponents[pathComponents.count - 2] as? String {
-                self.contentView.populatePrimaryTextFieldWithString(containingFolder)
+                self.contentView.setPrimaryTextFieldString(containingFolder)
         } else {
-            self.contentView.clearContents()
+            self.contentView.clearCellContents()
         }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        // configure the view
         self.addSubview(self.contentView)
         self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
-        self.contentView.viewDidLoadWithController(self)
+        self.contentView.viewDidLoad()
+        
+        // configure the button
+        self.contentView.setPrimaryButtonTitle(NSLocalizedString("Update", comment: "Button to perform carthage update"))
+        self.contentView.setPrimaryButtonAction("didClickUpdateCartfileButton:", forTarget: self)
+    }
+    
+    @objc private func didClickUpdateCartfileButton(sender: NSButton) {
+        println("didClickUpdateCartfileButton")
     }
     
     override func prepareForReuse() {
