@@ -62,12 +62,15 @@ class CartListTableRowView: NSTableRowView {
     
     // Implementing a tracking area is required for mouseEntering and mouseExiting events
     private lazy var trackingArea: NSTrackingArea = NSTrackingArea(rect: NSRect.zeroRect, options: .InVisibleRect | .ActiveAlways | .MouseEnteredAndExited, owner: self, userInfo: nil)
+    
     override func drawBackgroundInRect(dirtyRect: NSRect) {
         if self.mouseInView == true && self.selected == false {
+            // drawHighlightInRect
             let selectionPath = NSBezierPath(roundedRect: dirtyRect, xRadius: 0, yRadius: 0)
             let fillColor: Void = NSColor.whiteColor().colorWithAlphaComponent(0.15).setFill()
             selectionPath.fill()
         } else {
+            // drawUnhighlightInRect
             super.drawBackgroundInRect(dirtyRect)
         }
     }

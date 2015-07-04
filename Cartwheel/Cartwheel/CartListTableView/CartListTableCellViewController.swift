@@ -33,6 +33,15 @@ class CartListTableCellViewController: NSTableCellView {
         
     let contentView = CartListTableCellView()
     
+    var cartfileTitle: String? {
+        if let cartfileURL = self.cartfileURL,
+            let pathComponents = cartfileURL.pathComponents,
+            let containingFolder = pathComponents[pathComponents.count - 2] as? String {
+                return containingFolder
+        }
+        return nil
+    }
+    
     var cartfileURL: CWCartfile? {
         didSet {
             self.prepareCellForNewModelObject()
@@ -45,10 +54,8 @@ class CartListTableCellViewController: NSTableCellView {
     }
     
     private func updateCellWithNewModelObject() {
-        if let cartfileURL = self.cartfileURL,
-            let pathComponents = cartfileURL.pathComponents,
-            let containingFolder = pathComponents[pathComponents.count - 2] as? String {
-                self.contentView.setPrimaryTextFieldString(containingFolder)
+        if let cartfileTitle = self.cartfileTitle {
+            self.contentView.setPrimaryTextFieldString(cartfileTitle)
         } else {
             self.contentView.clearCellContents()
         }

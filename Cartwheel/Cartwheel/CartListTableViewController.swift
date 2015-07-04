@@ -54,9 +54,6 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
         let rowHeight = self.tableView(nil, heightOfRow: self.dataSource.cartfiles.lastIndex())
         self.contentView.updateTableViewRowHeight(rowHeight)
         
-        // configure content inset
-        self.contentView.setTableViewEdgeInsets(NSEdgeInsets(top: self.parentWindowController!.scrollViewTopEdgeInset, left: 0, bottom: 0, right: 0))
-        
         // register for notifications on window resize
         if let parentWindowController = self.parentWindowController {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowDidChangeSize:", name: NSWindowDidEndLiveResizeNotification, object: parentWindowController.window)
@@ -70,7 +67,6 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
     
     @objc private func windowDidChangeSize(notification: NSNotification) {
         self.contentView.noteHeightOfVisibleRowsChanged()
-        self.contentView.setTableViewEdgeInsets(NSEdgeInsets(top: self.parentWindowController!.scrollViewTopEdgeInset, left: 0, bottom: 0, right: 0))
     }
     
     // MARK: NSTableViewDelegate

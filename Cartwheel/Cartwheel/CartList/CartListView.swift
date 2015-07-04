@@ -72,10 +72,6 @@ class CartListView: NSView {
         self.ui.tableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(indexesInRange: visibleRows))
     }
     
-    func setTableViewEdgeInsets(newInsets: NSEdgeInsets) {
-        //self.ui.scrollView.contentInsets = newInsets
-    }
-    
     // MARK: Handle Configuring The SubViews
     
     private func configureConstraints() {
