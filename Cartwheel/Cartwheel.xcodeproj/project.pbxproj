@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		730308F01B478335004089B7 /* CartListTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C4386C1B470F5100DF94EC /* CartListTableViewController.xib */; };
+		730309151B484A3F004089B7 /* ObserverSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730309131B484A29004089B7 /* ObserverSet.framework */; };
+		730309161B484A3F004089B7 /* ObserverSet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730309131B484A29004089B7 /* ObserverSet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		732909AA1B437F6200A75914 /* CartListTableRowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732909A91B437F6200A75914 /* CartListTableRowView.xib */; };
 		732909AC1B437F7300A75914 /* CartListTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732909AB1B437F7300A75914 /* CartListTableRowView.swift */; };
 		734A46DA1B2D0599002A1C26 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C41B2D0590002A1C26 /* Argo.framework */; };
@@ -64,6 +66,7 @@
 				734A46E31B2D0599002A1C26 /* PrettyColors.framework in Embed Frameworks */,
 				734A46EB1B2D059A002A1C26 /* Result.framework in Embed Frameworks */,
 				734A46DF1B2D0599002A1C26 /* CarthageKit.framework in Embed Frameworks */,
+				730309161B484A3F004089B7 /* ObserverSet.framework in Embed Frameworks */,
 				734A46E11B2D0599002A1C26 /* Commandant.framework in Embed Frameworks */,
 				734A46E71B2D059A002A1C26 /* ReactiveCocoa.framework in Embed Frameworks */,
 				734A46E51B2D059A002A1C26 /* PureLayout_Mac.framework in Embed Frameworks */,
@@ -78,6 +81,7 @@
 
 /* Begin PBXFileReference section */
 		730091411B093A7F00719208 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
+		730309131B484A29004089B7 /* ObserverSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObserverSet.framework; path = Carthage/Build/Mac/ObserverSet.framework; sourceTree = SOURCE_ROOT; };
 		731994EC1AF2B7EE003B422B /* Cartwheel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Cartwheel.entitlements; sourceTree = "<group>"; };
 		732909A91B437F6200A75914 /* CartListTableRowView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CartListTableRowView.xib; sourceTree = "<group>"; };
 		732909AB1B437F7300A75914 /* CartListTableRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListTableRowView.swift; sourceTree = "<group>"; };
@@ -126,6 +130,7 @@
 				734A46E21B2D0599002A1C26 /* PrettyColors.framework in Frameworks */,
 				734A46EA1B2D059A002A1C26 /* Result.framework in Frameworks */,
 				734A46DE1B2D0599002A1C26 /* CarthageKit.framework in Frameworks */,
+				730309151B484A3F004089B7 /* ObserverSet.framework in Frameworks */,
 				734A46E01B2D0599002A1C26 /* Commandant.framework in Frameworks */,
 				734A46E61B2D059A002A1C26 /* ReactiveCocoa.framework in Frameworks */,
 				734A46E41B2D0599002A1C26 /* PureLayout_Mac.framework in Frameworks */,
@@ -141,6 +146,7 @@
 		732E37681AEF174000C5A5CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				730309131B484A29004089B7 /* ObserverSet.framework */,
 				734A46C41B2D0590002A1C26 /* Argo.framework */,
 				734A46C51B2D0590002A1C26 /* Box.framework */,
 				734A46C61B2D0590002A1C26 /* CarthageKit.framework */,
