@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		730308F01B478335004089B7 /* CartListTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C4386C1B470F5100DF94EC /* CartListTableViewController.xib */; };
 		732909AA1B437F6200A75914 /* CartListTableRowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732909A91B437F6200A75914 /* CartListTableRowView.xib */; };
 		732909AC1B437F7300A75914 /* CartListTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732909AB1B437F7300A75914 /* CartListTableRowView.swift */; };
 		734A46DA1B2D0599002A1C26 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C41B2D0590002A1C26 /* Argo.framework */; };
@@ -48,7 +49,6 @@
 		73C2F3971AF06D78001B36DB /* CartListWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C2F3951AF06D78001B36DB /* CartListWindowController.xib */; };
 		73C438691B470E1500DF94EC /* CartListTitlebarAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B4589D1B240F6900A417AF /* CartListTitlebarAccessoryViewController.xib */; };
 		73C4386D1B470F5100DF94EC /* CartListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C4386B1B470F5100DF94EC /* CartListTableViewController.swift */; };
-		73C4386E1B470F5100DF94EC /* CartListTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C4386C1B470F5100DF94EC /* CartListTableViewController.xib */; };
 		73FBF23D1AEF269500970223 /* CartListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FBF23C1AEF269500970223 /* CartListView.swift */; };
 /* End PBXBuildFile section */
 
@@ -397,7 +397,7 @@
 				73C2F3971AF06D78001B36DB /* CartListWindowController.xib in Resources */,
 				7366ED351B0D801200AB6E77 /* CartwheelDefaults.plist in Resources */,
 				73B4DD171AEEE527007342C7 /* MainMenu.xib in Resources */,
-				73C4386E1B470F5100DF94EC /* CartListTableViewController.xib in Resources */,
+				730308F01B478335004089B7 /* CartListTableViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

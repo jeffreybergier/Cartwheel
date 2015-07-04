@@ -38,6 +38,14 @@ class CartListTitlebarAccessoryViewController: NSTitlebarAccessoryViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // configure view to do blur properly
+        if let view = self.view as? NSVisualEffectView {
+            view.blendingMode = .BehindWindow
+            view.material = .Titlebar
+            // TODO: Figure out how to change this to .Right
+            self.layoutAttribute = .Bottom
+        }
+        
         //Add in the Contentview and Configure it
         self.view.addSubview(self.contentView)
         self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)

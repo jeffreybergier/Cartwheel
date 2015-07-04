@@ -94,9 +94,6 @@ class CartListTableCellView: NSView {
     // MARK: Handle Subview Configuration
     
     private func configurePrimartTextField(primartTextField: NSTextField) {
-        primartTextField.bordered = false
-        (primartTextField.cell() as? NSTextFieldCell)?.drawsBackground = false
-        primartTextField.editable = false
         primartTextField.font = NSFont.systemFontOfSize(NSFont.systemFontSize())
     }
     
@@ -112,7 +109,7 @@ class CartListTableCellView: NSView {
     }
     
     struct InterfaceElements {
-        var primaryTextField = NSTextField()
+        var primaryTextField = NSTextField.nonEditableTextField()
         var primaryButton = NSButton.buttonWithDefaultStyle()
         var stackView = NSStackView()
         var allViewsWithinStackView: [NSView]

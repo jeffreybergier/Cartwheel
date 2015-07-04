@@ -33,6 +33,10 @@ class CartListWindowController: NSWindowController {
     let tableViewController = CartListTableViewController()
     let titlebarAccessoryViewController = CartListTitlebarAccessoryViewController()
     
+    var scrollViewTopEdgeInset: CGFloat {
+        return 55//self.titlebarAccessoryViewController.view.frame.size.height
+    }
+    
     // MARK: Handle Initialization
     
     override func windowDidLoad() {
@@ -43,16 +47,15 @@ class CartListWindowController: NSWindowController {
         self.window?.minSize = NSSize(width: 380, height: 500)
         self.window?.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)!
         self.window?.styleMask = self.window!.styleMask | NSFullSizeContentViewWindowMask
-        self.window?.titleVisibility = NSWindowTitleVisibility.Visible
-        self.window?.titlebarAppearsTransparent = true
+        self.window?.titleVisibility = NSWindowTitleVisibility.Hidden
         self.window?.title = NSLocalizedString("Cartwheel", comment: "Cartwheel name for window title")
-        
-        // configure the tableview controller
-        self.tableViewController.parentWindowController = self
-        self.window?.contentView = self.tableViewController.view
         
         // configure titlebar view controller
         self.titlebarAccessoryViewController.window = self.window
         self.window?.addTitlebarAccessoryViewController(self.titlebarAccessoryViewController)
+        
+        // configure the tableview controller
+        self.tableViewController.parentWindowController = self
+        self.window?.contentView = self.tableViewController.view
     }
 }

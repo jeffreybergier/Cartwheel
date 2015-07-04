@@ -115,10 +115,22 @@ extension Set {
 extension NSButton {
     class func buttonWithDefaultStyle() -> NSButton {
         let button = NSButton()
-        button.wantsLayer = true
-        button.setButtonType(.MomentaryPushInButton)
         button.bezelStyle = .RoundedBezelStyle
+        // TODO: Figure out how to fix the garbage caused by NSCell
+//        (button.cell() as! NSButtonCell).bordered = false
+//        (button.cell() as! NSButtonCell).backgroundStyle = NSBackgroundStyle.Dark
+//        (button.cell() as! NSButtonCell).backgroundColor = NSColor.clearColor()
         return button
+    }
+}
+
+extension NSTextField {
+    class func nonEditableTextField() -> NSTextField {
+        let textField = NSTextField()
+        textField.bordered = false
+        (textField.cell() as? NSTextFieldCell)?.backgroundColor = NSColor.clearColor()
+        textField.editable = false
+        return textField
     }
 }
 

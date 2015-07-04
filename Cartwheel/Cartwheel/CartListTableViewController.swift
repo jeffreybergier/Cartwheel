@@ -31,7 +31,7 @@ import PureLayout_Mac
 @objc(CartListTableViewController)
 class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     
-    weak var parentWindowController: NSWindowController?
+    weak var parentWindowController: CartListWindowController?
     
     private let contentView = CartListView()
     private let dataSource = CWCartfileDataSource.sharedInstance
@@ -54,26 +54,23 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
         let rowHeight = self.tableView(nil, heightOfRow: self.dataSource.cartfiles.lastIndex())
         self.contentView.updateTableViewRowHeight(rowHeight)
         
+        // configure content inset
+        self.contentView.setTableViewEdgeInsets(NSEdgeInsets(top: self.parentWindowController!.scrollViewTopEdgeInset, left: 0, bottom: 0, right: 0))
+        
         // register for notifications on window resize
         if let parentWindowController = self.parentWindowController {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowDidChangeSize:", name: NSWindowDidEndLiveResizeNotification, object: parentWindowController.window)
         }
-    }
-    
-    private var viewDidAppearOnce = false
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        if self.viewDidAppearOnce == false {
-            self.viewDidAppearOnce = true
-            self.contentView.reloadTableViewData()
-        }
+        
+        // reload the data table
+        self.contentView.reloadTableViewData()
     }
     
     // MARK: Handle window resizing
     
     @objc private func windowDidChangeSize(notification: NSNotification) {
         self.contentView.noteHeightOfVisibleRowsChanged()
-        self.contentView.setTableViewEdgeInsets(NSEdgeInsets(top: 50, left: 0, bottom: 0, right: 0))
+        self.contentView.setTableViewEdgeInsets(NSEdgeInsets(top: self.parentWindowController!.scrollViewTopEdgeInset, left: 0, bottom: 0, right: 0))
     }
     
     // MARK: NSTableViewDelegate
@@ -122,9 +119,8 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
         // this line tells the tableview to add / remove gridlines when the table is full / empty
         self.dataSource.cartfiles.count > 0 ? self.contentView.tableViewHasRows(true) : self.contentView.tableViewHasRows(false)
         
-        // this line returns 0 if the window has not yet appeared on screen.
-        // this avoids autolayout warning issues.
-        return self.viewDidAppearOnce ? self.dataSource.cartfiles.count : 0
+        // return the actual number of rows
+        return self.dataSource.cartfiles.count
     }
     
     func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {

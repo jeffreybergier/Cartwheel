@@ -73,7 +73,7 @@ class CartListView: NSView {
     }
     
     func setTableViewEdgeInsets(newInsets: NSEdgeInsets) {
-        self.ui.scrollView.automaticallyAdjustsContentInsets = true
+        //self.ui.scrollView.contentInsets = newInsets
     }
     
     // MARK: Handle Configuring The SubViews
@@ -103,10 +103,8 @@ class CartListView: NSView {
         tableView.addTableColumn(self.ui.tableColumn)
         scrollView.documentView = self.ui.tableView
         scrollView.hasVerticalScroller = true
-        tableColumn.width = self.ui.scrollView.frame.width
         tableView.headerView = nil
         tableView.selectionHighlightStyle = .Regular
-        tableView.gridStyleMask = .SolidHorizontalGridLineMask
         tableView.rowSizeStyle = .Custom
         tableView.allowsMultipleSelection = true
         tableView.backgroundColor = NSColor.clearColor()
