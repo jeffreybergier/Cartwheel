@@ -121,6 +121,9 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
     
     func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
         let rowView = tableView.makeViewWithIdentifier("CartListTableRowView", owner: nil) as? CartListTableRowView
+        if rowView?.configured == false {
+            rowView?.configureRowViewWithParentWindow(self.parentWindowController?.window)
+        }
         return rowView
     }
     
@@ -131,7 +134,12 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
         
         // Retrieve RowView and give it a reference to the CellView
         let rowView = tableView.rowViewAtRow(row, makeIfNecessary: false) as? CartListTableRowView
-        rowView!.cellViewController = cellView
         return cellView
+    }
+    
+    // MARK: Handle going away
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 }

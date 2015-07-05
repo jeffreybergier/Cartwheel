@@ -1,8 +1,8 @@
 //
-//  AppDelegate.swift
+//  CWDebugExtensions.swift
 //  Cartwheel
 //
-//  Created by Jeffrey Bergier on 4/27/15.
+//  Created by Jeffrey Bergier on 7/5/15.
 //
 //  Copyright (c) 2015 Jeffrey Bergier
 //
@@ -25,30 +25,14 @@
 //  THE SOFTWARE.
 //
 
-import Cocoa
+import AppKit
 
-@NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
-
-    private var cartListWindowController: CartListWindowController?
-    
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
-        self.cartListWindowController = CartListWindowController(windowNibName: "CartListWindowController")
-        self.cartListWindowController!.showWindow(self) // should crash if NIL at this point
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "cartListWindowControllerDidClose:", name: NSWindowWillCloseNotification, object: self.cartListWindowController!.window)
-    }
-    
-    @objc private func cartListWindowControllerDidClose(notification: NSNotification) {
-        self.cartListWindowController = nil // this allows the window to be deallocated
-    }
-
-    func applicationWillTerminate(aNotification: NSNotification) {
-        
-    }
-
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+extension NSWindow: Printable {
+    public override var description: String {
+        let address = NSString(format: "%p", self)
+        if let title = self.title {
+            return "\(self.className) <\(address)>: Title = \(title)"
+        }
+        return "\(self.className) <\(address)>"
     }
 }
-

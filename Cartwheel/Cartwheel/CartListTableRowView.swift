@@ -30,11 +30,20 @@ class CartListTableRowView: NSTableRowView {
     
     // MARK: Handle Intialization
     
-    weak var cellViewController: CartListTableCellViewController?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.wantsLayer = true
+    }
+    
+    var configured = false
+    
+    func configureRowViewWithParentWindow(parentWindow: NSWindow?) {
+        if let window = parentWindow {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "parentWindowDidBecomeMain:", name: NSWindowDidBecomeMainNotification, object: window)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "parentWindowDidResignMain:", name: NSWindowDidResignMainNotification, object: window)
+        }
+        self.configured = true
     }
     
     // MARK: Handle Selecting a Row
@@ -62,9 +71,19 @@ class CartListTableRowView: NSTableRowView {
     
     // Implementing a tracking area is required for mouseEntering and mouseExiting events
     private lazy var trackingArea: NSTrackingArea = NSTrackingArea(rect: NSRect.zeroRect, options: .InVisibleRect | .ActiveAlways | .MouseEnteredAndExited, owner: self, userInfo: nil)
+
+    private var rowViewParentWindowIsMain = false
     
+    @objc private func parentWindowDidBecomeMain(notification: NSNotification?) {
+        self.rowViewParentWindowIsMain = true
+    }
+    
+    @objc private func parentWindowDidResignMain(notification: NSNotification?) {
+        self.rowViewParentWindowIsMain = false
+    }
+
     override func drawBackgroundInRect(dirtyRect: NSRect) {
-        if self.mouseInView == true && self.selected == false {
+        if self.mouseInView == true && self.selected == false && self.rowViewParentWindowIsMain == true {
             // drawHighlightInRect
             let selectionPath = NSBezierPath(roundedRect: dirtyRect, xRadius: 0, yRadius: 0)
             let fillColor: Void = NSColor.whiteColor().colorWithAlphaComponent(0.15).setFill()
@@ -89,5 +108,11 @@ class CartListTableRowView: NSTableRowView {
     
     override func mouseExited(theEvent: NSEvent) {
         self.mouseInView = false
+    }
+    
+    // MARK: Handle Going Away
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 }

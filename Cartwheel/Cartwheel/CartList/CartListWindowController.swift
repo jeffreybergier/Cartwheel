@@ -40,12 +40,11 @@ class CartListWindowController: NSWindowController {
         
         // configure the window
         self.window?.collectionBehavior = NSWindowCollectionBehavior.FullScreenPrimary
-        self.window?.minSize = NSSize(width: 380, height: 500)
         self.window?.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)!
         self.window?.styleMask = self.window!.styleMask | NSFullSizeContentViewWindowMask
         self.window?.titleVisibility = NSWindowTitleVisibility.Visible
         self.window?.title = NSLocalizedString("Cartwheel", comment: "Cartwheel name for window title")
-        
+                
         // configure titlebar view controller
         self.titlebarAccessoryViewController.window = self.window
         self.window?.addTitlebarAccessoryViewController(self.titlebarAccessoryViewController)
