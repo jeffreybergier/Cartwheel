@@ -32,7 +32,6 @@ import PureLayout_Mac
 class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     
     weak var parentWindowController: CartListWindowController?
-    
     private let contentView = CartListView()
     private let dataSource = CWCartfileDataSource.sharedInstance
     
@@ -50,6 +49,9 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
         // configure my view and add in the custom view
         self.contentView.configureViewWithController(self, tableViewDataSource: self, tableViewDelegate: self)
         
+        // register for data source changes
+        self.dataSource.cartfileObserver.add(self, self.dynamicType.dataSourceDidChange)
+        
         // configure default cellHeight
         let rowHeight = self.tableView(nil, heightOfRow: self.dataSource.cartfiles.lastIndex())
         self.contentView.updateTableViewRowHeight(rowHeight)
@@ -60,6 +62,12 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
         }
         
         // reload the data table
+        self.contentView.reloadTableViewData()
+    }
+    
+    // MARK: Data Source Observing
+    
+    func dataSourceDidChange() {
         self.contentView.reloadTableViewData()
     }
     

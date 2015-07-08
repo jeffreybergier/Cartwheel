@@ -26,8 +26,13 @@
 //
 
 import Foundation
+import ObserverSet
 
 class CWCartfileDataSource {
+    
+    // MARK: Data Observing
+    
+    let cartfileObserver = ObserverSet<Void>()
     
     // MARK: Internal Properties
     
@@ -35,16 +40,26 @@ class CWCartfileDataSource {
     // TODO: Refactor this to use Data Model Observing
     private(set) var cartfiles = [CWCartfile]() {
         didSet {
-            if self.cartfileStorageFolderExists() == false {
-                NSLog("CWCartfileDataSource: Cartfile storage folder does not exist, creating it.")
-                self.createCartfileStorageFolder()
+            // notify observers on main thread
+            dispatch_async(dispatch_get_main_queue()) {
+                self.cartfileObserver.notify()
             }
             
-            var writeToDiskError: NSError?
-            NSKeyedArchiver.archivedDataWithRootObject(self.cartfiles).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName), options: nil, error: &writeToDiskError)
-            
-            if let error = writeToDiskError {
-                NSLog("CWCartfileDataSource: Error saving cartfiles to disk: \(error)")
+            // fall back to background queue to save to disk
+            let saveToDiskQueue = dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)
+            dispatch_async(saveToDiskQueue) {
+                if self.cartfileStorageFolderExists() == false {
+                    NSLog("CWCartfileDataSource: Cartfile storage folder does not exist, creating it.")
+                    self.createCartfileStorageFolder()
+                }
+                
+                var writeToDiskError: NSError?
+                NSKeyedArchiver.archivedDataWithRootObject(self.cartfiles).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName), options: nil, error: &writeToDiskError)
+                
+                
+                if let error = writeToDiskError {
+                    NSLog("CWCartfileDataSource: Error saving cartfiles to disk: \(error)")
+                }
             }
         }
     }
