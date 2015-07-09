@@ -37,6 +37,52 @@
 		734A46EF1B2D059A002A1C26 /* XCGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46CE1B2D0590002A1C26 /* XCGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7353B9331B001B140038861D /* ExperimentNIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7353B9321B001B140038861D /* ExperimentNIB.xib */; };
 		7366ED351B0D801200AB6E77 /* CartwheelDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */; };
+		73814D941B4CB40400CEA6F1 /* CartListTitlebarAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4589C1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift */; };
+		73814D951B4CB40400CEA6F1 /* CartListTitlebarAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B458A01B249E6500A417AF /* CartListTitlebarAccessoryView.swift */; };
+		73814D961B4CB40400CEA6F1 /* CartListTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732909AB1B437F7300A75914 /* CartListTableRowView.swift */; };
+		73814D971B4CB40400CEA6F1 /* CartListWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C2F3941AF06D78001B36DB /* CartListWindowController.swift */; };
+		73814D981B4CB40400CEA6F1 /* CartListTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C2F38E1AF04F97001B36DB /* CartListTableCellView.swift */; };
+		73814D991B4CB40400CEA6F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4DD111AEEE527007342C7 /* AppDelegate.swift */; };
+		73814D9A1B4CB40400CEA6F1 /* CartListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C4386B1B470F5100DF94EC /* CartListTableViewController.swift */; };
+		73814D9B1B4CB40400CEA6F1 /* CWSwiftGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */; };
+		73814D9C1B4CB40400CEA6F1 /* CWDefaultsPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739203871B1E5CF60024DE8C /* CWDefaultsPlist.swift */; };
+		73814D9D1B4CB40400CEA6F1 /* CWCartfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */; };
+		73814D9E1B4CB40400CEA6F1 /* CWDebugExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730309171B49C4D6004089B7 /* CWDebugExtensions.swift */; };
+		73814D9F1B4CB40400CEA6F1 /* CartListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FBF23C1AEF269500970223 /* CartListView.swift */; };
+		73814DA01B4CB40400CEA6F1 /* CartListTableCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C2F3901AF05147001B36DB /* CartListTableCellViewController.swift */; };
+		73814DA21B4CB40400CEA6F1 /* ReactiveTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46CB1B2D0590002A1C26 /* ReactiveTask.framework */; };
+		73814DA31B4CB40400CEA6F1 /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C51B2D0590002A1C26 /* Box.framework */; };
+		73814DA41B4CB40400CEA6F1 /* PrettyColors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C81B2D0590002A1C26 /* PrettyColors.framework */; };
+		73814DA51B4CB40400CEA6F1 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46CC1B2D0590002A1C26 /* Result.framework */; };
+		73814DA61B4CB40400CEA6F1 /* CarthageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C61B2D0590002A1C26 /* CarthageKit.framework */; };
+		73814DA71B4CB40400CEA6F1 /* ObserverSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730309131B484A29004089B7 /* ObserverSet.framework */; };
+		73814DA81B4CB40400CEA6F1 /* Commandant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C71B2D0590002A1C26 /* Commandant.framework */; };
+		73814DA91B4CB40400CEA6F1 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46CA1B2D0590002A1C26 /* ReactiveCocoa.framework */; };
+		73814DAA1B4CB40400CEA6F1 /* PureLayout_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C91B2D0590002A1C26 /* PureLayout_Mac.framework */; };
+		73814DAB1B4CB40400CEA6F1 /* XCGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46CE1B2D0590002A1C26 /* XCGLogger.framework */; };
+		73814DAC1B4CB40400CEA6F1 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46CD1B2D0590002A1C26 /* Runes.framework */; };
+		73814DAD1B4CB40400CEA6F1 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C41B2D0590002A1C26 /* Argo.framework */; };
+		73814DAF1B4CB40400CEA6F1 /* ExperimentNIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7353B9321B001B140038861D /* ExperimentNIB.xib */; };
+		73814DB01B4CB40400CEA6F1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73B4DD131AEEE527007342C7 /* Images.xcassets */; };
+		73814DB11B4CB40400CEA6F1 /* CartListTableRowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732909A91B437F6200A75914 /* CartListTableRowView.xib */; };
+		73814DB21B4CB40400CEA6F1 /* CartListTableCellViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C2F3921AF057BF001B36DB /* CartListTableCellViewController.xib */; };
+		73814DB31B4CB40400CEA6F1 /* CartListTitlebarAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B4589D1B240F6900A417AF /* CartListTitlebarAccessoryViewController.xib */; };
+		73814DB41B4CB40400CEA6F1 /* CartListWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C2F3951AF06D78001B36DB /* CartListWindowController.xib */; };
+		73814DB51B4CB40400CEA6F1 /* CartwheelDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */; };
+		73814DB61B4CB40400CEA6F1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B4DD151AEEE527007342C7 /* MainMenu.xib */; };
+		73814DB71B4CB40400CEA6F1 /* CartListTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C4386C1B470F5100DF94EC /* CartListTableViewController.xib */; };
+		73814DB91B4CB40400CEA6F1 /* ReactiveTask.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46CB1B2D0590002A1C26 /* ReactiveTask.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73814DBA1B4CB40400CEA6F1 /* Box.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C51B2D0590002A1C26 /* Box.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73814DBB1B4CB40400CEA6F1 /* PrettyColors.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C81B2D0590002A1C26 /* PrettyColors.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73814DBC1B4CB40400CEA6F1 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46CC1B2D0590002A1C26 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73814DBD1B4CB40400CEA6F1 /* CarthageKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C61B2D0590002A1C26 /* CarthageKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73814DBE1B4CB40400CEA6F1 /* ObserverSet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 730309131B484A29004089B7 /* ObserverSet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73814DBF1B4CB40400CEA6F1 /* Commandant.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C71B2D0590002A1C26 /* Commandant.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73814DC01B4CB40400CEA6F1 /* ReactiveCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46CA1B2D0590002A1C26 /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73814DC11B4CB40400CEA6F1 /* PureLayout_Mac.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C91B2D0590002A1C26 /* PureLayout_Mac.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73814DC21B4CB40400CEA6F1 /* XCGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46CE1B2D0590002A1C26 /* XCGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73814DC31B4CB40400CEA6F1 /* Runes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46CD1B2D0590002A1C26 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73814DC41B4CB40400CEA6F1 /* Argo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 734A46C41B2D0590002A1C26 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		739203881B1E5CF60024DE8C /* CWDefaultsPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739203871B1E5CF60024DE8C /* CWDefaultsPlist.swift */; };
 		739C39251B0029680088FAD2 /* CWSwiftGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */; };
 		739C392A1B004D8F0088FAD2 /* CWCartfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */; };
@@ -56,6 +102,28 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		73814DB81B4CB40400CEA6F1 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				73814DB91B4CB40400CEA6F1 /* ReactiveTask.framework in Embed Frameworks */,
+				73814DBA1B4CB40400CEA6F1 /* Box.framework in Embed Frameworks */,
+				73814DBB1B4CB40400CEA6F1 /* PrettyColors.framework in Embed Frameworks */,
+				73814DBC1B4CB40400CEA6F1 /* Result.framework in Embed Frameworks */,
+				73814DBD1B4CB40400CEA6F1 /* CarthageKit.framework in Embed Frameworks */,
+				73814DBE1B4CB40400CEA6F1 /* ObserverSet.framework in Embed Frameworks */,
+				73814DBF1B4CB40400CEA6F1 /* Commandant.framework in Embed Frameworks */,
+				73814DC01B4CB40400CEA6F1 /* ReactiveCocoa.framework in Embed Frameworks */,
+				73814DC11B4CB40400CEA6F1 /* PureLayout_Mac.framework in Embed Frameworks */,
+				73814DC21B4CB40400CEA6F1 /* XCGLogger.framework in Embed Frameworks */,
+				73814DC31B4CB40400CEA6F1 /* Runes.framework in Embed Frameworks */,
+				73814DC41B4CB40400CEA6F1 /* Argo.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		73A90A7C1B2CF3B300709992 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -100,6 +168,8 @@
 		734A46CE1B2D0590002A1C26 /* XCGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCGLogger.framework; path = Carthage/Build/Mac/XCGLogger.framework; sourceTree = SOURCE_ROOT; };
 		7353B9321B001B140038861D /* ExperimentNIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExperimentNIB.xib; sourceTree = "<group>"; };
 		7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CartwheelDefaults.plist; sourceTree = "<group>"; };
+		73814DC81B4CB40400CEA6F1 /* Cartwheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cartwheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		73814DC91B4CB40400CEA6F1 /* Cartwheel copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Cartwheel copy-Info.plist"; path = "/Users/jeffberg/Documents/SaturdayApps/Cartwheel/Cartwheel/Cartwheel copy-Info.plist"; sourceTree = "<absolute>"; };
 		738E43CF1B0AFAA000BB3670 /* CWCartfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWCartfile.swift; sourceTree = "<group>"; };
 		739203871B1E5CF60024DE8C /* CWDefaultsPlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWDefaultsPlist.swift; sourceTree = "<group>"; };
 		739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWSwiftGlobals.swift; sourceTree = "<group>"; };
@@ -123,6 +193,25 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		73814DA11B4CB40400CEA6F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				73814DA21B4CB40400CEA6F1 /* ReactiveTask.framework in Frameworks */,
+				73814DA31B4CB40400CEA6F1 /* Box.framework in Frameworks */,
+				73814DA41B4CB40400CEA6F1 /* PrettyColors.framework in Frameworks */,
+				73814DA51B4CB40400CEA6F1 /* Result.framework in Frameworks */,
+				73814DA61B4CB40400CEA6F1 /* CarthageKit.framework in Frameworks */,
+				73814DA71B4CB40400CEA6F1 /* ObserverSet.framework in Frameworks */,
+				73814DA81B4CB40400CEA6F1 /* Commandant.framework in Frameworks */,
+				73814DA91B4CB40400CEA6F1 /* ReactiveCocoa.framework in Frameworks */,
+				73814DAA1B4CB40400CEA6F1 /* PureLayout_Mac.framework in Frameworks */,
+				73814DAB1B4CB40400CEA6F1 /* XCGLogger.framework in Frameworks */,
+				73814DAC1B4CB40400CEA6F1 /* Runes.framework in Frameworks */,
+				73814DAD1B4CB40400CEA6F1 /* Argo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		73B4DD091AEEE527007342C7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -283,6 +372,7 @@
 			isa = PBXGroup;
 			children = (
 				73B4DD0C1AEEE527007342C7 /* Cartwheel.app */,
+				73814DC81B4CB40400CEA6F1 /* Cartwheel.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -308,6 +398,7 @@
 		73B4DD0F1AEEE527007342C7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				73814DC91B4CB40400CEA6F1 /* Cartwheel copy-Info.plist */,
 				73B4DD101AEEE527007342C7 /* Info.plist */,
 				731994EC1AF2B7EE003B422B /* Cartwheel.entitlements */,
 			);
@@ -337,10 +428,30 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		73B4DD0B1AEEE527007342C7 /* Cartwheel */ = {
+		73814D921B4CB40400CEA6F1 /* Cartwheel-Unboxed */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 73B4DD261AEEE527007342C7 /* Build configuration list for PBXNativeTarget "Cartwheel" */;
+			buildConfigurationList = 73814DC51B4CB40400CEA6F1 /* Build configuration list for PBXNativeTarget "Cartwheel-Unboxed" */;
 			buildPhases = (
+				73814DCA1B4CB5AF00CEA6F1 /* ShellScript */,
+				73814D931B4CB40400CEA6F1 /* Sources */,
+				73814DA11B4CB40400CEA6F1 /* Frameworks */,
+				73814DAE1B4CB40400CEA6F1 /* Resources */,
+				73814DB81B4CB40400CEA6F1 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Cartwheel-Unboxed";
+			productName = Cartwheel;
+			productReference = 73814DC81B4CB40400CEA6F1 /* Cartwheel.app */;
+			productType = "com.apple.product-type.application";
+		};
+		73B4DD0B1AEEE527007342C7 /* Cartwheel-Sandboxed */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 73B4DD261AEEE527007342C7 /* Build configuration list for PBXNativeTarget "Cartwheel-Sandboxed" */;
+			buildPhases = (
+				73814DCB1B4CB5C700CEA6F1 /* ShellScript */,
 				73B4DD081AEEE527007342C7 /* Sources */,
 				73B4DD091AEEE527007342C7 /* Frameworks */,
 				73B4DD0A1AEEE527007342C7 /* Resources */,
@@ -350,7 +461,7 @@
 			);
 			dependencies = (
 			);
-			name = Cartwheel;
+			name = "Cartwheel-Sandboxed";
 			productName = Cartwheel;
 			productReference = 73B4DD0C1AEEE527007342C7 /* Cartwheel.app */;
 			productType = "com.apple.product-type.application";
@@ -364,6 +475,13 @@
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "Saturday Apps";
 				TargetAttributes = {
+					73814D921B4CB40400CEA6F1 = {
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
 					73B4DD0B1AEEE527007342C7 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = V6ESYGU6CV;
@@ -388,12 +506,29 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				73B4DD0B1AEEE527007342C7 /* Cartwheel */,
+				73B4DD0B1AEEE527007342C7 /* Cartwheel-Sandboxed */,
+				73814D921B4CB40400CEA6F1 /* Cartwheel-Unboxed */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		73814DAE1B4CB40400CEA6F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				73814DAF1B4CB40400CEA6F1 /* ExperimentNIB.xib in Resources */,
+				73814DB01B4CB40400CEA6F1 /* Images.xcassets in Resources */,
+				73814DB11B4CB40400CEA6F1 /* CartListTableRowView.xib in Resources */,
+				73814DB21B4CB40400CEA6F1 /* CartListTableCellViewController.xib in Resources */,
+				73814DB31B4CB40400CEA6F1 /* CartListTitlebarAccessoryViewController.xib in Resources */,
+				73814DB41B4CB40400CEA6F1 /* CartListWindowController.xib in Resources */,
+				73814DB51B4CB40400CEA6F1 /* CartwheelDefaults.plist in Resources */,
+				73814DB61B4CB40400CEA6F1 /* MainMenu.xib in Resources */,
+				73814DB71B4CB40400CEA6F1 /* CartListTableViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		73B4DD0A1AEEE527007342C7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -412,7 +547,56 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		73814DCA1B4CB5AF00CEA6F1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "TAGS=\"\\/\\/TODO:|\\/\\/FIXME:|\\/\\/ TODO:|\\/\\/ FIXME:\"\nERRORTAG=\"\\/\\/ERROR:|\\/\\/ ERROR:\"\nfind \"${SRCROOT}/Cartwheel\" \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$|($ERRORTAG).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\" | perl -p -e \"s/($ERRORTAG)/ error: \\$1/\"";
+		};
+		73814DCB1B4CB5C700CEA6F1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "TAGS=\"\\/\\/TODO:|\\/\\/FIXME:|\\/\\/ TODO:|\\/\\/ FIXME:\"\nERRORTAG=\"\\/\\/ERROR:|\\/\\/ ERROR:\"\nfind \"${SRCROOT}/Cartwheel\" \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$|($ERRORTAG).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\" | perl -p -e \"s/($ERRORTAG)/ error: \\$1/\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		73814D931B4CB40400CEA6F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				73814D941B4CB40400CEA6F1 /* CartListTitlebarAccessoryViewController.swift in Sources */,
+				73814D951B4CB40400CEA6F1 /* CartListTitlebarAccessoryView.swift in Sources */,
+				73814D961B4CB40400CEA6F1 /* CartListTableRowView.swift in Sources */,
+				73814D971B4CB40400CEA6F1 /* CartListWindowController.swift in Sources */,
+				73814D981B4CB40400CEA6F1 /* CartListTableCellView.swift in Sources */,
+				73814D991B4CB40400CEA6F1 /* AppDelegate.swift in Sources */,
+				73814D9A1B4CB40400CEA6F1 /* CartListTableViewController.swift in Sources */,
+				73814D9B1B4CB40400CEA6F1 /* CWSwiftGlobals.swift in Sources */,
+				73814D9C1B4CB40400CEA6F1 /* CWDefaultsPlist.swift in Sources */,
+				73814D9D1B4CB40400CEA6F1 /* CWCartfileDataSource.swift in Sources */,
+				73814D9E1B4CB40400CEA6F1 /* CWDebugExtensions.swift in Sources */,
+				73814D9F1B4CB40400CEA6F1 /* CartListView.swift in Sources */,
+				73814DA01B4CB40400CEA6F1 /* CartListTableCellViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		73B4DD081AEEE527007342C7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -447,6 +631,38 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		73814DC61B4CB40400CEA6F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = "Cartwheel copy-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_NAME = Cartwheel;
+			};
+			name = Debug;
+		};
+		73814DC71B4CB40400CEA6F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = "Cartwheel copy-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_NAME = Cartwheel;
+			};
+			name = Release;
+		};
 		73B4DD241AEEE527007342C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -541,7 +757,7 @@
 				INFOPLIST_FILE = Cartwheel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Cartwheel;
 			};
 			name = Debug;
 		};
@@ -559,13 +775,22 @@
 				INFOPLIST_FILE = Cartwheel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Cartwheel;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		73814DC51B4CB40400CEA6F1 /* Build configuration list for PBXNativeTarget "Cartwheel-Unboxed" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				73814DC61B4CB40400CEA6F1 /* Debug */,
+				73814DC71B4CB40400CEA6F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		73B4DD071AEEE527007342C7 /* Build configuration list for PBXProject "Cartwheel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -575,7 +800,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		73B4DD261AEEE527007342C7 /* Build configuration list for PBXNativeTarget "Cartwheel" */ = {
+		73B4DD261AEEE527007342C7 /* Build configuration list for PBXNativeTarget "Cartwheel-Sandboxed" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				73B4DD271AEEE527007342C7 /* Debug */,
