@@ -28,6 +28,7 @@
 import Cocoa
 import PureLayout_Mac
 import CarthageKit
+import ReactiveCocoa
 
 class CartListTableCellViewController: NSTableCellView {
         
@@ -75,7 +76,13 @@ class CartListTableCellViewController: NSTableCellView {
     }
     
     @objc private func didClickUpdateCartfileButton(sender: NSButton) {
-        println("didClickUpdateCartfileButton")
+        println("didClickUpdateCartfileButton -- Begin")
+        let project = CarthageKit.Project(directoryURL: self.cartfileURL!)
+        let producer = project.loadCombinedCartfile()
+        let something = producer |> start(next: {
+            println("Producer did something: \($0)")
+        })
+        println("didClickUpdateCartfileButton -- End")
     }
     
     override func prepareForReuse() {
