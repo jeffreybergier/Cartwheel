@@ -137,7 +137,7 @@ extension NSTextField {
 // MARK: Custom Enums
 
 enum NSFileHandlingPanelResponse: Int {
-    case CancelButton = 0, OKButton
+    case CancelButton = 0, SuccessButton
 }
 
 extension NSFileHandlingPanelResponse: Printable {
@@ -145,8 +145,8 @@ extension NSFileHandlingPanelResponse: Printable {
         switch self {
         case CancelButton:
             return "NSFileHandlingPanelResponse.CancelButton"
-        case OKButton:
-            return "NSFileHandlingPanelResponse.OKButton"
+        case SuccessButton:
+            return "NSFileHandlingPanelResponse.SuccessButton"
         }
     }
 }

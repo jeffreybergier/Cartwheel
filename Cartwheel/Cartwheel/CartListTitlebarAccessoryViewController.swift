@@ -71,10 +71,10 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
         fileChooser.canChooseDirectories = true
         fileChooser.allowsMultipleSelection = true
         
-        fileChooser.beginSheetModalForWindow(self.window!) { (untypedResult) -> Void in
+        fileChooser.beginSheetModalForWindow(self.window!) { untypedResult in
             let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
             switch result {
-            case .OKButton:
+            case .SuccessButton:
                 for object in fileChooser.URLs {
                     var changedDataSource = false
                     if let url = object as? NSURL,
@@ -91,6 +91,21 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
     
     @objc private func didClickCreateNewCartFileButton(sender: NSButton) {
         NSLog("Create new cartfile")
+        let saveSheet = NSOpenPanel()
+        saveSheet.canChooseFiles = false
+        saveSheet.canChooseDirectories = true
+        saveSheet.allowsMultipleSelection = false
+        saveSheet.prompt = NSLocalizedString("Create Cartfile", comment: "In the save sheet for creating a new cartifle, this button is the create new button")
+        saveSheet.beginSheetModalForWindow(self.window!, completionHandler: { untypedResult in
+            let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
+            switch result {
+            case .SuccessButton:
+                println("CartListViewController: File Saver: \(saveSheet.URL)")
+            case .CancelButton:
+                NSLog("CartListViewController: File Saver was cancelled by user.")
+            }
+        })
+        
     }
     
     private func parseCartfilesFromURL(url: NSURL) -> [CWCartfile]? {

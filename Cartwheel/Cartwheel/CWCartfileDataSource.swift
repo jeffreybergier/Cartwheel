@@ -37,7 +37,6 @@ class CWCartfileDataSource {
     // MARK: Internal Properties
     
     var defaultsPlist = CWDefaultsPlist()
-    // TODO: Refactor this to use Data Model Observing
     private(set) var cartfiles = [CWCartfile]() {
         didSet {
             // notify observers on main thread
