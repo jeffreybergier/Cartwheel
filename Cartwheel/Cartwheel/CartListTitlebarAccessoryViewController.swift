@@ -31,9 +31,19 @@ import PureLayout_Mac
 @objc(CartListTitlebarAccessoryViewController) // this is required so the NIB can be found by cocoa
 class CartListTitlebarAccessoryViewController: NSTitlebarAccessoryViewController {
     
+    // Model, View Controller Properties
+    weak var window: NSWindow?
     private let contentView = CartListTitlebarAccessoryView()
     private let dataSource = CWCartfileDataSource.sharedInstance
-    weak var window: NSWindow?
+    
+    //
+    // These properties help with the NSOpenPanel Button Hijack
+    // More info can be found under the NSOpenSavePanelDelegate MARK
+    //
+    private var savePanelShouldOpenURL: NSURL?
+    private var savePanelDidChangeToDirectoryURL: NSURL?
+    private weak var savePanel: NSOpenPanel?
+    private let savePanelOriginalButtonTitle = NSLocalizedString("Create Cartfile", comment: "In the save sheet for creating a new cartifle, this button is the create new button")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,20 +101,25 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
     
     @objc private func didClickCreateNewCartFileButton(sender: NSButton) {
         NSLog("Create new cartfile")
-        let saveSheet = NSOpenPanel()
-        saveSheet.canChooseFiles = false
-        saveSheet.canChooseDirectories = true
-        saveSheet.allowsMultipleSelection = false
-        saveSheet.prompt = NSLocalizedString("Create Cartfile", comment: "In the save sheet for creating a new cartifle, this button is the create new button")
-        saveSheet.beginSheetModalForWindow(self.window!, completionHandler: { untypedResult in
+        let savePanel = NSOpenPanel()
+        savePanel.delegate = self
+        savePanel.canChooseDirectories = true
+        savePanel.canCreateDirectories = true
+        savePanel.canChooseFiles = false
+        savePanel.allowsMultipleSelection = false
+        savePanel.title = NSLocalizedString("Create New Cartfile", comment: "Title of the create new cartfile save dialog.")
+        savePanel.prompt = self.savePanelOriginalButtonTitle
+        savePanel.beginSheetModalForWindow(self.window!, completionHandler: { untypedResult in
             let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
             switch result {
             case .SuccessButton:
-                println("CartListViewController: File Saver: \(saveSheet.URL)")
+                println("CartListViewController: File Saver: \(savePanel.URL)")
+                
             case .CancelButton:
                 NSLog("CartListViewController: File Saver was cancelled by user.")
             }
         })
+        self.savePanel = savePanel
         
     }
     
@@ -173,6 +188,54 @@ extension CartListTitlebarAccessoryViewController: NSTextFieldDelegate {
             let filterTextField = userInfoDictionary["NSFieldEditor"] as? NSTextView,
             let stringValue = filterTextField.string {
                 NSLog("\(stringValue)")
+        }
+    }
+}
+
+// MARK: NSOpenSavePanelDelegate
+
+//
+// Here begins a __sort of__ hack
+// The default behavior of NSOpenPanel is to let someone select a folder and close the panel
+// This could be pretty confusing because we will be saving the file INSIDE the folder they selected
+// instead of the folder they were viewing
+//
+// This code hijacks NSOpenPanel primary button when the user selects a folder
+// We then handle the click action from the button and tell NSOpenPanel to open the selected folder
+// When the directory seen by the user matches the "selected" directory of the open panel
+// then we return the button behavior to normal
+//
+
+extension CartListTitlebarAccessoryViewController: NSOpenSavePanelDelegate {
+    func panel(sender: AnyObject?, didChangeToDirectoryURL url: NSURL?) {
+        if self.savePanel === sender {
+            self.savePanelDidChangeToDirectoryURL = url
+        }
+    }
+    
+    func panelSelectionDidChange(sender: AnyObject?) {
+        if let savePanel = sender as? NSOpenPanel,
+            let selectedURL = savePanel.URL
+            where savePanel === self.savePanel {
+                if selectedURL == self.savePanelDidChangeToDirectoryURL {
+                    // change the button back to normal
+                    savePanel.defaultButtonCell()?.target = savePanel
+                    savePanel.defaultButtonCell()?.title = self.savePanelOriginalButtonTitle
+                } else {
+                    // Hijack the button
+                    self.savePanelShouldOpenURL = selectedURL
+                    savePanel.defaultButtonCell()?.title = NSLocalizedString("Open Folder", comment: "text in the prompt button of the create new cartfile button when it is instructing the user to open the selected folder")
+                    savePanel.defaultButtonCell()?.target = self
+                }
+        }
+    }
+    
+    @objc private func ok(sender: AnyObject?) {
+        if let savePanel = self.savePanel,
+            let shouldOpenURL = self.savePanelShouldOpenURL {
+                // tell the panel to browse to the desired URL
+                savePanel.directoryURL = shouldOpenURL
+                self.savePanelShouldOpenURL = nil
         }
     }
 }
