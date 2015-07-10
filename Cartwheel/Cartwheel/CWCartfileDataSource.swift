@@ -27,6 +27,8 @@
 
 import Foundation
 import ObserverSet
+import XCGLogger
+import Async
 
 class CWCartfileDataSource {
     
@@ -34,24 +36,24 @@ class CWCartfileDataSource {
     
     let cartfileObserver = ObserverSet<Void>()
     
+    // MARK: Private Properties
+    
+    let log = XCGLogger.defaultInstance()
+    
     // MARK: Internal Properties
     
     var defaultsPlist = CWDefaultsPlist()
     private(set) var cartfiles = [CWCartfile]() {
         didSet {
-            // notify observers on main thread
-            dispatch_async(dispatch_get_main_queue()) {
+            Async.main {
+                // notify observers on main thread
                 self.cartfileObserver.notify()
-            }
-            
-            // fall back to background queue to save to disk
-            let saveToDiskQueue = dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)
-            dispatch_async(saveToDiskQueue) {
+            }.userInitiated {
+                // save to disk in the background
                 if self.cartfileStorageFolderExists() == false {
                     NSLog("CWCartfileDataSource: Cartfile storage folder does not exist, creating it.")
                     self.createCartfileStorageFolder()
                 }
-                
                 var writeToDiskError: NSError?
                 NSKeyedArchiver.archivedDataWithRootObject(self.cartfiles).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName), options: nil, error: &writeToDiskError)
                 
