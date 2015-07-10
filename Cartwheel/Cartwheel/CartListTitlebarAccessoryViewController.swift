@@ -26,6 +26,7 @@
 //
 
 import Cocoa
+import XCGLogger
 import PureLayout_Mac
 
 @objc(CartListTitlebarAccessoryViewController) // this is required so the NIB can be found by cocoa
@@ -35,6 +36,7 @@ class CartListTitlebarAccessoryViewController: NSTitlebarAccessoryViewController
     weak var window: NSWindow?
     private let contentView = CartListTitlebarAccessoryView()
     private let dataSource = CWCartfileDataSource.sharedInstance
+    private let log = XCGLogger.defaultInstance()
     
     //
     // These properties help with the NSOpenPanel Button Hijack
@@ -113,14 +115,28 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
             let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
             switch result {
             case .SuccessButton:
-                println("CartListViewController: File Saver: \(savePanel.URL)")
-                
+                if let selectedURL = savePanel.URL {
+                    println("CartListViewController: File Saver: \(selectedURL)")
+                    let filePath = selectedURL.URLByAppendingPathComponent("Cartfile", isDirectory: false)
+                    let blankData = NSData()
+                    var error: NSError?
+                    blankData.writeToURL(filePath, options: NSDataWritingOptions.DataWritingWithoutOverwriting, error: &error)
+                    if let error = error {
+                        let alert = NSAlert(error: error)
+                        savePanel.orderOut(nil) // TODO: try to remove this later. Its not supposed to be needed.
+                        alert.beginSheetModalForWindow(self.window!, completionHandler: nil)
+                        self.log.error("\(error)")
+                    } else {
+                        let cartfile: CWCartfile = filePath
+                        self.dataSource.addCartfile(cartfile)
+                        NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([filePath])
+                    }
+                }
             case .CancelButton:
-                NSLog("CartListViewController: File Saver was cancelled by user.")
+                self.log.info("CartListViewController: File Saver was cancelled by user.")
             }
         })
         self.savePanel = savePanel
-        
     }
     
     private func parseCartfilesFromURL(url: NSURL) -> [CWCartfile]? {
@@ -214,18 +230,18 @@ extension CartListTitlebarAccessoryViewController: NSOpenSavePanelDelegate {
     }
     
     func panelSelectionDidChange(sender: AnyObject?) {
-        if let savePanel = sender as? NSOpenPanel,
-            let selectedURL = savePanel.URL
-            where savePanel === self.savePanel {
+        if let sender = sender as? NSOpenPanel,
+            let selectedURL = sender.URL
+            where sender === self.savePanel {
                 if selectedURL == self.savePanelDidChangeToDirectoryURL {
                     // change the button back to normal
-                    savePanel.defaultButtonCell()?.target = savePanel
-                    savePanel.defaultButtonCell()?.title = self.savePanelOriginalButtonTitle
+                    sender.defaultButtonCell()?.target = sender
+                    sender.defaultButtonCell()?.title = self.savePanelOriginalButtonTitle
                 } else {
                     // Hijack the button
                     self.savePanelShouldOpenURL = selectedURL
-                    savePanel.defaultButtonCell()?.title = NSLocalizedString("Open Folder", comment: "text in the prompt button of the create new cartfile button when it is instructing the user to open the selected folder")
-                    savePanel.defaultButtonCell()?.target = self
+                    sender.defaultButtonCell()?.title = NSLocalizedString("Open Folder", comment: "text in the prompt button of the create new cartfile button when it is instructing the user to open the selected folder")
+                    sender.defaultButtonCell()?.target = self
                 }
         }
     }

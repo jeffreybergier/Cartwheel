@@ -26,6 +26,7 @@
 //
 
 import Cocoa
+import XCGLogger
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -33,6 +34,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var cartListWindowController: CartListWindowController?
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+        XCGLogger.defaultInstance().setup(logLevel: .Verbose, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: nil, fileLogLevel: .Warning)
+        
         self.cartListWindowController = CartListWindowController(windowNibName: "CartListWindowController")
         self.cartListWindowController!.showWindow(self) // should crash if NIL at this point
         
