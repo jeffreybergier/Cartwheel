@@ -117,10 +117,12 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
             case .SuccessButton:
                 if let selectedURL = savePanel.URL {
                     println("CartListViewController: File Saver: \(selectedURL)")
+                    
                     let filePath = selectedURL.URLByAppendingPathComponent("Cartfile", isDirectory: false)
                     let blankData = NSData()
                     var error: NSError?
                     blankData.writeToURL(filePath, options: NSDataWritingOptions.DataWritingWithoutOverwriting, error: &error)
+                    
                     if let error = error {
                         let alert = NSAlert(error: error)
                         savePanel.orderOut(nil) // TODO: try to remove this later. Its not supposed to be needed.

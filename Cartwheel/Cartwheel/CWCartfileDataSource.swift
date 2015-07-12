@@ -57,7 +57,6 @@ class CWCartfileDataSource {
                 var writeToDiskError: NSError?
                 NSKeyedArchiver.archivedDataWithRootObject(self.cartfiles).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName), options: nil, error: &writeToDiskError)
                 
-                
                 if let error = writeToDiskError {
                     NSLog("CWCartfileDataSource: Error saving cartfiles to disk: \(error)")
                 }

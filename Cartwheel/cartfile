@@ -1,9 +1,13 @@
+## Frameworks needed for Cartwheel
 github "smileyborg/PureLayout" ~> 2.0.0
-github "Carthage/Carthage" ~> 1.0.0
 github "DaveWoodCom/XCGLogger" ~> 2.0.0
 github "duemunk/Async" ~> 1.2.1
 github "jeffreybergier/SwiftObserverSet-Fork" "master"
 
-## Private frameworks that need to be built for CarthageKit to work
-github "Carthage/Commandant" ~> 0.6
-github "jdhealy/PrettyColors" ~> 2.0
+## My own fork of Carthage that works and signs properly
+github "jeffreybergier/Carthage-TryingToFixSigningIssue" ~> 0.7.6
+
+## When using the official Carthage Github
+#github "Carthage/Carthage" ~> 1.0.0
+#github "Carthage/Commandant" ~> 0.6
+#github "jdhealy/PrettyColors" ~> 2.0
