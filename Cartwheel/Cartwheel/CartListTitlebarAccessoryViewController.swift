@@ -30,7 +30,7 @@ import XCGLogger
 import PureLayout_Mac
 
 @objc(CartListTitlebarAccessoryViewController) // this is required so the NIB can be found by cocoa
-class CartListTitlebarAccessoryViewController: NSTitlebarAccessoryViewController {
+final class CartListTitlebarAccessoryViewController: NSTitlebarAccessoryViewController {
     
     // Model, View Controller Properties
     weak var window: NSWindow?
@@ -101,6 +101,7 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
         }
     }
     
+    // TODO: This class/method has way too much logic in it. This needs to be refactored
     @objc private func didClickCreateNewCartFileButton(sender: NSButton) {
         NSLog("Create new cartfile")
         let savePanel = NSOpenPanel()
@@ -154,6 +155,7 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
         return nil
     }
     
+    // TODO: This class/method has way too much logic in it. This needs to be refactored
     private func parseCartfilesByEnumeratingURL(parentURL: NSURL, directoryRecursionDepth: Int, initialCartfiles: [CWCartfile]?) -> [CWCartfile]? {
         if directoryRecursionDepth <= self.dataSource.defaultsPlist.cartfileDirectorySearchRecursion {
             

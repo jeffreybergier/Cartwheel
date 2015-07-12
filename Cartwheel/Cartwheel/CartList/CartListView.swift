@@ -28,7 +28,7 @@
 import Cocoa
 import PureLayout_Mac
 
-class CartListView: NSView {
+final class CartListView: NSView {
     
     // MARK: Handle Initialization
     

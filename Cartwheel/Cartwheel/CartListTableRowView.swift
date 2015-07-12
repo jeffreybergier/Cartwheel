@@ -26,7 +26,7 @@
 
 import Cocoa
 
-class CartListTableRowView: NSTableRowView {
+final class CartListTableRowView: NSTableRowView {
     
     // MARK: Handle Intialization
     
@@ -89,6 +89,7 @@ class CartListTableRowView: NSTableRowView {
         self.rowViewParentWindowIsMain = false
     }
 
+    // TODO: Rows often appear highlighted when they are being recycled
     override func drawBackgroundInRect(dirtyRect: NSRect) {
         if self.mouseInView == true && self.selected == false && self.rowViewParentWindowIsMain == true {
             // drawHighlightInRect

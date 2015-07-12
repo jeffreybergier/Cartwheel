@@ -29,7 +29,7 @@ import Cocoa
 import PureLayout_Mac
 
 @objc(CartListTableViewController)
-class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
+final class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     
     weak var parentWindowController: CartListWindowController?
     private let contentView = CartListView()

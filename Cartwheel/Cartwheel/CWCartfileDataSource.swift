@@ -30,7 +30,7 @@ import ObserverSet
 import XCGLogger
 import Async
 
-class CWCartfileDataSource {
+final class CWCartfileDataSource {
     
     // MARK: Data Observing
     

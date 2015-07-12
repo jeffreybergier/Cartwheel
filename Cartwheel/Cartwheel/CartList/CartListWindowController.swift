@@ -28,7 +28,7 @@
 import Cocoa
 import PureLayout_Mac
 
-class CartListWindowController: NSWindowController {
+final class CartListWindowController: NSWindowController {
     
     let tableViewController = CartListTableViewController()
     let titlebarAccessoryViewController = CartListTitlebarAccessoryViewController()

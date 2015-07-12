@@ -30,7 +30,7 @@ import PureLayout_Mac
 import CarthageKit
 import ReactiveCocoa
 
-class CartListTableCellViewController: NSTableCellView {
+final class CartListTableCellViewController: NSTableCellView {
         
     let contentView = CartListTableCellView()
     

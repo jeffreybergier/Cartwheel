@@ -26,7 +26,7 @@
 import Cocoa
 import PureLayout_Mac
 
-class CartListTitlebarAccessoryView: NSView {
+final class CartListTitlebarAccessoryView: NSView {
     
     // MARK: Handle Intialization
     
