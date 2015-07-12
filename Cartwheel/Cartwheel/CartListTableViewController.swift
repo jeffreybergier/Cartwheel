@@ -42,10 +42,6 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
         self.view.addSubview(self.contentView)
         self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
         
-        // Register Blank nibs so Cell Reuse Works
-        self.contentView.registerTableViewNIB("CartListTableCellViewController")
-        self.contentView.registerTableViewNIB("CartListTableRowView")
-        
         // configure my view and add in the custom view
         self.contentView.configureViewWithController(self, tableViewDataSource: self, tableViewDelegate: self)
         
@@ -128,20 +124,26 @@ class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTa
     }
     
     func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
-        let rowView = tableView.makeViewWithIdentifier("CartListTableRowView", owner: nil) as? CartListTableRowView
-        if rowView?.configured == false {
-            rowView?.configureRowViewWithParentWindow(self.parentWindowController?.window)
+        let rowView: CartListTableRowView
+        if let recycledRowView = tableView.makeViewWithIdentifier(CartListTableRowView.identifier, owner: nil) as? CartListTableRowView {
+            rowView = recycledRowView
+        } else {
+            rowView = CartListTableRowView()
         }
+        rowView.configureRowViewIfNeededWithParentWindow(self.parentWindowController?.window)
         return rowView
     }
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        // Create and configure CellView
-        let cellView = tableView.makeViewWithIdentifier("CartListTableCellViewController", owner: nil) as? CartListTableCellViewController
-        cellView?.cartfileURL = self.dataSource.cartfiles[safe: row]
-        
-        // Retrieve RowView and give it a reference to the CellView
-        let rowView = tableView.rowViewAtRow(row, makeIfNecessary: false) as? CartListTableRowView
+        let cellView: CartListTableCellViewController
+        if let recycledCellView = tableView.makeViewWithIdentifier(CartListTableCellViewController.identifier, owner: nil) as? CartListTableCellViewController {
+            cellView = recycledCellView
+        }
+        else {
+            cellView = CartListTableCellViewController()
+        }
+        cellView.configureViewIfNeeded()
+        cellView.cartfileURL = self.dataSource.cartfiles[safe: row]
         return cellView
     }
     

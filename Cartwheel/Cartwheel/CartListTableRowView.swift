@@ -30,20 +30,27 @@ class CartListTableRowView: NSTableRowView {
     
     // MARK: Handle Intialization
     
+    static let identifier = "CartListTableRowView"
+    override var identifier: String? {
+        get { return self.classForCoder.identifier }
+        set { /* do nothing */ /* this setter is needed to please the compiler */ }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.wantsLayer = true
     }
     
-    var configured = false
+    private var configured = false
     
-    func configureRowViewWithParentWindow(parentWindow: NSWindow?) {
-        if let window = parentWindow {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "parentWindowDidBecomeMain:", name: NSWindowDidBecomeMainNotification, object: window)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "parentWindowDidResignMain:", name: NSWindowDidResignMainNotification, object: window)
+    func configureRowViewIfNeededWithParentWindow(parentWindow: NSWindow?) {
+        if self.configured == false {
+            if let window = parentWindow {
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "parentWindowDidBecomeMain:", name: NSWindowDidBecomeMainNotification, object: window)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "parentWindowDidResignMain:", name: NSWindowDidResignMainNotification, object: window)
+            }
+            self.configured = true
         }
-        self.configured = true
     }
     
     // MARK: Handle Selecting a Row

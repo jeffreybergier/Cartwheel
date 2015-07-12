@@ -50,6 +50,12 @@ class CartListTableCellViewController: NSTableCellView {
         }
     }
     
+    static let identifier = "CartListTableCellViewController"
+    override var identifier: String? {
+        get { return self.classForCoder.identifier }
+        set { /* do nothing */ /* this setter is needed to please the compiler */ }
+    }
+    
     private func prepareCellForNewModelObject() {
         self.contentView.clearCellContents()
     }
@@ -62,17 +68,20 @@ class CartListTableCellViewController: NSTableCellView {
         }
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        // configure the view
-        self.addSubview(self.contentView)
-        self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
-        self.contentView.viewDidLoad()
-        
-        // configure the button
-        self.contentView.setPrimaryButtonTitle(NSLocalizedString("Update", comment: "Button to perform carthage update"))
-        self.contentView.setPrimaryButtonAction("didClickUpdateCartfileButton:", forTarget: self)
+    private var configured = false
+    
+    func configureViewIfNeeded() {
+        if self.configured == false {
+            // configure the view
+            self.addSubview(self.contentView)
+            self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
+            self.contentView.viewDidLoad()
+            
+            // configure the button
+            self.contentView.setPrimaryButtonTitle(NSLocalizedString("Update", comment: "Button to perform carthage update"))
+            self.contentView.setPrimaryButtonAction("didClickUpdateCartfileButton:", forTarget: self)
+            self.configured = true
+        }
     }
     
     @objc private func didClickUpdateCartfileButton(sender: NSButton) {
@@ -83,12 +92,6 @@ class CartListTableCellViewController: NSTableCellView {
             println("Producer did something: \($0)")
         })
         println("didClickUpdateCartfileButton -- End")
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.cartfileURL = nil
-        println("\(self): Preparing for Reuse")
     }
     
     // MARK: Special Property used to Calculate Row Height
