@@ -1,0 +1,10 @@
+framework module ReactiveTask {
+  umbrella header "ReactiveTask.h"
+
+  export *
+  module * { export * }
+}
+
+module ReactiveTask.Swift {
+    header "ReactiveTask-Swift.h"
+}
