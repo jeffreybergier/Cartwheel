@@ -33,7 +33,9 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
     
     weak var parentWindowController: CartListWindowController?
     private let contentView = CartListView()
-    private let dataSource = CWCartfileDataSource.sharedInstance
+    private let contentModel = CWCartfileDataSource.sharedInstance
+    private let MOVED_ROWS_TYPE = "MOVED_ROWS_TYPE"
+    private let PUBLIC_TEXT_TYPES = [NSFilenamesPboardType /*kUTTypeText, kUTTypePlainText, kUTTypeUTF8PlainText, kUTTypeUTF16PlainText, kUTTypeRTF*/]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,10 +48,13 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         self.contentView.configureViewWithController(self, tableViewDataSource: self, tableViewDelegate: self)
         
         // register for data source changes
-        self.dataSource.cartfileObserver.add(self, self.dynamicType.dataSourceDidChange)
+        self.contentModel.cartfileObserver.add(self, self.dynamicType.modelDidChange)
+        
+        // configure the tableview for dragging
+        self.contentView.registerTableViewForDraggedTypes([MOVED_ROWS_TYPE] + PUBLIC_TEXT_TYPES)
         
         // configure default cellHeight
-        let rowHeight = self.tableView(nil, heightOfRow: self.dataSource.cartfiles.lastIndex())
+        let rowHeight = self.tableView(nil, heightOfRow: self.contentModel.cartfiles.lastIndex())
         self.contentView.updateTableViewRowHeight(rowHeight)
         
         // register for notifications on window resize
@@ -63,7 +68,7 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
     
     // MARK: Data Source Observing
     
-    func dataSourceDidChange() {
+    func modelDidChange() {
         self.contentView.reloadTableViewData()
     }
     
@@ -95,7 +100,7 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
     // Changed NSTableView to be optional because the method doesn't use it.
     // I call this method manually in windowDidLoad without passing in an TableView
     func tableView(tableView: NSTableView?, heightOfRow row: Int) -> CGFloat {
-        if let cartfileURL = self.dataSource.cartfiles[safe: row],
+        if let cartfileURL = self.contentModel.cartfiles[safe: row],
             let pathComponents = cartfileURL.pathComponents,
             let containingFolder = pathComponents[pathComponents.count - 2] as? String {
                 self.cellHeightCalculationView.setPrimaryTextFieldString(containingFolder)
@@ -117,10 +122,10 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
     
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         // this line tells the tableview to add / remove gridlines when the table is full / empty
-        self.dataSource.cartfiles.count > 0 ? self.contentView.tableViewHasRows(true) : self.contentView.tableViewHasRows(false)
+        self.contentModel.cartfiles.count > 0 ? self.contentView.tableViewHasRows(true) : self.contentView.tableViewHasRows(false)
         
         // return the actual number of rows
-        return self.dataSource.cartfiles.count
+        return self.contentModel.cartfiles.count
     }
     
     func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
@@ -143,9 +148,72 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
             cellView = CartListTableCellViewController()
         }
         cellView.configureViewIfNeeded()
-        cellView.cartfileURL = self.dataSource.cartfiles[safe: row]
+        cellView.cartfileURL = self.contentModel.cartfiles[safe: row]
         return cellView
     }
+    
+    // MARK: Handle Dragging
+    
+    func tableView(tableView: NSTableView, writeRowsWithIndexes rowIndexes: NSIndexSet, toPasteboard pboard: NSPasteboard) -> Bool {
+        pboard.declareTypes([MOVED_ROWS_TYPE] + PUBLIC_TEXT_TYPES, owner: self)
+        pboard.writeObjects([CWIndexSetPasteboardContainer(indexSet: rowIndexes)])
+        println("writeRowsWithIndexes: Wrote Indexes \(rowIndexes)")
+        return true
+    }
+    
+//    func tableView(tableView: NSTableView, draggingSession session: NSDraggingSession, willBeginAtPoint screenPoint: NSPoint, forRowIndexes rowIndexes: NSIndexSet) {
+//        println("draggingSession: \(session) willBeginAtPoint: \(screenPoint) forRowIndexes: \(rowIndexes)")
+//    }
+    
+    func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableViewDropOperation) -> Bool {
+        let activity = self.pasteboardActivity(info.draggingPasteboard())
+        switch activity {
+        case .DragFile(let url):
+            println("acceptDrop for URL: \(url)")
+            return true
+        case .MoveRow(let indexes):
+            println("acceptDrop for IndexSet: \(indexes)")
+            return true
+        case .Unknown:
+            return false
+            
+        }
+    }
+
+    func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation {
+        let activity = self.pasteboardActivity(info.draggingPasteboard())
+        switch activity {
+        case .DragFile(let url):
+            println("validateDrop for URL: \(url)")
+            return NSDragOperation.Copy
+        case .MoveRow(let indexes):
+            println("validateDrop for IndexSet: \(indexes)")
+            return NSDragOperation.Move
+        case .Unknown:
+            return NSDragOperation.Generic
+        }
+    }
+    
+    private enum PasteboardActivity {
+        case DragFile(url: NSURL)
+        case MoveRow(indexSet: NSIndexSet)
+        case Unknown
+    }
+    
+    private func pasteboardActivity(pasteboard: NSPasteboard?) -> PasteboardActivity {
+        if let pasteboard = pasteboard,
+            let url = NSURL(fromPasteboard: pasteboard) {
+                return .DragFile(url: url)
+        } else if let pasteboard = pasteboard,
+            let items = pasteboard.readObjectsForClasses([CWIndexSetPasteboardContainer.self], options: nil),
+            let indexes = (items.first as? CWIndexSetPasteboardContainer)?.containedIndexSet {
+                return .MoveRow(indexSet: indexes)
+        } else {
+            return .Unknown
+        }
+    }
+
+
     
     // MARK: Handle going away
     

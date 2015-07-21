@@ -35,6 +35,10 @@ final class CartListTableRowView: NSTableRowView {
         get { return self.classForCoder.identifier }
         set { /* do nothing */ /* this setter is needed to please the compiler */ }
     }
+    override var draggingDestinationFeedbackStyle: NSTableViewDraggingDestinationFeedbackStyle {
+        get { return .Regular }
+        set {}
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -72,6 +72,10 @@ final class CartListView: NSView {
         self.ui.tableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(indexesInRange: visibleRows))
     }
     
+    func registerTableViewForDraggedTypes(draggedTypes: [AnyObject]) {
+        self.ui.tableView.registerForDraggedTypes(draggedTypes)
+    }
+    
     // MARK: Handle Configuring The SubViews
     
     private func configureConstraints() {

@@ -75,7 +75,7 @@ extension NSView {
 // The cartfile type built into carthage kit can be created with a URL
 // but it doesn't store that URL as a property
 // this makes it hard to serialized and deserialized from disk
-// In the meantime, I'll just store NSURL's on disk 
+// In the meantime, I'll just store NSURL's on disk
 // but use a typealias so i know they should be Cartfile URL's
 
 typealias CWCartfile = NSURL
@@ -117,9 +117,9 @@ extension NSButton {
         let button = NSButton()
         button.bezelStyle = .RoundedBezelStyle
         // TODO: Figure out how to fix the garbage caused by NSCell
-//        (button.cell() as! NSButtonCell).bordered = false
-//        (button.cell() as! NSButtonCell).backgroundStyle = NSBackgroundStyle.Dark
-//        (button.cell() as! NSButtonCell).backgroundColor = NSColor.clearColor()
+        //        (button.cell() as! NSButtonCell).bordered = false
+        //        (button.cell() as! NSButtonCell).backgroundStyle = NSBackgroundStyle.Dark
+        //        (button.cell() as! NSButtonCell).backgroundColor = NSColor.clearColor()
         return button
     }
 }

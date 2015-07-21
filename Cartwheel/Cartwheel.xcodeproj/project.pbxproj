@@ -87,6 +87,8 @@
 		739B3A331B51D107003AC91F /* XCGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73A2FBDA1B503A4600233D54 /* XCGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		739C39251B0029680088FAD2 /* CWSwiftGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */; };
 		739C392A1B004D8F0088FAD2 /* CWCartfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */; };
+		73ACF8E91B5DD779005EC682 /* CWIndexSetPasteboardContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A69AD81B5B0F7500925303 /* CWIndexSetPasteboardContainer.m */; };
+		73ACF8EA1B5DD77A005EC682 /* CWIndexSetPasteboardContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A69AD81B5B0F7500925303 /* CWIndexSetPasteboardContainer.m */; };
 		73B4589E1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4589C1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift */; };
 		73B458A11B249E6500A417AF /* CartListTitlebarAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B458A01B249E6500A417AF /* CartListTitlebarAccessoryView.swift */; };
 		73B4DD121AEEE527007342C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4DD111AEEE527007342C7 /* AppDelegate.swift */; };
@@ -176,6 +178,10 @@
 		73A2FBD81B503A4600233D54 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = SOURCE_ROOT; };
 		73A2FBD91B503A4600233D54 /* Runes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Runes.framework; path = Carthage/Build/Mac/Runes.framework; sourceTree = SOURCE_ROOT; };
 		73A2FBDA1B503A4600233D54 /* XCGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCGLogger.framework; path = Carthage/Build/Mac/XCGLogger.framework; sourceTree = SOURCE_ROOT; };
+		73A69AD51B5B0F7400925303 /* Cartwheel-Sandboxed-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cartwheel-Sandboxed-Bridging-Header.h"; sourceTree = "<group>"; };
+		73A69AD61B5B0F7400925303 /* Cartwheel-Unboxed-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cartwheel-Unboxed-Bridging-Header.h"; sourceTree = "<group>"; };
+		73A69AD71B5B0F7500925303 /* CWIndexSetPasteboardContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWIndexSetPasteboardContainer.h; sourceTree = "<group>"; };
+		73A69AD81B5B0F7500925303 /* CWIndexSetPasteboardContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CWIndexSetPasteboardContainer.m; sourceTree = "<group>"; };
 		73B4589C1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListTitlebarAccessoryViewController.swift; sourceTree = "<group>"; };
 		73B4589D1B240F6900A417AF /* CartListTitlebarAccessoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CartListTitlebarAccessoryViewController.xib; sourceTree = "<group>"; };
 		73B458A01B249E6500A417AF /* CartListTitlebarAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListTitlebarAccessoryView.swift; sourceTree = "<group>"; };
@@ -316,6 +322,8 @@
 			children = (
 				73C2F3941AF06D78001B36DB /* CartListWindowController.swift */,
 				73C4386B1B470F5100DF94EC /* CartListTableViewController.swift */,
+				73A69AD71B5B0F7500925303 /* CWIndexSetPasteboardContainer.h */,
+				73A69AD81B5B0F7500925303 /* CWIndexSetPasteboardContainer.m */,
 			);
 			name = "Window Controller";
 			sourceTree = "<group>";
@@ -393,6 +401,8 @@
 		73B4DD0F1AEEE527007342C7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				73A69AD51B5B0F7400925303 /* Cartwheel-Sandboxed-Bridging-Header.h */,
+				73A69AD61B5B0F7400925303 /* Cartwheel-Unboxed-Bridging-Header.h */,
 				73814DC91B4CB40400CEA6F1 /* Cartwheel copy-Info.plist */,
 				73B4DD101AEEE527007342C7 /* Info.plist */,
 				731994EC1AF2B7EE003B422B /* Cartwheel.entitlements */,
@@ -575,6 +585,7 @@
 				73814D941B4CB40400CEA6F1 /* CartListTitlebarAccessoryViewController.swift in Sources */,
 				73814D951B4CB40400CEA6F1 /* CartListTitlebarAccessoryView.swift in Sources */,
 				73814D961B4CB40400CEA6F1 /* CartListTableRowView.swift in Sources */,
+				73ACF8EA1B5DD77A005EC682 /* CWIndexSetPasteboardContainer.m in Sources */,
 				73814D971B4CB40400CEA6F1 /* CartListWindowController.swift in Sources */,
 				73814D981B4CB40400CEA6F1 /* CartListTableCellView.swift in Sources */,
 				73814D991B4CB40400CEA6F1 /* AppDelegate.swift in Sources */,
@@ -595,6 +606,7 @@
 				73B4589E1B240F6900A417AF /* CartListTitlebarAccessoryViewController.swift in Sources */,
 				73B458A11B249E6500A417AF /* CartListTitlebarAccessoryView.swift in Sources */,
 				732909AC1B437F7300A75914 /* CartListTableRowView.swift in Sources */,
+				73ACF8E91B5DD779005EC682 /* CWIndexSetPasteboardContainer.m in Sources */,
 				73C2F3961AF06D78001B36DB /* CartListWindowController.swift in Sources */,
 				73C2F38F1AF04F97001B36DB /* CartListTableCellView.swift in Sources */,
 				73B4DD121AEEE527007342C7 /* AppDelegate.swift in Sources */,
@@ -626,6 +638,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -636,6 +649,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = Cartwheel;
+				SWIFT_OBJC_BRIDGING_HEADER = "Cartwheel/Cartwheel-Unboxed-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -643,6 +658,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -653,6 +669,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = Cartwheel;
+				SWIFT_OBJC_BRIDGING_HEADER = "Cartwheel/Cartwheel-Unboxed-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -740,6 +757,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Cartwheel/Cartwheel.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -751,6 +769,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = Cartwheel;
+				SWIFT_OBJC_BRIDGING_HEADER = "Cartwheel/Cartwheel-Sandboxed-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -758,6 +778,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Cartwheel/Cartwheel.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -769,6 +790,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = Cartwheel;
+				SWIFT_OBJC_BRIDGING_HEADER = "Cartwheel/Cartwheel-Sandboxed-Bridging-Header.h";
 			};
 			name = Release;
 		};
