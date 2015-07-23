@@ -44,13 +44,18 @@ final class CartListWindowController: NSWindowController {
         self.window?.styleMask = self.window!.styleMask | NSFullSizeContentViewWindowMask
         self.window?.titleVisibility = NSWindowTitleVisibility.Visible
         self.window?.title = NSLocalizedString("Cartwheel", comment: "Cartwheel name for window title")
+        
+        // create the data source and distribute the reference
+        let dataSource = CWCartfileDataSource()
                 
         // configure titlebar view controller
-        self.titlebarAccessoryViewController.window = self.window
+        self.titlebarAccessoryViewController.parentWindowController = self
+        self.titlebarAccessoryViewController.contentModel = dataSource
         self.window?.addTitlebarAccessoryViewController(self.titlebarAccessoryViewController)
         
         // configure the tableview controller
         self.tableViewController.parentWindowController = self
+        self.tableViewController.contentModel = dataSource
         self.window?.contentView = self.tableViewController.view
     }
 }

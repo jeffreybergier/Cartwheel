@@ -33,9 +33,12 @@ import PureLayout_Mac
 final class CartListTitlebarAccessoryViewController: NSTitlebarAccessoryViewController {
     
     // Model, View Controller Properties
-    weak var window: NSWindow?
+    var contentModel: CWCartfileDataSource!
+    weak var parentWindowController: NSWindowController?
+    
+    private var window: NSWindow? { return self.parentWindowController?.window }
+    
     private let contentView = CartListTitlebarAccessoryView()
-    private let dataSource = CWCartfileDataSource.sharedInstance
     private let log = XCGLogger.defaultInstance()
     
     //
@@ -87,23 +90,16 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
             let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
             switch result {
             case .SuccessButton:
-                for object in fileChooser.URLs {
-                    var changedDataSource = false
-                    if let url = object as? NSURL,
-                        let cartfiles = self.parseCartfilesFromURL(url) {
-                            changedDataSource = true
-                            self.dataSource.addCartfiles(cartfiles)
-                    }
+                if let cartfiles = self.contentModel.cartfilesFromURL(fileChooser.URLs) {
+                    self.contentModel.addCartfiles(cartfiles)
                 }
             case .CancelButton:
                 NSLog("CartListViewController: File Chooser was cancelled by user.")
             }
         }
     }
-    
-    // TODO: This class/method has way too much logic in it. This needs to be refactored
+
     @objc private func didClickCreateNewCartFileButton(sender: NSButton) {
-        NSLog("Create new cartfile")
         let savePanel = NSOpenPanel()
         savePanel.delegate = self
         savePanel.canChooseDirectories = true
@@ -117,78 +113,23 @@ extension CartListTitlebarAccessoryViewController { // Handle Clicking Add Cartf
             switch result {
             case .SuccessButton:
                 if let selectedURL = savePanel.URL {
-                    println("CartListViewController: File Saver: \(selectedURL)")
-                    
-                    let filePath = selectedURL.URLByAppendingPathComponent("Cartfile", isDirectory: false)
-                    let blankData = NSData()
-                    var error: NSError?
-                    blankData.writeToURL(filePath, options: NSDataWritingOptions.DataWritingWithoutOverwriting, error: &error)
-                    
-                    if let error = error {
+                    let cartfileWriteResult = self.contentModel.writeBlankCartfileToDirectoryPath(selectedURL)
+                    if let error = cartfileWriteResult.error {
                         let alert = NSAlert(error: error)
                         savePanel.orderOut(nil) // TODO: try to remove this later. Its not supposed to be needed.
                         alert.beginSheetModalForWindow(self.window!, completionHandler: nil)
                         self.log.error("\(error)")
                     } else {
-                        let cartfile: CWCartfile = filePath
-                        self.dataSource.addCartfile(cartfile)
-                        NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([filePath])
+                        let cartfile: CWCartfile = cartfileWriteResult.finalURL
+                        self.contentModel.addCartfile(cartfile)
+                        NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([cartfile])
                     }
                 }
             case .CancelButton:
                 self.log.info("CartListViewController: File Saver was cancelled by user.")
             }
         })
-        self.savePanel = savePanel
-    }
-    
-    private func parseCartfilesFromURL(url: NSURL) -> [CWCartfile]? {
-        if url.lastPathComponent?.lowercaseString == self.dataSource.defaultsPlist.cartfileFileName {
-            return [url]
-        } else {
-            var isDirectory: ObjCBool = false
-            NSFileManager.defaultManager().fileExistsAtPath(url.path!, isDirectory: &isDirectory)
-            if let cartfiles = self.parseCartfilesByEnumeratingURL(url, directoryRecursionDepth: 0, initialCartfiles: nil) {
-                self.dataSource.addCartfiles(cartfiles)
-            }
-        }
-        return nil
-    }
-    
-    // TODO: This class/method has way too much logic in it. This needs to be refactored
-    private func parseCartfilesByEnumeratingURL(parentURL: NSURL, directoryRecursionDepth: Int, initialCartfiles: [CWCartfile]?) -> [CWCartfile]? {
-        if directoryRecursionDepth <= self.dataSource.defaultsPlist.cartfileDirectorySearchRecursion {
-            
-            let fileManager = NSFileManager.defaultManager()
-            let keys = [NSURLIsDirectoryKey]
-            let options: NSDirectoryEnumerationOptions = .SkipsHiddenFiles | .SkipsPackageDescendants | .SkipsSubdirectoryDescendants
-            
-            let enumerator = fileManager.enumeratorAtURL(parentURL, includingPropertiesForKeys: keys, options: options) {
-                (url: NSURL?, error: NSError?) -> Bool in
-                NSLog("CartListViewController: NSEnumerator Error: \(error) with URL: \(url)")
-                return true
-            }
-            
-            var cartfiles = [CWCartfile]()
-            for object in enumerator!.allObjects {
-                if let url = object as? NSURL,
-                    let urlResources = url.resourceValuesForKeys(keys, error: nil),
-                    let urlIsDirectory = urlResources[NSURLIsDirectoryKey] as? Bool {
-                        if urlIsDirectory == false {
-                            if url.lastPathComponent?.lowercaseString == self.dataSource.defaultsPlist.cartfileFileName.lowercaseString {
-                                cartfiles += [url]
-                                println("Cartfile found at URL: \(url)")
-                            }
-                        } else {
-                            if let recursiveCartfiles = self.parseCartfilesByEnumeratingURL(url, directoryRecursionDepth: directoryRecursionDepth + 1, initialCartfiles: cartfiles) {
-                                cartfiles += recursiveCartfiles
-                            }
-                        }
-                }
-            }
-            return cartfiles
-        }
-        return nil
+        self.savePanel = savePanel // this allows us to hack the save panel with the hacky code under NSOpenSavePanelDelegate.
     }
 }
 

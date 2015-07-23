@@ -423,8 +423,8 @@
 			isa = PBXGroup;
 			children = (
 				73B458A51B24B42700A417AF /* Main Window */,
-				73C2F38D1AF04F32001B36DB /* TableView Cells/Rows */,
 				73B458971B240BD100A417AF /* Toolbar */,
+				73C2F38D1AF04F32001B36DB /* TableView Cells/Rows */,
 			);
 			name = "CartList Main Window";
 			sourceTree = "<group>";

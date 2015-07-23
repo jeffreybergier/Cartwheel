@@ -31,11 +31,12 @@ import PureLayout_Mac
 @objc(CartListTableViewController)
 final class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     
+    var contentModel: CWCartfileDataSource!
     weak var parentWindowController: CartListWindowController?
+    
     private let contentView = CartListView()
-    private let contentModel = CWCartfileDataSource.sharedInstance
     private let MOVED_ROWS_TYPE = "MOVED_ROWS_TYPE"
-    private let PUBLIC_TEXT_TYPES = [NSFilenamesPboardType /*kUTTypeText, kUTTypePlainText, kUTTypeUTF8PlainText, kUTTypeUTF16PlainText, kUTTypeRTF*/]
+    private let PUBLIC_TEXT_TYPES = [NSFilenamesPboardType]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -157,7 +158,6 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
     func tableView(tableView: NSTableView, writeRowsWithIndexes rowIndexes: NSIndexSet, toPasteboard pboard: NSPasteboard) -> Bool {
         pboard.declareTypes([MOVED_ROWS_TYPE] + PUBLIC_TEXT_TYPES, owner: self)
         pboard.writeObjects([CWIndexSetPasteboardContainer(indexSet: rowIndexes)])
-        println("writeRowsWithIndexes: Wrote Indexes \(rowIndexes)")
         return true
     }
     
@@ -169,10 +169,11 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         let activity = self.pasteboardActivity(info.draggingPasteboard())
         switch activity {
         case .DragFile(let url):
-            println("acceptDrop for URL: \(url)")
-            return true
+            if let draggedCartfiles = self.contentModel.cartfilesFromURL(url) {
+                self.contentModel.addCartfiles(draggedCartfiles)
+                return true
+            } else { return false }
         case .MoveRow(let indexes):
-            println("acceptDrop for IndexSet: \(indexes)")
             return true
         case .Unknown:
             return false
@@ -184,10 +185,8 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         let activity = self.pasteboardActivity(info.draggingPasteboard())
         switch activity {
         case .DragFile(let url):
-            println("validateDrop for URL: \(url)")
             return NSDragOperation.Copy
         case .MoveRow(let indexes):
-            println("validateDrop for IndexSet: \(indexes)")
             return NSDragOperation.Move
         case .Unknown:
             return NSDragOperation.Generic

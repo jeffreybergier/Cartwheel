@@ -44,7 +44,9 @@ extension NSURL {
             }
             let mergedRecursionFiles = Array.merge(recursionFiles)
             files = startingFiles + filesAndDirectories.files + mergedRecursionFiles
-        } else { files = startingFiles }
+        } else {
+            files = startingFiles
+        }
         return files
     }
     
@@ -85,7 +87,13 @@ extension NSURL {
             let files = Array.filterOptionals(optionalFiles)
             let directories = Array.filterOptionals(optionalDirectories)
             
-            return URLEnumeration(files: files, remainingDirectories: directories)
+            if files.count == 0 && directories.count == 0 {
+                // this returns the original URL if no other files and directories were found
+                // this happens when the user drags a file rather than a URL
+                return URLEnumeration(files: [self], remainingDirectories: directories)
+            } else {
+                return URLEnumeration(files: files, remainingDirectories: directories)
+            }
         }
         return .None
     }

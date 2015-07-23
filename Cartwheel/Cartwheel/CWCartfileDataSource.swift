@@ -42,7 +42,7 @@ final class CWCartfileDataSource {
     
     // MARK: Internal Properties
     
-    var defaultsPlist = CWDefaultsPlist()
+    let defaultsPlist = CWDefaultsPlist()
     private(set) var cartfiles = [CWCartfile]() {
         didSet {
             Async.main {
@@ -82,6 +82,38 @@ final class CWCartfileDataSource {
         }
     }
     
+    func writeBlankCartfileToDirectoryPath(directory: NSURL) -> (finalURL: NSURL, error: NSError?) {
+        let cartfilePath = directory.URLByAppendingPathComponent(self.defaultsPlist.cartfileFileName, isDirectory: false)
+        let blankData = NSData()
+        var error: NSError?
+        blankData.writeToURL(cartfilePath, options: NSDataWritingOptions.DataWritingWithoutOverwriting, error: &error)
+        return (finalURL: cartfilePath, error: error)
+    }
+    
+    func cartfilesFromURL(url: NSURL) -> [CWCartfile]? {
+        if let recursedFiles = url.extractFilesRecursionDepth(self.defaultsPlist.cartfileDirectorySearchRecursion) {
+            let optionalCartfiles = recursedFiles.map { url -> CWCartfile? in
+                if url.lastPathComponent?.lowercaseString == self.defaultsPlist.cartfileFileName.lowercaseString {
+                    return url } else { return .None }
+            }
+            let cartfiles = Array.filterOptionals(optionalCartfiles)
+            if cartfiles.count > 0 { return cartfiles } else { return .None }
+        }
+        return .None
+    }
+    
+    func cartfilesFromURL(URLs: [AnyObject]) -> [CWCartfile]? {
+        let optionalURLs = URLs.map { object -> NSURL? in
+            if let url = object as? NSURL { return url } else { return .None }
+        }
+        let filteredURLs = Array.filterOptionals(optionalURLs)
+        let optionalCartfiles = filteredURLs.map { url -> [CWCartfile]? in
+            return self.cartfilesFromURL(url)
+        }
+        let mergedCartfiles = Array.merge(optionalCartfiles)
+        if mergedCartfiles.count > 0 { return mergedCartfiles } else { return .None }
+    }
+
     // MARK: Handle Saving Cartfiles to disk
     
     private let fileManager = NSFileManager.defaultManager()
@@ -121,19 +153,5 @@ final class CWCartfileDataSource {
         }
         
         return [CWCartfile]()
-    }
-    
-    class var sharedInstance: CWCartfileDataSource {
-        struct Static {
-            static var instance: CWCartfileDataSource?
-            static var token: dispatch_once_t = 0
-        }
-        
-        dispatch_once(&Static.token) {
-            Static.instance = CWCartfileDataSource()
-            Static.instance?.cartfiles = Static.instance!.readCartfilesFromDisk()
-        }
-        
-        return Static.instance!
     }
 }
