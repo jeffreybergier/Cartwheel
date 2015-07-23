@@ -27,6 +27,75 @@
 
 import AppKit
 
+// MARK: Extending NSURL
+
+extension NSURL {
+    
+    func extractFilesRecursionDepth(recursionDepth: Int) -> [NSURL]? {
+        let files = self.recurseFilesByEnumeratingURLWithInitialURLs([NSURL](), maxDepth: recursionDepth, currentDepth: 0)
+        if files.count > 0 { return files } else { return .None }
+    }
+    
+    private func recurseFilesByEnumeratingURLWithInitialURLs(startingFiles: [NSURL], maxDepth: Int, currentDepth: Int) -> [NSURL] {
+        let files: [NSURL]
+        if let filesAndDirectories = self.filesAndDirectories() where currentDepth <= maxDepth {
+            let recursionFiles = filesAndDirectories.remainingDirectories.map { directory -> [NSURL] in
+                return directory.recurseFilesByEnumeratingURLWithInitialURLs(startingFiles, maxDepth: maxDepth, currentDepth: currentDepth + 1)
+            }
+            let mergedRecursionFiles = Array.merge(recursionFiles)
+            files = startingFiles + filesAndDirectories.files + mergedRecursionFiles
+        } else { files = startingFiles }
+        return files
+    }
+    
+    func filesAndDirectories() -> URLEnumeration? {
+        let fileManager = NSFileManager.defaultManager()
+        let defaultsPlist = CWDefaultsPlist()
+        
+        let urlKeys = [NSURLIsDirectoryKey]
+        let enumeratorOptions: NSDirectoryEnumerationOptions = .SkipsHiddenFiles | .SkipsPackageDescendants | .SkipsSubdirectoryDescendants
+        
+        let enumerator = fileManager.enumeratorAtURL(self, includingPropertiesForKeys: urlKeys, options: enumeratorOptions) {
+            (url: NSURL?, error: NSError?) -> Bool in
+            NSLog("CartListViewController: NSEnumerator Error: \(error) with URL: \(url)")
+            return true
+        }
+        
+        if let enumeratorObjects = enumerator?.allObjects {
+            let optionalFiles = enumeratorObjects.map { object -> NSURL? in
+                if let url = object as? NSURL,
+                    let urlResources = url.resourceValuesForKeys(urlKeys, error: nil),
+                    let urlIsDirectory = urlResources[NSURLIsDirectoryKey] as? Bool
+                    where urlIsDirectory == false {
+                        return url
+                }
+                return .None
+            }
+            
+            let optionalDirectories = enumeratorObjects.map { object -> NSURL? in
+                if let url = object as? NSURL,
+                    let urlResources = url.resourceValuesForKeys(urlKeys, error: nil),
+                    let urlIsDirectory = urlResources[NSURLIsDirectoryKey] as? Bool
+                    where urlIsDirectory == true {
+                        return url
+                }
+                return .None
+            }
+            
+            let files = Array.filterOptionals(optionalFiles)
+            let directories = Array.filterOptionals(optionalDirectories)
+            
+            return URLEnumeration(files: files, remainingDirectories: directories)
+        }
+        return .None
+    }
+}
+
+struct URLEnumeration {
+    var files = [NSURL]()
+    var remainingDirectories = [NSURL]()
+}
+
 // MARK: Fixing Broken AppKit Stuff
 
 struct CWLayoutPriority {
@@ -85,6 +154,24 @@ typealias CWCartfile = NSURL
 extension Array {
     static func filterOptionals(array: [T?]) -> [T] {
         return array.filter { $0 != nil }.map { $0! }
+    }
+    
+    static func merge(input: [[T]]) -> [T] {
+        var output = [T]()
+        for inputItem in input {
+            output += inputItem
+        }
+        return output
+    }
+    
+    static func merge(input: [[T]?]) -> [T] {
+        var output = [T]()
+        for inputItem in input {
+            if let inputItem = inputItem {
+                output += inputItem
+            }
+        }
+        return output
     }
 }
 
