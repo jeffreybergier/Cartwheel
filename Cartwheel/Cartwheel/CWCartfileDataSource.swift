@@ -132,6 +132,10 @@ final class CWCartfileDataSource {
     
     // MARK: Handle Launching and Singleton
     
+    init() {
+        self.cartfiles = self.readCartfilesFromDisk()
+    }
+    
     private func readCartfilesFromDisk() -> [CWCartfile] {
         let fileURL = self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName)
         

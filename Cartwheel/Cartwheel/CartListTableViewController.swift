@@ -172,7 +172,9 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
             if let draggedCartfiles = self.contentModel.cartfilesFromURL(url) {
                 self.contentModel.addCartfiles(draggedCartfiles)
                 return true
-            } else { return false }
+            } else {
+                return false
+            }
         case .MoveRow(let indexes):
             return true
         case .Unknown:

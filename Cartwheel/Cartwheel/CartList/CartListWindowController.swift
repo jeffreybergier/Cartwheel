@@ -31,7 +31,8 @@ import PureLayout_Mac
 final class CartListWindowController: NSWindowController {
     
     let tableViewController = CartListTableViewController()
-    let titlebarAccessoryViewController = CartListTitlebarAccessoryViewController()
+    //let titlebarAccessoryViewController = CartListTitlebarAccessoryViewController()
+    var toolbarController: CartListWindowToolbarController?
     
     // MARK: Handle Initialization
     
@@ -42,16 +43,14 @@ final class CartListWindowController: NSWindowController {
         self.window?.collectionBehavior = NSWindowCollectionBehavior.FullScreenPrimary
         self.window?.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)!
         self.window?.styleMask = self.window!.styleMask | NSFullSizeContentViewWindowMask
-        self.window?.titleVisibility = NSWindowTitleVisibility.Visible
+        self.window?.titleVisibility = NSWindowTitleVisibility.Hidden
         self.window?.title = NSLocalizedString("Cartwheel", comment: "Cartwheel name for window title")
         
         // create the data source and distribute the reference
         let dataSource = CWCartfileDataSource()
-                
-        // configure titlebar view controller
-        self.titlebarAccessoryViewController.parentWindowController = self
-        self.titlebarAccessoryViewController.contentModel = dataSource
-        self.window?.addTitlebarAccessoryViewController(self.titlebarAccessoryViewController)
+        
+        // configure the toolbar
+        self.toolbarController = CartListWindowToolbarController(withinWindowController: self)
         
         // configure the tableview controller
         self.tableViewController.parentWindowController = self
