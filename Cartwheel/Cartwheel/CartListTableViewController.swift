@@ -176,7 +176,6 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
                 return false
             }
         case .MoveRow(let indexes):
-            println("Accepted Drop of Rows \(indexes) to Row \(row)")
             self.contentModel.moveItemsAtIndexes(indexes, toRow: row)
             return true
         case .Unknown:
