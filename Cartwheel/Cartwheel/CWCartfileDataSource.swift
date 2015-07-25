@@ -43,6 +43,7 @@ final class CWCartfileDataSource {
     // MARK: Internal Properties
     
     let defaultsPlist = CWDefaultsPlist()
+    
     private(set) var cartfiles = [CWCartfile]() {
         didSet {
             Async.main {
@@ -80,6 +81,35 @@ final class CWCartfileDataSource {
                 self.cartfiles += [cartfile]
             }
         }
+    }
+    
+    func moveItemsAtIndexes(items: NSIndexSet, toRow row: Int) {
+        var cartfiles = self.cartfiles
+        var cartfilesToMove = [CWCartfile]()
+        var rangesToRemoveFromCartfiles = [Range<Int>]()
+        items.enumerateRangesUsingBlock() { (range, stop) in
+            let swiftRange = range.location ..< (range.location + range.length)
+            for i in swiftRange {
+                if let cartfile = cartfiles[safe: i] {
+                    // collect the items to move
+                    cartfilesToMove += [cartfile]
+                } else {
+                    self.log.error("Tried to move items in array that were out of range: \(i)")
+                }
+            }
+            // collect the ranges to remove
+            rangesToRemoveFromCartfiles += [swiftRange]
+        }
+        // remove the items from the end to the beginning
+        rangesToRemoveFromCartfiles.reverse().map() { range -> Void in
+            cartfiles.removeRange(range)
+        }
+        // add them back in at the new spot
+        cartfilesToMove.reverse().map() { cartfile -> Void in
+            cartfiles.insert(cartfile, atIndex: row)
+        }
+        // doing it this way so the ivar is only set once.
+        self.cartfiles = cartfiles
     }
     
     func writeBlankCartfileToDirectoryPath(directory: NSURL) -> (finalURL: NSURL, error: NSError?) {
