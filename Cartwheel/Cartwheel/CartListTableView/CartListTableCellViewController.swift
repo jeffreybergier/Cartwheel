@@ -34,16 +34,7 @@ final class CartListTableCellViewController: NSTableCellView {
         
     let contentView = CartListTableCellView()
     
-    var cartfileTitle: String? {
-        if let cartfileURL = self.cartfileURL,
-            let pathComponents = cartfileURL.pathComponents,
-            let containingFolder = pathComponents[pathComponents.count - 2] as? String {
-                return containingFolder
-        }
-        return nil
-    }
-    
-    var cartfileURL: CWCartfile? {
+    var cartfile: CWCartfile? {
         didSet {
             self.prepareCellForNewModelObject()
             self.updateCellWithNewModelObject()
@@ -61,7 +52,7 @@ final class CartListTableCellViewController: NSTableCellView {
     }
     
     private func updateCellWithNewModelObject() {
-        if let cartfileTitle = self.cartfileTitle {
+        if let cartfileTitle = self.cartfile?.name {
             self.contentView.setPrimaryTextFieldString(cartfileTitle)
         } else {
             self.contentView.clearCellContents()
@@ -86,7 +77,7 @@ final class CartListTableCellViewController: NSTableCellView {
     
     @objc private func didClickUpdateCartfileButton(sender: NSButton) {
         println("didClickUpdateCartfileButton -- Begin")
-        let project = CarthageKit.Project(directoryURL: self.cartfileURL!)
+        let project = CarthageKit.Project(directoryURL: self.cartfile!.url)
         let producer = project.loadCombinedCartfile()
         let something = producer |> start(next: {
             println("Producer did something: \($0)")

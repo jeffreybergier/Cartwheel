@@ -27,15 +27,18 @@
 
 import Cocoa
 import PureLayout_Mac
+import XCGLogger
+import ObserverSet
 
 @objc(CartListTableViewController)
 final class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
+    
+    let log = XCGLogger.defaultInstance()
     
     var contentModel: CWCartfileDataSource!
     weak var parentWindowController: CartListWindowController?
     
     private let contentView = CartListView()
-    private let MOVED_ROWS_TYPE = "MOVED_ROWS_TYPE"
     private let PUBLIC_TEXT_TYPES = [NSFilenamesPboardType]
     
     override func viewDidLoad() {
@@ -52,7 +55,7 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         self.contentModel.cartfileObserver.add(self, self.dynamicType.modelDidChange)
         
         // configure the tableview for dragging
-        self.contentView.registerTableViewForDraggedTypes([MOVED_ROWS_TYPE] + PUBLIC_TEXT_TYPES)
+        self.contentView.registerTableViewForDraggedTypes(PUBLIC_TEXT_TYPES)
         
         // configure default cellHeight
         let rowHeight = self.tableView(nil, heightOfRow: self.contentModel.cartfiles.lastIndex())
@@ -101,10 +104,8 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
     // Changed NSTableView to be optional because the method doesn't use it.
     // I call this method manually in windowDidLoad without passing in an TableView
     func tableView(tableView: NSTableView?, heightOfRow row: Int) -> CGFloat {
-        if let cartfileURL = self.contentModel.cartfiles[safe: row],
-            let pathComponents = cartfileURL.pathComponents,
-            let containingFolder = pathComponents[pathComponents.count - 2] as? String {
-                self.cellHeightCalculationView.setPrimaryTextFieldString(containingFolder)
+        if let cartfile = self.contentModel.cartfiles[safe: row] {
+            self.cellHeightCalculationView.setPrimaryTextFieldString(cartfile.name)
         } else {
             self.cellHeightCalculationView.clearCellContents()
         }
@@ -136,7 +137,7 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         } else {
             rowView = CartListTableRowView()
         }
-        rowView.configureRowViewIfNeededWithParentWindow(self.parentWindowController?.window)
+        rowView.configureRowViewIfNeededWithParentWindow(self.parentWindowController?.window, draggingObserver: self.tableViewIsDraggingObserver)
         return rowView
     }
     
@@ -149,43 +150,50 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
             cellView = CartListTableCellViewController()
         }
         cellView.configureViewIfNeeded()
-        cellView.cartfileURL = self.contentModel.cartfiles[safe: row]
+        cellView.cartfile = self.contentModel.cartfiles[safe: row]
         return cellView
     }
     
     // MARK: Handle Dragging
     
     func tableView(tableView: NSTableView, writeRowsWithIndexes rowIndexes: NSIndexSet, toPasteboard pboard: NSPasteboard) -> Bool {
-        pboard.declareTypes([MOVED_ROWS_TYPE] + PUBLIC_TEXT_TYPES, owner: self)
+        pboard.declareTypes(PUBLIC_TEXT_TYPES, owner: self)
         pboard.writeObjects([CWIndexSetPasteboardContainer(indexSet: rowIndexes)])
         return true
     }
     
-//    func tableView(tableView: NSTableView, draggingSession session: NSDraggingSession, willBeginAtPoint screenPoint: NSPoint, forRowIndexes rowIndexes: NSIndexSet) {
-//        println("draggingSession: \(session) willBeginAtPoint: \(screenPoint) forRowIndexes: \(rowIndexes)")
-//    }
+    private var dragStartIndex = 0
+    func tableView(tableView: NSTableView, draggingSession session: NSDraggingSession, willBeginAtPoint screenPoint: NSPoint, forRowIndexes rowIndexes: NSIndexSet) {
+        //self.tableViewIsDragging = true
+        self.dragStartIndex = rowIndexes.firstIndex
+    }
     
     func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableViewDropOperation) -> Bool {
-        let activity = self.pasteboardActivity(info.draggingPasteboard())
+        tableView.deselectAll(self)
+        self.tableViewIsDragging = false
+        
+        let activity = self.pasteboardActivity(info.draggingPasteboard(), quickMode: false)
         switch activity {
         case .DragFile(let url):
             if let draggedCartfiles = self.contentModel.cartfilesFromURL(url) {
-                self.contentModel.addCartfiles(draggedCartfiles)
+                self.contentModel.insertCartfiles(draggedCartfiles, atRow: row)
                 return true
             } else {
                 return false
             }
         case .MoveRow(let indexes):
-            self.contentModel.moveItemsAtIndexes(indexes, toRow: row)
+            let adjustedRow = self.dragStartIndex < row ? row - 1 : row
+            self.contentModel.moveItemsAtIndexes(indexes, toRow: adjustedRow)
             return true
         case .Unknown:
             return false
-            
         }
     }
 
     func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation {
-        let activity = self.pasteboardActivity(info.draggingPasteboard())
+        tableView.deselectAll(self)
+        self.tableViewIsDragging = true
+        let activity = self.pasteboardActivity(info.draggingPasteboard(), quickMode: true)
         switch activity {
         case .DragFile(let url):
             return NSDragOperation.Copy
@@ -196,23 +204,42 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         }
     }
     
+    // This lets us notify the cells when we are dragging so they can adjust their drawing style
+    // Basically, the cells were showing a selected style when dragging a single cell over them
+    private let tableViewIsDraggingObserver = ObserverSet<Bool>()
+    private var tableViewIsDragging = false {
+        didSet {
+            self.tableViewIsDraggingObserver.notify(self.tableViewIsDragging)
+        }
+    }
+    
     private enum PasteboardActivity {
-        case DragFile(url: NSURL)
+        case DragFile(URLs: [NSURL])
         case MoveRow(indexSet: NSIndexSet)
         case Unknown
     }
     
-    private func pasteboardActivity(pasteboard: NSPasteboard?) -> PasteboardActivity {
-        if let pasteboard = pasteboard,
-            let url = NSURL(fromPasteboard: pasteboard) {
-                return .DragFile(url: url)
-        } else if let pasteboard = pasteboard,
-            let items = pasteboard.readObjectsForClasses([CWIndexSetPasteboardContainer.self], options: nil),
-            let indexes = (items.first as? CWIndexSetPasteboardContainer)?.containedIndexSet {
-                return .MoveRow(indexSet: indexes)
-        } else {
-            return .Unknown
+    private func pasteboardActivity(pasteboard: NSPasteboard?, quickMode: Bool) -> PasteboardActivity {
+        // verify there is a pasteboard
+        if let pasteboard = pasteboard {
+            // first we check for URLs. There is a fast and slow way to do this
+            // Fast way returns only the first URL from the pasteboard
+            // Slow way returns an array of all the URLs in the pasteboard
+            if quickMode == true {
+                if let url = NSURL(fromPasteboard: pasteboard) { return .DragFile(URLs: [url]) }
+            } else {
+                if let URLs = NSURL.URLsFromPasteboard(pasteboard) { return .DragFile(URLs: URLs) }
+            }
+            
+            // If those fail, then we are not dragging a URL, it is probably a row
+            if let items = pasteboard.readObjectsForClasses([CWIndexSetPasteboardContainer.self], options: nil),
+                let indexes = (items.first as? CWIndexSetPasteboardContainer)?.containedIndexSet {
+                    return .MoveRow(indexSet: indexes)
+            }
         }
+        // If all that fails, we are dragging something unknown
+        self.log.info("Unknown item found in pasteboard: \(pasteboard)")
+        return .Unknown
     }
 
 

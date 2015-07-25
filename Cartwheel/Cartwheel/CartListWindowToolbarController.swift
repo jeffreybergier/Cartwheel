@@ -153,9 +153,9 @@ class CartListWindowToolbarController: NSObject {
                         alert.beginSheetModalForWindow(self.window!, completionHandler: nil)
                         self.log.error("\(error)")
                     } else {
-                        let cartfile: CWCartfile = cartfileWriteResult.finalURL
+                        let cartfile = CWCartfile(url: cartfileWriteResult.finalURL)
                         self.contentModel.addCartfile(cartfile)
-                        NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([cartfile])
+                        NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([cartfile.url])
                     }
                 }
             case .CancelButton:

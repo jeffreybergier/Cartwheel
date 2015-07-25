@@ -56,7 +56,10 @@ final class CWCartfileDataSource {
                     self.createCartfileStorageFolder()
                 }
                 var writeToDiskError: NSError?
-                NSKeyedArchiver.archivedDataWithRootObject(self.cartfiles).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName), options: nil, error: &writeToDiskError)
+                let archivableCartfiles = self.cartfiles.map() { cartfile -> CWEncodableCartfile in
+                    return cartfile.encodableCopy()
+                }
+                NSKeyedArchiver.archivedDataWithRootObject(archivableCartfiles).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName), options: nil, error: &writeToDiskError)
                 
                 if let error = writeToDiskError {
                     NSLog("CWCartfileDataSource: Error saving cartfiles to disk: \(error)")
@@ -69,16 +72,33 @@ final class CWCartfileDataSource {
     
     func addCartfile(newCartfile: CWCartfile) {
         let existingFilesSet = Set(self.cartfiles)
-        if existingFilesSet.indexOf(newCartfile) == nil {
+        if existingFilesSet.indexOf(newCartfile) == .None {
             self.cartfiles += [newCartfile]
+        } else {
+            self.log.info("object found in set \(newCartfile)")
         }
     }
     
     func addCartfiles<S: SequenceType where S.Generator.Element == CWCartfile>(newCartfiles: S) {
-        let oldCartfiles = Set(self.cartfiles)
+        let cartfiles = Set(self.cartfiles)
         for cartfile in newCartfiles {
-            if oldCartfiles.indexOf(cartfile) == nil {
+            if cartfiles.indexOf(cartfile) == .None {
                 self.cartfiles += [cartfile]
+            } else {
+                self.log.info("object found in set \(cartfile)")
+            }
+        }
+    }
+    
+    func insertCartfiles<S: SequenceType where S.Generator.Element == CWCartfile>(newCartfiles: S, atRow row: Int) {
+        var mutableRow = row
+        let cartfiles = Set(self.cartfiles)
+        for cartfile in newCartfiles {
+            if cartfiles.indexOf(cartfile) == .None {
+                self.cartfiles.insert(cartfile, atIndex: mutableRow)
+                mutableRow++
+            } else {
+                self.log.info("object found in set \(cartfile)")
             }
         }
     }
@@ -106,7 +126,16 @@ final class CWCartfileDataSource {
         }
         // add them back in at the new spot
         cartfilesToMove.reverse().map() { cartfile -> Void in
-            cartfiles.insert(cartfile, atIndex: row)
+            let adjustedRow: Int
+            if row <= 0 || cartfiles.count == 0 {
+                adjustedRow = 0
+            }else if row > (cartfiles.count - 1) {
+                adjustedRow = cartfiles.count - 1
+            } else {
+                adjustedRow = row
+            }
+            //println("trying to insert Cartfile <\(cartfile)> into rawRow: \(row) adjustedRow: \(adjustedRow) in array with count: \(cartfiles.count)")
+            cartfiles.insert(cartfile, atIndex: adjustedRow)
         }
         // doing it this way so the ivar is only set once.
         self.cartfiles = cartfiles
@@ -124,7 +153,7 @@ final class CWCartfileDataSource {
         if let recursedFiles = url.extractFilesRecursionDepth(self.defaultsPlist.cartfileDirectorySearchRecursion) {
             let optionalCartfiles = recursedFiles.map { url -> CWCartfile? in
                 if url.lastPathComponent?.lowercaseString == self.defaultsPlist.cartfileFileName.lowercaseString {
-                    return url } else { return .None }
+                    return CWCartfile(url: url) } else { return .None }
             }
             let cartfiles = Array.filterOptionals(optionalCartfiles)
             if cartfiles.count > 0 { return cartfiles } else { return .None }
@@ -178,7 +207,13 @@ final class CWCartfileDataSource {
         if fileURLIsReachable == true {
             var readFromDiskError: NSError?
             if let dataOnDisk = NSData(contentsOfURL: fileURL, options: nil, error: &readFromDiskError),
-                let cartfiles = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? [CWCartfile] {
+                let unarchivedObjects = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? [AnyObject] {
+                    let cartfiles = Array.filterOptionals(unarchivedObjects.map({ object -> CWCartfile? in
+                        if let encodableCartfile = object as? CWEncodableCartfile {
+                            return encodableCartfile.decodedCartfile()
+                        }
+                        return .None
+                    }))
                     return cartfiles
             }
             if let error = readFromDiskError {

@@ -11,6 +11,8 @@
 		730309181B49C4D7004089B7 /* CWDebugExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730309171B49C4D6004089B7 /* CWDebugExtensions.swift */; };
 		732909AC1B437F7300A75914 /* CartListTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732909AB1B437F7300A75914 /* CartListTableRowView.swift */; };
 		7353B9331B001B140038861D /* ExperimentNIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7353B9321B001B140038861D /* ExperimentNIB.xib */; };
+		7358F0751B64108F009F314F /* CWCartfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738E43CF1B0AFAA000BB3670 /* CWCartfile.swift */; };
+		7358F0761B641091009F314F /* CWCartfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738E43CF1B0AFAA000BB3670 /* CWCartfile.swift */; };
 		735E564E1B51E08700577D7F /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73A2FBD61B503A4600233D54 /* ReactiveCocoa.framework */; };
 		735E564F1B51E08700577D7F /* ReactiveCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73A2FBD61B503A4600233D54 /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		735E56501B51E09A00577D7F /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73A2FBD91B503A4600233D54 /* Runes.framework */; };
@@ -549,6 +551,7 @@
 				73814D9B1B4CB40400CEA6F1 /* CWSwiftGlobals.swift in Sources */,
 				73814D9C1B4CB40400CEA6F1 /* CWDefaultsPlist.swift in Sources */,
 				73814D9D1B4CB40400CEA6F1 /* CWCartfileDataSource.swift in Sources */,
+				7358F0761B641091009F314F /* CWCartfile.swift in Sources */,
 				73E1BBA11B630E1D00247C78 /* CartListWindowToolbarController.swift in Sources */,
 				73814D9E1B4CB40400CEA6F1 /* CWDebugExtensions.swift in Sources */,
 				73814D9F1B4CB40400CEA6F1 /* CartListView.swift in Sources */,
@@ -569,6 +572,7 @@
 				739C39251B0029680088FAD2 /* CWSwiftGlobals.swift in Sources */,
 				739203881B1E5CF60024DE8C /* CWDefaultsPlist.swift in Sources */,
 				739C392A1B004D8F0088FAD2 /* CWCartfileDataSource.swift in Sources */,
+				7358F0751B64108F009F314F /* CWCartfile.swift in Sources */,
 				730309181B49C4D7004089B7 /* CWDebugExtensions.swift in Sources */,
 				73FBF23D1AEF269500970223 /* CartListView.swift in Sources */,
 				7381A9A71B61BE550022B70D /* CartListWindowToolbarController.swift in Sources */,

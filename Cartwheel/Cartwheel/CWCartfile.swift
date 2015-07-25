@@ -30,13 +30,19 @@ import Foundation
 // MARK: CWCartfile Struct
 
 struct CWCartfile {
-    var locationOnDisk: NSURL
-    var parentFolderName: String {
+    var url: NSURL
+    var name: String {
+        if let components = self.url.pathComponents {
+            let index = components.count - 2
+            if let parentFolderName = components[safe: index] as? String {
+                return parentFolderName
+            }
+        }
         return ""
     }
     
-    init(locationOnDisk: NSURL) {
-        self.locationOnDisk = locationOnDisk
+    init(url: NSURL) {
+        self.url = url
     }
 }
 
@@ -44,7 +50,7 @@ struct CWCartfile {
 
 extension CWCartfile: Printable {
     var description: String {
-        return "CWCartfile: \(self.locationOnDisk)"
+        return "CWCartfile <\(self.name)>: \(self.url.path)"
     }
 }
 
@@ -52,7 +58,7 @@ extension CWCartfile: Printable {
 
 extension CWCartfile: Hashable {
     var hashValue: Int {
-        return self.locationOnDisk.path!.hashValue
+        return self.url.path!.hashValue
     }
 }
 
@@ -72,24 +78,24 @@ extension CWCartfile {
 
 class CWEncodableCartfile: NSObject, NSCoding {
     
-    let locationOnDisk: NSURL
+    let url: NSURL
     
     init(cartfile: CWCartfile) {
-        self.locationOnDisk = cartfile.locationOnDisk
+        self.url = cartfile.url
         super.init()
     }
     
     required init(coder aDecoder: NSCoder) {
-        let locationOnDisk: AnyObject? = aDecoder.decodeObjectForKey("locationOnDisk")
-        self.locationOnDisk = locationOnDisk as! NSURL
+        let url: AnyObject? = aDecoder.decodeObjectForKey("locationOnDisk")
+        self.url = url as! NSURL
         super.init()
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.locationOnDisk, forKey: "locationOnDisk")
+        aCoder.encodeObject(self.url, forKey: "locationOnDisk")
     }
     
     func decodedCartfile() -> CWCartfile {
-        return CWCartfile(locationOnDisk: self.locationOnDisk)
+        return CWCartfile(url: self.url)
     }
 }

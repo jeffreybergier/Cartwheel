@@ -97,6 +97,51 @@ extension NSURL {
         }
         return .None
     }
+    
+    class func URLsFromPasteboard(pasteboard: NSPasteboard) -> [NSURL]? {
+        typealias TypeString = String
+        
+        //
+        // A word of warning... The pasteboard API is necessary
+        // The only way to get data out of Pasteboard Items it is with Types
+        // The only way to get the types is to ask each Pasteboard Item for Its Types
+        // Below we will iterate over each item to get the type
+        // Then iterate over each item and type to get the URL's
+        //
+        
+        // unwrap the pasteboard items array and convert it into a typed array
+        if let optionalPasteboardItems = pasteboard.pasteboardItems?.map({ object -> NSPasteboardItem? in return object as? NSPasteboardItem }) {
+            // get ride of the optionals in the pasteboard items array
+            let pasteboardItems = Array.filterOptionals(optionalPasteboardItems)
+            
+            // extract a deduplicated list of all the possible types in the pasteboard items
+            let types = Array(Set(Array.flatten(Array.filterOptionals(pasteboardItems.map({ item -> [TypeString]? in
+                let optionalTypes = item.types?.map() { object -> TypeString? in return object as? TypeString }
+                if let optionalTypes = optionalTypes { return Array.filterOptionals(optionalTypes) } else { return .None }
+            })))))
+            
+            // extract all the possible URLs in the pasteboard items
+            let URLs = Array.flatten(types.map({ type -> [NSURL] in
+                let mappedURLs = pasteboardItems.map() { item -> NSURL? in
+                    if let url = NSURL(pasteboardPropertyList: item.propertyListForType(type), ofType: type) {
+                        return url
+                    } else {
+                        return .None
+                    }
+                }
+                return Array.filterOptionals(mappedURLs)
+            }))
+            
+            // if there are URL's return them
+            if URLs.count > 0 { return Array(URLs) } else { return nil }
+        }
+        // we failed the inital if let check, return nothing
+        return .None
+    }
+    
+    public override var description: String {
+        return "\(self.path)"
+    }
 }
 
 struct URLEnumeration {
@@ -155,11 +200,15 @@ extension NSView {
 // In the meantime, I'll just store NSURL's on disk
 // but use a typealias so i know they should be Cartfile URL's
 
-typealias CWCartfile = NSURL
+//typealias CWCartfile = NSURL
 
 // MARK: Extensions of Built in Types
 
 extension Array {
+    static func flatten(array: [[T]]) -> [T] {
+        return array.reduce([T](), combine: +)
+    }
+    
     static func filterOptionals(array: [T?]) -> [T] {
         return array.filter { $0 != nil }.map { $0! }
     }
@@ -181,9 +230,7 @@ extension Array {
         }
         return output
     }
-}
-
-extension Array {
+    
     subscript (safe index: Int) -> Element? {
         return index < count && index >= 0 ? self[index] : nil
     }

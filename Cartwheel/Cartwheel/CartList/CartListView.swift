@@ -104,7 +104,8 @@ final class CartListView: NSView {
         scrollView.documentView = self.ui.tableView
         scrollView.hasVerticalScroller = true
         tableView.headerView = nil
-        tableView.selectionHighlightStyle = .Regular
+        tableView.selectionHighlightStyle = .None
+        tableView.draggingDestinationFeedbackStyle = .Gap
         tableView.rowSizeStyle = .Custom
         tableView.allowsMultipleSelection = true
         tableView.backgroundColor = NSColor.clearColor()

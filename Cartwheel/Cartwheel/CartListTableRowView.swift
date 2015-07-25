@@ -25,6 +25,7 @@
 //
 
 import Cocoa
+import ObserverSet
 
 final class CartListTableRowView: NSTableRowView {
     
@@ -36,8 +37,17 @@ final class CartListTableRowView: NSTableRowView {
         set { /* do nothing */ /* this setter is needed to please the compiler */ }
     }
     override var draggingDestinationFeedbackStyle: NSTableViewDraggingDestinationFeedbackStyle {
-        get { return .Regular }
+        get { return .None }
+        set { /* do nothing */ /* this setter is needed to please the compiler */ }
+    }
+    override var targetForDropOperation: Bool {
+        get { return false }
         set {}
+    }
+    override var selected: Bool {
+        didSet {
+            self.needsDisplay = true
+        }
     }
     
     override func awakeFromNib() {
@@ -47,11 +57,14 @@ final class CartListTableRowView: NSTableRowView {
     
     private var configured = false
     
-    func configureRowViewIfNeededWithParentWindow(parentWindow: NSWindow?) {
+    func configureRowViewIfNeededWithParentWindow(parentWindow: NSWindow?, draggingObserver: ObserverSet<Bool>?) {
         if self.configured == false {
             if let window = parentWindow {
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: "parentWindowDidBecomeMain:", name: NSWindowDidBecomeMainNotification, object: window)
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: "parentWindowDidResignMain:", name: NSWindowDidResignMainNotification, object: window)
+            }
+            if let draggingObserver = draggingObserver {
+                draggingObserver.add(self, self.dynamicType.tableDraggingStateChanged)
             }
             self.configured = true
         }
@@ -59,11 +72,18 @@ final class CartListTableRowView: NSTableRowView {
     
     // MARK: Handle Selecting a Row
     
+    private var tableViewIsDragging = false
+    private func tableDraggingStateChanged(dragging: Bool) {
+        self.tableViewIsDragging = dragging
+    }
+    
     override func drawSelectionInRect(dirtyRect: NSRect) {
-        let selectionPath = NSBezierPath(roundedRect: dirtyRect, xRadius: 0, yRadius: 0)
-        let fillColor: Void = NSColor.blackColor().colorWithAlphaComponent(0.4).setFill()
-        //let debugFillColor: Void = NSColor.redColor().setFill()
-        selectionPath.fill()
+        if self.tableViewIsDragging == false {
+            let selectionPath = NSBezierPath(roundedRect: dirtyRect, xRadius: 0, yRadius: 0)
+            let fillColor: Void = NSColor.blackColor().colorWithAlphaComponent(0.4).setFill()
+            //let debugFillColor: Void = NSColor.redColor().setFill()
+            selectionPath.fill()
+        }
     }
     
     // MARK: Handle Line Separators
