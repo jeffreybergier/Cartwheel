@@ -59,37 +59,37 @@ class CartListWindowToolbarController: NSObject {
         // configure the add cartfile button
         let addCartfileButtonTitle = NSLocalizedString("Add Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
         let addCartfileButtonToolTip = NSLocalizedString("Add a Cartfile to the list of Cartfiles.", comment: "Tooltip for the toolbar item to add a new cartfoile to Cartwheel")
-        self.configureToolbarItem(self.self.addCartfileButtonToolbarItem, view: addCartfileButton, title: addCartfileButtonTitle, toolTip: addCartfileButtonToolTip)
+        self.configureToolbarItem(self.self.addCartfileButtonToolbarItem, withView: addCartfileButton, title: addCartfileButtonTitle, toolTip: addCartfileButtonToolTip)
         self.addCartfileButton.action = "didClickAddCartFileButton:"
         self.addCartfileButton.target = self
         
         // configure the create cartfile button
         let createNewCartfileButtonTitle = NSLocalizedString("Create Cartfile", comment: "Button to Add a Cartfile to Cartwheel")
         let createNewCartfileButtonToolTip = NSLocalizedString("Create a new Cartfile and add it to the list of Cartfiles.", comment: "Tooltip for the toolbar item to create a new Cartfile and then add it to Cartwheel")
-        self.configureToolbarItem(self.createNewCartfileToolbarItem, view: self.createNewCartfileButton, title: createNewCartfileButtonTitle, toolTip: createNewCartfileButtonToolTip)
+        self.configureToolbarItem(self.createNewCartfileToolbarItem, withView: self.createNewCartfileButton, title: createNewCartfileButtonTitle, toolTip: createNewCartfileButtonToolTip)
         self.createNewCartfileButton.action = "didClickCreateNewCartFileButton:"
         self.createNewCartfileButton.target = self
         
         // configure the search field
         let cartfilesSearchFieldTitle = NSLocalizedString("Search", comment: "Toolbar Item to search through cartfiles")
         let cartfilesSearchFieldToolTip = NSLocalizedString("Search through the list of Cartfiles", comment: "Tooltip for the toolbar item to search through cartfiles")
-        self.configureToolbarItem(self.cartfilesSearchFieldToolbarItem, view: self.cartfilesSearchField, title: cartfilesSearchFieldTitle, toolTip: cartfilesSearchFieldToolTip)
+        self.configureToolbarItem(self.cartfilesSearchFieldToolbarItem, withView: self.cartfilesSearchField, title: cartfilesSearchFieldTitle, toolTip: cartfilesSearchFieldToolTip)
         self.cartfilesSearchField.delegate = self
         
         // set initial toolbar properties
-        self.toolbar.allowsUserCustomization = true
+        self.toolbar.allowsUserCustomization = false
         self.toolbar.autosavesConfiguration = true
         self.toolbar.displayMode = NSToolbarDisplayMode.IconOnly
         self.toolbar.delegate = self
         windowController.window?.toolbar = self.toolbar
     }
     
-    private func configureToolbarItem(toolbarItem: NSToolbarItem, view: NSView, title: String, toolTip: String) {
+    private func configureToolbarItem(toolbarItem: NSToolbarItem, withView view: NSView, title: String, toolTip: String) {
         // configure the view if necessary
         if let view = view as? NSButton {
             view.title = title
-            view.sizeToFit()
-        } else if let view = view as? NSSearchField {
+        }
+        if let view = view as? NSControl {
             view.sizeToFit()
         }
         
@@ -251,6 +251,8 @@ extension CartListWindowToolbarController: NSTextFieldDelegate {
 // We then handle the click action from the button and tell NSOpenPanel to open the selected folder
 // When the directory seen by the user matches the "selected" directory of the open panel
 // then we return the button behavior to normal
+//
+// NOTE: This silently fails when using Sandboxing. Apple replaces the savepanel like "magic"
 //
 
 extension CartListWindowToolbarController: NSOpenSavePanelDelegate {

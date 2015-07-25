@@ -95,6 +95,7 @@
 		73C2F3961AF06D78001B36DB /* CartListWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C2F3941AF06D78001B36DB /* CartListWindowController.swift */; };
 		73C2F3971AF06D78001B36DB /* CartListWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C2F3951AF06D78001B36DB /* CartListWindowController.xib */; };
 		73C4386D1B470F5100DF94EC /* CartListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C4386B1B470F5100DF94EC /* CartListTableViewController.swift */; };
+		73E1BBA11B630E1D00247C78 /* CartListWindowToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7381A9A61B61BE550022B70D /* CartListWindowToolbarController.swift */; };
 		73FBF23D1AEF269500970223 /* CartListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FBF23C1AEF269500970223 /* CartListView.swift */; };
 /* End PBXBuildFile section */
 
@@ -548,6 +549,7 @@
 				73814D9B1B4CB40400CEA6F1 /* CWSwiftGlobals.swift in Sources */,
 				73814D9C1B4CB40400CEA6F1 /* CWDefaultsPlist.swift in Sources */,
 				73814D9D1B4CB40400CEA6F1 /* CWCartfileDataSource.swift in Sources */,
+				73E1BBA11B630E1D00247C78 /* CartListWindowToolbarController.swift in Sources */,
 				73814D9E1B4CB40400CEA6F1 /* CWDebugExtensions.swift in Sources */,
 				73814D9F1B4CB40400CEA6F1 /* CartListView.swift in Sources */,
 				73814DA01B4CB40400CEA6F1 /* CartListTableCellViewController.swift in Sources */,
