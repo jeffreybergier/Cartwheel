@@ -27,6 +27,19 @@
 
 import AppKit
 
+// MARK: Extend NSRange
+
+extension NSIndexSet {
+    var ranges: [Range<Int>] {
+        var ranges = [Range<Int>]()
+        self.enumerateRangesUsingBlock() { (range, stop) in
+            let swiftRange = range.location ..< range.location + range.length
+            ranges += [swiftRange]
+        }
+        return ranges
+    }
+}
+
 // MARK: Extending NSURL
 
 extension NSURL {
@@ -205,6 +218,7 @@ extension NSView {
 // MARK: Extensions of Built in Types
 
 extension Array {
+    
     static func flatten(array: [[T]]) -> [T] {
         return array.reduce([T](), combine: +)
     }

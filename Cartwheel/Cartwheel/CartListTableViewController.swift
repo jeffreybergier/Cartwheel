@@ -162,12 +162,6 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         return true
     }
     
-    private var dragStartIndex = 0
-    func tableView(tableView: NSTableView, draggingSession session: NSDraggingSession, willBeginAtPoint screenPoint: NSPoint, forRowIndexes rowIndexes: NSIndexSet) {
-        //self.tableViewIsDragging = true
-        self.dragStartIndex = rowIndexes.firstIndex
-    }
-    
     func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableViewDropOperation) -> Bool {
         tableView.deselectAll(self)
         self.tableViewIsDragging = false
@@ -182,8 +176,7 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
                 return false
             }
         case .MoveRow(let indexes):
-            let adjustedRow = self.dragStartIndex < row ? row - 1 : row
-            self.contentModel.moveItemsAtIndexes(indexes, toRow: adjustedRow)
+            self.contentModel.moveItemsAtIndexes(indexes, toRow: row)
             return true
         case .Unknown:
             return false

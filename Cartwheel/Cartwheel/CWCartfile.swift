@@ -50,7 +50,7 @@ struct CWCartfile {
 
 extension CWCartfile: Printable {
     var description: String {
-        return "CWCartfile <\(self.name)>: \(self.url.path)"
+        return "CWCartfile <\(self.name)>"
     }
 }
 

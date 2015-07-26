@@ -104,41 +104,64 @@ final class CWCartfileDataSource {
     }
     
     func moveItemsAtIndexes(items: NSIndexSet, toRow row: Int) {
-        var cartfiles = self.cartfiles
-        var cartfilesToMove = [CWCartfile]()
-        var rangesToRemoveFromCartfiles = [Range<Int>]()
-        items.enumerateRangesUsingBlock() { (range, stop) in
-            let swiftRange = range.location ..< (range.location + range.length)
-            for i in swiftRange {
-                if let cartfile = cartfiles[safe: i] {
-                    // collect the items to move
-                    cartfilesToMove += [cartfile]
-                } else {
-                    self.log.error("Tried to move items in array that were out of range: \(i)")
+        // gather a mutable and an immutable copy
+        let cartfilesCopy = self.cartfiles
+        var mutableCartfilesCopy = cartfilesCopy
+        
+        // iterate through the ranges in reverse to remove them from the mutableArray
+        for range in items.ranges.reverse() {
+            mutableCartfilesCopy.removeRange(range)
+        }
+        
+        // iterate through the ranges forward to gather the moved items into their own array
+        var movedItems = [CWCartfile]()
+        for range in items.ranges {
+            for index in range {
+                movedItems += [cartfilesCopy[index]]
+            }
+        }
+        
+        // get the index of the item that is at the inseration row
+        if let itemAtInsertionPoint = cartfilesCopy[safe: row],
+            var itemAtInsertionRowIndex = self.indexOfItem(itemAtInsertionPoint, inArray: mutableCartfilesCopy) {
+                // iterate through the gathered items to move and start inserting them at the insertion row
+                for movedItem in movedItems {
+                    mutableCartfilesCopy.insert(movedItem, atIndex: itemAtInsertionRowIndex)
+                    itemAtInsertionRowIndex++
                 }
-            }
-            // collect the ranges to remove
-            rangesToRemoveFromCartfiles += [swiftRange]
+        } else {
+            // adding thing to the end of the array
+            mutableCartfilesCopy += movedItems
         }
-        // remove the items from the end to the beginning
-        rangesToRemoveFromCartfiles.reverse().map() { range -> Void in
-            cartfiles.removeRange(range)
+        
+        // save the result
+        self.cartfiles = mutableCartfilesCopy
+    }
+    
+    private func indexOfItem<T: Equatable>(item: T, inArray array: [T]) -> Int? {
+        for (index, arrayItem) in enumerate(array) {
+            if arrayItem == item { return index }
         }
-        // add them back in at the new spot
-        cartfilesToMove.reverse().map() { cartfile -> Void in
-            let adjustedRow: Int
-            if row <= 0 || cartfiles.count == 0 {
-                adjustedRow = 0
-            }else if row > (cartfiles.count - 1) {
-                adjustedRow = cartfiles.count - 1
-            } else {
-                adjustedRow = row
-            }
-            //println("trying to insert Cartfile <\(cartfile)> into rawRow: \(row) adjustedRow: \(adjustedRow) in array with count: \(cartfiles.count)")
-            cartfiles.insert(cartfile, atIndex: adjustedRow)
+        return .None
+    }
+    
+    private func arrayByExcludingItemsInArray<E: Hashable>(lhs: [E], andArray rhs: [E]) -> [E]? {
+        let lhsSet = Set(lhs)
+        let rhsSet = Set(rhs)
+        var outputArray = [E]()
+        
+        func checkItem(item: E, #lhs: Set<E>, #rhs: Set<E>) -> [E] {
+            if !(lhs.contains(item) && rhs.contains(item)) { return [item] } else { return [] }
         }
-        // doing it this way so the ivar is only set once.
-        self.cartfiles = cartfiles
+        
+        for leftItem in lhs {
+            outputArray += checkItem(leftItem, lhs: lhsSet, rhs: rhsSet)
+        }
+        for rightItem in rhs {
+            outputArray += checkItem(rightItem, lhs: lhsSet, rhs: rhsSet)
+        }
+        
+        if outputArray.count > 0 { return outputArray } else { return .None }
     }
     
     func writeBlankCartfileToDirectoryPath(directory: NSURL) -> (finalURL: NSURL, error: NSError?) {
