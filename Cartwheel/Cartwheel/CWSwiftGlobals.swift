@@ -219,6 +219,25 @@ extension NSView {
 
 extension Array {
     
+    static func arrayByExcludingItemsInArray<E: Hashable>(lhs: [E], andArray rhs: [E]) -> [E]? {
+        let lhsSet = Set(lhs)
+        let rhsSet = Set(rhs)
+        var outputArray = [E]()
+        
+        func checkItem(item: E, #lhs: Set<E>, #rhs: Set<E>) -> [E] {
+            if !(lhs.contains(item) && rhs.contains(item)) { return [item] } else { return [] }
+        }
+        
+        for leftItem in lhs {
+            outputArray += checkItem(leftItem, lhs: lhsSet, rhs: rhsSet)
+        }
+        for rightItem in rhs {
+            outputArray += checkItem(rightItem, lhs: lhsSet, rhs: rhsSet)
+        }
+        
+        if outputArray.count > 0 { return outputArray } else { return .None }
+    }
+    
     static func flatten(array: [[T]]) -> [T] {
         return array.reduce([T](), combine: +)
     }

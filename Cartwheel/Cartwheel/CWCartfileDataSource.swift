@@ -145,25 +145,6 @@ final class CWCartfileDataSource {
         return .None
     }
     
-    private func arrayByExcludingItemsInArray<E: Hashable>(lhs: [E], andArray rhs: [E]) -> [E]? {
-        let lhsSet = Set(lhs)
-        let rhsSet = Set(rhs)
-        var outputArray = [E]()
-        
-        func checkItem(item: E, #lhs: Set<E>, #rhs: Set<E>) -> [E] {
-            if !(lhs.contains(item) && rhs.contains(item)) { return [item] } else { return [] }
-        }
-        
-        for leftItem in lhs {
-            outputArray += checkItem(leftItem, lhs: lhsSet, rhs: rhsSet)
-        }
-        for rightItem in rhs {
-            outputArray += checkItem(rightItem, lhs: lhsSet, rhs: rhsSet)
-        }
-        
-        if outputArray.count > 0 { return outputArray } else { return .None }
-    }
-    
     func writeBlankCartfileToDirectoryPath(directory: NSURL) -> (finalURL: NSURL, error: NSError?) {
         let cartfilePath = directory.URLByAppendingPathComponent(self.defaultsPlist.cartfileFileName, isDirectory: false)
         let blankData = NSData()
