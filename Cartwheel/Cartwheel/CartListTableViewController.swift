@@ -170,13 +170,13 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         switch activity {
         case .DragFile(let url):
             if let draggedCartfiles = self.contentModel.cartfilesFromURL(url) {
-                self.contentModel.insertCartfiles(draggedCartfiles, atRow: row)
+                self.contentModel.insertCartfiles(draggedCartfiles, atIndex: row)
                 return true
             } else {
                 return false
             }
         case .MoveRow(let indexes):
-            self.contentModel.moveItemsAtIndexes(indexes, toRow: row)
+            self.contentModel.moveCartfilesAtIndexes(indexes, toIndex: row)
             return true
         case .Unknown:
             return false

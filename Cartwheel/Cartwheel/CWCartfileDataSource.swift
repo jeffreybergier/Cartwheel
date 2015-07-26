@@ -38,11 +38,8 @@ final class CWCartfileDataSource {
     
     // MARK: Private Properties
     
-    let log = XCGLogger.defaultInstance()
-    
-    // MARK: Internal Properties
-    
-    let defaultsPlist = CWDefaultsPlist()
+    private let log = XCGLogger.defaultInstance()
+    private let defaultsPlist = CWDefaultsPlist()
     
     private(set) var cartfiles = [CWCartfile]() {
         didSet {
@@ -68,7 +65,7 @@ final class CWCartfileDataSource {
         }
     }
     
-    // MARK: Internal Methods
+    // MARK: Mutating Methods
     
     func addCartfile(newCartfile: CWCartfile) {
         let existingFilesSet = Set(self.cartfiles)
@@ -89,53 +86,62 @@ final class CWCartfileDataSource {
             }
         }
     }
-    
-    func insertCartfiles<S: SequenceType where S.Generator.Element == CWCartfile>(newCartfiles: S, atRow row: Int) {
-        var mutableRow = row
-        let cartfiles = Set(self.cartfiles)
-        for cartfile in newCartfiles {
-            if cartfiles.indexOf(cartfile) == .None {
-                self.cartfiles.insert(cartfile, atIndex: mutableRow)
-                mutableRow++
-            } else {
-                self.log.info("object found in set \(cartfile)")
-            }
-        }
+    func insertCartfiles(newCartfiles: [CWCartfile], atIndex index: Int) {
+    //func insertCartfiles<S: SequenceType where S.Generator.Element == CWCartfile>(newCartfiles: S, atIndex index: Int) {
+        self.cartfiles = self.insertItems(newCartfiles, intoCollection: self.cartfiles, atIndex: index)
     }
     
-    func moveItemsAtIndexes(items: NSIndexSet, toRow row: Int) {
-        // gather a mutable and an immutable copy
-        let cartfilesCopy = self.cartfiles
-        var mutableCartfilesCopy = cartfilesCopy
+    func moveCartfilesAtIndexes(indexes: NSIndexSet, toIndex index: Int) {
+        self.cartfiles = self.moveArray(self.cartfiles, itemsAtIndexes: indexes.ranges, toIndex: index)
+    }
+    
+    // MARK: Pure Functions (Don't modify/rely on any state)
+    private func insertItems<T: Equatable>(items: [T], intoCollection collection: [T], atIndex index: Int) -> [T] {
+        var outputCollection = collection
+        var mutableIndex = index
+        for item in collection {
+            if indexOfItem(item, inArray: collection) == .None {
+                outputCollection.insert(item, atIndex: mutableIndex)
+                mutableIndex++
+            } else {
+                self.log.info("object found in set \(collection)")
+            }
+        }
+        return outputCollection
+    }
+    
+    private func moveArray<T: Equatable>(inputArray: [T], itemsAtIndexes indexes: [Range<Int>], toIndex index: Int) -> [T] {
+        // gather a mutable copy of the array
+        var outputArray = inputArray
         
         // iterate through the ranges in reverse to remove them from the mutableArray
-        for range in items.ranges.reverse() {
-            mutableCartfilesCopy.removeRange(range)
+        for range in indexes.reverse() {
+            outputArray.removeRange(range)
         }
         
         // iterate through the ranges forward to gather the moved items into their own array
-        var movedItems = [CWCartfile]()
-        for range in items.ranges {
+        var movedItems = [T]()
+        for range in indexes {
             for index in range {
-                movedItems += [cartfilesCopy[index]]
+                movedItems += [inputArray[index]]
             }
         }
         
         // get the index of the item that is at the inseration row
-        if let itemAtInsertionPoint = cartfilesCopy[safe: row],
-            var itemAtInsertionRowIndex = self.indexOfItem(itemAtInsertionPoint, inArray: mutableCartfilesCopy) {
+        if let itemAtInsertionPoint = inputArray[safe: index],
+            var itemAtInsertionRowIndex = self.indexOfItem(itemAtInsertionPoint, inArray: outputArray) {
                 // iterate through the gathered items to move and start inserting them at the insertion row
                 for movedItem in movedItems {
-                    mutableCartfilesCopy.insert(movedItem, atIndex: itemAtInsertionRowIndex)
+                    outputArray.insert(movedItem, atIndex: itemAtInsertionRowIndex)
                     itemAtInsertionRowIndex++
                 }
         } else {
             // adding thing to the end of the array
-            mutableCartfilesCopy += movedItems
+            outputArray += movedItems
         }
         
         // save the result
-        self.cartfiles = mutableCartfilesCopy
+        return outputArray
     }
     
     private func indexOfItem<T: Equatable>(item: T, inArray array: [T]) -> Int? {
