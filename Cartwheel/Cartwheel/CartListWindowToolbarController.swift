@@ -114,8 +114,8 @@ class CartListWindowToolbarController: NSObject {
             let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
             switch result {
             case .SuccessButton:
-                if let cartfiles = self.contentModel.cartfilesFromURL(fileChooser.URLs) {
-                    self.contentModel.addCartfiles(cartfiles)
+                if let cartfiles = CWCartfile.cartfilesFromURL(fileChooser.URLs) {
+                    self.contentModel.appendCartfiles(cartfiles)
                 }
             case .CancelButton:
                 NSLog("CartListViewController: File Chooser was cancelled by user.")
@@ -154,7 +154,7 @@ class CartListWindowToolbarController: NSObject {
                         self.log.error("\(error)")
                     } else {
                         let cartfile = CWCartfile(url: cartfileWriteResult.finalURL)
-                        self.contentModel.addCartfile(cartfile)
+                        self.contentModel.appendCartfile(cartfile)
                         NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([cartfile.url])
                     }
                 }

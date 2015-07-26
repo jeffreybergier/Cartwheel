@@ -32,14 +32,14 @@ import Async
 
 final class CWCartfileDataSource {
     
-    // MARK: Data Observing
-    
-    let cartfileObserver = ObserverSet<Void>()
-    
-    // MARK: Private Properties
+    // MARK: Properties (Private)
     
     private let log = XCGLogger.defaultInstance()
     private let defaultsPlist = CWDefaultsPlist()
+    
+    // MARK: Properties (Internal)
+    
+    let cartfileObserver = ObserverSet<Void>()
     
     private(set) var cartfiles = [CWCartfile]() {
         didSet {
@@ -65,49 +65,53 @@ final class CWCartfileDataSource {
         }
     }
     
-    // MARK: Mutating Methods
+    // MARK: Mutating Methods (Internal)
     
-    func addCartfile(newCartfile: CWCartfile) {
-        let existingFilesSet = Set(self.cartfiles)
-        if existingFilesSet.indexOf(newCartfile) == .None {
-            self.cartfiles += [newCartfile]
-        } else {
-            self.log.info("object found in set \(newCartfile)")
-        }
+    func appendCartfile(newCartfile: CWCartfile) {
+        self.cartfiles = self.insertUniqueItems([newCartfile], intoCollection: self.cartfiles, atIndex: self.cartfiles.count)
     }
     
-    func addCartfiles<S: SequenceType where S.Generator.Element == CWCartfile>(newCartfiles: S) {
-        let cartfiles = Set(self.cartfiles)
-        for cartfile in newCartfiles {
-            if cartfiles.indexOf(cartfile) == .None {
-                self.cartfiles += [cartfile]
-            } else {
-                self.log.info("object found in set \(cartfile)")
-            }
-        }
+    func appendCartfiles(newCartfiles: [CWCartfile]) {
+        self.cartfiles = self.insertUniqueItems(newCartfiles, intoCollection: self.cartfiles, atIndex: self.cartfiles.count)
     }
+    
     func insertCartfiles(newCartfiles: [CWCartfile], atIndex index: Int) {
-    //func insertCartfiles<S: SequenceType where S.Generator.Element == CWCartfile>(newCartfiles: S, atIndex index: Int) {
-        self.cartfiles = self.insertItems(newCartfiles, intoCollection: self.cartfiles, atIndex: index)
+        self.cartfiles = self.insertUniqueItems(newCartfiles, intoCollection: self.cartfiles, atIndex: index)
     }
     
     func moveCartfilesAtIndexes(indexes: NSIndexSet, toIndex index: Int) {
         self.cartfiles = self.moveArray(self.cartfiles, itemsAtIndexes: indexes.ranges, toIndex: index)
     }
     
-    // MARK: Pure Functions (Don't modify/rely on any state)
-    private func insertItems<T: Equatable>(items: [T], intoCollection collection: [T], atIndex index: Int) -> [T] {
-        var outputCollection = collection
+    func writeBlankCartfileToDirectoryPath(directory: NSURL) -> (finalURL: NSURL, error: NSError?) {
+        return self.writeEmptyFileToDirectory(directory, withName: self.defaultsPlist.cartfileFileName)
+    }
+    
+    //func addCartfiles<S: SequenceType where S.Generator.Element == CWCartfile>(newCartfiles: S) {
+    // MARK: Pure Functions – Don't Rely on or Modify State (Private)
+    
+    private func insertUniqueItems<T: Equatable>(items: [T], intoCollection inputCollection: [T], atIndex index: Int) -> [T] {
+        var outputCollection = inputCollection
         var mutableIndex = index
-        for item in collection {
-            if indexOfItem(item, inArray: collection) == .None {
+        for item in items {
+            if self.item(item, existsInCollection: inputCollection) == false {
                 outputCollection.insert(item, atIndex: mutableIndex)
                 mutableIndex++
             } else {
-                self.log.info("object found in set \(collection)")
+                self.log.info("Skipping non-unique item: \(item) found in collection: \(inputCollection).")
             }
         }
         return outputCollection
+    }
+    
+    private func item<T: Equatable>(item: T, existsInCollection collection: [T]) -> Bool {
+        if collection.count == 0 { return false }
+        switch self.indexOfItem(item, inCollection: collection) {
+        case .None:
+            return false
+        case .Some:
+            return true
+        }
     }
     
     private func moveArray<T: Equatable>(inputArray: [T], itemsAtIndexes indexes: [Range<Int>], toIndex index: Int) -> [T] {
@@ -129,7 +133,7 @@ final class CWCartfileDataSource {
         
         // get the index of the item that is at the inseration row
         if let itemAtInsertionPoint = inputArray[safe: index],
-            var itemAtInsertionRowIndex = self.indexOfItem(itemAtInsertionPoint, inArray: outputArray) {
+            var itemAtInsertionRowIndex = self.indexOfItem(itemAtInsertionPoint, inCollection: outputArray) {
                 // iterate through the gathered items to move and start inserting them at the insertion row
                 for movedItem in movedItems {
                     outputArray.insert(movedItem, atIndex: itemAtInsertionRowIndex)
@@ -144,46 +148,22 @@ final class CWCartfileDataSource {
         return outputArray
     }
     
-    private func indexOfItem<T: Equatable>(item: T, inArray array: [T]) -> Int? {
-        for (index, arrayItem) in enumerate(array) {
+    private func indexOfItem<T: Equatable>(item: T, inCollection collection: [T]) -> Int? {
+        for (index, arrayItem) in enumerate(collection) {
             if arrayItem == item { return index }
         }
         return .None
     }
+
+    // MARK: Writing to Disk (Private)
     
-    func writeBlankCartfileToDirectoryPath(directory: NSURL) -> (finalURL: NSURL, error: NSError?) {
-        let cartfilePath = directory.URLByAppendingPathComponent(self.defaultsPlist.cartfileFileName, isDirectory: false)
+    private func writeEmptyFileToDirectory(directory: NSURL, withName name: String) -> (finalURL: NSURL, error: NSError?) {
+        let blankFileURL = directory.URLByAppendingPathComponent(name, isDirectory: false)
         let blankData = NSData()
         var error: NSError?
-        blankData.writeToURL(cartfilePath, options: NSDataWritingOptions.DataWritingWithoutOverwriting, error: &error)
-        return (finalURL: cartfilePath, error: error)
+        blankData.writeToURL(blankFileURL, options: NSDataWritingOptions.DataWritingWithoutOverwriting, error: &error)
+        return (finalURL: blankFileURL, error: error)
     }
-    
-    func cartfilesFromURL(url: NSURL) -> [CWCartfile]? {
-        if let recursedFiles = url.extractFilesRecursionDepth(self.defaultsPlist.cartfileDirectorySearchRecursion) {
-            let optionalCartfiles = recursedFiles.map { url -> CWCartfile? in
-                if url.lastPathComponent?.lowercaseString == self.defaultsPlist.cartfileFileName.lowercaseString {
-                    return CWCartfile(url: url) } else { return .None }
-            }
-            let cartfiles = Array.filterOptionals(optionalCartfiles)
-            if cartfiles.count > 0 { return cartfiles } else { return .None }
-        }
-        return .None
-    }
-    
-    func cartfilesFromURL(URLs: [AnyObject]) -> [CWCartfile]? {
-        let optionalURLs = URLs.map { object -> NSURL? in
-            if let url = object as? NSURL { return url } else { return .None }
-        }
-        let filteredURLs = Array.filterOptionals(optionalURLs)
-        let optionalCartfiles = filteredURLs.map { url -> [CWCartfile]? in
-            return self.cartfilesFromURL(url)
-        }
-        let mergedCartfiles = Array.merge(optionalCartfiles)
-        if mergedCartfiles.count > 0 { return mergedCartfiles } else { return .None }
-    }
-
-    // MARK: Handle Saving Cartfiles to disk
     
     private let fileManager = NSFileManager.defaultManager()
     private let cartfileStorageFolder: NSURL = {
@@ -199,7 +179,7 @@ final class CWCartfileDataSource {
         return self.fileManager.createDirectoryAtPath(self.cartfileStorageFolder.path!, withIntermediateDirectories: true, attributes: nil, error: nil)
     }
     
-    // MARK: Handle Launching and Singleton
+    // MARK: Initialization
     
     init() {
         self.cartfiles = self.readCartfilesFromDisk()

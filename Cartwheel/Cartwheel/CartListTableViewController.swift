@@ -169,7 +169,7 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         let activity = self.pasteboardActivity(info.draggingPasteboard(), quickMode: false)
         switch activity {
         case .DragFile(let url):
-            if let draggedCartfiles = self.contentModel.cartfilesFromURL(url) {
+            if let draggedCartfiles = CWCartfile.cartfilesFromURL(url) {
                 self.contentModel.insertCartfiles(draggedCartfiles, atIndex: row)
                 return true
             } else {

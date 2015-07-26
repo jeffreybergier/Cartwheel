@@ -46,6 +46,36 @@ struct CWCartfile {
     }
 }
 
+// MARK: Get Cartfiles from URLs
+
+extension CWCartfile {
+    
+    static func cartfilesFromURL(url: NSURL) -> [CWCartfile]? {
+        let defaultsPlist = CWDefaultsPlist()
+        if let recursedFiles = url.extractFilesRecursionDepth(defaultsPlist.cartfileDirectorySearchRecursion) {
+            let optionalCartfiles = recursedFiles.map { url -> CWCartfile? in
+                if url.lastPathComponent?.lowercaseString == defaultsPlist.cartfileFileName.lowercaseString {
+                    return CWCartfile(url: url) } else { return .None }
+            }
+            let cartfiles = Array.filterOptionals(optionalCartfiles)
+            if cartfiles.count > 0 { return cartfiles } else { return .None }
+        }
+        return .None
+    }
+    
+    static func cartfilesFromURL(URLs: [AnyObject]) -> [CWCartfile]? {
+        let optionalURLs = URLs.map { object -> NSURL? in
+            if let url = object as? NSURL { return url } else { return .None }
+        }
+        let filteredURLs = Array.filterOptionals(optionalURLs)
+        let optionalCartfiles = filteredURLs.map { url -> [CWCartfile]? in
+            return self.cartfilesFromURL(url)
+        }
+        let mergedCartfiles = Array.merge(optionalCartfiles)
+        if mergedCartfiles.count > 0 { return mergedCartfiles } else { return .None }
+    }
+}
+
 // MARK: Printable
 
 extension CWCartfile: Printable {
