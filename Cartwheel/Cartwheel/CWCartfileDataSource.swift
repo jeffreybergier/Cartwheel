@@ -30,7 +30,7 @@ import ObserverSet
 import XCGLogger
 import Async
 
-final class CWCartfileDataSource {
+class CWCartfileDataSource {
     
     // MARK: Properties (Private)
     

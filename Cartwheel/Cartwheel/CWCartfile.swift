@@ -106,7 +106,7 @@ extension CWCartfile {
     }
 }
 
-class CWEncodableCartfile: NSObject, NSCoding {
+final class CWEncodableCartfile: NSObject, NSCoding {
     
     let url: NSURL
     

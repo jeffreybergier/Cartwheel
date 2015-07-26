@@ -29,7 +29,7 @@ import Cocoa
 import XCGLogger
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var cartListWindowController: CartListWindowController?
     

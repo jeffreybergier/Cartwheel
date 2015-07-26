@@ -28,7 +28,7 @@
 import Cocoa
 import XCGLogger
 
-class CartListWindowToolbarController: NSObject {
+final class CartListWindowToolbarController: NSObject {
     
     // MARK: Main Properties
     private let toolbar = NSToolbar(identifier: "CartListWindowToolbar")
