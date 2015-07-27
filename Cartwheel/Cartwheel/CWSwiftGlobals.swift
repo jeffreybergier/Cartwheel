@@ -205,16 +205,6 @@ extension NSView {
     }
 }
 
-// MARK: NSURL == CWCartfile
-
-// The cartfile type built into carthage kit can be created with a URL
-// but it doesn't store that URL as a property
-// this makes it hard to serialized and deserialized from disk
-// In the meantime, I'll just store NSURL's on disk
-// but use a typealias so i know they should be Cartfile URL's
-
-//typealias CWCartfile = NSURL
-
 // MARK: Extensions of Built in Types
 
 extension Array {

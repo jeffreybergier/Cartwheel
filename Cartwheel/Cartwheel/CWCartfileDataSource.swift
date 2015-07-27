@@ -80,18 +80,17 @@ class CWCartfileDataSource {
     }
     
     func moveCartfilesAtIndexes(indexes: NSIndexSet, toIndex index: Int) {
-        self.cartfiles = self.moveArray(self.cartfiles, itemsAtIndexes: indexes.ranges, toIndex: index)
+        self.cartfiles = self.moveItemsAtIndexes(indexes.ranges, toIndex: index, ofCollection: self.cartfiles)
     }
     
     func writeBlankCartfileToDirectoryPath(directory: NSURL) -> (finalURL: NSURL, error: NSError?) {
         return self.writeEmptyFileToDirectory(directory, withName: self.defaultsPlist.cartfileFileName)
     }
     
-    //func addCartfiles<S: SequenceType where S.Generator.Element == CWCartfile>(newCartfiles: S) {
     // MARK: Pure Functions – Don't Rely on or Modify State (Private)
     
-    private func insertUniqueItems<T: Equatable>(items: [T], intoCollection inputCollection: [T], atIndex index: Int) -> [T] {
-        var outputCollection = inputCollection
+    private func insertUniqueItems<T: Equatable, S: SequenceType where S.Generator.Element == T>(items: S, intoCollection inputCollection: S, atIndex index: Int) -> [T] {
+        var outputCollection = Array(inputCollection)
         var mutableIndex = index
         for item in items {
             if self.item(item, existsInCollection: inputCollection) == false {
@@ -104,8 +103,8 @@ class CWCartfileDataSource {
         return outputCollection
     }
     
-    private func item<T: Equatable>(item: T, existsInCollection collection: [T]) -> Bool {
-        if collection.count == 0 { return false }
+    private func item<T: Equatable, S: SequenceType where S.Generator.Element == T>(item: T, existsInCollection collection: S) -> Bool {
+        if Array(collection).count == 0 { return false }
         switch self.indexOfItem(item, inCollection: collection) {
         case .None:
             return false
@@ -114,9 +113,10 @@ class CWCartfileDataSource {
         }
     }
     
-    private func moveArray<T: Equatable>(inputArray: [T], itemsAtIndexes indexes: [Range<Int>], toIndex index: Int) -> [T] {
+    private func moveItemsAtIndexes<T: Equatable, S: SequenceType where S.Generator.Element == T>(indexes: [Range<Int>], toIndex index: Int, ofCollection inputCollection: S) -> [T] {
         // gather a mutable copy of the array
-        var outputArray = inputArray
+        let inputArray = Array(inputCollection)
+        var outputArray = Array(inputCollection)
         
         // iterate through the ranges in reverse to remove them from the mutableArray
         for range in indexes.reverse() {
@@ -148,7 +148,7 @@ class CWCartfileDataSource {
         return outputArray
     }
     
-    private func indexOfItem<T: Equatable>(item: T, inCollection collection: [T]) -> Int? {
+    private func indexOfItem<T: Equatable, S: SequenceType where S.Generator.Element == T>(item: T, inCollection collection: S) -> Int? {
         for (index, arrayItem) in enumerate(collection) {
             if arrayItem == item { return index }
         }
