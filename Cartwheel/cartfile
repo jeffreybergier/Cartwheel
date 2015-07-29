@@ -2,10 +2,10 @@
 github "smileyborg/PureLayout" ~> 2.0.0
 github "DaveWoodCom/XCGLogger" ~> 2.0.0
 github "duemunk/Async" ~> 1.2.1
-github "jeffreybergier/SwiftObserverSet-Fork" "master"
+github "jeffreybergier/SwiftObserverSet" "master"
 
 ## My own fork of Carthage that works and signs properly
-github "jeffreybergier/Carthage-TryingToFixSigningIssue" "master"
+github "jeffreybergier/Carthage" "master"
 
 ## When using the official Carthage Github
 #github "Carthage/Carthage" ~> 1.0.0
