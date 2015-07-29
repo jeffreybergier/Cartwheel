@@ -26,6 +26,7 @@
 //
 
 import Foundation
+import XCGLogger
 
 struct CWDefaultsPlist {
     var cartfileDirectorySearchRecursion: Int
@@ -58,7 +59,7 @@ struct CWDefaultsPlist {
             cartfileListSaveLocation = nil
             cartfileFileName = nil
             cartfileListSaveName = nil
-            NSLog("CWDefaultsPlist: Error Reading Plist from Disk. Using Defaults. PlistError: \(plistError) – DataError: \(dataError)")
+            XCGLogger.defaultInstance().warning("Error Reading Plist from Disk. Using Defaults. PlistError: \(plistError) – DataError: \(dataError)")
         }
         
         // populate properties with values

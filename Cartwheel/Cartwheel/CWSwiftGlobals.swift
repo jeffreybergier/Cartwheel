@@ -26,6 +26,7 @@
 //
 
 import AppKit
+import XCGLogger
 
 // MARK: Extend NSRange
 
@@ -72,7 +73,7 @@ extension NSURL {
         
         let enumerator = fileManager.enumeratorAtURL(self, includingPropertiesForKeys: urlKeys, options: enumeratorOptions) {
             (url: NSURL?, error: NSError?) -> Bool in
-            NSLog("CartListViewController: NSEnumerator Error: \(error) with URL: \(url)")
+            XCGLogger.defaultInstance().error("NSEnumerator Error: \(error) with URL: \(url)")
             return true
         }
         

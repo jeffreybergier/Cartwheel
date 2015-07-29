@@ -155,7 +155,7 @@
 		730309171B49C4D6004089B7 /* CWDebugExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWDebugExtensions.swift; sourceTree = "<group>"; };
 		731994EC1AF2B7EE003B422B /* Cartwheel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Cartwheel.entitlements; sourceTree = "<group>"; };
 		732909AB1B437F7300A75914 /* CartListTableRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListTableRowView.swift; sourceTree = "<group>"; };
-		7353B9321B001B140038861D /* ExperimentNIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExperimentNIB.xib; sourceTree = "<group>"; };
+		7353B9321B001B140038861D /* ExperimentNIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ExperimentNIB.xib; path = Cartwheel/ExperimentNIB.xib; sourceTree = "<group>"; };
 		7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CartwheelDefaults.plist; sourceTree = "<group>"; };
 		73814DC81B4CB40400CEA6F1 /* Cartwheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cartwheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73814DC91B4CB40400CEA6F1 /* Cartwheel copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Cartwheel copy-Info.plist"; path = "/Users/jeffberg/Documents/SaturdayApps/Cartwheel/Cartwheel/Cartwheel copy-Info.plist"; sourceTree = "<absolute>"; };
@@ -329,6 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				730091411B093A7F00719208 /* MyPlayground.playground */,
+				7353B9321B001B140038861D /* ExperimentNIB.xib */,
 				73B4DD0E1AEEE527007342C7 /* Cartwheel */,
 				73B4DD0D1AEEE527007342C7 /* Products */,
 			);
@@ -351,10 +352,6 @@
 				73FBF2391AEF262900970223 /* CartList Main Window */,
 				739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */,
 				730309171B49C4D6004089B7 /* CWDebugExtensions.swift */,
-				7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */,
-				73B4DD131AEEE527007342C7 /* Images.xcassets */,
-				7353B9321B001B140038861D /* ExperimentNIB.xib */,
-				73B4DD151AEEE527007342C7 /* MainMenu.xib */,
 				732E37681AEF174000C5A5CA /* Frameworks */,
 				73B4DD0F1AEEE527007342C7 /* Supporting Files */,
 			);
@@ -364,6 +361,9 @@
 		73B4DD0F1AEEE527007342C7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				73B4DD131AEEE527007342C7 /* Images.xcassets */,
+				7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */,
+				73B4DD151AEEE527007342C7 /* MainMenu.xib */,
 				73A69AD51B5B0F7400925303 /* Cartwheel-Sandboxed-Bridging-Header.h */,
 				73A69AD61B5B0F7400925303 /* Cartwheel-Unboxed-Bridging-Header.h */,
 				73814DC91B4CB40400CEA6F1 /* Cartwheel copy-Info.plist */,

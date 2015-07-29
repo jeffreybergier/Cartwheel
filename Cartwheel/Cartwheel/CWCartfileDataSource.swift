@@ -49,7 +49,7 @@ class CWCartfileDataSource {
             }.userInitiated {
                 // save to disk in the background
                 if self.cartfileStorageFolderExists() == false {
-                    NSLog("CWCartfileDataSource: Cartfile storage folder does not exist, creating it.")
+                    self.log.info("Cartfile storage folder does not exist, creating it.")
                     self.createCartfileStorageFolder()
                 }
                 var writeToDiskError: NSError?
@@ -59,7 +59,7 @@ class CWCartfileDataSource {
                 NSKeyedArchiver.archivedDataWithRootObject(archivableCartfiles).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName), options: nil, error: &writeToDiskError)
                 
                 if let error = writeToDiskError {
-                    NSLog("CWCartfileDataSource: Error saving cartfiles to disk: \(error)")
+                    self.log.error("Error saving cartfiles to disk: \(error)")
                 }
             }
         }
@@ -155,7 +155,7 @@ class CWCartfileDataSource {
         var fileReachableError: NSError?
         let fileURLIsReachable = fileURL.checkResourceIsReachableAndReturnError(&fileReachableError)
         if let error = fileReachableError {
-            NSLog("CWCartfileDataSource: Error reading Cartfiles from disk: \(error)")
+            self.log.error("Error reading Cartfiles from disk: \(error)")
         }
         
         if fileURLIsReachable == true {
@@ -171,7 +171,7 @@ class CWCartfileDataSource {
                     return cartfiles
             }
             if let error = readFromDiskError {
-                NSLog("CWCartfileDataSource: Error reading Cartfiles from disk: \(readFromDiskError)")
+                self.log.error("Error reading Cartfiles from disk: \(readFromDiskError)")
             }
         }
         

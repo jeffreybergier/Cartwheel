@@ -118,7 +118,7 @@ final class CartListWindowToolbarController: NSObject {
                     self.contentModel.appendCartfiles(cartfiles)
                 }
             case .CancelButton:
-                NSLog("CartListViewController: File Chooser was cancelled by user.")
+                self.log.info("File Chooser was cancelled by user.")
             }
         }
     }
@@ -226,7 +226,7 @@ extension CartListWindowToolbarController: NSTextFieldDelegate {
         if let userInfoDictionary = notification.userInfo,
             let filterTextField = userInfoDictionary["NSFieldEditor"] as? NSTextView,
             let stringValue = filterTextField.string {
-                NSLog("\(stringValue)")
+                println("\(stringValue)")
         }
     }
     
@@ -234,7 +234,7 @@ extension CartListWindowToolbarController: NSTextFieldDelegate {
         if let userInfoDictionary = notification.userInfo,
             let filterTextField = userInfoDictionary["NSFieldEditor"] as? NSTextView,
             let stringValue = filterTextField.string {
-                NSLog("\(stringValue)")
+                println("\(stringValue)")
         }
     }
 }
