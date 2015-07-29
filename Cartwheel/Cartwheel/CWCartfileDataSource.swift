@@ -89,70 +89,34 @@ class CWCartfileDataSource {
     
     // MARK: Pure Functions – Don't Rely on or Modify State (Private)
     
-    private func insertUniqueItems<T: Equatable, S: SequenceType where S.Generator.Element == T>(items: S, intoCollection inputCollection: S, atIndex index: Int) -> [T] {
-        var outputCollection = Array(inputCollection)
+    private func insertUniqueItems<T: Equatable>(items: [T], intoCollection inputCollection: [T], atIndex index: Int) -> [T] {
+        //let uniqueItems = collectionOfItemsUniqueToCollection(items, andCollection: inputCollection)
+        
+        var outputCollection = inputCollection
         var mutableIndex = index
-        for item in items {
-            if self.item(item, existsInCollection: inputCollection) == false {
+        if index < inputCollection.count {
+            for item in items {
                 outputCollection.insert(item, atIndex: mutableIndex)
                 mutableIndex++
-            } else {
-                self.log.info("Skipping non-unique item: \(item) found in collection: \(inputCollection).")
             }
+        } else {
+            outputCollection += items
         }
+        
         return outputCollection
     }
     
-    private func item<T: Equatable, S: SequenceType where S.Generator.Element == T>(item: T, existsInCollection collection: S) -> Bool {
-        if Array(collection).count == 0 { return false }
-        switch self.indexOfItem(item, inCollection: collection) {
-        case .None:
-            return false
-        case .Some:
-            return true
-        }
-    }
-    
-    private func moveItemsAtIndexes<T: Equatable, S: SequenceType where S.Generator.Element == T>(indexes: [Range<Int>], toIndex index: Int, ofCollection inputCollection: S) -> [T] {
-        // gather a mutable copy of the array
-        let inputArray = Array(inputCollection)
-        var outputArray = Array(inputCollection)
-        
-        // iterate through the ranges in reverse to remove them from the mutableArray
-        for range in indexes.reverse() {
-            outputArray.removeRange(range)
-        }
-        
-        // iterate through the ranges forward to gather the moved items into their own array
-        var movedItems = [T]()
-        for range in indexes {
-            for index in range {
-                movedItems += [inputArray[index]]
-            }
-        }
-        
-        // get the index of the item that is at the inseration row
-        if let itemAtInsertionPoint = inputArray[safe: index],
-            var itemAtInsertionRowIndex = self.indexOfItem(itemAtInsertionPoint, inCollection: outputArray) {
-                // iterate through the gathered items to move and start inserting them at the insertion row
-                for movedItem in movedItems {
-                    outputArray.insert(movedItem, atIndex: itemAtInsertionRowIndex)
-                    itemAtInsertionRowIndex++
-                }
-        } else {
-            // adding thing to the end of the array
-            outputArray += movedItems
-        }
-        
-        // save the result
-        return outputArray
-    }
-    
-    private func indexOfItem<T: Equatable, S: SequenceType where S.Generator.Element == T>(item: T, inCollection collection: S) -> Int? {
-        for (index, arrayItem) in enumerate(collection) {
-            if arrayItem == item { return index }
-        }
-        return .None
+    private func moveItemsAtIndexes<T: Equatable>(indexes: [Range<Int>], toIndex index: Int, ofCollection inputCollection: [T]) -> [T] {
+        // gather the items that need to be moved
+        let movedItems = collectionByExtractingItemsAtIndexes(indexes, fromCollection: inputCollection)
+        // count the number of items that were before the target index so the index can be adjusted
+        let indexAdjustment = numberOfItemsInIndexes(indexes, beforeIndex: index)
+        // get a collection that has had all the moved items removed from it
+        let collectionSansMovedItems = collectionByRemovingItemsAtIndexes(indexes, fromCollection: inputCollection)
+        // insert the moved items into the correct index of collectionSansMovedItems
+        let outputCollection = insertUniqueItems(movedItems, intoCollection: collectionSansMovedItems, atIndex: index - indexAdjustment)
+
+        return outputCollection
     }
 
     // MARK: Writing to Disk (Private)

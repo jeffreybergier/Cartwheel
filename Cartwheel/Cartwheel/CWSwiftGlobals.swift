@@ -207,6 +207,68 @@ extension NSView {
 
 // MARK: Extensions of Built in Types
 
+func numberOfItemsInIndexes(indexes: [Range<Int>], beforeIndex index: Int) -> Int {
+    var number = 0
+    for range in indexes {
+        for i in range {
+            if i < index {
+                number++
+            }
+        }
+    }
+    return number
+}
+
+func indexOfItem<T: Equatable>(item: T, inCollection collection: [T]) -> Int? {
+    // TODO: remove this in swift 2.0
+    for (index, collectionItem) in enumerate(collection) {
+        if item == collectionItem { return index }
+    }
+    return .None
+}
+
+func collectionOfItemsUniqueToCollection<T: Equatable>(lhs: [T], andCollection rhs: [T]) -> [T] {
+    let largerCollection: [T]
+    let smallerCollection: [T]
+    
+    if lhs.count >= rhs.count {
+        largerCollection = lhs
+        smallerCollection = rhs
+    } else {
+        largerCollection = rhs
+        smallerCollection = lhs
+    }
+    
+    var outputCollection = [T]()
+    for item in smallerCollection {
+        if indexOfItem(item, inCollection: largerCollection) == .None && indexOfItem(item, inCollection: outputCollection) == .None {
+            outputCollection += [item]
+        }
+    }
+    
+    return outputCollection
+}
+
+func collectionByRemovingItemsAtIndexes<U>(indexes: [Range<Int>], fromCollection collection: [U]) -> [U] {
+    // TODO: remove this in swift 2.0
+    var outputCollection = collection
+    for range in indexes.reverse() {
+        outputCollection.removeRange(range)
+    }
+    return outputCollection
+}
+
+func collectionByExtractingItemsAtIndexes<T>(indexes: [Range<Int>], fromCollection collection: [T]) -> [T] {
+    // TODO: remove this in swift 2.0
+    var extractedItems = [T]()
+    for range in indexes {
+        for index in range {
+            extractedItems += [collection[index]]
+        }
+    }
+    return extractedItems
+}
+
 extension Array {
     
     static func arrayByExcludingItemsInArray<E: Hashable>(lhs: [E], andArray rhs: [E]) -> [E]? {
