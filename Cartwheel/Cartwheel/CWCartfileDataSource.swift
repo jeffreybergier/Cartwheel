@@ -68,19 +68,19 @@ class CWCartfileDataSource {
     // MARK: Mutating Methods (Internal)
     
     func appendCartfile(newCartfile: CWCartfile) {
-        self.cartfiles = self.insertUniqueItems([newCartfile], intoCollection: self.cartfiles, atIndex: self.cartfiles.count)
+        self.cartfiles = insertItems([newCartfile], intoArray: self.cartfiles, atIndex: self.cartfiles.count)
     }
     
     func appendCartfiles(newCartfiles: [CWCartfile]) {
-        self.cartfiles = self.insertUniqueItems(newCartfiles, intoCollection: self.cartfiles, atIndex: self.cartfiles.count)
+        self.cartfiles = insertItems(newCartfiles, intoArray: self.cartfiles, atIndex: self.cartfiles.count)
     }
     
     func insertCartfiles(newCartfiles: [CWCartfile], atIndex index: Int) {
-        self.cartfiles = self.insertUniqueItems(newCartfiles, intoCollection: self.cartfiles, atIndex: index)
+        self.cartfiles = insertItems(newCartfiles, intoArray: self.cartfiles, atIndex: index)
     }
     
     func moveCartfilesAtIndexes(indexes: NSIndexSet, toIndex index: Int) {
-        self.cartfiles = self.moveItemsAtIndexes(indexes.ranges, toIndex: index, ofCollection: self.cartfiles)
+        self.cartfiles = self.moveItemsAtIndexes(indexes.ranges, toIndex: index, ofArray: self.cartfiles)
     }
     
     func writeBlankCartfileToDirectoryPath(directory: NSURL) -> (finalURL: NSURL, error: NSError?) {
@@ -89,34 +89,64 @@ class CWCartfileDataSource {
     
     // MARK: Pure Functions – Don't Rely on or Modify State (Private)
     
-    private func insertUniqueItems<T: Equatable>(items: [T], intoCollection inputCollection: [T], atIndex index: Int) -> [T] {
-        //let uniqueItems = collectionOfItemsUniqueToCollection(items, andCollection: inputCollection)
-        
-        var outputCollection = inputCollection
+    private func insertItems<T>(items: [T], intoArray inputArray: [T], atIndex index: Int) -> [T] {
+        var outputArray = inputArray
         var mutableIndex = index
-        if index < inputCollection.count {
+        if index < inputArray.count {
             for item in items {
-                outputCollection.insert(item, atIndex: mutableIndex)
+                outputArray.insert(item, atIndex: mutableIndex)
                 mutableIndex++
             }
         } else {
-            outputCollection += items
+            outputArray += items
         }
         
-        return outputCollection
+        return outputArray
     }
     
-    private func moveItemsAtIndexes<T: Equatable>(indexes: [Range<Int>], toIndex index: Int, ofCollection inputCollection: [T]) -> [T] {
+    private func moveItemsAtIndexes<T: Equatable>(indexes: [Range<Int>], toIndex index: Int, ofArray inputArray: [T]) -> [T] {
         // gather the items that need to be moved
-        let movedItems = collectionByExtractingItemsAtIndexes(indexes, fromCollection: inputCollection)
+        let movedItems = self.arrayByExtractingItemsAtIndexes(indexes, fromArray: inputArray)
         // count the number of items that were before the target index so the index can be adjusted
         let indexAdjustment = numberOfItemsInIndexes(indexes, beforeIndex: index)
         // get a collection that has had all the moved items removed from it
-        let collectionSansMovedItems = collectionByRemovingItemsAtIndexes(indexes, fromCollection: inputCollection)
+        let arraySansMovedItems = arrayByRemovingItemsAtIndexes(indexes, fromArray: inputArray)
         // insert the moved items into the correct index of collectionSansMovedItems
-        let outputCollection = insertUniqueItems(movedItems, intoCollection: collectionSansMovedItems, atIndex: index - indexAdjustment)
+        let outputArray = insertItems(movedItems, intoArray: arraySansMovedItems, atIndex: index - indexAdjustment)
 
+        return outputArray
+    }
+    
+    private func arrayByRemovingItemsAtIndexes<U>(indexes: [Range<Int>], fromArray collection: [U]) -> [U] {
+        // TODO: remove this in swift 2.0
+        var outputCollection = collection
+        for range in indexes.reverse() {
+            outputCollection.removeRange(range)
+        }
         return outputCollection
+    }
+    
+    private func numberOfItemsInIndexes(indexes: [Range<Int>], beforeIndex index: Int) -> Int {
+        var number = 0
+        for range in indexes {
+            for i in range {
+                if i < index {
+                    number++
+                }
+            }
+        }
+        return number
+    }
+    
+    private func arrayByExtractingItemsAtIndexes<T>(indexes: [Range<Int>], fromArray array: [T]) -> [T] {
+        // TODO: remove this in swift 2.0
+        var extractedItems = [T]()
+        for range in indexes {
+            for index in range {
+                extractedItems += [array[index]]
+            }
+        }
+        return extractedItems
     }
 
     // MARK: Writing to Disk (Private)

@@ -113,48 +113,11 @@ extension NSURL {
     }
     
     class func URLsFromPasteboard(pasteboard: NSPasteboard) -> [NSURL]? {
-        typealias TypeString = String
+        let URLs = Array.filterOptionalsFromOptional(pasteboard.readObjectsForClasses([NSURL.self], options: nil)?.map({ object -> NSURL? in
+            if let url = object as? NSURL { return url } else { return .None }
+        }))
         
-        //
-        // A word of warning... The pasteboard API is necessary
-        // The only way to get data out of Pasteboard Items it is with Types
-        // The only way to get the types is to ask each Pasteboard Item for Its Types
-        // Below we will iterate over each item to get the type
-        // Then iterate over each item and type to get the URL's
-        //
-        
-        // unwrap the pasteboard items array and convert it into a typed array
-        if let optionalPasteboardItems = pasteboard.pasteboardItems?.map({ object -> NSPasteboardItem? in return object as? NSPasteboardItem }) {
-            // get ride of the optionals in the pasteboard items array
-            let pasteboardItems = Array.filterOptionals(optionalPasteboardItems)
-            
-            // extract a deduplicated list of all the possible types in the pasteboard items
-            let types = Array(Set(Array.flatten(Array.filterOptionals(pasteboardItems.map({ item -> [TypeString]? in
-                let optionalTypes = item.types?.map() { object -> TypeString? in return object as? TypeString }
-                if let optionalTypes = optionalTypes { return Array.filterOptionals(optionalTypes) } else { return .None }
-            })))))
-            
-            // extract all the possible URLs in the pasteboard items
-            let URLs = Array.flatten(types.map({ type -> [NSURL] in
-                let mappedURLs = pasteboardItems.map() { item -> NSURL? in
-                    if let url = NSURL(pasteboardPropertyList: item.propertyListForType(type), ofType: type) {
-                        return url
-                    } else {
-                        return .None
-                    }
-                }
-                return Array.filterOptionals(mappedURLs)
-            }))
-            
-            // if there are URL's return them
-            if URLs.count > 0 { return Array(URLs) } else { return nil }
-        }
-        // we failed the inital if let check, return nothing
-        return .None
-    }
-    
-    public override var description: String {
-        return "\(self.path)"
+        return URLs
     }
 }
 
@@ -208,66 +171,12 @@ extension NSView {
 
 // MARK: Extensions of Built in Types
 
-func numberOfItemsInIndexes(indexes: [Range<Int>], beforeIndex index: Int) -> Int {
-    var number = 0
-    for range in indexes {
-        for i in range {
-            if i < index {
-                number++
-            }
-        }
-    }
-    return number
-}
-
 func indexOfItem<T: Equatable>(item: T, inCollection collection: [T]) -> Int? {
     // TODO: remove this in swift 2.0
     for (index, collectionItem) in enumerate(collection) {
         if item == collectionItem { return index }
     }
     return .None
-}
-
-func collectionOfItemsUniqueToCollection<T: Equatable>(lhs: [T], andCollection rhs: [T]) -> [T] {
-    let largerCollection: [T]
-    let smallerCollection: [T]
-    
-    if lhs.count >= rhs.count {
-        largerCollection = lhs
-        smallerCollection = rhs
-    } else {
-        largerCollection = rhs
-        smallerCollection = lhs
-    }
-    
-    var outputCollection = [T]()
-    for item in smallerCollection {
-        if indexOfItem(item, inCollection: largerCollection) == .None && indexOfItem(item, inCollection: outputCollection) == .None {
-            outputCollection += [item]
-        }
-    }
-    
-    return outputCollection
-}
-
-func collectionByRemovingItemsAtIndexes<U>(indexes: [Range<Int>], fromCollection collection: [U]) -> [U] {
-    // TODO: remove this in swift 2.0
-    var outputCollection = collection
-    for range in indexes.reverse() {
-        outputCollection.removeRange(range)
-    }
-    return outputCollection
-}
-
-func collectionByExtractingItemsAtIndexes<T>(indexes: [Range<Int>], fromCollection collection: [T]) -> [T] {
-    // TODO: remove this in swift 2.0
-    var extractedItems = [T]()
-    for range in indexes {
-        for index in range {
-            extractedItems += [collection[index]]
-        }
-    }
-    return extractedItems
 }
 
 extension Array {
@@ -297,6 +206,13 @@ extension Array {
     
     static func filterOptionals(array: [T?]) -> [T] {
         return array.filter { $0 != nil }.map { $0! }
+    }
+    
+    static func filterOptionalsFromOptional(array: [T?]?) -> [T]? {
+        if let array = array {
+            return array.filter { $0 != nil }.map { $0! }
+        }
+        return .None
     }
     
     static func merge(input: [[T]]) -> [T] {

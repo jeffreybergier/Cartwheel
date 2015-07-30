@@ -36,3 +36,9 @@ extension NSWindow: Printable {
         return "\(self.className) <\(address)>"
     }
 }
+
+extension NSURL: Printable {
+    override public var description: String {
+        return self.path!
+    }
+}
