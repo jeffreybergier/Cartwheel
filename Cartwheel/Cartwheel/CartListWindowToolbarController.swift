@@ -108,6 +108,7 @@ extension CartListWindowToolbarController: NSToolbarDelegate {
     
     func toolbarDefaultItemIdentifiers(toolbar: NSToolbar) -> [AnyObject] {
         return [
+            NSToolbarFlexibleSpaceItemIdentifier,
             ToolbarItems.CartfilesSearchIdentifier
         ]
     }
