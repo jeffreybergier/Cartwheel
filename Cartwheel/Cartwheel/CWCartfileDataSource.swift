@@ -87,7 +87,19 @@ class CWCartfileDataSource {
         return self.writeEmptyFileToDirectory(directory, withName: self.defaultsPlist.cartfileFileName)
     }
     
+    func removeCartfilesAtIndexes(indexes: [Range<Int>]) {
+        self.cartfiles = self.removeItemsAtIndexes(indexes, fromArray: self.cartfiles)
+    }
+    
     // MARK: Pure Functions – Don't Rely on or Modify State (Private)
+    
+    private func removeItemsAtIndexes<T>(indexes: [Range<Int>], fromArray array: [T]) -> [T] {
+        var mutableArray = array
+        for range in indexes.reverse() {
+            mutableArray.removeRange(range)
+        }
+        return mutableArray
+    }
     
     private func insertItems<T>(items: [T], intoArray inputArray: [T], atIndex index: Int) -> [T] {
         var outputArray = inputArray

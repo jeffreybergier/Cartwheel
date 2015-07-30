@@ -117,7 +117,8 @@ extension NSURL {
             if let url = object as? NSURL { return url } else { return .None }
         }))
         
-        return URLs
+        // fixes a bug where we were sometimes returning an empty array
+        if let URLs = URLs where URLs.count > 0 { return URLs } else { return .None }
     }
 }
 

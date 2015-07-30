@@ -42,7 +42,7 @@ final class CartListWindowController: NSWindowController {
         self.window?.collectionBehavior = NSWindowCollectionBehavior.FullScreenPrimary
         self.window?.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)!
         self.window?.styleMask = self.window!.styleMask | NSFullSizeContentViewWindowMask
-        self.window?.titleVisibility = NSWindowTitleVisibility.Visible
+        self.window?.titleVisibility = NSWindowTitleVisibility.Hidden
         self.window?.title = NSLocalizedString("Cartwheel", comment: "Cartwheel name for window title")
         
         // create the data source and distribute the reference

@@ -34,15 +34,17 @@ final class CartListView: NSView {
     
     private let ui = InterfaceElements()
     private var viewConstraints = [NSLayoutConstraint]()
-    private weak var controller: NSViewController?
     
     func configureViewWithController(controller: NSViewController?, tableViewDataSource: NSTableViewDataSource?, tableViewDelegate: NSTableViewDelegate?) {
         self.wantsLayer = true
         
         self.addSubview(self.ui.scrollView)
-        self.configure(tableView: self.ui.tableView, scrollView: self.ui.scrollView, tableColumn: self.ui.tableColumn)
+        self.addSubview(self.ui.addButton)
+        self.addSubview(self.ui.deleteButton)
         
-        self.controller = controller
+        self.configure(tableView: self.ui.tableView, scrollView: self.ui.scrollView, tableColumn: self.ui.tableColumn)
+        self.configure(addButton: self.ui.addButton, deleteButton: self.ui.deleteButton, withController: controller)
+        
         self.ui.tableView.setDelegate(tableViewDelegate)
         self.ui.tableView.setDataSource(tableViewDataSource)
         
@@ -76,26 +78,37 @@ final class CartListView: NSView {
         self.ui.tableView.registerForDraggedTypes(draggedTypes)
     }
     
+    var tableViewSelectedRowIndexes: [Range<Int>] {
+        return self.ui.tableView.selectedRowIndexes.ranges
+    }
+    
     // MARK: Handle Configuring The SubViews
     
     private func configureConstraints() {
         let defaultInset = CGFloat(8.0)
+        let defaultSmallSquareButtonSize = CGFloat(30)
         let smallInset = round(defaultInset / 1.5)
         let filterFieldWidth = CGFloat(200)
         
-        let pureLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
+        let constraints = NSView.autoCreateConstraintsWithoutInstalling() {
             self.ui.scrollView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
+            
+            self.ui.addButton.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
+            self.ui.addButton.autoPinEdgeToSuperviewEdge(.Bottom, withInset: defaultInset)
+            self.ui.deleteButton.autoPinEdgeToSuperviewEdge(.Bottom, withInset: defaultInset)
+            
+            self.ui.deleteButton.autoPinEdge(.Leading, toEdge: .Trailing, ofView: self.ui.addButton, withOffset: defaultInset)
+            self.ui.deleteButton.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset, relation: .GreaterThanOrEqual)
+            
+            self.ui.addButton.autoSetDimensionsToSize(CGSize(width: defaultSmallSquareButtonSize, height: defaultSmallSquareButtonSize))
+            self.ui.deleteButton.autoSetDimensionsToSize(CGSize(width: defaultSmallSquareButtonSize, height: defaultSmallSquareButtonSize))
         }
         
-        let optionalPureLayoutConstraints = pureLayoutConstraints.map { (object) -> NSLayoutConstraint? in
-            if let constraint = object as? NSLayoutConstraint {
-                return constraint
-            } else {
-                return nil
-            }
-        }
+        let pureLayoutConstraints = Array.filterOptionals(constraints.map({ object -> NSLayoutConstraint? in
+            if let constraint = object as? NSLayoutConstraint { return constraint } else { return .None }
+        }))
         
-        self.viewConstraints += Array.filterOptionals(optionalPureLayoutConstraints)
+        self.viewConstraints += pureLayoutConstraints
         self.addConstraints(self.viewConstraints)
     }
     
@@ -112,9 +125,25 @@ final class CartListView: NSView {
         scrollView.drawsBackground = false
     }
     
+    func configure(#addButton: NSButton, deleteButton: NSButton, withController controller: NSViewController?) {
+        let font = NSFont.systemFontOfSize(20)
+        addButton.font = font
+        deleteButton.font = font
+        addButton.title = "+"
+        deleteButton.title = "–"
+        
+        addButton.target = controller
+        deleteButton.target = controller
+        
+        addButton.action = "didClickAddButton:"
+        deleteButton.action = "didClickDeleteButton:"
+    }
+    
     struct InterfaceElements {
-        var scrollView: NSScrollView = NSScrollView()
-        var tableView: NSTableView = NSTableView()
-        var tableColumn: NSTableColumn = NSTableColumn(identifier: "CartListColumn")
+        var addButton = NSButton.buttonWithDefaultStyle()
+        var deleteButton = NSButton.buttonWithDefaultStyle()
+        var scrollView = NSScrollView()
+        var tableView = NSTableView()
+        var tableColumn = NSTableColumn(identifier: "CartListColumn")
     }
 }
