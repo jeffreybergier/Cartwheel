@@ -88,7 +88,30 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
     // MARK: Handle Add / Delete Button Presses
     
     @objc private func didClickDeleteButton(sender: NSButton) {
-        self.contentModel.removeCartfilesAtIndexes(self.contentView.tableViewSelectedRowIndexes)
+        // don't do anything if no rows are selected
+        if self.contentView.tableViewSelectedRowIndexes.isEmpty == false {
+            
+            enum DeleteCartfilesAlertResponse: Int {
+                case RemoveButton = 1000
+                case CancelButton = 1001
+            }
+            // TODO: Convert this to NSPopover because its nicer :)
+            let alert = NSAlert()
+            alert.addButtonWithTitle("Remove")
+            alert.addButtonWithTitle("Cancel")
+            alert.messageText = NSLocalizedString("Remove Selected Cartfiles?", comment: "Description for alert that is shown when the user tries to delete Cartfiles from the main list")
+            alert.alertStyle = NSAlertStyle.WarningAlertStyle
+            alert.beginSheetModalForWindow(self.window!, completionHandler: { untypedResponse -> Void in
+                if let response = DeleteCartfilesAlertResponse(rawValue: Int(untypedResponse.value)) {
+                    switch response {
+                    case .RemoveButton:
+                        self.contentModel.removeCartfilesAtIndexes(self.contentView.tableViewSelectedRowIndexes)
+                    case .CancelButton:
+                        self.log.info("User chose delete button but then cancelled the operation.")
+                    }
+                }
+            })
+        }
     }
     
     @objc private func didClickAddButton(sender: NSButton) {

@@ -82,6 +82,10 @@ final class CartListView: NSView {
         return self.ui.tableView.selectedRowIndexes.ranges
     }
     
+    var deleteButton: NSButton {
+        return self.ui.deleteButton
+    }
+    
     // MARK: Handle Configuring The SubViews
     
     private func configureConstraints() {
