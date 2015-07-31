@@ -101,7 +101,7 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
             alert.addButtonWithTitle("Cancel")
             alert.messageText = NSLocalizedString("Remove Selected Cartfiles?", comment: "Description for alert that is shown when the user tries to delete Cartfiles from the main list")
             alert.alertStyle = NSAlertStyle.WarningAlertStyle
-            alert.beginSheetModalForWindow(self.window!, completionHandler: { untypedResponse -> Void in
+            alert.beginSheetModalForWindow(self.window!) { untypedResponse -> Void in
                 if let response = DeleteCartfilesAlertResponse(rawValue: Int(untypedResponse.value)) {
                     switch response {
                     case .RemoveButton:
@@ -110,27 +110,31 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
                         self.log.info("User chose delete button but then cancelled the operation.")
                     }
                 }
-            })
+            }
         }
     }
     
     @objc private func didClickAddButton(sender: NSButton) {
-        let fileChooser = NSOpenPanel()
-        fileChooser.canChooseFiles = true
-        fileChooser.canChooseDirectories = true
-        fileChooser.allowsMultipleSelection = true
-        
-        fileChooser.beginSheetModalForWindow(self.window!) { untypedResult in
-            let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
-            switch result {
-            case .SuccessButton:
-                if let cartfiles = CWCartfile.cartfilesFromURL(fileChooser.URLs) {
-                    self.contentModel.appendCartfiles(cartfiles)
-                }
-            case .CancelButton:
-                self.log.info("File Chooser was cancelled by user.")
-            }
-        }
+        let menu = NSMenu(title: "Testing123")
+        menu.addItemWithTitle("First Item", action: "firstItem:", keyEquivalent: "")
+        menu.addItemWithTitle("Second Item", action: "secondItem:", keyEquivalent: "")
+        NSMenu.popUpContextMenu(menu, withEvent: NSEvent(), forView: self.contentView.addButton)
+//        let fileChooser = NSOpenPanel()
+//        fileChooser.canChooseFiles = true
+//        fileChooser.canChooseDirectories = true
+//        fileChooser.allowsMultipleSelection = true
+//        
+//        fileChooser.beginSheetModalForWindow(self.window!) { untypedResult in
+//            let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
+//            switch result {
+//            case .SuccessButton:
+//                if let cartfiles = CWCartfile.cartfilesFromURL(fileChooser.URLs) {
+//                    self.contentModel.appendCartfiles(cartfiles)
+//                }
+//            case .CancelButton:
+//                self.log.info("File Chooser was cancelled by user.")
+//            }
+//        }
     }
     
     //
@@ -211,6 +215,14 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         let cellHeight = (smallInset * 2) + viewHeight + 1 // the +1 fixes issues in the view debugger
         
         return cellHeight
+    }
+    
+    func tableViewSelectionDidChange(aNotification: NSNotification) {
+        if self.contentView.tableViewSelectedRowIndexes.isEmpty == true {
+            self.contentView.deleteButtonEnabled = false
+        } else {
+            self.contentView.deleteButtonEnabled = true
+        }
     }
     
     // MARK: NSTableViewDataSource

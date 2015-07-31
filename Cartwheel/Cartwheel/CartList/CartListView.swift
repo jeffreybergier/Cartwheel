@@ -30,23 +30,30 @@ import PureLayout_Mac
 
 final class CartListView: NSView {
     
+    // MARK: UI Element
+    
+    let addButton = NSButton.buttonWithDefaultStyle()
+    let deleteButton = NSButton.buttonWithDefaultStyle()
+    private let scrollView = NSScrollView()
+    private let tableView = NSTableView()
+    private let tableColumn = NSTableColumn(identifier: "CartListColumn")
+    
     // MARK: Handle Initialization
     
-    private let ui = InterfaceElements()
     private var viewConstraints = [NSLayoutConstraint]()
     
     func configureViewWithController(controller: NSViewController?, tableViewDataSource: NSTableViewDataSource?, tableViewDelegate: NSTableViewDelegate?) {
         self.wantsLayer = true
         
-        self.addSubview(self.ui.scrollView)
-        self.addSubview(self.ui.addButton)
-        self.addSubview(self.ui.deleteButton)
+        self.addSubview(self.scrollView)
+        self.addSubview(self.addButton)
+        self.addSubview(self.deleteButton)
         
-        self.configure(tableView: self.ui.tableView, scrollView: self.ui.scrollView, tableColumn: self.ui.tableColumn)
-        self.configure(addButton: self.ui.addButton, deleteButton: self.ui.deleteButton, withController: controller)
+        self.configure(tableView: self.tableView, scrollView: self.scrollView, tableColumn: self.tableColumn)
+        self.configure(addButton: self.addButton, deleteButton: self.deleteButton, withController: controller)
         
-        self.ui.tableView.setDelegate(tableViewDelegate)
-        self.ui.tableView.setDataSource(tableViewDataSource)
+        self.tableView.setDelegate(tableViewDelegate)
+        self.tableView.setDataSource(tableViewDataSource)
         
         self.configureConstraints()
     }
@@ -54,36 +61,41 @@ final class CartListView: NSView {
     // MARK: Handle External TableView
     
     func updateTableViewRowHeight(newHeight: CGFloat) {
-        self.ui.tableView.rowHeight = newHeight
+        self.tableView.rowHeight = newHeight
     }
     
     func tableViewHasRows(hasRows: Bool) {
-        self.ui.tableView.gridStyleMask = hasRows ? .SolidHorizontalGridLineMask : .GridNone
+        self.tableView.gridStyleMask = hasRows ? .SolidHorizontalGridLineMask : .GridNone
     }
     
     func reloadTableViewData() {
-        self.ui.tableView.reloadData()
+        self.tableView.reloadData()
     }
     
     func registerTableViewNIB(nibName: String) {
-        self.ui.tableView.registerNib(NSNib(nibNamed: nibName, bundle: nil)!, forIdentifier: nibName)
+        self.tableView.registerNib(NSNib(nibNamed: nibName, bundle: nil)!, forIdentifier: nibName)
     }
     
     func noteHeightOfVisibleRowsChanged() {
-        let visibleRows = self.ui.tableView.rowsInRect(self.ui.tableView.visibleRect)
-        self.ui.tableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(indexesInRange: visibleRows))
+        let visibleRows = self.tableView.rowsInRect(self.tableView.visibleRect)
+        self.tableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(indexesInRange: visibleRows))
     }
     
     func registerTableViewForDraggedTypes(draggedTypes: [AnyObject]) {
-        self.ui.tableView.registerForDraggedTypes(draggedTypes)
+        self.tableView.registerForDraggedTypes(draggedTypes)
     }
     
     var tableViewSelectedRowIndexes: [Range<Int>] {
-        return self.ui.tableView.selectedRowIndexes.ranges
+        return self.tableView.selectedRowIndexes.ranges
     }
     
-    var deleteButton: NSButton {
-        return self.ui.deleteButton
+    var deleteButtonEnabled: Bool {
+        get {
+            return self.deleteButton.enabled
+        }
+        set {
+            self.deleteButton.enabled = newValue
+        }
     }
     
     // MARK: Handle Configuring The SubViews
@@ -95,17 +107,17 @@ final class CartListView: NSView {
         let filterFieldWidth = CGFloat(200)
         
         let constraints = NSView.autoCreateConstraintsWithoutInstalling() {
-            self.ui.scrollView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
+            self.scrollView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
             
-            self.ui.addButton.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
-            self.ui.addButton.autoPinEdgeToSuperviewEdge(.Bottom, withInset: defaultInset)
-            self.ui.deleteButton.autoPinEdgeToSuperviewEdge(.Bottom, withInset: defaultInset)
+            self.addButton.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
+            self.addButton.autoPinEdgeToSuperviewEdge(.Bottom, withInset: defaultInset)
+            self.deleteButton.autoPinEdgeToSuperviewEdge(.Bottom, withInset: defaultInset)
             
-            self.ui.deleteButton.autoPinEdge(.Leading, toEdge: .Trailing, ofView: self.ui.addButton, withOffset: defaultInset)
-            self.ui.deleteButton.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset, relation: .GreaterThanOrEqual)
+            self.deleteButton.autoPinEdge(.Leading, toEdge: .Trailing, ofView: self.addButton, withOffset: defaultInset)
+            self.deleteButton.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset, relation: .GreaterThanOrEqual)
             
-            self.ui.addButton.autoSetDimensionsToSize(CGSize(width: defaultSmallSquareButtonSize, height: defaultSmallSquareButtonSize))
-            self.ui.deleteButton.autoSetDimensionsToSize(CGSize(width: defaultSmallSquareButtonSize, height: defaultSmallSquareButtonSize))
+            self.addButton.autoSetDimensionsToSize(CGSize(width: defaultSmallSquareButtonSize, height: defaultSmallSquareButtonSize))
+            self.deleteButton.autoSetDimensionsToSize(CGSize(width: defaultSmallSquareButtonSize, height: defaultSmallSquareButtonSize))
         }
         
         let pureLayoutConstraints = Array.filterOptionals(constraints.map({ object -> NSLayoutConstraint? in
@@ -117,8 +129,8 @@ final class CartListView: NSView {
     }
     
     func configure(#tableView: NSTableView, scrollView: NSScrollView, tableColumn: NSTableColumn) {
-        tableView.addTableColumn(self.ui.tableColumn)
-        scrollView.documentView = self.ui.tableView
+        tableView.addTableColumn(self.tableColumn)
+        scrollView.documentView = self.tableView
         scrollView.hasVerticalScroller = true
         tableView.headerView = nil
         tableView.selectionHighlightStyle = .None
@@ -141,13 +153,7 @@ final class CartListView: NSView {
         
         addButton.action = "didClickAddButton:"
         deleteButton.action = "didClickDeleteButton:"
-    }
-    
-    struct InterfaceElements {
-        var addButton = NSButton.buttonWithDefaultStyle()
-        var deleteButton = NSButton.buttonWithDefaultStyle()
-        var scrollView = NSScrollView()
-        var tableView = NSTableView()
-        var tableColumn = NSTableColumn(identifier: "CartListColumn")
+        
+        deleteButton.enabled = false
     }
 }
