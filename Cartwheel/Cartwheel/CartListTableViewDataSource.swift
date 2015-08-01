@@ -48,7 +48,9 @@ class CartListTableViewDataSource: CartListChildController, NSTableViewDataSourc
     }
     
     func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableViewDropOperation) -> Bool {
-        self.windowObserver?.tableViewIsDraggingObserver.notify(false)
+        
+        tableView.deselectAll(self)
+        self.windowObserver?.tableViewRowIsDraggingObserver.notify(false)
         
         let activity = self.pasteboardActivity(info.draggingPasteboard(), quickMode: false)
         switch activity {
@@ -67,8 +69,10 @@ class CartListTableViewDataSource: CartListChildController, NSTableViewDataSourc
         }
     }
     
-    func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation {        
-        self.windowObserver?.tableViewIsDraggingObserver.notify(true)
+    func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation {
+        
+        tableView.deselectAll(self)
+        self.windowObserver?.tableViewRowIsDraggingObserver.notify(true)
         
         let activity = self.pasteboardActivity(info.draggingPasteboard(), quickMode: true)
         switch activity {

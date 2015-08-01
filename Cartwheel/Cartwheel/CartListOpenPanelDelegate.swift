@@ -30,22 +30,21 @@ import XCGLogger
 
 class CartListOpenPanelDelegate: NSObject, NSOpenSavePanelDelegate {
     
-    weak var controller: protocol<WindowManagingController, CWCartfileDataSourceController>?
-    
     private let log = XCGLogger.defaultInstance()
     
-    func openFileChooser() {
+    func presentAddCartfilesFileChooserWithinWindow(window: NSWindow, modifyContentModel contentModel: CWCartfileDataSource) {
         let fileChooser = NSOpenPanel()
         fileChooser.canChooseFiles = true
         fileChooser.canChooseDirectories = true
         fileChooser.allowsMultipleSelection = true
+        fileChooser.title = NSLocalizedString("Add Cartfiles", comment: "Title of add cartfiles open panel")
         
-        fileChooser.beginSheetModalForWindow(self.controller!.window!) { untypedResult in
+        fileChooser.beginSheetModalForWindow(window) { untypedResult in
             let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
             switch result {
             case .SuccessButton:
                 if let cartfiles = CWCartfile.cartfilesFromURL(fileChooser.URLs) {
-                    self.controller?.contentModel.appendCartfiles(cartfiles)
+                    contentModel.appendCartfiles(cartfiles)
                 }
             case .CancelButton:
                 self.log.info("File Chooser was cancelled by user.")
@@ -53,7 +52,7 @@ class CartListOpenPanelDelegate: NSObject, NSOpenSavePanelDelegate {
         }
     }
     
-    @objc private func didClickCreateNewCartFileButton(sender: NSButton) {
+    func presentCreateBlankCartfileFileChooserWithinWindow(window: NSWindow, modifyContentModel contentModel: CWCartfileDataSource) {
         let savePanel = NSOpenPanel()
         savePanel.delegate = self
         savePanel.canChooseDirectories = true
@@ -62,20 +61,20 @@ class CartListOpenPanelDelegate: NSObject, NSOpenSavePanelDelegate {
         savePanel.allowsMultipleSelection = false
         savePanel.title = NSLocalizedString("Create New Cartfile", comment: "Title of the create new cartfile save dialog.")
         savePanel.prompt = self.savePanelOriginalButtonTitle
-        savePanel.beginSheetModalForWindow(self.controller!.window!, completionHandler: { untypedResult in
+        savePanel.beginSheetModalForWindow(window, completionHandler: { untypedResult in
             let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
             switch result {
             case .SuccessButton:
                 if let selectedURL = savePanel.URL {
-                    let cartfileWriteResult = self.controller!.contentModel.writeBlankCartfileToDirectoryPath(selectedURL)
+                    let cartfileWriteResult = contentModel.writeBlankCartfileToDirectoryPath(selectedURL)
                     if let error = cartfileWriteResult.error {
                         let alert = NSAlert(error: error)
                         savePanel.orderOut(nil) // TODO: try to remove this later. Its not supposed to be needed.
-                        alert.beginSheetModalForWindow(self.controller!.window!, completionHandler: nil)
+                        alert.beginSheetModalForWindow(window, completionHandler: nil)
                         self.log.error("\(error)")
                     } else {
                         let cartfile = CWCartfile(url: cartfileWriteResult.finalURL)
-                        self.controller?.contentModel.appendCartfile(cartfile)
+                        contentModel.appendCartfile(cartfile)
                         NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([cartfile.url])
                     }
                 }

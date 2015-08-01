@@ -36,22 +36,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         XCGLogger.defaultInstance().setup(logLevel: .Verbose, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: nil, fileLogLevel: .Warning)
         
-        self.cartListWindowController = CartListWindowController(windowNibName: "CartListWindowController")
+        self.cartListWindowController = CartListWindowController(usingClassName: true)
         self.cartListWindowController!.showWindow(self) // should crash if NIL at this point
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "cartListWindowControllerDidClose:", name: NSWindowWillCloseNotification, object: self.cartListWindowController!.window)
+        self.cartListWindowController?.windowObserver?.windowDidCloseObserver.add(self, self.dynamicType.cartListWindowControllerDidClose)
     }
     
-    @objc private func cartListWindowControllerDidClose(notification: NSNotification) {
+    private func cartListWindowControllerDidClose() {
         self.cartListWindowController = nil // this allows the window to be deallocated
-    }
-
-    func applicationWillTerminate(aNotification: NSNotification) {
-        
-    }
-
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 }
 

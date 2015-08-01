@@ -119,10 +119,4 @@ final class CartListTableRowView: NSTableRowView {
     override func mouseExited(theEvent: NSEvent) {
         self.mouseInView = false
     }
-    
-    // MARK: Handle Going Away
-    
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
 }

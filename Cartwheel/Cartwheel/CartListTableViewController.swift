@@ -31,7 +31,7 @@ import XCGLogger
 import ObserverSet
 
 @objc(CartListTableViewController)
-final class CartListTableViewController: NSViewController, EventPassingButtonDelegate, CWCartfileDataSourceController, WindowManagingController {
+final class CartListTableViewController: NSViewController, CartfileDataSourceController {
     
     // Model Object
     let contentModel: CWCartfileDataSource
@@ -60,7 +60,7 @@ final class CartListTableViewController: NSViewController, EventPassingButtonDel
     
     // MARK: Init
     
-    init?(controller: NSWindowController, model: CWCartfileDataSource, windowObserver: CartListWindowObserver) {
+    init!(controller: NSWindowController, model: CWCartfileDataSource, windowObserver: CartListWindowObserver) {
         self.contentModel = model
         self.parentWindowController = controller
         self.windowObserver = windowObserver
@@ -70,7 +70,6 @@ final class CartListTableViewController: NSViewController, EventPassingButtonDel
         self.toolbarController.searchFieldDelegate = self.searchFieldDelegate
         self.tableViewDataSource.controller = self
         self.tableViewDelegate.controller = self
-        self.openPanelDelegate.controller = self
         self.toolbarController.controller = self
     }
 
@@ -90,9 +89,6 @@ final class CartListTableViewController: NSViewController, EventPassingButtonDel
         self.view.addSubview(self.contentView)
         self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
         
-        // configure my view and add in the custom view
-        self.contentView.configureViewWithController(self, tableViewDataSource: self.tableViewDataSource, tableViewDelegate: self.tableViewDelegate)
-        
         // register for data source changes
         self.contentModel.cartfileObserver.add(self, self.dynamicType.contentModelDidChange)
         
@@ -105,10 +101,11 @@ final class CartListTableViewController: NSViewController, EventPassingButtonDel
         // register for table selection observing
         self.windowObserver.tableViewRowSelectedStateObserver.add(self, self.dynamicType.tableViewSelectionChangedToIndexes)
         
+        // configure my view and add in the custom view
+        self.contentView.configureViewWithController(self, tableViewDataSource: self.tableViewDataSource, tableViewDelegate: self.tableViewDelegate)
+        
         // register for notifications on window resize
-        if let parentWindowController = self.parentWindowController {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowDidChangeSize:", name: NSWindowDidEndLiveResizeNotification, object: parentWindowController.window)
-        }
+        self.windowObserver.windowDidChangeFrameObserver.add(self, self.dynamicType.windowDidChangeFrame)
         
         // reload the data table
         self.contentView.tableView.reloadData()
@@ -122,7 +119,7 @@ final class CartListTableViewController: NSViewController, EventPassingButtonDel
     
     // MARK: Handle window resizing
     
-    @objc private func windowDidChangeSize(notification: NSNotification) {
+    private func windowDidChangeFrame(newFrame: NSRect?) {
         self.contentView.noteHeightOfVisibleRowsChanged()
     }
     
@@ -166,20 +163,28 @@ final class CartListTableViewController: NSViewController, EventPassingButtonDel
     
     private func didClickAddButton(sender: CWEventPassingButton, theEvent: NSEvent) {
         let menu = NSMenu(title: "Testing123")
-        menu.addItemWithTitle("First Item", action: "firstItem:", keyEquivalent: "")
-        menu.addItemWithTitle("Second Item", action: "secondItem:", keyEquivalent: "")
+        menu.delegate = self
+        menu.addItemWithTitle(NSLocalizedString("Add Cartfiles", comment: "Title of add cartfiles open panel"), action: "didChooseAddCartfilesMenuItem:", keyEquivalent: "")
+        menu.addItemWithTitle(NSLocalizedString("Create New Cartfile", comment: "Title of the create new cartfile save dialog."), action: "didChooseCreateBlankCartfileMenuItem:", keyEquivalent: "")
         NSMenu.popUpContextMenu(menu, withEvent: theEvent, forView: sender)
     }
-    
-    // MARK: EventPassingButtonDelegate
-    
+}
+
+// MARK: NSMenuDelegate
+
+extension CartListTableViewController: NSMenuDelegate {
+    @objc private func didChooseAddCartfilesMenuItem(sender: NSMenuItem) {
+        self.openPanelDelegate.presentAddCartfilesFileChooserWithinWindow(self.window!, modifyContentModel: self.contentModel)
+    }
+    @objc private func didChooseCreateBlankCartfileMenuItem(sender: NSMenuItem) {
+        self.openPanelDelegate.presentCreateBlankCartfileFileChooserWithinWindow(self.window!, modifyContentModel: self.contentModel)
+    }
+}
+
+// MARK: EventPassingButtonDelegate
+
+extension CartListTableViewController: EventPassingButtonDelegate {
     func didClickDownOnEventPassingButton(sender: CWEventPassingButton, theEvent: NSEvent) {
         self.didClickAddButton(sender, theEvent: theEvent)
-    }
-    
-    // MARK: Handle going away
-    
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 }

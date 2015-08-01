@@ -29,7 +29,7 @@ import Cocoa
 import ObserverSet
 
 class CartListChildController: NSObject {
-    weak var controller: CWCartfileDataSourceController?
+    weak var controller: CartfileDataSourceController?
     weak var windowObserver: CartListWindowObserver?
 }
 
@@ -46,7 +46,7 @@ class CartListTableViewDelegate: CartListChildController, NSTableViewDelegate {
         }
         if rowView.configuredOnce == false {
             self.windowObserver?.windowMainStateObserver.add(rowView, rowView.dynamicType.parentWindowDidChangeMain)
-            self.windowObserver?.tableViewIsDraggingObserver.add(rowView, rowView.dynamicType.tableDraggingStateChanged)
+            self.windowObserver?.tableViewRowIsDraggingObserver.add(rowView, rowView.dynamicType.tableDraggingStateChanged)
             rowView.configuredOnce = true
         }
         return rowView
