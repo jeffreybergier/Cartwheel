@@ -304,9 +304,9 @@
 			isa = PBXGroup;
 			children = (
 				73C2F3941AF06D78001B36DB /* CartListWindowController.swift */,
+				73C4386B1B470F5100DF94EC /* CartListTableViewController.swift */,
 				73B992DA1B6C7B960023956C /* CartListWindowObserver.swift */,
 				7381A9A61B61BE550022B70D /* CartListWindowToolbarController.swift */,
-				73C4386B1B470F5100DF94EC /* CartListTableViewController.swift */,
 				73B992D41B6C6EFD0023956C /* CartListTableViewDataSource.swift */,
 				73B992D71B6C75430023956C /* CartListTableViewDelegate.swift */,
 				73B992DD1B6D25A70023956C /* CartListOpenPanelDelegate.swift */,

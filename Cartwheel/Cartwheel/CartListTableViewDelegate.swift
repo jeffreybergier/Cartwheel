@@ -28,11 +28,6 @@
 import Cocoa
 import ObserverSet
 
-class CartListChildController: NSObject {
-    weak var controller: CartfileDataSourceController?
-    weak var windowObserver: CartListWindowObserver?
-}
-
 class CartListTableViewDelegate: CartListChildController, NSTableViewDelegate {
     
     // MARK: Handle RowViews and CellViews

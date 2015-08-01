@@ -28,6 +28,11 @@
 import AppKit
 import XCGLogger
 
+class CartListChildController: NSObject {
+    weak var controller: CartfileDataSourceController?
+    weak var windowObserver: CartListWindowObserver?
+}
+
 // MARK: Extend NSRange
 
 extension NSIndexSet {
