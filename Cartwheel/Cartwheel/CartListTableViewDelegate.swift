@@ -40,7 +40,6 @@ class CartListTableViewDelegate: CartListChildController, NSTableViewDelegate {
             rowView = CartListTableRowView()
         }
         if rowView.configuredOnce == false {
-            self.windowObserver?.windowMainStateObserver.add(rowView, rowView.dynamicType.parentWindowDidChangeMain)
             self.windowObserver?.tableViewRowIsDraggingObserver.add(rowView, rowView.dynamicType.tableDraggingStateChanged)
             rowView.configuredOnce = true
         }

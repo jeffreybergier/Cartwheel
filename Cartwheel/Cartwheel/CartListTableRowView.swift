@@ -54,13 +54,14 @@ final class CartListTableRowView: NSTableRowView {
     
     // MARK: Handle Selecting a Row
     
-    private var tableViewIsDragging = false
+    private var tableViewRowIsDragging = false
     func tableDraggingStateChanged(dragging: Bool) {
-        self.tableViewIsDragging = dragging
+        self.tableViewRowIsDragging = dragging
+        self.mouseInView = false // this fixes the multiple highlight issue when dragging rows are dropped
     }
     
     override func drawSelectionInRect(dirtyRect: NSRect) {
-        if self.tableViewIsDragging == false {
+        if self.tableViewRowIsDragging == false {
             let selectionPath = NSBezierPath(roundedRect: dirtyRect, xRadius: 0, yRadius: 0)
             let fillColor: Void = NSColor.blackColor().colorWithAlphaComponent(0.4).setFill()
             //let debugFillColor: Void = NSColor.redColor().setFill()
@@ -83,17 +84,14 @@ final class CartListTableRowView: NSTableRowView {
     }
     
     // Implementing a tracking area is required for mouseEntering and mouseExiting events
-    private lazy var trackingArea: NSTrackingArea = NSTrackingArea(rect: NSRect.zeroRect, options: .InVisibleRect | .ActiveAlways | .MouseEnteredAndExited, owner: self, userInfo: nil)
-
-    // if the window goes into the background stop doing the highlight
-    private var rowViewParentWindowIsMain = false
-    func parentWindowDidChangeMain(windowIsMain: Bool) {
-        self.rowViewParentWindowIsMain = windowIsMain
-    }
+    private lazy var trackingArea: NSTrackingArea = {
+        let options: NSTrackingAreaOptions = .ActiveInActiveApp | .InVisibleRect | .MouseEnteredAndExited
+        return NSTrackingArea(rect: NSRect.zeroRect, options: options, owner: self, userInfo: nil)
+    }()
 
     // TODO: Rows often appear highlighted when they are being recycled
     override func drawBackgroundInRect(dirtyRect: NSRect) {
-        if self.mouseInView == true && self.selected == false && self.rowViewParentWindowIsMain == true && self.tableViewIsDragging == false {
+        if self.mouseInView == true && self.selected == false {
             // drawHighlightInRect
             let selectionPath = NSBezierPath(roundedRect: dirtyRect, xRadius: 0, yRadius: 0)
             let fillColor: Void = NSColor.whiteColor().colorWithAlphaComponent(0.15).setFill()
