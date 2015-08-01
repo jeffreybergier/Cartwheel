@@ -32,8 +32,8 @@ final class CartListView: NSView {
     
     // MARK: UI Element
     
-    let addButton = NSButton.buttonWithDefaultStyle()
-    let deleteButton = NSButton.buttonWithDefaultStyle()
+    let addButton = CWEventPassingButton(roundedBezelStyle: true)
+    let deleteButton = NSButton(roundedBezelStyle: true)
     private let scrollView = NSScrollView()
     private let tableView = NSTableView()
     private let tableColumn = NSTableColumn(identifier: "CartListColumn")
@@ -138,6 +138,7 @@ final class CartListView: NSView {
         tableView.rowSizeStyle = .Custom
         tableView.allowsMultipleSelection = true
         tableView.backgroundColor = NSColor.clearColor()
+        tableView.gridStyleMask = .SolidHorizontalGridLineMask
         scrollView.drawsBackground = false
     }
     

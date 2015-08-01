@@ -30,6 +30,10 @@ import ObserverSet
 import XCGLogger
 import Async
 
+protocol CWCartfileDataSourceController: NSObjectProtocol {
+    var contentModel: CWCartfileDataSource { get }
+}
+
 class CWCartfileDataSource {
     
     // MARK: Properties (Private)

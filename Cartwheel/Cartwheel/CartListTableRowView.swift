@@ -42,33 +42,24 @@ final class CartListTableRowView: NSTableRowView {
     }
     override var targetForDropOperation: Bool {
         get { return false }
-        set {}
+        set { /* do nothing */ /* this setter is needed to please the compiler */ }
     }
     override var selected: Bool {
         didSet {
             self.needsDisplay = true
         }
     }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.wantsLayer = true
-    }
-    
-    private var configured = false
-    
-    func configureRowViewIfNeededWithParentWindow(parentWindow: NSWindow?, draggingObserver: ObserverSet<Bool>?) {
-        if self.configured == false {
-            if let window = parentWindow {
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "parentWindowDidBecomeMain:", name: NSWindowDidBecomeMainNotification, object: window)
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "parentWindowDidResignMain:", name: NSWindowDidResignMainNotification, object: window)
-            }
-            if let draggingObserver = draggingObserver {
-                draggingObserver.add(self, self.dynamicType.tableDraggingStateChanged)
-            }
-            self.configured = true
-        }
-    }
+
+//    private var configured = false
+//    
+//    func configureRowViewIfNeededWithParentWindow(parentWindow: NSWindow?, draggingObserver: ObserverSet<Bool>?) {
+//        if self.configured == false {
+//            if let draggingObserver = draggingObserver {
+//                draggingObserver.add(self, self.dynamicType.tableDraggingStateChanged)
+//            }
+//            self.configured = true
+//        }
+//    }
     
     // MARK: Handle Selecting a Row
     
@@ -103,14 +94,10 @@ final class CartListTableRowView: NSTableRowView {
     // Implementing a tracking area is required for mouseEntering and mouseExiting events
     private lazy var trackingArea: NSTrackingArea = NSTrackingArea(rect: NSRect.zeroRect, options: .InVisibleRect | .ActiveAlways | .MouseEnteredAndExited, owner: self, userInfo: nil)
 
+    // if the window goes into the background stop doing the highlight
     private var rowViewParentWindowIsMain = false
-    
-    @objc private func parentWindowDidBecomeMain(notification: NSNotification?) {
-        self.rowViewParentWindowIsMain = true
-    }
-    
-    @objc private func parentWindowDidResignMain(notification: NSNotification?) {
-        self.rowViewParentWindowIsMain = false
+    func parentWindowDidChangeMain(windowIsMain: Bool) {
+        self.rowViewParentWindowIsMain = windowIsMain
     }
 
     // TODO: Rows often appear highlighted when they are being recycled

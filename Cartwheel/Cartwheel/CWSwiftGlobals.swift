@@ -258,14 +258,11 @@ extension Set {
 }
 
 extension NSButton {
-    class func buttonWithDefaultStyle() -> NSButton {
-        let button = NSButton()
-        button.bezelStyle = .RoundedBezelStyle
-        // TODO: Figure out how to fix the garbage caused by NSCell
-        //        (button.cell() as! NSButtonCell).bordered = false
-        //        (button.cell() as! NSButtonCell).backgroundStyle = NSBackgroundStyle.Dark
-        //        (button.cell() as! NSButtonCell).backgroundColor = NSColor.clearColor()
-        return button
+    convenience init(roundedBezelStyle: Bool = true) {
+        self.init(frame: NSRect(x: 0, y: 0, width: 0, height: 0))
+        if roundedBezelStyle == true {
+            self.bezelStyle = .RoundedBezelStyle
+        }
     }
 }
 

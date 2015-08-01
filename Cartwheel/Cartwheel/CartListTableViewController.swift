@@ -31,18 +31,47 @@ import XCGLogger
 import ObserverSet
 
 @objc(CartListTableViewController)
-final class CartListTableViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
+final class CartListTableViewController: NSViewController, NSTableViewDelegate, EventPassingButtonDelegate, CWCartfileDataSourceController {
     
-    let log = XCGLogger.defaultInstance()
+    // Logging Object
+    private let log = XCGLogger.defaultInstance()
     
-    var contentModel: CWCartfileDataSource!
-    weak var parentWindowController: CartListWindowController?
+    // View Object
+    private let contentView = CartListView()
+    
+    // Model Object
+    let contentModel: CWCartfileDataSource
+    
+    // Parent Controller
+    private weak var parentWindowController: NSWindowController?
     private var window: NSWindow? {
         return self.parentWindowController?.window
     }
     
-    private let contentView = CartListView()
+    // Window Observer
+    let windowObserver: CartListWindowObserver
+    
+    // Child Controllers
+    let tableViewDataSource: CartListTableViewDataSource
+    let tableViewDelegate: CartListTableViewDelegate
+    
     private let PUBLIC_TEXT_TYPES = [NSFilenamesPboardType]
+    
+    init?(controller: NSWindowController, model: CWCartfileDataSource, windowObserver: CartListWindowObserver) {
+        self.contentModel = model
+        self.parentWindowController = controller
+        self.windowObserver = windowObserver
+        self.tableViewDataSource = CartListTableViewDataSource()
+        self.tableViewDelegate = CartListTableViewDelegate()
+        super.init(nibName: .None, bundle: .None)
+        self.tableViewDelegate.windowObserver = self.windowObserver
+        self.tableViewDataSource.controller = self
+        self.tableViewDelegate.controller = self
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +81,7 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
         
         // configure my view and add in the custom view
-        self.contentView.configureViewWithController(self, tableViewDataSource: self, tableViewDelegate: self)
+        self.contentView.configureViewWithController(self, tableViewDataSource: self.tableViewDataSource, tableViewDelegate: self.tableViewDelegate)
         
         // register for data source changes
         self.contentModel.cartfileObserver.add(self, self.dynamicType.modelDidChange)
@@ -61,8 +90,10 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         self.contentView.registerTableViewForDraggedTypes(PUBLIC_TEXT_TYPES)
         
         // configure default cellHeight
-        let rowHeight = self.tableView(nil, heightOfRow: self.contentModel.cartfiles.lastIndex())
-        self.contentView.updateTableViewRowHeight(rowHeight)
+        self.contentView.updateTableViewRowHeight(32)
+        
+        // register for table selection observing
+        self.windowObserver.tableViewRowSelectedStateObserver.add(self, self.dynamicType.tableViewSelectionChangedToIndexes)
         
         // register for notifications on window resize
         if let parentWindowController = self.parentWindowController {
@@ -83,6 +114,16 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
     
     @objc private func windowDidChangeSize(notification: NSNotification) {
         self.contentView.noteHeightOfVisibleRowsChanged()
+    }
+    
+    // MARK: Handle Table View Selection Changing
+    
+    private func tableViewSelectionChangedToIndexes(indexes: [Range<Int>]) {
+        if indexes.isEmpty == true {
+            self.contentView.deleteButtonEnabled = false
+        } else {
+            self.contentView.deleteButtonEnabled = true
+        }
     }
     
     // MARK: Handle Add / Delete Button Presses
@@ -114,11 +155,15 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
         }
     }
     
-    @objc private func didClickAddButton(sender: NSButton) {
+    // MARK: EventPassingButtonDelegate
+    
+    func didClickDownOnEventPassingButton(sender: CWEventPassingButton, theEvent: NSEvent) {
+        
         let menu = NSMenu(title: "Testing123")
         menu.addItemWithTitle("First Item", action: "firstItem:", keyEquivalent: "")
         menu.addItemWithTitle("Second Item", action: "secondItem:", keyEquivalent: "")
-        NSMenu.popUpContextMenu(menu, withEvent: NSEvent(), forView: self.contentView.addButton)
+        NSMenu.popUpContextMenu(menu, withEvent: theEvent, forView: sender)
+        
 //        let fileChooser = NSOpenPanel()
 //        fileChooser.canChooseFiles = true
 //        fileChooser.canChooseDirectories = true
@@ -177,86 +222,6 @@ final class CartListTableViewController: NSViewController, NSTableViewDataSource
             }
         })
         self.savePanel = savePanel // this allows us to hack the save panel with the hacky code under NSOpenSavePanelDelegate.
-    }
-    
-    // MARK: NSTableViewDelegate
-    
-    private lazy var cellHeightCalculationView: CartListTableCellView = {
-        // this cell is used to let the table calculate the height of each cell dynamically based on the content
-        // the top of the cell is locked to the bottom of the window
-        let view = CartListTableCellView()
-        let defaultInset = CGFloat(8.0)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        self.contentView.addSubview(view)
-        view.hidden = true
-        view.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.contentView, withOffset: 0)
-        view.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
-        view.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
-        view.autoSetDimension(.Height, toSize: 100)
-        view.viewDidLoad()
-        view.setPrimaryTextFieldString("TestString")
-        return view
-    }()
-    
-    // Changed NSTableView to be optional because the method doesn't use it.
-    // I call this method manually in windowDidLoad without passing in an TableView
-    func tableView(tableView: NSTableView?, heightOfRow row: Int) -> CGFloat {
-        if let cartfile = self.contentModel.cartfiles[safe: row] {
-            self.cellHeightCalculationView.setPrimaryTextFieldString(cartfile.name)
-        } else {
-            self.cellHeightCalculationView.clearCellContents()
-        }
-        self.cellHeightCalculationView.needsLayout = true
-        self.cellHeightCalculationView.layoutSubtreeIfNeeded()
-        
-        let defaultInset = CGFloat(8.0)
-        let smallInset = round(defaultInset / 1.5)
-        let viewHeight = self.cellHeightCalculationView.viewHeightForTableRowHeightCalculation
-        let cellHeight = (smallInset * 2) + viewHeight + 1 // the +1 fixes issues in the view debugger
-        
-        return cellHeight
-    }
-    
-    func tableViewSelectionDidChange(aNotification: NSNotification) {
-        if self.contentView.tableViewSelectedRowIndexes.isEmpty == true {
-            self.contentView.deleteButtonEnabled = false
-        } else {
-            self.contentView.deleteButtonEnabled = true
-        }
-    }
-    
-    // MARK: NSTableViewDataSource
-    
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        // this line tells the tableview to add / remove gridlines when the table is full / empty
-        self.contentModel.cartfiles.count > 0 ? self.contentView.tableViewHasRows(true) : self.contentView.tableViewHasRows(false)
-        
-        // return the actual number of rows
-        return self.contentModel.cartfiles.count
-    }
-    
-    func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
-        let rowView: CartListTableRowView
-        if let recycledRowView = tableView.makeViewWithIdentifier(CartListTableRowView.identifier, owner: nil) as? CartListTableRowView {
-            rowView = recycledRowView
-        } else {
-            rowView = CartListTableRowView()
-        }
-        rowView.configureRowViewIfNeededWithParentWindow(self.parentWindowController?.window, draggingObserver: self.tableViewIsDraggingObserver)
-        return rowView
-    }
-    
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let cellView: CartListTableCellViewController
-        if let recycledCellView = tableView.makeViewWithIdentifier(CartListTableCellViewController.identifier, owner: nil) as? CartListTableCellViewController {
-            cellView = recycledCellView
-        }
-        else {
-            cellView = CartListTableCellViewController()
-        }
-        cellView.configureViewIfNeeded()
-        cellView.cartfile = self.contentModel.cartfiles[safe: row]
-        return cellView
     }
     
     // MARK: Handle Dragging

@@ -30,8 +30,9 @@ import PureLayout_Mac
 
 final class CartListWindowController: NSWindowController {
     
-    let tableViewController = CartListTableViewController()
+    var tableViewController: CartListTableViewController?
     var toolbarController: CartListWindowToolbarController?
+    var windowObserver: CartListWindowObserver?
     
     // MARK: Handle Initialization
     
@@ -48,12 +49,16 @@ final class CartListWindowController: NSWindowController {
         // create the data source and distribute the reference
         let dataSource = CWCartfileDataSource()
         
+        // configure the window observer
+        self.windowObserver = CartListWindowObserver(windowToObserve: self.window)
+        
         // configure the toolbar
         self.toolbarController = CartListWindowToolbarController(withinWindowController: self, dataSource: dataSource)
         
         // configure the tableview controller
-        self.tableViewController.parentWindowController = self
-        self.tableViewController.contentModel = dataSource
-        self.window?.contentView = self.tableViewController.view
+        self.tableViewController = CartListTableViewController(controller: self, model: dataSource, windowObserver: self.windowObserver!)
+        
+        // configure the window's view
+        self.window?.contentView = self.tableViewController!.view
     }
 }

@@ -42,8 +42,8 @@ final class CartListWindowToolbarController: NSObject {
     
     // MARK: Toolbar Items
     
-    private let addCartfileButton = NSButton.buttonWithDefaultStyle()
-    private let createNewCartfileButton = NSButton.buttonWithDefaultStyle()
+    private let addCartfileButton = NSButton(roundedBezelStyle: true)
+    private let createNewCartfileButton = NSButton(roundedBezelStyle: true)
     private let cartfilesSearchField = NSSearchField()
     private let cartfilesSearchFieldToolbarItem = NSToolbarItem(itemIdentifier: ToolbarItems.CartfilesSearchIdentifier)
     
