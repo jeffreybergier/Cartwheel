@@ -49,22 +49,13 @@ final class CartListTableRowView: NSTableRowView {
             self.needsDisplay = true
         }
     }
-
-//    private var configured = false
-//    
-//    func configureRowViewIfNeededWithParentWindow(parentWindow: NSWindow?, draggingObserver: ObserverSet<Bool>?) {
-//        if self.configured == false {
-//            if let draggingObserver = draggingObserver {
-//                draggingObserver.add(self, self.dynamicType.tableDraggingStateChanged)
-//            }
-//            self.configured = true
-//        }
-//    }
+    
+    var configuredOnce = false
     
     // MARK: Handle Selecting a Row
     
     private var tableViewIsDragging = false
-    private func tableDraggingStateChanged(dragging: Bool) {
+    func tableDraggingStateChanged(dragging: Bool) {
         self.tableViewIsDragging = dragging
     }
     
@@ -102,7 +93,7 @@ final class CartListTableRowView: NSTableRowView {
 
     // TODO: Rows often appear highlighted when they are being recycled
     override func drawBackgroundInRect(dirtyRect: NSRect) {
-        if self.mouseInView == true && self.selected == false && self.rowViewParentWindowIsMain == true {
+        if self.mouseInView == true && self.selected == false && self.rowViewParentWindowIsMain == true && self.tableViewIsDragging == false {
             // drawHighlightInRect
             let selectionPath = NSBezierPath(roundedRect: dirtyRect, xRadius: 0, yRadius: 0)
             let fillColor: Void = NSColor.whiteColor().colorWithAlphaComponent(0.15).setFill()

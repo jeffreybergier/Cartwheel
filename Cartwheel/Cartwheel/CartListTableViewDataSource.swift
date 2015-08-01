@@ -26,19 +26,90 @@
 //
 
 import Cocoa
+import XCGLogger
 
-class CartListTableViewDataSource: NSObject, NSTableViewDataSource {
-    
-    weak var controller: CWCartfileDataSourceController?
+class CartListTableViewDataSource: CartListChildController, NSTableViewDataSource {
     
     // MARK: NSTableViewDataSource
     
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        // this line tells the tableview to add / remove gridlines when the table is full / empty
-        //self.controller?.contentModel.cartfiles.count > 0 ? self.contentView.tableViewHasRows(true) : self.contentView.tableViewHasRows(false)
-        
         // return the actual number of rows
         return self.controller?.contentModel.cartfiles.count ?? 0
     }
     
+    // MARK: Handle Dragging
+    
+    let PUBLIC_TEXT_TYPES = [NSFilenamesPboardType]
+    
+    func tableView(tableView: NSTableView, writeRowsWithIndexes rowIndexes: NSIndexSet, toPasteboard pboard: NSPasteboard) -> Bool {
+        pboard.declareTypes(PUBLIC_TEXT_TYPES, owner: self)
+        pboard.writeObjects([CWIndexSetPasteboardContainer(indexSet: rowIndexes)])
+        return true
+    }
+    
+    func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableViewDropOperation) -> Bool {
+        self.windowObserver?.tableViewIsDraggingObserver.notify(false)
+        
+        let activity = self.pasteboardActivity(info.draggingPasteboard(), quickMode: false)
+        switch activity {
+        case .DragFile(let url):
+            if let draggedCartfiles = CWCartfile.cartfilesFromURL(url) {
+                self.controller?.contentModel.insertCartfiles(draggedCartfiles, atIndex: row)
+                return true
+            } else {
+                return false
+            }
+        case .MoveRow(let indexes):
+            self.controller?.contentModel.moveCartfilesAtIndexes(indexes, toIndex: row)
+            return true
+        case .Unknown:
+            return false
+        }
+    }
+    
+    func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation {        
+        self.windowObserver?.tableViewIsDraggingObserver.notify(true)
+        
+        let activity = self.pasteboardActivity(info.draggingPasteboard(), quickMode: true)
+        switch activity {
+        case .DragFile(let url):
+            return NSDragOperation.Copy
+        case .MoveRow(let indexes):
+            return NSDragOperation.Move
+        case .Unknown:
+            return NSDragOperation.Generic
+        }
+    }
 }
+
+extension CartListTableViewDataSource {
+    private enum PasteboardActivity {
+        case DragFile(URLs: [NSURL])
+        case MoveRow(indexSet: NSIndexSet)
+        case Unknown
+    }
+    
+    private func pasteboardActivity(pasteboard: NSPasteboard?, quickMode: Bool) -> PasteboardActivity {
+        // verify there is a pasteboard
+        if let pasteboard = pasteboard {
+            // first we check for URLs. There is a fast and slow way to do this
+            // Fast way returns only the first URL from the pasteboard
+            // Slow way returns an array of all the URLs in the pasteboard
+            if quickMode == true {
+                if let url = NSURL(fromPasteboard: pasteboard) { return .DragFile(URLs: [url]) }
+            } else {
+                if let URLs = NSURL.URLsFromPasteboard(pasteboard) { return .DragFile(URLs: URLs) }
+            }
+            
+            // If those fail, then we are not dragging a URL, it is probably a row
+            if let items = pasteboard.readObjectsForClasses([CWIndexSetPasteboardContainer.self], options: nil),
+                let indexes = (items.first as? CWIndexSetPasteboardContainer)?.containedIndexSet {
+                    return .MoveRow(indexSet: indexes)
+            }
+        }
+        // If all that fails, we are dragging something unknown
+        XCGLogger.defaultInstance().info("Unknown item found in pasteboard: \(pasteboard)")
+        return .Unknown
+    }
+}
+

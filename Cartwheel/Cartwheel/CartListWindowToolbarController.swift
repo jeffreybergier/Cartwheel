@@ -1,5 +1,5 @@
 //
-//  CartListWindowToolbarController.swift
+//  CartListWindowToolbar.swift
 //  Cartwheel
 //
 //  Created by Jeffrey Bergier on 7/23/15.
@@ -29,15 +29,14 @@ import Cocoa
 import XCGLogger
 import PureLayout_Mac
 
-final class CartListWindowToolbarController: NSObject {
+final class CartListWindowToolbarController: CartListChildController, NSToolbarDelegate {
     
     // MARK: Main Properties
-    private let toolbar = NSToolbar(identifier: "CartListWindowToolbar")
-    private let contentModel: CWCartfileDataSource
-    private let log = XCGLogger.defaultInstance()
-    private weak var parentWindowController: NSWindowController?
-    private var window: NSWindow? {
-        return parentWindowController?.window
+    let toolbar = NSToolbar(identifier: "CartListWindowToolbar")
+    
+    var searchFieldDelegate: NSTextFieldDelegate? {
+        get { return self.cartfilesSearchField.delegate }
+        set { self.cartfilesSearchField.delegate = newValue }
     }
     
     // MARK: Toolbar Items
@@ -49,23 +48,19 @@ final class CartListWindowToolbarController: NSObject {
     
     // MARK: Handle Init and Config
     
-    init(withinWindowController windowController: NSWindowController, dataSource: CWCartfileDataSource) {
-        self.parentWindowController = windowController
-        self.contentModel = dataSource
+    override init() {
         super.init()
         
         // configure the search field
         let cartfilesSearchFieldTitle = NSLocalizedString("Search", comment: "Toolbar Item to search through cartfiles")
         let cartfilesSearchFieldToolTip = NSLocalizedString("Search through the list of Cartfiles", comment: "Tooltip for the toolbar item to search through cartfiles")
         self.configureToolbarItem(self.cartfilesSearchFieldToolbarItem, withView: self.cartfilesSearchField, title: cartfilesSearchFieldTitle, toolTip: cartfilesSearchFieldToolTip)
-        self.cartfilesSearchField.delegate = self
         
         // set initial toolbar properties
         self.toolbar.allowsUserCustomization = false
         self.toolbar.autosavesConfiguration = true
         self.toolbar.displayMode = NSToolbarDisplayMode.IconOnly
         self.toolbar.delegate = self
-        windowController.window?.toolbar = self.toolbar
     }
     
     private func configureToolbarItem(toolbarItem: NSToolbarItem, withView view: NSView, title: String, toolTip: String) {
@@ -121,25 +116,5 @@ extension CartListWindowToolbarController: NSToolbarDelegate {
             }
         }
         return nil
-    }
-}
-
-// MARK: NSTextFieldDelegate
-
-extension CartListWindowToolbarController: NSTextFieldDelegate {
-    override func controlTextDidChange(notification: NSNotification) {
-        if let userInfoDictionary = notification.userInfo,
-            let filterTextField = userInfoDictionary["NSFieldEditor"] as? NSTextView,
-            let stringValue = filterTextField.string {
-                println("\(stringValue)")
-        }
-    }
-    
-    override func controlTextDidEndEditing(notification: NSNotification) {
-        if let userInfoDictionary = notification.userInfo,
-            let filterTextField = userInfoDictionary["NSFieldEditor"] as? NSTextView,
-            let stringValue = filterTextField.string {
-                println("\(stringValue)")
-        }
     }
 }

@@ -17,6 +17,10 @@ protocol TableViewRowSelectedStateObserver {
     var tableViewRowSelectedStateObserver: ObserverSet<[Range<Int>]> { get }
 }
 
+protocol TableViewIsDraggingObserver {
+    var tableViewIsDraggingObserver: ObserverSet<Bool> { get }
+}
+
 class CartListWindowObserver: WindowMainStateObserver, TableViewRowSelectedStateObserver {
 
     init(windowToObserve: NSWindow?) {
@@ -41,4 +45,8 @@ class CartListWindowObserver: WindowMainStateObserver, TableViewRowSelectedState
     // MARK: TableViewRowSelectedStateObserver Protocol
 
     let tableViewRowSelectedStateObserver = ObserverSet<[Range<Int>]>()
+    
+    // MARK: TableViewIsDraggingObserver Protocol
+    
+    let tableViewIsDraggingObserver = ObserverSet<Bool>()
 }

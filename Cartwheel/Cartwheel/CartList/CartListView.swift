@@ -34,8 +34,8 @@ final class CartListView: NSView {
     
     let addButton = CWEventPassingButton(roundedBezelStyle: true)
     let deleteButton = NSButton(roundedBezelStyle: true)
+    let tableView = NSTableView()
     private let scrollView = NSScrollView()
-    private let tableView = NSTableView()
     private let tableColumn = NSTableColumn(identifier: "CartListColumn")
     
     // MARK: Handle Initialization
@@ -58,44 +58,11 @@ final class CartListView: NSView {
         self.configureConstraints()
     }
     
-    // MARK: Handle External TableView
-    
-    func updateTableViewRowHeight(newHeight: CGFloat) {
-        self.tableView.rowHeight = newHeight
-    }
-    
-    func tableViewHasRows(hasRows: Bool) {
-        self.tableView.gridStyleMask = hasRows ? .SolidHorizontalGridLineMask : .GridNone
-    }
-    
-    func reloadTableViewData() {
-        self.tableView.reloadData()
-    }
-    
-    func registerTableViewNIB(nibName: String) {
-        self.tableView.registerNib(NSNib(nibNamed: nibName, bundle: nil)!, forIdentifier: nibName)
-    }
+    // MARK: Helper Methods
     
     func noteHeightOfVisibleRowsChanged() {
         let visibleRows = self.tableView.rowsInRect(self.tableView.visibleRect)
         self.tableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(indexesInRange: visibleRows))
-    }
-    
-    func registerTableViewForDraggedTypes(draggedTypes: [AnyObject]) {
-        self.tableView.registerForDraggedTypes(draggedTypes)
-    }
-    
-    var tableViewSelectedRowIndexes: [Range<Int>] {
-        return self.tableView.selectedRowIndexes.ranges
-    }
-    
-    var deleteButtonEnabled: Bool {
-        get {
-            return self.deleteButton.enabled
-        }
-        set {
-            self.deleteButton.enabled = newValue
-        }
     }
     
     // MARK: Handle Configuring The SubViews

@@ -28,10 +28,13 @@
 import Cocoa
 import PureLayout_Mac
 
+protocol WindowManagingController: NSObjectProtocol {
+    var window: NSWindow? { get }
+}
+
 final class CartListWindowController: NSWindowController {
     
     var tableViewController: CartListTableViewController?
-    var toolbarController: CartListWindowToolbarController?
     var windowObserver: CartListWindowObserver?
     
     // MARK: Handle Initialization
@@ -51,9 +54,6 @@ final class CartListWindowController: NSWindowController {
         
         // configure the window observer
         self.windowObserver = CartListWindowObserver(windowToObserve: self.window)
-        
-        // configure the toolbar
-        self.toolbarController = CartListWindowToolbarController(withinWindowController: self, dataSource: dataSource)
         
         // configure the tableview controller
         self.tableViewController = CartListTableViewController(controller: self, model: dataSource, windowObserver: self.windowObserver!)
