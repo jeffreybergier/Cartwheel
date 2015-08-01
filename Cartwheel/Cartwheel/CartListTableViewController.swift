@@ -57,6 +57,7 @@ final class CartListTableViewController: NSViewController, CartfileDataSourceCon
     private let openPanelDelegate = CartListOpenPanelDelegate()
     private let searchFieldDelegate = CartListSearchFieldDelegate()
     private let toolbarController = CartListWindowToolbarController()
+    private let alertController = CartListAlertController()
     
     // MARK: Init
     
@@ -72,7 +73,7 @@ final class CartListTableViewController: NSViewController, CartfileDataSourceCon
         self.tableViewDelegate.controller = self
         self.toolbarController.controller = self
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -110,21 +111,22 @@ final class CartListTableViewController: NSViewController, CartfileDataSourceCon
         // reload the data table
         self.contentView.tableView.reloadData()
     }
-    
-    // MARK: Data Source Observing
-    
-    func contentModelDidChange() {
+}
+
+// MARK: Handle Content and State Changing
+
+extension CartListTableViewController {
+    // Data Source Observing
+    private func contentModelDidChange() {
         self.contentView.tableView.reloadData()
     }
     
-    // MARK: Handle window resizing
-    
+    // Handle window resizing
     private func windowDidChangeFrame(newFrame: NSRect?) {
         self.contentView.noteHeightOfVisibleRowsChanged()
     }
     
-    // MARK: Handle Table View Selection Changing
-    
+    // Handle Table Row Selection
     private func tableViewSelectionChangedToIndexes(indexes: [Range<Int>]) {
         if indexes.isEmpty == true {
             self.contentView.deleteButton.enabled = false
@@ -132,32 +134,16 @@ final class CartListTableViewController: NSViewController, CartfileDataSourceCon
             self.contentView.deleteButton.enabled = true
         }
     }
-    
-    // MARK: Handle Add / Delete Button Presses
-    
+}
+
+// MARK: Handle Add / Delete Buttons
+
+extension CartListTableViewController {
     @objc private func didClickDeleteButton(sender: NSButton) {
         // don't do anything if no rows are selected
-        if self.contentView.tableView.selectedRowIndexes.ranges.isEmpty == false {
-            enum DeleteCartfilesAlertResponse: Int {
-                case RemoveButton = 1000
-                case CancelButton = 1001
-            }
-            // TODO: Convert this to NSPopover because its nicer :)
-            let alert = NSAlert()
-            alert.addButtonWithTitle("Remove")
-            alert.addButtonWithTitle("Cancel")
-            alert.messageText = NSLocalizedString("Remove Selected Cartfiles?", comment: "Description for alert that is shown when the user tries to delete Cartfiles from the main list")
-            alert.alertStyle = NSAlertStyle.WarningAlertStyle
-            alert.beginSheetModalForWindow(self.window!) { untypedResponse -> Void in
-                if let response = DeleteCartfilesAlertResponse(rawValue: Int(untypedResponse.value)) {
-                    switch response {
-                    case .RemoveButton:
-                        self.contentModel.removeCartfilesAtIndexes(self.contentView.tableView.selectedRowIndexes.ranges)
-                    case .CancelButton:
-                        self.log.info("User chose delete button but then cancelled the operation.")
-                    }
-                }
-            }
+        let selectedIndexes = self.contentView.tableView.selectedRowIndexes.ranges
+        if selectedIndexes.isEmpty == false {
+            self.alertController.presentAlertConfirmDeleteIndexes(selectedIndexes, fromContentModel: self.contentModel, withinWindow: self.window!)
         }
     }
     
