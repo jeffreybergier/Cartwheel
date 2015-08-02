@@ -45,7 +45,7 @@ class CartListOpenPanelDelegate: NSObject, NSOpenSavePanelDelegate {
     // NOTE: This silently fails when using Sandboxing. Apple replaces the savepanel like "magic"
     //
     
-    var savePanel: NSOpenPanel?
+    weak var savePanel: NSOpenPanel?
     
     private var savePanelShouldOpenURL: NSURL?
     private var savePanelDidChangeToDirectoryURL: NSURL?
