@@ -42,3 +42,14 @@ extension NSURL: Printable {
         return self.path!
     }
 }
+
+extension NSOpenPanel.Response: Printable {
+    var description: String {
+        switch self {
+        case CancelButton:
+            return "NSOpenPanel.Response.CancelButton"
+        case SuccessButton:
+            return "NSOpenPanel.Response.SuccessButton"
+        }
+    }
+}

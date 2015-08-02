@@ -271,6 +271,59 @@ extension NSButton {
     }
 }
 
+extension NSOpenPanel {
+    
+    enum Style {
+        case AddCartfiles
+        case CreatBlankCartfile(delegate: NSOpenSavePanelDelegate)
+    }
+    
+    enum Response: Int {
+        case CancelButton = 0, SuccessButton
+    }
+    
+    convenience init(style: Style) {
+        self.init()
+        switch style {
+        case .AddCartfiles:
+            self.canChooseFiles = true
+            self.canChooseDirectories = true
+            self.allowsMultipleSelection = true
+            self.title = NSLocalizedString("Add Cartfiles", comment: "Title of add cartfiles open panel")
+        case .CreatBlankCartfile(let delegate):
+            self.delegate = delegate
+            self.canChooseDirectories = true
+            self.canCreateDirectories = true
+            self.canChooseFiles = false
+            self.allowsMultipleSelection = false
+            self.title = NSLocalizedString("Create New Cartfile", comment: "Title of the create new cartfile save dialog.")
+            self.prompt = CartListOpenPanelDelegate.savePanelOriginalButtonTitle
+        }
+    }
+}
+
+extension NSAlert {
+    enum Style {
+        case CartfileRemoveConfirm
+        
+        enum CartfileRemoveConfirmResponse: Int {
+            case RemoveButton = 1000
+            case CancelButton = 1001
+        }
+    }
+    
+    convenience init(style: Style) {
+        self.init()
+        switch style {
+        case .CartfileRemoveConfirm:
+            self.addButtonWithTitle("Remove")
+            self.addButtonWithTitle("Cancel")
+            self.messageText = NSLocalizedString("Remove Selected Cartfiles?", comment: "Description for alert that is shown when the user tries to delete Cartfiles from the main list")
+            self.alertStyle = NSAlertStyle.WarningAlertStyle
+        }
+    }
+}
+
 extension NSTextField {
     class func nonEditableTextField() -> NSTextField {
         let textField = NSTextField()
@@ -278,23 +331,6 @@ extension NSTextField {
         (textField.cell() as? NSTextFieldCell)?.backgroundColor = NSColor.clearColor()
         textField.editable = false
         return textField
-    }
-}
-
-// MARK: Custom Enums
-
-enum NSFileHandlingPanelResponse: Int {
-    case CancelButton = 0, SuccessButton
-}
-
-extension NSFileHandlingPanelResponse: Printable {
-    var description: String {
-        switch self {
-        case CancelButton:
-            return "NSFileHandlingPanelResponse.CancelButton"
-        case SuccessButton:
-            return "NSFileHandlingPanelResponse.SuccessButton"
-        }
     }
 }
 

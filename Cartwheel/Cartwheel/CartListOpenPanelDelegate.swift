@@ -26,67 +26,10 @@
 //
 
 import Cocoa
-import XCGLogger
 
 class CartListOpenPanelDelegate: NSObject, NSOpenSavePanelDelegate {
     
-    private let log = XCGLogger.defaultInstance()
-    
-    func presentAddCartfilesFileChooserWithinWindow(window: NSWindow, modifyContentModel contentModel: CWCartfileDataSource) {
-        let fileChooser = NSOpenPanel()
-        fileChooser.canChooseFiles = true
-        fileChooser.canChooseDirectories = true
-        fileChooser.allowsMultipleSelection = true
-        fileChooser.title = NSLocalizedString("Add Cartfiles", comment: "Title of add cartfiles open panel")
-        
-        fileChooser.beginSheetModalForWindow(window) { untypedResult in
-            let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
-            switch result {
-            case .SuccessButton:
-                if let cartfiles = CWCartfile.cartfilesFromURL(fileChooser.URLs) {
-                    contentModel.appendCartfiles(cartfiles)
-                }
-            case .CancelButton:
-                self.log.info("File Chooser was cancelled by user.")
-            }
-        }
-    }
-    
-    func presentCreateBlankCartfileFileChooserWithinWindow(window: NSWindow, modifyContentModel contentModel: CWCartfileDataSource) {
-        let savePanel = NSOpenPanel()
-        savePanel.delegate = self
-        savePanel.canChooseDirectories = true
-        savePanel.canCreateDirectories = true
-        savePanel.canChooseFiles = false
-        savePanel.allowsMultipleSelection = false
-        savePanel.title = NSLocalizedString("Create New Cartfile", comment: "Title of the create new cartfile save dialog.")
-        savePanel.prompt = self.savePanelOriginalButtonTitle
-        savePanel.beginSheetModalForWindow(window, completionHandler: { untypedResult in
-            let result = NSFileHandlingPanelResponse(rawValue: untypedResult)!
-            switch result {
-            case .SuccessButton:
-                if let selectedURL = savePanel.URL {
-                    let cartfileWriteResult = contentModel.writeBlankCartfileToDirectoryPath(selectedURL)
-                    if let error = cartfileWriteResult.error {
-                        let alert = NSAlert(error: error)
-                        savePanel.orderOut(nil) // TODO: try to remove this later. Its not supposed to be needed.
-                        alert.beginSheetModalForWindow(window, completionHandler: nil)
-                        self.log.error("\(error)")
-                    } else {
-                        let cartfile = CWCartfile(url: cartfileWriteResult.finalURL)
-                        contentModel.appendCartfile(cartfile)
-                        NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([cartfile.url])
-                    }
-                }
-            case .CancelButton:
-                self.log.info("CartListViewController: File Saver was cancelled by user.")
-            }
-        })
-        self.savePanel = savePanel // this allows us to hack the save panel with the hacky code under NSOpenSavePanelDelegate.
-    }
-
-    
-    // MARK: NSOpenSavePanelDelegate
+    static let savePanelOriginalButtonTitle = NSLocalizedString("Create Cartfile", comment: "In the save sheet for creating a new cartifle, this button is the create new button")
     
     //
     // Here begins a __sort of__ hack
@@ -102,10 +45,10 @@ class CartListOpenPanelDelegate: NSObject, NSOpenSavePanelDelegate {
     // NOTE: This silently fails when using Sandboxing. Apple replaces the savepanel like "magic"
     //
     
+    var savePanel: NSOpenPanel?
+    
     private var savePanelShouldOpenURL: NSURL?
     private var savePanelDidChangeToDirectoryURL: NSURL?
-    private weak var savePanel: NSOpenPanel?
-    private let savePanelOriginalButtonTitle = NSLocalizedString("Create Cartfile", comment: "In the save sheet for creating a new cartifle, this button is the create new button")
     
     func panel(sender: AnyObject?, didChangeToDirectoryURL url: NSURL?) {
         if self.savePanel === sender {
@@ -113,14 +56,14 @@ class CartListOpenPanelDelegate: NSObject, NSOpenSavePanelDelegate {
         }
     }
     
-    func panelSelectionDidChange(sender: AnyObject?) {
+    @objc func panelSelectionDidChange(sender: AnyObject?) {
         if let sender = sender as? NSOpenPanel,
             let selectedURL = sender.URL
             where sender === self.savePanel {
                 if selectedURL == self.savePanelDidChangeToDirectoryURL {
                     // change the button back to normal
                     sender.defaultButtonCell()?.target = sender
-                    sender.defaultButtonCell()?.title = self.savePanelOriginalButtonTitle
+                    sender.defaultButtonCell()?.title = CartListOpenPanelDelegate.savePanelOriginalButtonTitle
                 } else {
                     // Hijack the button
                     self.savePanelShouldOpenURL = selectedURL

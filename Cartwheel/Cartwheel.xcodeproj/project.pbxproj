@@ -104,8 +104,6 @@
 		73B992DF1B6D25A70023956C /* CartListOpenPanelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B992DD1B6D25A70023956C /* CartListOpenPanelDelegate.swift */; };
 		73B992E11B6D3B6F0023956C /* CartListSearchFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B992E01B6D3B6F0023956C /* CartListSearchFieldDelegate.swift */; };
 		73B992E21B6D3B6F0023956C /* CartListSearchFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B992E01B6D3B6F0023956C /* CartListSearchFieldDelegate.swift */; };
-		73B992E41B6D52D70023956C /* CartListAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B992E31B6D52D70023956C /* CartListAlertController.swift */; };
-		73B992E51B6D52D70023956C /* CartListAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B992E31B6D52D70023956C /* CartListAlertController.swift */; };
 		73C2F38F1AF04F97001B36DB /* CartListTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C2F38E1AF04F97001B36DB /* CartListTableCellView.swift */; };
 		73C2F3911AF05147001B36DB /* CartListTableCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C2F3901AF05147001B36DB /* CartListTableCellViewController.swift */; };
 		73C2F3961AF06D78001B36DB /* CartListWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C2F3941AF06D78001B36DB /* CartListWindowController.swift */; };
@@ -206,7 +204,6 @@
 		73B992DA1B6C7B960023956C /* CartListWindowObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListWindowObserver.swift; sourceTree = "<group>"; };
 		73B992DD1B6D25A70023956C /* CartListOpenPanelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListOpenPanelDelegate.swift; sourceTree = "<group>"; };
 		73B992E01B6D3B6F0023956C /* CartListSearchFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListSearchFieldDelegate.swift; sourceTree = "<group>"; };
-		73B992E31B6D52D70023956C /* CartListAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListAlertController.swift; sourceTree = "<group>"; };
 		73C2F38E1AF04F97001B36DB /* CartListTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListTableCellView.swift; path = CartListTableView/CartListTableCellView.swift; sourceTree = "<group>"; };
 		73C2F3901AF05147001B36DB /* CartListTableCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListTableCellViewController.swift; path = CartListTableView/CartListTableCellViewController.swift; sourceTree = "<group>"; };
 		73C2F3941AF06D78001B36DB /* CartListWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListWindowController.swift; path = CartList/CartListWindowController.swift; sourceTree = "<group>"; };
@@ -310,7 +307,6 @@
 				73B992D41B6C6EFD0023956C /* CartListTableViewDataSource.swift */,
 				73B992D71B6C75430023956C /* CartListTableViewDelegate.swift */,
 				73B992DD1B6D25A70023956C /* CartListOpenPanelDelegate.swift */,
-				73B992E31B6D52D70023956C /* CartListAlertController.swift */,
 				73B992E01B6D3B6F0023956C /* CartListSearchFieldDelegate.swift */,
 				73A69AD71B5B0F7500925303 /* CWIndexSetPasteboardContainer.h */,
 				73A69AD81B5B0F7500925303 /* CWIndexSetPasteboardContainer.m */,
@@ -570,7 +566,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73B992E51B6D52D70023956C /* CartListAlertController.swift in Sources */,
 				73B992D61B6C6EFD0023956C /* CartListTableViewDataSource.swift in Sources */,
 				73814D961B4CB40400CEA6F1 /* CartListTableRowView.swift in Sources */,
 				73B992D31B6C617D0023956C /* CWEventPassingButton.swift in Sources */,
@@ -598,7 +593,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73B992E41B6D52D70023956C /* CartListAlertController.swift in Sources */,
 				73B992D51B6C6EFD0023956C /* CartListTableViewDataSource.swift in Sources */,
 				732909AC1B437F7300A75914 /* CartListTableRowView.swift in Sources */,
 				73B992D21B6C617D0023956C /* CWEventPassingButton.swift in Sources */,

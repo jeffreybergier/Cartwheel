@@ -54,10 +54,9 @@ final class CartListTableViewController: NSViewController, CartfileDataSourceCon
     // Child Controllers
     private let tableViewDataSource = CartListTableViewDataSource()
     private let tableViewDelegate = CartListTableViewDelegate()
-    private let openPanelDelegate = CartListOpenPanelDelegate()
     private let searchFieldDelegate = CartListSearchFieldDelegate()
     private let toolbarController = CartListWindowToolbarController()
-    private let alertController = CartListAlertController()
+    //private let savePanelDelegate = CartListOpenPanelDelegate() // a strong reference to this object is needed or else its released when the panel is trying to call on it.
     
     // MARK: Init
     
@@ -143,7 +142,17 @@ extension CartListTableViewController {
         // don't do anything if no rows are selected
         let selectedIndexes = self.contentView.tableView.selectedRowIndexes.ranges
         if selectedIndexes.isEmpty == false {
-            self.alertController.presentAlertConfirmDeleteIndexes(selectedIndexes, fromContentModel: self.contentModel, withinWindow: self.window!)
+            let alert = NSAlert(style: .CartfileRemoveConfirm)
+            alert.beginSheetModalForWindow(self.window!) { untypedResponse -> Void in
+                if let response = NSAlert.Style.CartfileRemoveConfirmResponse(rawValue: Int(untypedResponse.value)) {
+                    switch response {
+                    case .RemoveButton:
+                        self.contentModel.removeCartfilesAtIndexes(self.contentView.tableView.selectedRowIndexes.ranges)
+                    case .CancelButton:
+                        self.log.info("User chose delete button but then cancelled the operation.")
+                    }
+                }
+            }
         }
     }
     
@@ -160,10 +169,46 @@ extension CartListTableViewController {
 
 extension CartListTableViewController: NSMenuDelegate {
     @objc private func didChooseAddCartfilesMenuItem(sender: NSMenuItem) {
-        self.openPanelDelegate.presentAddCartfilesFileChooserWithinWindow(self.window!, modifyContentModel: self.contentModel)
+        let savePanel = NSOpenPanel(style: .AddCartfiles)
+        savePanel.beginSheetModalForWindow(self.window!) { untypedResult in
+            let result = NSOpenPanel.Response(rawValue: untypedResult)!
+            switch result {
+            case .SuccessButton:
+                if let cartfiles = CWCartfile.cartfilesFromURL(savePanel.URLs) {
+                    self.contentModel.appendCartfiles(cartfiles)
+                }
+            case .CancelButton:
+                self.log.info("File Chooser was cancelled by user.")
+            }
+        }
     }
     @objc private func didChooseCreateBlankCartfileMenuItem(sender: NSMenuItem) {
-        self.openPanelDelegate.presentCreateBlankCartfileFileChooserWithinWindow(self.window!, modifyContentModel: self.contentModel)
+        let delegate = CartListOpenPanelDelegate()
+        let savePanel = NSOpenPanel(style: .CreatBlankCartfile(delegate: delegate))
+        delegate.savePanel = savePanel
+        savePanel.beginSheetModalForWindow(self.window!, completionHandler: { untypedResult in
+            if let result = NSOpenPanel.Response(rawValue: untypedResult) {
+                switch result {
+                case .SuccessButton:
+                    if let selectedURL = savePanel.URL {
+                        let cartfileWriteResult = self.contentModel.writeBlankCartfileToDirectoryPath(selectedURL)
+                        if let error = cartfileWriteResult.error {
+                            let alert = NSAlert(error: error)
+                            savePanel.orderOut(nil) // TODO: try to remove this later. Its not supposed to be needed.
+                            alert.beginSheetModalForWindow(self.window!, completionHandler: nil)
+                            self.log.error("\(error)")
+                        } else {
+                            let cartfile = CWCartfile(url: cartfileWriteResult.finalURL)
+                            self.contentModel.appendCartfile(cartfile)
+                            NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([cartfile.url])
+                        }
+                    }
+                case .CancelButton:
+                    self.log.info("CartListViewController: File Saver was cancelled by user.")
+                }
+            }
+            delegate.savePanel = nil // this captures the delegate and retains it until the end of the of completion handler
+        })
     }
 }
 
