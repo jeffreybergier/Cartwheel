@@ -293,14 +293,14 @@
 		73B458A51B24B42700A417AF /* Main Window */ = {
 			isa = PBXGroup;
 			children = (
-				73B458A61B24B46300A417AF /* Window Controller */,
+				73B458A61B24B46300A417AF /* Controllers */,
 				73B458A81B24B49200A417AF /* Views */,
 				73B458A71B24B48600A417AF /* Unused but Needed */,
 			);
 			name = "Main Window";
 			sourceTree = "<group>";
 		};
-		73B458A61B24B46300A417AF /* Window Controller */ = {
+		73B458A61B24B46300A417AF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				73C2F3941AF06D78001B36DB /* CartListWindowController.swift */,
@@ -315,7 +315,7 @@
 				73A69AD71B5B0F7500925303 /* CWIndexSetPasteboardContainer.h */,
 				73A69AD81B5B0F7500925303 /* CWIndexSetPasteboardContainer.m */,
 			);
-			name = "Window Controller";
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		73B458A71B24B48600A417AF /* Unused but Needed */ = {
@@ -336,21 +336,21 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
-		73B458A91B24B4EC00A417AF /* Cell Controller */ = {
+		73B458A91B24B4EC00A417AF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				73C2F3901AF05147001B36DB /* CartListTableCellViewController.swift */,
 				732909AB1B437F7300A75914 /* CartListTableRowView.swift */,
 			);
-			name = "Cell Controller";
+			name = Controllers;
 			sourceTree = "<group>";
 		};
-		73B458AA1B24B50F00A417AF /* Cell Views */ = {
+		73B458AA1B24B50F00A417AF /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				73C2F38E1AF04F97001B36DB /* CartListTableCellView.swift */,
 			);
-			name = "Cell Views";
+			name = Views;
 			sourceTree = "<group>";
 		};
 		73B4DD031AEEE527007342C7 = {
@@ -404,8 +404,8 @@
 		73C2F38D1AF04F32001B36DB /* TableView Cells/Rows */ = {
 			isa = PBXGroup;
 			children = (
-				73B458A91B24B4EC00A417AF /* Cell Controller */,
-				73B458AA1B24B50F00A417AF /* Cell Views */,
+				73B458A91B24B4EC00A417AF /* Controllers */,
+				73B458AA1B24B50F00A417AF /* Views */,
 			);
 			name = "TableView Cells/Rows";
 			sourceTree = "<group>";

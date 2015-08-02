@@ -89,7 +89,6 @@ final class CartListTableRowView: NSTableRowView {
         return NSTrackingArea(rect: NSRect.zeroRect, options: options, owner: self, userInfo: nil)
     }()
 
-    // TODO: Rows often appear highlighted when they are being recycled
     override func drawBackgroundInRect(dirtyRect: NSRect) {
         if self.mouseInView == true && self.selected == false {
             // drawHighlightInRect
