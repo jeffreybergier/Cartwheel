@@ -32,21 +32,39 @@ import XCGLogger
 
 class CartListSearchFieldDelegate: CartListChildController, NSTextFieldDelegate {
     
+    private var filteredCartfiles = [CWCartfile]() {
+        didSet {
+            println("Filtered Cartfiles: \(self.filteredCartfiles)")
+        }
+    }
     private let log = XCGLogger.defaultInstance()
     
     override func controlTextDidChange(notification: NSNotification) {
-        if let userInfoDictionary = notification.userInfo,
+        if let unfilteredCartfiles = self.controller?.contentModel.cartfiles,
+            let userInfoDictionary = notification.userInfo,
             let filterTextField = userInfoDictionary["NSFieldEditor"] as? NSTextView,
             let stringValue = filterTextField.string {
-                log.info("Search: \(stringValue)")
+                let filteredCartfiles = unfilteredCartfiles.filter() { cartfile -> Bool in
+                    let searchStringComponents = stringValue.lowercaseString.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                    var searchString = ""
+                    for stringComponent in searchStringComponents {
+                        searchString += stringComponent
+                    }
+                    let cartfileNameComponents = cartfile.name.lowercaseString.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                    var cartfileString = ""
+                    for cartfileNameComponent in cartfileNameComponents {
+                        cartfileString += cartfileNameComponent
+                    }
+                    if cartfileString.rangeOfString(searchString) == .None {
+                        return false
+                    } else {
+                        return true
+                    }
+                }
+                self.filteredCartfiles = filteredCartfiles
         }
     }
     
     override func controlTextDidEndEditing(notification: NSNotification) {
-        if let userInfoDictionary = notification.userInfo,
-            let filterTextField = userInfoDictionary["NSFieldEditor"] as? NSTextView,
-            let stringValue = filterTextField.string {
-                log.info("Search: \(stringValue)")
-        }
     }
 }
