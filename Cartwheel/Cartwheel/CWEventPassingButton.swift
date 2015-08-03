@@ -28,7 +28,7 @@
 import Cocoa
 import XCGLogger
 
-protocol EventPassingButtonDelegate: NSObjectProtocol {
+protocol EventPassingButtonDelegate: class {
     func didClickDownOnEventPassingButton(sender: CWEventPassingButton, theEvent: NSEvent)
 }
 

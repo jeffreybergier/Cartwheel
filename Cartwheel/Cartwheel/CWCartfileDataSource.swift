@@ -30,7 +30,7 @@ import ObserverSet
 import XCGLogger
 import Async
 
-protocol CartfileDataSourceController: NSObjectProtocol {
+protocol CartfileDataSourceController: class {
     var contentModel: CWCartfileDataSource { get }
 }
 
