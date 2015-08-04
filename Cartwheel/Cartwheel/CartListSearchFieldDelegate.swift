@@ -30,7 +30,11 @@ import XCGLogger
 
 // MARK: NSTextFieldDelegate
 
-class CartListSearchFieldDelegate: CartListChildController, NSTextFieldDelegate {
+protocol SearchInProgressControllable: class {
+    var searchInProgress: Bool { get set }
+}
+
+class CartListSearchFieldDelegate: CartListChildController, NSTextFieldDelegate, SearchInProgressControllable {
     
     var searchInProgress = false
 

@@ -37,17 +37,25 @@ class CartListTableViewDataSource: CartListChildController, NSTableViewDataSourc
         return self.controller?.cartfiles?.count ?? 0
     }
     
+    // MARK: SearchFieldDelegate
+    // we need to reference the search field delegate so we can reject drags when the table is being searched
+    
+    weak var searchFieldDelegate: SearchInProgressControllable?
+    
     // MARK: Handle Dragging
     
     let PUBLIC_TEXT_TYPES = [NSFilenamesPboardType]
     
     func tableView(tableView: NSTableView, writeRowsWithIndexes rowIndexes: NSIndexSet, toPasteboard pboard: NSPasteboard) -> Bool {
+        /* #guard-search */if self.searchFieldDelegate?.searchInProgress == true { return false }
+
         pboard.declareTypes(PUBLIC_TEXT_TYPES, owner: self)
         pboard.writeObjects([CWIndexSetPasteboardContainer(indexSet: rowIndexes)])
         return true
     }
     
     func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableViewDropOperation) -> Bool {
+        /* #guard-search */if self.searchFieldDelegate?.searchInProgress == true { return false }
         
         tableView.deselectAll(self)
         self.windowObserver?.tableViewRowIsDraggingObserver.notify(false)
@@ -70,6 +78,7 @@ class CartListTableViewDataSource: CartListChildController, NSTableViewDataSourc
     }
     
     func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation {
+        /* #guard-search */if self.searchFieldDelegate?.searchInProgress == true { return NSDragOperation.None }
         
         tableView.deselectAll(self)
         self.windowObserver?.tableViewRowIsDraggingObserver.notify(true)

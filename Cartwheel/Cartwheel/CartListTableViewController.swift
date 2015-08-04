@@ -78,6 +78,7 @@ final class CartListTableViewController: NSViewController, CartfileDataSourceCon
         self.searchFieldDelegate.windowObserver = self.windowObserver
         self.tableViewDataSource.windowObserver = self.windowObserver
         self.toolbarController.searchFieldDelegate = self.searchFieldDelegate
+        self.tableViewDataSource.searchFieldDelegate = self.searchFieldDelegate
         self.searchFieldDelegate.controller = self
         self.tableViewDataSource.controller = self
         self.tableViewDelegate.controller = self
