@@ -32,39 +32,40 @@ import XCGLogger
 
 class CartListSearchFieldDelegate: CartListChildController, NSTextFieldDelegate {
     
-    private var filteredCartfiles = [CWCartfile]() {
-        didSet {
-            println("Filtered Cartfiles: \(self.filteredCartfiles)")
-        }
-    }
+    var searchInProgress = false
+
     private let log = XCGLogger.defaultInstance()
     
     override func controlTextDidChange(notification: NSNotification) {
-        if let unfilteredCartfiles = self.controller?.contentModel.cartfiles,
+        self.searchInProgress = true
+        
+        if let unfilteredCartfiles = self.controller?.dataSource.cartfiles,
             let userInfoDictionary = notification.userInfo,
             let filterTextField = userInfoDictionary["NSFieldEditor"] as? NSTextView,
             let stringValue = filterTextField.string {
-                let filteredCartfiles = unfilteredCartfiles.filter() { cartfile -> Bool in
-                    let searchStringComponents = stringValue.lowercaseString.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                    var searchString = ""
-                    for stringComponent in searchStringComponents {
-                        searchString += stringComponent
+                if stringValue == "" {
+                    self.searchInProgress = false
+                    self.windowObserver?.searchDelegateObserver.notify(.None)
+                } else {
+                    let filteredCartfiles = unfilteredCartfiles.filter() { cartfile -> Bool in
+                        let searchStringComponents = stringValue.lowercaseString.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                        var searchString = ""
+                        for stringComponent in searchStringComponents {
+                            searchString += stringComponent
+                        }
+                        let cartfileNameComponents = cartfile.name.lowercaseString.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                        var cartfileString = ""
+                        for cartfileNameComponent in cartfileNameComponents {
+                            cartfileString += cartfileNameComponent
+                        }
+                        if cartfileString.rangeOfString(searchString) == .None {
+                            return false
+                        } else {
+                            return true
+                        }
                     }
-                    let cartfileNameComponents = cartfile.name.lowercaseString.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                    var cartfileString = ""
-                    for cartfileNameComponent in cartfileNameComponents {
-                        cartfileString += cartfileNameComponent
-                    }
-                    if cartfileString.rangeOfString(searchString) == .None {
-                        return false
-                    } else {
-                        return true
-                    }
+                    self.windowObserver?.searchDelegateObserver.notify(filteredCartfiles)
                 }
-                self.filteredCartfiles = filteredCartfiles
         }
-    }
-    
-    override func controlTextDidEndEditing(notification: NSNotification) {
     }
 }

@@ -34,7 +34,7 @@ class CartListTableViewDataSource: CartListChildController, NSTableViewDataSourc
     
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         // return the actual number of rows
-        return self.controller?.contentModel.cartfiles.count ?? 0
+        return self.controller?.cartfiles?.count ?? 0
     }
     
     // MARK: Handle Dragging
@@ -56,13 +56,13 @@ class CartListTableViewDataSource: CartListChildController, NSTableViewDataSourc
         switch activity {
         case .DragFile(let url):
             if let draggedCartfiles = CWCartfile.cartfilesFromURL(url) {
-                self.controller?.contentModel.insertCartfiles(draggedCartfiles, atIndex: row)
+                self.controller?.dataSource.insertCartfiles(draggedCartfiles, atIndex: row)
                 return true
             } else {
                 return false
             }
         case .MoveRow(let indexes):
-            self.controller?.contentModel.moveCartfilesAtIndexes(indexes, toIndex: row)
+            self.controller?.dataSource.moveCartfilesAtIndexes(indexes, toIndex: row)
             return true
         case .Unknown:
             return false

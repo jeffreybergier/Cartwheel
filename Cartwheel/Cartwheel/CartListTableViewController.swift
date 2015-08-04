@@ -30,11 +30,20 @@ import PureLayout_Mac
 import XCGLogger
 import ObserverSet
 
+protocol CartfileModelControllable: class {
+    var cartfiles: [CWCartfile]? { get set }
+}
+
 @objc(CartListTableViewController)
-final class CartListTableViewController: NSViewController, CartfileDataSourceController {
+final class CartListTableViewController: NSViewController, CartfileDataSourceControllable, CartfileModelControllable {
     
     // Model Object
-    let contentModel: CWCartfileDataSource
+    let dataSource: CWCartfileDataSource
+    var cartfiles: [CWCartfile]? {
+        didSet {
+            self.contentView.tableView.reloadData()
+        }
+    }
     
     // View Object
     private let contentView = CartListView()
@@ -56,16 +65,17 @@ final class CartListTableViewController: NSViewController, CartfileDataSourceCon
     private let tableViewDelegate = CartListTableViewDelegate()
     private let searchFieldDelegate = CartListSearchFieldDelegate()
     private let toolbarController = CartListWindowToolbarController()
-    //private let savePanelDelegate = CartListOpenPanelDelegate() // a strong reference to this object is needed or else its released when the panel is trying to call on it.
     
     // MARK: Init
     
     init!(controller: NSWindowController, model: CWCartfileDataSource, windowObserver: CartListWindowObserver) {
-        self.contentModel = model
+        self.dataSource = model
+        self.cartfiles = model.cartfiles // set the cartfiles on init. After init, the cartfiles will update themselves via SwiftObserver
         self.parentWindowController = controller
         self.windowObserver = windowObserver
         super.init(nibName: .None, bundle: .None)
         self.tableViewDelegate.windowObserver = self.windowObserver
+        self.searchFieldDelegate.windowObserver = self.windowObserver
         self.tableViewDataSource.windowObserver = self.windowObserver
         self.toolbarController.searchFieldDelegate = self.searchFieldDelegate
         self.searchFieldDelegate.controller = self
@@ -91,7 +101,10 @@ final class CartListTableViewController: NSViewController, CartfileDataSourceCon
         self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
         
         // register for data source changes
-        self.contentModel.cartfileObserver.add(self, self.dynamicType.contentModelDidChange)
+        self.dataSource.cartfileObserver.add(self, self.dynamicType.contentModelDidChange)
+        
+        // register for search delegate observing
+        self.searchFieldDelegate.windowObserver!.searchDelegateObserver.add(self, self.dynamicType.searchResultedInFilteredCartfiles)
         
         // configure the tableview for dragging
         self.contentView.tableView.registerForDraggedTypes(self.tableViewDataSource.PUBLIC_TEXT_TYPES)
@@ -118,7 +131,18 @@ final class CartListTableViewController: NSViewController, CartfileDataSourceCon
 extension CartListTableViewController {
     // Data Source Observing
     private func contentModelDidChange() {
-        self.contentView.tableView.reloadData()
+        if self.searchFieldDelegate.searchInProgress == false {
+            self.cartfiles = self.dataSource.cartfiles
+        }
+    }
+    
+    // Search Delegate Observing
+    private func searchResultedInFilteredCartfiles(filteredCartfiles: [CWCartfile]?) {
+        if let filteredCartfiles = filteredCartfiles {
+            self.cartfiles = filteredCartfiles
+        } else {
+            self.contentModelDidChange()
+        }
     }
     
     // Handle window resizing
@@ -148,7 +172,7 @@ extension CartListTableViewController {
                 if let response = NSAlert.Style.CartfileRemoveConfirmResponse(rawValue: Int(untypedResponse.value)) {
                     switch response {
                     case .RemoveButton:
-                        self.contentModel.removeCartfilesAtIndexes(self.contentView.tableView.selectedRowIndexes.ranges)
+                        self.dataSource.removeCartfilesAtIndexes(self.contentView.tableView.selectedRowIndexes.ranges)
                     case .CancelButton:
                         self.log.info("User chose delete button but then cancelled the operation.")
                     }
@@ -176,7 +200,7 @@ extension CartListTableViewController: NSMenuDelegate {
             switch result {
             case .SuccessButton:
                 if let cartfiles = CWCartfile.cartfilesFromURL(savePanel.URLs) {
-                    self.contentModel.appendCartfiles(cartfiles)
+                    self.dataSource.appendCartfiles(cartfiles)
                 }
             case .CancelButton:
                 self.log.info("File Chooser was cancelled by user.")
@@ -192,7 +216,7 @@ extension CartListTableViewController: NSMenuDelegate {
                 switch result {
                 case .SuccessButton:
                     if let selectedURL = savePanel.URL {
-                        let cartfileWriteResult = self.contentModel.writeBlankCartfileToDirectoryPath(selectedURL)
+                        let cartfileWriteResult = self.dataSource.writeBlankCartfileToDirectoryPath(selectedURL)
                         if let error = cartfileWriteResult.error {
                             let alert = NSAlert(error: error)
                             savePanel.orderOut(nil) // TODO: try to remove this later. Its not supposed to be needed.
@@ -200,7 +224,7 @@ extension CartListTableViewController: NSMenuDelegate {
                             self.log.error("\(error)")
                         } else {
                             let cartfile = CWCartfile(url: cartfileWriteResult.finalURL)
-                            self.contentModel.appendCartfile(cartfile)
+                            self.dataSource.appendCartfile(cartfile)
                             NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([cartfile.url])
                         }
                     }

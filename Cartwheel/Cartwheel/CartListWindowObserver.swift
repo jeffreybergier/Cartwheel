@@ -28,33 +28,41 @@
 import Cocoa
 import ObserverSet
 
-protocol WindowMainStateObserver {
+protocol WindowMainStateObservable {
     var windowMainStateObserver: ObserverSet<Bool> { get }
+    @objc func windowDidBecomeMain(notification: NSNotification)
+    @objc func windowDidResignMain(notification: NSNotification)
 }
 
-protocol TableViewRowSelectedStateObserver {
+protocol TableViewRowSelectedStateObservable {
     var tableViewRowSelectedStateObserver: ObserverSet<[Range<Int>]> { get }
 }
 
-protocol TableViewRowIsDraggingObserver {
+protocol TableViewRowIsDraggingObservable {
     var tableViewRowIsDraggingObserver: ObserverSet<Bool> { get }
 }
 
-protocol WindowDidChangeFrameObserver {
+protocol WindowDidChangeFrameObservable {
     var windowDidChangeFrameObserver: ObserverSet<NSRect?> { get }
+    @objc func windowDidChangeFrame(notification: NSNotification)
 }
 
-protocol WindowDidCloseObserver {
+protocol WindowDidCloseObservable {
     var windowDidCloseObserver: ObserverSet<Void> { get }
+    @objc func windowDidClose(notification: NSNotification)
+}
+
+protocol SearchDelegateObservable {
+    var searchDelegateObserver: ObserverSet<[CWCartfile]?> { get }
 }
 
 class CartListWindowObserver:
-    WindowMainStateObserver,
-    TableViewRowSelectedStateObserver,
-    TableViewRowIsDraggingObserver,
-    WindowDidChangeFrameObserver,
-    WindowDidCloseObserver
-    
+    WindowMainStateObservable,
+    TableViewRowSelectedStateObservable,
+    TableViewRowIsDraggingObservable,
+    WindowDidChangeFrameObservable,
+    WindowDidCloseObservable,
+    SearchDelegateObservable
 {
     
     init(windowToObserve: NSWindow?) {
@@ -68,41 +76,45 @@ class CartListWindowObserver:
         }
     }
     
-    // MARK: WindowMainObserver Protocol
+    // MARK: WindowMainObservable Protocol
     
     var windowMainStateObserver = ObserverSet<Bool>()
     
-    @objc private func windowDidBecomeMain(notification: NSNotification) {
+    @objc func windowDidBecomeMain(notification: NSNotification) {
         self.windowMainStateObserver.notify(true)
     }
-    @objc private func windowDidResignMain(notification: NSNotification) {
+    @objc func windowDidResignMain(notification: NSNotification) {
         self.windowMainStateObserver.notify(false)
     }
     
-    // MARK: TableViewRowSelectedStateObserver Protocol
+    // MARK: TableViewRowSelectedStateObservable Protocol
     
     let tableViewRowSelectedStateObserver = ObserverSet<[Range<Int>]>()
     
-    // MARK: TableViewRowIsDraggingObserver Protocol
+    // MARK: TableViewRowIsDraggingObservable Protocol
     
     let tableViewRowIsDraggingObserver = ObserverSet<Bool>()
     
-    // MARK: WindowDidChangeSizeObserver Protocol
+    // MARK: WindowDidChangeSizeObservable Protocol
     
     let windowDidChangeFrameObserver = ObserverSet<NSRect?>()
     
-    @objc private func windowDidChangeFrame(notification: NSNotification) {
+    @objc func windowDidChangeFrame(notification: NSNotification) {
         let frame = (notification.object as? NSWindow)?.frame
         self.windowDidChangeFrameObserver.notify(frame)
     }
     
-    // MARK: WindowDidCloseObserver
+    // MARK: WindowDidCloseObservable
     
     var windowDidCloseObserver = ObserverSet<Void>()
     
-    @objc private func windowDidClose(notification: NSNotification) {
+    @objc func windowDidClose(notification: NSNotification) {
         self.windowDidCloseObserver.notify()
     }
+    
+    // MARK: SearchDelegateObservable
+    
+    var searchDelegateObserver = ObserverSet<[CWCartfile]?>()
     
     // MARK: Handle Going Away
     

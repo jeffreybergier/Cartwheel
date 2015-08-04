@@ -55,7 +55,7 @@ class CartListTableViewDelegate: CartListChildController, NSTableViewDelegate {
             cellView = CartListTableCellViewController()
         }
         cellView.configureViewIfNeeded()
-        cellView.cartfile = self.controller?.contentModel.cartfiles[safe: row]
+        cellView.cartfile = self.controller?.cartfiles?[safe: row]
         return cellView
     }
     
@@ -70,7 +70,7 @@ class CartListTableViewDelegate: CartListChildController, NSTableViewDelegate {
     }()
     
     func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        if let cartfile = self.controller?.contentModel.cartfiles[safe: row] {
+        if let cartfile = self.controller?.cartfiles?[safe: row] {
             self.cellHeightCalculationView.setPrimaryTextFieldString(cartfile.name)
         } else {
             self.cellHeightCalculationView.clearCellContents()

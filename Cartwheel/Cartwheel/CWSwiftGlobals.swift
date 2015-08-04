@@ -29,7 +29,7 @@ import AppKit
 import XCGLogger
 
 class CartListChildController: NSObject {
-    weak var controller: CartfileDataSourceController?
+    weak var controller: protocol<CartfileModelControllable, CartfileDataSourceControllable>?
     weak var windowObserver: CartListWindowObserver?
 }
 
