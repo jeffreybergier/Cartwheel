@@ -35,7 +35,7 @@ final class CartListView: NSView {
     let addButton = CWEventPassingButton(roundedBezelStyle: true)
     let deleteButton = NSButton(roundedBezelStyle: true)
     let tableView = NSTableView()
-    private let scrollView = NSScrollView()
+    let scrollView = NSScrollView()
     private let tableColumn = NSTableColumn(identifier: "CartListColumn")
     
     // MARK: Handle Initialization
@@ -83,8 +83,8 @@ final class CartListView: NSView {
             self.deleteButton.autoPinEdge(.Leading, toEdge: .Trailing, ofView: self.addButton, withOffset: defaultInset)
             self.deleteButton.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset, relation: .GreaterThanOrEqual)
             
-            self.addButton.autoSetDimensionsToSize(CGSize(width: defaultSmallSquareButtonSize, height: defaultSmallSquareButtonSize))
-            self.deleteButton.autoSetDimensionsToSize(CGSize(width: defaultSmallSquareButtonSize, height: defaultSmallSquareButtonSize))
+            self.addButton.autoSetDimensionsToSize(CGSize(width: defaultSmallSquareButtonSize, height: defaultSmallSquareButtonSize - 6))
+            self.deleteButton.autoSetDimensionsToSize(CGSize(width: defaultSmallSquareButtonSize, height: defaultSmallSquareButtonSize - 6))
         }
         
         let pureLayoutConstraints = Array.filterOptionals(constraints.map({ object -> NSLayoutConstraint? in

@@ -125,6 +125,15 @@ final class CartListTableViewController: NSViewController, CartfileDataSourceCon
         // reload the data table
         self.contentView.tableView.reloadData()
     }
+    
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        
+        let adjustedContentInset = NSEdgeInsets(top: self.contentView.scrollView.contentInsets.top, left: self.contentView.scrollView.contentInsets.left, bottom: self.contentView.addButton.frame.size.height, right: self.contentView.scrollView.contentInsets.right)
+        // WARNING: Turning this off could cause bugs if the toolbar resizes
+        self.contentView.scrollView.automaticallyAdjustsContentInsets = false
+        self.contentView.scrollView.contentInsets = adjustedContentInset
+    }
 }
 
 // MARK: Handle Content and State Changing

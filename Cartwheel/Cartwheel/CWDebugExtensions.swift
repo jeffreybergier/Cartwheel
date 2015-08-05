@@ -53,3 +53,9 @@ extension NSOpenPanel.Response: Printable {
         }
     }
 }
+
+extension NSEdgeInsets: Printable {
+    public var description: String {
+        return "NSEdgeInset – Top: \(self.top) Left: \(self.left) Bottom: \(self.bottom) Right: \(self.right)"
+    }
+}
