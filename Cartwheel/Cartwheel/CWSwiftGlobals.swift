@@ -71,8 +71,6 @@ extension NSURL {
     
     func filesAndDirectories() -> URLEnumeration? {
         let fileManager = NSFileManager.defaultManager()
-        let defaultsPlist = CWDefaultsPlist()
-        
         let urlKeys = [NSURLIsDirectoryKey]
         let enumeratorOptions: NSDirectoryEnumerationOptions = .SkipsHiddenFiles | .SkipsPackageDescendants | .SkipsSubdirectoryDescendants
         
@@ -110,7 +108,7 @@ extension NSURL {
             }
             
             
-            if files.count == 0 && directories.count == 0 {
+            if files.isEmpty && directories.isEmpty {
                 // this returns the original URL if no other files and directories were found
                 // this happens when the user drags a file rather than a URL
                 return URLEnumeration(files: [self], remainingDirectories: directories)
