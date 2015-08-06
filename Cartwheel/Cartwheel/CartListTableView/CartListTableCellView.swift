@@ -48,21 +48,17 @@ final class CartListTableCellView: NSView {
         let defaultInset = CGFloat(8.0)
         let smallInset = round(defaultInset / 1.5)
         
-        let pureLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
+        let newConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
             self.ui.stackView.autoPinEdgeToSuperviewEdge(.Top, withInset: smallInset)
             self.ui.stackView.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
             self.ui.stackView.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
+            }.filter() { object -> Bool in
+                if let contraint = object as? NSLayoutConstraint { return true } else { return false }
+            }.map() { object -> NSLayoutConstraint in
+                return object as! NSLayoutConstraint
         }
         
-        let optionalPureLayoutConstraints = pureLayoutConstraints.map { (object) -> NSLayoutConstraint? in
-            if let constraint = object as? NSLayoutConstraint {
-                return constraint
-            } else {
-                return nil
-            }
-        }
-        
-        self.viewConstraints = Array.filterOptionals(optionalPureLayoutConstraints)
+        self.viewConstraints += newConstraints
         self.addConstraints(self.viewConstraints)
     }
     

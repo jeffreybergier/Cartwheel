@@ -74,4 +74,8 @@ extension CWDefaultsPlist: Printable {
     var description: String {
         return "CWDefaultsPlist: cartfileDirectorySearchRecursion: \(self.cartfileDirectorySearchRecursion) – cartfileListSaveLocation: \(self.cartfileListSaveLocation)"
     }
+    
+    init(something: Bool) {
+        self.init()
+    }
 }

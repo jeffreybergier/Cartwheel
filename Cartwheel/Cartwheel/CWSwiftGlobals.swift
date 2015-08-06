@@ -83,28 +83,32 @@ extension NSURL {
         }
         
         if let enumeratorObjects = enumerator?.allObjects {
-            let optionalFiles = enumeratorObjects.map { object -> NSURL? in
+            let files = enumeratorObjects.filter() { object -> Bool in
                 if let url = object as? NSURL,
                     let urlResources = url.resourceValuesForKeys(urlKeys, error: nil),
                     let urlIsDirectory = urlResources[NSURLIsDirectoryKey] as? Bool
                     where urlIsDirectory == false {
-                        return url
+                        return true
+                } else {
+                    return false
                 }
-                return .None
+            }.map() { object -> NSURL in
+                return object as! NSURL
             }
-            
-            let optionalDirectories = enumeratorObjects.map { object -> NSURL? in
+        
+            let directories = enumeratorObjects.filter() { object -> Bool in
                 if let url = object as? NSURL,
                     let urlResources = url.resourceValuesForKeys(urlKeys, error: nil),
                     let urlIsDirectory = urlResources[NSURLIsDirectoryKey] as? Bool
                     where urlIsDirectory == true {
-                        return url
+                        return true
+                } else {
+                    return false
                 }
-                return .None
+            }.map() { object -> NSURL in
+                return object as! NSURL
             }
             
-            let files = Array.filterOptionals(optionalFiles)
-            let directories = Array.filterOptionals(optionalDirectories)
             
             if files.count == 0 && directories.count == 0 {
                 // this returns the original URL if no other files and directories were found
@@ -118,12 +122,14 @@ extension NSURL {
     }
     
     class func URLsFromPasteboard(pasteboard: NSPasteboard) -> [NSURL]? {
-        let URLs = Array.filterOptionalsFromOptional(pasteboard.readObjectsForClasses([NSURL.self], options: nil)?.map({ object -> NSURL? in
-            if let url = object as? NSURL { return url } else { return .None }
-        }))
+        let URLs = pasteboard.readObjectsForClasses([NSURL.self], options: nil)?.filter() { object -> Bool in
+            if let url = object as? NSURL { return true } else { return false }
+        }.map() { object -> NSURL in
+            return object as! NSURL
+        }
         
         // fixes a bug where we were sometimes returning an empty array
-        if let URLs = URLs where URLs.count > 0 { return URLs } else { return .None }
+        if let URLs = URLs where URLs.isEmpty == false { return URLs } else { return .None }
     }
 }
 
@@ -208,17 +214,6 @@ extension Array {
     
     static func flatten(array: [[T]]) -> [T] {
         return array.reduce([T](), combine: +)
-    }
-    
-    static func filterOptionals(array: [T?]) -> [T] {
-        return array.filter { $0 != nil }.map { $0! }
-    }
-    
-    static func filterOptionalsFromOptional(array: [T?]?) -> [T]? {
-        if let array = array {
-            return array.filter { $0 != nil }.map { $0! }
-        }
-        return .None
     }
     
     static func merge(input: [[T]]) -> [T] {

@@ -233,7 +233,7 @@ extension CartListTableViewController: NSMenuDelegate {
                             alert.beginSheetModalForWindow(self.window!, completionHandler: nil)
                             self.log.error("\(error)")
                         } else {
-                            let cartfile = CWCartfile(url: cartfileWriteResult.finalURL)
+                            let cartfile = CWCartfile(url: cartfileWriteResult.finalURL)!
                             self.dataSource.appendCartfile(cartfile)
                             NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([cartfile.url])
                         }

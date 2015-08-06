@@ -73,7 +73,7 @@ final class CartListView: NSView {
         let smallInset = round(defaultInset / 1.5)
         let filterFieldWidth = CGFloat(200)
         
-        let constraints = NSView.autoCreateConstraintsWithoutInstalling() {
+        let newConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
             self.scrollView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
             
             self.addButton.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
@@ -85,13 +85,13 @@ final class CartListView: NSView {
             
             self.addButton.autoSetDimensionsToSize(CGSize(width: defaultSmallSquareButtonSize, height: defaultSmallSquareButtonSize - 6))
             self.deleteButton.autoSetDimensionsToSize(CGSize(width: defaultSmallSquareButtonSize, height: defaultSmallSquareButtonSize - 6))
+            }.filter() { object -> Bool in
+                if let contraint = object as? NSLayoutConstraint { return true } else { return false }
+            }.map() { object -> NSLayoutConstraint in
+                return object as! NSLayoutConstraint
         }
         
-        let pureLayoutConstraints = Array.filterOptionals(constraints.map({ object -> NSLayoutConstraint? in
-            if let constraint = object as? NSLayoutConstraint { return constraint } else { return .None }
-        }))
-        
-        self.viewConstraints += pureLayoutConstraints
+        self.viewConstraints += newConstraints
         self.addConstraints(self.viewConstraints)
     }
     

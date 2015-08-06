@@ -41,9 +41,20 @@ struct CWCartfile {
         return ""
     }
     
-    init(url: NSURL) {
-        self.url = url
+    init?(url: NSURL) {
+        if url.lastPathComponent?.lowercaseString == CWCartfile.defaultsPlist.cartfileFileName.lowercaseString {
+            self.url = url
+        } else {
+            return nil
+        }
     }
+    
+    // defaultsPlist requires disk activity so I only want that to happen once in the lifecycle of the app
+    // however, every cartfile that is initalized needs to check to make sure it has a valid URL
+    // this defaults plist is where it gets the name it needs
+    // creating this private static constant allows me to always check for a valid URL
+    // while not having to read from disk every time a cartfile is initialized
+    private static let defaultsPlist = CWDefaultsPlist(something: true)
 }
 
 // MARK: Get Cartfiles from URLs
@@ -51,27 +62,36 @@ struct CWCartfile {
 extension CWCartfile {
     
     static func cartfilesFromURL(url: NSURL) -> [CWCartfile]? {
-        let defaultsPlist = CWDefaultsPlist()
-        if let recursedFiles = url.extractFilesRecursionDepth(defaultsPlist.cartfileDirectorySearchRecursion) {
-            let optionalCartfiles = recursedFiles.map { url -> CWCartfile? in
-                if url.lastPathComponent?.lowercaseString == defaultsPlist.cartfileFileName.lowercaseString {
-                    return CWCartfile(url: url) } else { return .None }
-            }
-            let cartfiles = Array.filterOptionals(optionalCartfiles)
+        let cartfiles = url.extractFilesRecursionDepth(defaultsPlist.cartfileDirectorySearchRecursion)?.filter() { url -> Bool in
+            if let cartfile = CWCartfile(url: url) { return true } else { return false }
+        }.map() { url -> CWCartfile in
+            return CWCartfile(url: url)!
+        }
+        
+        if let cartfiles = cartfiles {
             if cartfiles.count > 0 { return cartfiles } else { return .None }
         }
+        
         return .None
     }
     
     static func cartfilesFromURL(URLs: [AnyObject]) -> [CWCartfile]? {
-        let optionalURLs = URLs.map { object -> NSURL? in
-            if let url = object as? NSURL { return url } else { return .None }
+        let filteredURLs = URLs.filter() { object -> Bool in
+            if let url = object as? NSURL { return true } else { return false }
+            }.map() { object -> NSURL in
+                return object as! NSURL
         }
-        let filteredURLs = Array.filterOptionals(optionalURLs)
-        let optionalCartfiles = filteredURLs.map { url -> [CWCartfile]? in
-            return self.cartfilesFromURL(url)
+        
+        let cartfiles = filteredURLs.map() { url -> [CWCartfile]? in
+            // map is used twice here because cartfilesFromURL can be intensie and I don't want to run it twice in order to filter and then map
+            return CWCartfile.cartfilesFromURL(url)
+            }.filter() { array -> Bool in
+                if let array = array { return true } else { return false }
+            }.map() { array -> [CWCartfile] in
+                return array!
         }
-        let mergedCartfiles = Array.merge(optionalCartfiles)
+        
+        let mergedCartfiles = Array.merge(cartfiles)
         if mergedCartfiles.count > 0 { return mergedCartfiles } else { return .None }
     }
 }
@@ -126,6 +146,6 @@ final class CWEncodableCartfile: NSObject, NSCoding {
     }
     
     func decodedCartfile() -> CWCartfile {
-        return CWCartfile(url: self.url)
+        return CWCartfile(url: self.url)!
     }
 }

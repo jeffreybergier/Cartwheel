@@ -204,23 +204,22 @@ class CWCartfileDataSource {
             self.log.error("Error reading Cartfiles from disk: \(error)")
         }
         
+        var readFromDiskError: NSError?
         if fileURLIsReachable == true {
-            var readFromDiskError: NSError?
             if let dataOnDisk = NSData(contentsOfURL: fileURL, options: nil, error: &readFromDiskError),
                 let unarchivedObjects = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? [AnyObject] {
-                    let cartfiles = Array.filterOptionals(unarchivedObjects.map({ object -> CWCartfile? in
+                    let cartfiles = unarchivedObjects.filter() { object -> Bool in
                         if let encodableCartfile = object as? CWEncodableCartfile {
-                            return encodableCartfile.decodedCartfile()
-                        }
-                        return .None
-                    }))
+                            return true } else { return false }
+                        }.map() { object -> CWCartfile in
+                            return (object as! CWEncodableCartfile).decodedCartfile()
+                    }
                     return cartfiles
             }
-            if let error = readFromDiskError {
-                self.log.error("Error reading Cartfiles from disk: \(readFromDiskError)")
-            }
         }
-        
+        if let error = readFromDiskError {
+            self.log.error("Error reading Cartfiles from disk: \(readFromDiskError)")
+        }
         return [CWCartfile]()
     }
 }
