@@ -58,7 +58,7 @@ final class CartListWindowController: NSWindowController {
         self.window?.contentView = tableViewController.view
     }
     
-    convenience init(usingClassName: Bool?) {
+    convenience init() {
         self.init(windowNibName: CartListWindowController.className())
     }
 }

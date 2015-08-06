@@ -36,7 +36,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         XCGLogger.defaultInstance().setup(logLevel: .Verbose, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: nil, fileLogLevel: .Warning)
         
-        self.cartListWindowController = CartListWindowController(usingClassName: true)
+        self.cartListWindowController = CartListWindowController()
         self.cartListWindowController!.showWindow(self) // should crash if NIL at this point
         
         self.cartListWindowController?.windowObserver?.windowDidCloseObserver.add(self, self.dynamicType.cartListWindowControllerDidClose)
