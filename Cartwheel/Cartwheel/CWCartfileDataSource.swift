@@ -143,15 +143,17 @@ class CWCartfileDataSource {
     }
     
     private func numberOfItemsInIndexes(indexes: [Range<Int>], beforeIndex index: Int) -> Int {
-        var number = 0
-        for range in indexes {
-            for i in range {
-                if i < index {
-                    number++
-                }
+        let indexArray = Array.merge(indexes.map({ range -> [Int] in
+            return range.map() { i -> Int in
+                return i
             }
+        }))
+        
+        let filteredIndexArray = indexArray.filter() { i -> Bool in
+            if i < index { return true } else { return false }
         }
-        return number
+        
+        return filteredIndexArray.count
     }
     
     private func arrayByExtractingItemsAtIndexes<T>(indexes: [Range<Int>], fromArray array: [T]) -> [T] {
