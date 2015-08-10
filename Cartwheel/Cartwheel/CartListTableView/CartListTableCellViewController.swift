@@ -29,6 +29,7 @@ import Cocoa
 import PureLayout_Mac
 import CarthageKit
 import ReactiveCocoa
+import Commandant
 
 final class CartListTableCellViewController: NSTableCellView {
         
@@ -77,11 +78,77 @@ final class CartListTableCellViewController: NSTableCellView {
     
     @objc private func didClickUpdateCartfileButton(sender: NSButton) {
         println("didClickUpdateCartfileButton -- Begin")
-        let project = CarthageKit.Project(directoryURL: self.cartfile!.url)
-        let producer = project.loadCombinedCartfile()
-        let something = producer |> start(next: {
-            println("Producer did something: \($0)")
+        
+        let result = self.cartfile?.project.updateDependencies()
+        
+        result?.start(error: {error -> () in
+            println("result1 error: \(error)")
+            }, completed: { () -> () in
+                println("result1 completed")
+                let resultMac = self.cartfile?.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac)
+                resultMac?.start(error: {error -> () in
+                    println("resultMac1 error: \(error)")
+                    }, completed: { () -> () in
+                        println("resultMac1 completed")
+                    }, interrupted: { () -> () in
+                        println("resultMac1 interrupted")
+                    }, next: { build -> () in
+                        println("resultMac1 next: \(build)")
+                        build.start(error: {error -> () in
+                            println("resultMac2 error: \(error)")
+                            }, completed: { () -> () in
+                                println("resultMac2 completed")
+                            }, interrupted: { () -> () in
+                                println("resultMac2 interrupted")
+                            }, next: { build -> () in
+                                println("resultMac2 next: \(build)")
+                        })
+                })
+                let resultiOS = self.cartfile?.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS)
+                resultiOS?.start(error: {error -> () in
+                    println("resultiOS1 error: \(error)")
+                    }, completed: { () -> () in
+                        println("resultiOS1 completed")
+                    }, interrupted: { () -> () in
+                        println("resultiOS1 interrupted")
+                    }, next: { build -> () in
+                        println("resultiOS1 next: \(build)")
+                        build.start(error: {error -> () in
+                            println("resultiOS2 error: \(error)")
+                            }, completed: { () -> () in
+                                println("resultiOS2 completed")
+                            }, interrupted: { () -> () in
+                                println("resultiOS2 interrupted")
+                            }, next: { build -> () in
+                                println("resultiOS2 next: \(build)")
+                        })
+                })
+                let resultWatch = self.cartfile?.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS)
+                resultWatch?.start(error: {error -> () in
+                    println("resultWatch1 error: \(error)")
+                    }, completed: { () -> () in
+                        println("resultWatch1 completed")
+                    }, interrupted: { () -> () in
+                        println("resultWatch1 interrupted")
+                    }, next: { build -> () in
+                        println("resultWatch1 next: \(build)")
+                        build.start(error: {error -> () in
+                            println("resultWatch2 error: \(error)")
+                            }, completed: { () -> () in
+                                println("resultWatch2 completed")
+                            }, interrupted: { () -> () in
+                                println("resultWatch2 interrupted")
+                            }, next: { build -> () in
+                                println("resultWatch2 next: \(build)")
+                        })
+                })
+
+            }, interrupted: { () -> () in
+                println("result1 interrupted")
+            }, next: { () -> () in
+                println("result1 next:")
         })
+
         println("didClickUpdateCartfileButton -- End")
     }
     

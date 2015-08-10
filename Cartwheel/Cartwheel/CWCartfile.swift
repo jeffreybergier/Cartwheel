@@ -25,12 +25,17 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
+import CarthageKit
 
 // MARK: CWCartfile Struct
 
 struct CWCartfile {
     var url: NSURL
+    var parentDirectory: NSURL {
+        var components = self.url.pathComponents!
+        components.removeLast()
+        return NSURL.fileURLWithPathComponents(components)!
+    }
     var name: String {
         if let components = self.url.pathComponents {
             let index = components.count - 2
@@ -40,6 +45,9 @@ struct CWCartfile {
         }
         return ""
     }
+    private(set) lazy var project: Project = {
+        return CarthageKit.Project(directoryURL: self.parentDirectory)
+    }()
     
     init?(url: NSURL) {
         if url.lastPathComponent?.lowercaseString == CWCartfile.defaultsPlist.cartfileFileName.lowercaseString {
