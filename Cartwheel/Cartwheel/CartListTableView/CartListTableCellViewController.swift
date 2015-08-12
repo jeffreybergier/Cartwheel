@@ -78,6 +78,23 @@ final class CartListTableCellViewController: NSTableCellView {
     
     @objc private func didClickUpdateCartfileButton(sender: NSButton) {
         println("didClickUpdateCartfileButton -- Begin")
+        
+//        self.cartfile.project.updateDependencies()
+//            |> then(self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac))
+//            |> doNext({ build in return build })
+//            |> then(self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS))
+//            |> doNext({ build in return build })
+//            |> then(self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .WatchOS))
+//            |> doNext({ build in return build })
+//            |> promoteErrors
+//            |> on(complete: {
+//                /* handle success */
+//            })
+//            |> on(fail: { errors in /*handle errors */ })
+//            |> start()
+        
+
+        
         var macBuildsInProgress = 0
         var iosBuildsInProgress = 0
         var watchBuildsInProgress = 0
@@ -132,102 +149,7 @@ final class CartListTableCellViewController: NSTableCellView {
                     })
             })
             |> start()
-
-
-//        |> then(self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac))
-//        |> then(self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS))
-//        |> then(self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS))
-//        |> start(error: { error -> () in
-//            println("something error: \(error)")
-//            }, next: { build -> () in
-//                println("something next – build: \(build)")
-//                build.start(error: { error -> () in
-//                    println("build error: \(error)")
-//                    }, completed: { () -> () in
-//                        println("build completed")
-//                    }, interrupted: { () -> () in
-//                        println("build interrupted")
-//                    }, next: { locator -> () in
-//                        println("build next: locator: \(locator)")
-//                        if let something = locator.value {
-//                            switch something.0 {
-//                            case .Workspace(let url):
-//                                println("locator.Workspace: \(url)")
-//                            case .ProjectFile(let url):
-//                                println("locator.ProjectFile: \(url)")
-//                            }
-//                        }
-//                })
-//        })
         
-//        result?.start(error: {error -> () in
-//            println("result1 error: \(error)")
-//            }, completed: { () -> () in
-//                println("result1 completed")
-//                let resultMac = self.cartfile?.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac)
-//                resultMac?.start(error: {error -> () in
-//                    println("resultMac1 error: \(error)")
-//                    }, completed: { () -> () in
-//                        println("resultMac1 completed")
-//                    }, interrupted: { () -> () in
-//                        println("resultMac1 interrupted")
-//                    }, next: { build -> () in
-//                        println("resultMac1 next: \(build)")
-//                        build.start(error: {error -> () in
-//                            println("resultMac2 error: \(error)")
-//                            }, completed: { () -> () in
-//                                println("resultMac2 completed")
-//                            }, interrupted: { () -> () in
-//                                println("resultMac2 interrupted")
-//                            }, next: { build -> () in
-//                                println("resultMac2 next: \(build)")
-//                        })
-//                })
-//                let resultiOS = self.cartfile?.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS)
-//                resultiOS?.start(error: {error -> () in
-//                    println("resultiOS1 error: \(error)")
-//                    }, completed: { () -> () in
-//                        println("resultiOS1 completed")
-//                    }, interrupted: { () -> () in
-//                        println("resultiOS1 interrupted")
-//                    }, next: { build -> () in
-//                        println("resultiOS1 next: \(build)")
-//                        build.start(error: {error -> () in
-//                            println("resultiOS2 error: \(error)")
-//                            }, completed: { () -> () in
-//                                println("resultiOS2 completed")
-//                            }, interrupted: { () -> () in
-//                                println("resultiOS2 interrupted")
-//                            }, next: { build -> () in
-//                                println("resultiOS2 next: \(build)")
-//                        })
-//                })
-//                let resultWatch = self.cartfile?.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS)
-//                resultWatch?.start(error: {error -> () in
-//                    println("resultWatch1 error: \(error)")
-//                    }, completed: { () -> () in
-//                        println("resultWatch1 completed")
-//                    }, interrupted: { () -> () in
-//                        println("resultWatch1 interrupted")
-//                    }, next: { build -> () in
-//                        println("resultWatch1 next: \(build)")
-//                        build.start(error: {error -> () in
-//                            println("resultWatch2 error: \(error)")
-//                            }, completed: { () -> () in
-//                                println("resultWatch2 completed")
-//                            }, interrupted: { () -> () in
-//                                println("resultWatch2 interrupted")
-//                            }, next: { build -> () in
-//                                println("resultWatch2 next: \(build)")
-//                        })
-//                })
-//
-//            }, interrupted: { () -> () in
-//                println("result1 interrupted")
-//            }, next: { () -> () in
-//                println("result1 next:")
-//        })
-
         println("didClickUpdateCartfileButton -- End")
     }
     
