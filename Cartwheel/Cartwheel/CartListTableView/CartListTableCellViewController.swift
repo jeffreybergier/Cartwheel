@@ -79,6 +79,40 @@ final class CartListTableCellViewController: NSTableCellView {
     @objc private func didClickUpdateCartfileButton(sender: NSButton) {
         println("didClickUpdateCartfileButton -- Begin")
         
+        let buildPlatforms = SignalProducer(values: [
+            self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac),
+            self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS),
+            self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS)
+            ])
+            |> flatten(.Concat)
+        
+        self.cartfile.project.updateDependencies()
+            |> on(started: {
+                println("Updating Dependencies")
+            })
+            |> on(completed: {
+                println("Finished Updating Dependencies")
+                buildPlatforms
+                    |> on(started: {
+                        println("Starting All Builds..")
+                    })
+                    |> on(completed: {
+                        println("Finished All Builds")
+                    })
+                    |> start(next: { build in
+                        build
+                            |> on(started: {
+                                println("Build Started...")
+                            })
+                            |> on(completed: {
+                                println("Build Ended...")
+                            })
+                            |> start()
+                    })
+            })
+            |> start()
+
+        
 //        self.cartfile.project.updateDependencies()
 //            |> then(self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac))
 //            |> doNext({ build in return build })
@@ -95,60 +129,60 @@ final class CartListTableCellViewController: NSTableCellView {
         
 
         
-        var macBuildsInProgress = 0
-        var iosBuildsInProgress = 0
-        var watchBuildsInProgress = 0
-        
-        self.cartfile.project.updateDependencies()
-            |> on(started: {
-                println("Updating Dependencies")
-            })
-            |> on(completed: {
-                println("Finished Updating Dependencies")
-                self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac)
-                    |> start(next: { build in
-                        build
-                            |> on(started: {
-                                macBuildsInProgress++
-                                println("Mac Build has Started. In Progress = \(macBuildsInProgress)")
-                            })
-                            |> on(completed: {
-                                macBuildsInProgress--
-                                println("Mac Build has Completed. In Progress = \(macBuildsInProgress)")
-                            })
-                            |> start()
-                        
-                    })
-                self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS)
-                    |> start(next: { build in
-                        build
-                            |> on(started: {
-                                iosBuildsInProgress++
-                                println("iOS Build has Started. In Progress = \(iosBuildsInProgress)")
-                            })
-                            |> on(completed: {
-                                iosBuildsInProgress--
-                                println("iOS Build has Completed. In Progress = \(iosBuildsInProgress)")
-                            })
-                            |> start()
-                        
-                    })
-                self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS)
-                    |> start(next: { build in
-                        build
-                            |> on(started: {
-                                watchBuildsInProgress++
-                                println("WatchOS Build has Started. In Progress = \(watchBuildsInProgress)")
-                            })
-                            |> on(completed: {
-                                watchBuildsInProgress--
-                                println("WatchOS Build has Completed. In Progress = \(watchBuildsInProgress)")
-                            })
-                            |> start()
-                        
-                    })
-            })
-            |> start()
+//        var macBuildsInProgress = 0
+//        var iosBuildsInProgress = 0
+//        var watchBuildsInProgress = 0
+//        
+//        self.cartfile.project.updateDependencies()
+//            |> on(started: {
+//                println("Updating Dependencies")
+//            })
+//            |> on(completed: {
+//                println("Finished Updating Dependencies")
+//                self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac)
+//                    |> start(next: { build in
+//                        build
+//                            |> on(started: {
+//                                macBuildsInProgress++
+//                                println("Mac Build has Started. In Progress = \(macBuildsInProgress)")
+//                            })
+//                            |> on(completed: {
+//                                macBuildsInProgress--
+//                                println("Mac Build has Completed. In Progress = \(macBuildsInProgress)")
+//                            })
+//                            |> start()
+//                        
+//                    })
+//                self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS)
+//                    |> start(next: { build in
+//                        build
+//                            |> on(started: {
+//                                iosBuildsInProgress++
+//                                println("iOS Build has Started. In Progress = \(iosBuildsInProgress)")
+//                            })
+//                            |> on(completed: {
+//                                iosBuildsInProgress--
+//                                println("iOS Build has Completed. In Progress = \(iosBuildsInProgress)")
+//                            })
+//                            |> start()
+//                        
+//                    })
+//                self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS)
+//                    |> start(next: { build in
+//                        build
+//                            |> on(started: {
+//                                watchBuildsInProgress++
+//                                println("WatchOS Build has Started. In Progress = \(watchBuildsInProgress)")
+//                            })
+//                            |> on(completed: {
+//                                watchBuildsInProgress--
+//                                println("WatchOS Build has Completed. In Progress = \(watchBuildsInProgress)")
+//                            })
+//                            |> start()
+//                        
+//                    })
+//            })
+//            |> start()
         
         println("didClickUpdateCartfileButton -- End")
     }
