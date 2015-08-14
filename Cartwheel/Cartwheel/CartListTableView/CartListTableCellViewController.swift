@@ -29,6 +29,7 @@ import Cocoa
 import PureLayout_Mac
 import CarthageKit
 import ReactiveCocoa
+import ReactiveTask
 
 final class CartListTableCellViewController: NSTableCellView {
         
@@ -75,63 +76,60 @@ final class CartListTableCellViewController: NSTableCellView {
         }
     }
     
+    private var currentOperation: Disposable?
+    
     @objc private func didClickUpdateCartfileButton(sender: NSButton) {
         self.updateCartfileProject(self.cartfile.project)
     }
     
-    private func updateCartfileProject(project: Project) {
-        project.updateDependencies()
+    private func updateCartfileProject(project: Project) -> Disposable {
+        var jobs = [SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>]()
+        //var jobs = [SignalProducer<T, ErrorType>]()
+        return project.updateDependencies()
             |> then(SignalProducer(values: [
                 project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac),
                 project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS),
                 project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS)
                 ])
             )
-            |> flatMap(.Concat) { platformBuild in
-                return platformBuild
-            }
+            |> flatten(.Concat)
             |> on(started: {
-                println("Updating Project Dependencies")
+                println("Dependencies Started")
             })
             |> start(
                 error: { error in
-                    println("Error Updating Dependencies: \(error)")
-                }, interrupted: {
-                    println("Dependency Update Interrupted.")
-                }, next: { build in
-                    self.buildDisposables += [self.beginBuildTask(build)]
-            })
-    }
-    
-    private var completedBuildsCount = 0 {
-        didSet {
-            let completed = self.completedBuildsCount
-            let total = self.totalBuildsCount
-            if completed < total {
-                println("\(completed) of \(total) completed")
-            } else if completed == total {
-                println("All \(total) builds completed")
-                self.buildDisposables = []
-            } else {
-                println("something went really wrong here. More completed builds than total")
-            }
-        }
-    }
-    private var totalBuildsCount: Int { return self.buildDisposables.count }
-    private var buildDisposables = [Disposable]()
-    
-    private func beginBuildTask<T, E>(build: (SignalProducer<T, E>)) -> Disposable {
-        return build
-            |> start(
-                error: { error in
-                    self.completedBuildsCount++
-                    println("Build Error: \(error)")
+                    println("Dependencies Error: \(error)")
                 }, completed: {
-                    self.completedBuildsCount++
+                    println("Dependencies Finished.")
+                    self.currentOperation = self.buildJobs(jobs)
                 }, interrupted: {
-                    self.completedBuildsCount++
-                    println("Build Interrupted...")
-                }, next: { _ in })
+                    println("Dependencies Interrupted.")
+                }, next: { build in
+                    jobs += [build]
+            })
+    }
+    
+    private func buildJobs<T, E>(jobs: [SignalProducer<T, E>]) -> Disposable {
+        var completedJobs = 0
+        return SignalProducer(values: jobs)
+            |> flatMap(.Concat) { job in
+                return job
+                    |> on(completed: {
+                        completedJobs++
+                        println("\(completedJobs) of \(jobs.count) finished")
+                    })
+            }
+            |> on(started: { println("\(jobs.count) Jobs Started") })
+            |> start(
+                error: { error in
+                    println("Jobs Error: \(error)")
+                },
+                completed: {
+                    println("\(jobs.count) Jobs Finished")
+                },
+                interrupted: {
+                    println("Jobs Interrupted")
+                })
     }
     
     // MARK: Special Property used to Calculate Row Height
