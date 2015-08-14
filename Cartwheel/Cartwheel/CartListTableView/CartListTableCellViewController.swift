@@ -29,8 +29,6 @@ import Cocoa
 import PureLayout_Mac
 import CarthageKit
 import ReactiveCocoa
-import Commandant
-import ReactiveTask
 
 final class CartListTableCellViewController: NSTableCellView {
         
@@ -101,29 +99,37 @@ final class CartListTableCellViewController: NSTableCellView {
                 }, interrupted: {
                     println("Dependency Update Interrupted.")
                 }, next: { build in
-                    self.beginBuild(build)
+                    self.buildDisposables += [self.beginBuildTask(build)]
             })
     }
     
-    private var buildCount = 0 {
+    private var completedBuildsCount = 0 {
         didSet {
-            println("Builds in Progress: \(self.buildCount)")
+            let completed = self.completedBuildsCount
+            let total = self.totalBuildsCount
+            if completed < total {
+                println("\(completed) of \(total) completed")
+            } else if completed == total {
+                println("All \(total) builds completed")
+                self.buildDisposables = []
+            } else {
+                println("something went really wrong here. More completed builds than total")
+            }
         }
     }
+    private var totalBuildsCount: Int { return self.buildDisposables.count }
+    private var buildDisposables = [Disposable]()
     
-    private func beginBuild(build: (SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>)) -> Disposable {
+    private func beginBuildTask<T, E>(build: (SignalProducer<T, E>)) -> Disposable {
         return build
-            |> on(started: {
-                self.buildCount++
-            })
             |> start(
                 error: { error in
-                    self.buildCount--
+                    self.completedBuildsCount++
                     println("Build Error: \(error)")
                 }, completed: {
-                    self.buildCount--
+                    self.completedBuildsCount++
                 }, interrupted: {
-                    self.buildCount--
+                    self.completedBuildsCount++
                     println("Build Interrupted...")
                 }, next: { _ in })
     }
