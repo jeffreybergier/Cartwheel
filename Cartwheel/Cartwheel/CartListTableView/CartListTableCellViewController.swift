@@ -30,6 +30,7 @@ import PureLayout_Mac
 import CarthageKit
 import ReactiveCocoa
 import Commandant
+import ReactiveTask
 
 final class CartListTableCellViewController: NSTableCellView {
         
@@ -77,114 +78,55 @@ final class CartListTableCellViewController: NSTableCellView {
     }
     
     @objc private func didClickUpdateCartfileButton(sender: NSButton) {
-        println("didClickUpdateCartfileButton -- Begin")
-        
-        let buildPlatforms = SignalProducer(values: [
-            self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac),
-            self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS),
-            self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS)
-            ])
-            |> flatten(.Concat)
-        
-        self.cartfile.project.updateDependencies()
+        self.updateCartfileProject(self.cartfile.project)
+    }
+    
+    private func updateCartfileProject(project: Project) {
+        var jobs = [SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>]()
+        project.updateDependencies()
+            |> then(SignalProducer(values: [
+                project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac),
+                project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS),
+                project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS)
+                ])
+            )
+            |> flatMap(.Concat) { platformBuild in
+                return platformBuild
+            }
             |> on(started: {
                 println("Updating Dependencies")
             })
-            |> on(completed: {
-                println("Finished Updating Dependencies")
-                buildPlatforms
-                    |> on(started: {
-                        println("Starting All Builds..")
-                    })
-                    |> on(completed: {
-                        println("Finished All Builds")
-                    })
-                    |> start(next: { build in
-                        build
-                            |> on(started: {
-                                println("Build Started...")
-                            })
-                            |> on(completed: {
-                                println("Build Ended...")
-                            })
-                            |> start()
-                    })
+            |> start(
+                error: { error in
+                    println("Error Updating Dependencies: \(error)")
+                }, completed: {
+                    println("Finished Updating Dependencies.")
+                    self.buildJobs(jobs)
+                }, interrupted: {
+                    println("Dependency Update Interrupted.")
+                }, next: { build in
+                    jobs += [build]
             })
-            |> start()
-
-        
-//        self.cartfile.project.updateDependencies()
-//            |> then(self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac))
-//            |> doNext({ build in return build })
-//            |> then(self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS))
-//            |> doNext({ build in return build })
-//            |> then(self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .WatchOS))
-//            |> doNext({ build in return build })
-//            |> promoteErrors
-//            |> on(complete: {
-//                /* handle success */
-//            })
-//            |> on(fail: { errors in /*handle errors */ })
-//            |> start()
-        
-
-        
-//        var macBuildsInProgress = 0
-//        var iosBuildsInProgress = 0
-//        var watchBuildsInProgress = 0
-//        
-//        self.cartfile.project.updateDependencies()
-//            |> on(started: {
-//                println("Updating Dependencies")
-//            })
-//            |> on(completed: {
-//                println("Finished Updating Dependencies")
-//                self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac)
-//                    |> start(next: { build in
-//                        build
-//                            |> on(started: {
-//                                macBuildsInProgress++
-//                                println("Mac Build has Started. In Progress = \(macBuildsInProgress)")
-//                            })
-//                            |> on(completed: {
-//                                macBuildsInProgress--
-//                                println("Mac Build has Completed. In Progress = \(macBuildsInProgress)")
-//                            })
-//                            |> start()
-//                        
-//                    })
-//                self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS)
-//                    |> start(next: { build in
-//                        build
-//                            |> on(started: {
-//                                iosBuildsInProgress++
-//                                println("iOS Build has Started. In Progress = \(iosBuildsInProgress)")
-//                            })
-//                            |> on(completed: {
-//                                iosBuildsInProgress--
-//                                println("iOS Build has Completed. In Progress = \(iosBuildsInProgress)")
-//                            })
-//                            |> start()
-//                        
-//                    })
-//                self.cartfile.project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS)
-//                    |> start(next: { build in
-//                        build
-//                            |> on(started: {
-//                                watchBuildsInProgress++
-//                                println("WatchOS Build has Started. In Progress = \(watchBuildsInProgress)")
-//                            })
-//                            |> on(completed: {
-//                                watchBuildsInProgress--
-//                                println("WatchOS Build has Completed. In Progress = \(watchBuildsInProgress)")
-//                            })
-//                            |> start()
-//                        
-//                    })
-//            })
-//            |> start()
-        
-        println("didClickUpdateCartfileButton -- End")
+    }
+    
+    private func buildJobs(jobs: [SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>]) {
+        var count = jobs.count
+        println("Starting Builds: \(count) remaining.")
+        for job in jobs {
+            job
+                |> start(
+                    error: { error in
+                        println("Build Error: \(error)")
+                    },
+                    completed: {
+                        count--
+                        println("\(count) remaining.")
+                    },
+                    interrupted: {
+                        println("Build Interrupted...")
+                    },
+                    next: { _ in })
+        }
     }
     
     // MARK: Special Property used to Calculate Row Height
