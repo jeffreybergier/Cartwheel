@@ -82,7 +82,6 @@ final class CartListTableCellViewController: NSTableCellView {
     }
     
     private func updateCartfileProject(project: Project) {
-        var jobs = [SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>]()
         project.updateDependencies()
             |> then(SignalProducer(values: [
                 project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac),
@@ -94,39 +93,39 @@ final class CartListTableCellViewController: NSTableCellView {
                 return platformBuild
             }
             |> on(started: {
-                println("Updating Dependencies")
+                println("Updating Project Dependencies")
             })
             |> start(
                 error: { error in
                     println("Error Updating Dependencies: \(error)")
-                }, completed: {
-                    println("Finished Updating Dependencies.")
-                    self.buildJobs(jobs)
                 }, interrupted: {
                     println("Dependency Update Interrupted.")
                 }, next: { build in
-                    jobs += [build]
+                    self.beginBuild(build)
             })
     }
     
-    private func buildJobs(jobs: [SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>]) {
-        var count = jobs.count
-        println("Starting Builds: \(count) remaining.")
-        for job in jobs {
-            job
-                |> start(
-                    error: { error in
-                        println("Build Error: \(error)")
-                    },
-                    completed: {
-                        count--
-                        println("\(count) remaining.")
-                    },
-                    interrupted: {
-                        println("Build Interrupted...")
-                    },
-                    next: { _ in })
+    private var buildCount = 0 {
+        didSet {
+            println("Builds in Progress: \(self.buildCount)")
         }
+    }
+    
+    private func beginBuild(build: (SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>)) -> Disposable {
+        return build
+            |> on(started: {
+                self.buildCount++
+            })
+            |> start(
+                error: { error in
+                    self.buildCount--
+                    println("Build Error: \(error)")
+                }, completed: {
+                    self.buildCount--
+                }, interrupted: {
+                    self.buildCount--
+                    println("Build Interrupted...")
+                }, next: { _ in })
     }
     
     // MARK: Special Property used to Calculate Row Height
