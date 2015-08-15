@@ -5,7 +5,7 @@ github "duemunk/Async" ~> 1.2.1
 github "jeffreybergier/SwiftObserverSet" "master"
 
 ## When using the official Carthage Github
-github "Carthage/Carthage" "master"
+github "Carthage/Carthage" ~> 0.8
 
 ## Frameworks not listed in CarthageKit Cartfile but are required
 github "Carthage/Commandant" ~> 0.6.1
