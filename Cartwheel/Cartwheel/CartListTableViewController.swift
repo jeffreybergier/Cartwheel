@@ -35,7 +35,7 @@ protocol CartfileModelControllable: class {
 }
 
 @objc(CartListTableViewController)
-final class CartListTableViewController: NSViewController, CartfileDataSourceControllable, CartfileModelControllable {
+final class CartListTableViewController: NSViewController, CartfileDataSourceControllable, CartfileModelControllable, CartfileWindowControllable {
     
     // Model Object
     let dataSource: CWCartfileDataSource

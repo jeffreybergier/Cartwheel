@@ -27,9 +27,22 @@
 
 import Cocoa
 import PureLayout_Mac
+import XCGLogger
 import CarthageKit
 import ReactiveCocoa
 import ReactiveTask
+
+protocol CartfileUpdateControllerDelegate: class {
+    func cartfileUpdateErrorOcurred<E: ErrorType>(error: E?)
+    func cartfileUpdateInterrupted()
+    func cartfileUpdateBuildProgressPercentageChanged(progressPercentage: Double)
+    func cartfileUpdateStarted()
+    func cartfileUpdateFinished()
+}
+
+protocol CartfileWindowControllable: class {
+    var window: NSWindow? { get }
+}
 
 final class CartListTableCellViewController: NSTableCellView {
     
@@ -39,6 +52,9 @@ final class CartListTableCellViewController: NSTableCellView {
             self.updateCellWithNewModelObject()
         }
     }
+    
+    private let log = XCGLogger.defaultInstance()
+    private weak var parentWindow: NSWindow?
     
     static let identifier = "CartListTableCellViewController"
     override var identifier: String? {
@@ -88,9 +104,11 @@ final class CartListTableCellViewController: NSTableCellView {
     }
     
     private var configured = false
-    
-    func configureViewIfNeeded() {
+    func configureViewWithWindow(window: NSWindow?) {
         if self.configured == false {
+            // set the window
+            self.parentWindow = window
+            
             // add the views
             self.addSubview(self.contentView)
             self.addSubview(self.updateView)
@@ -106,6 +124,7 @@ final class CartListTableCellViewController: NSTableCellView {
             self.contentView.setPrimaryButtonTitle(NSLocalizedString("Update", comment: "Button to perform carthage update"))
             self.contentView.setPrimaryButtonAction("didClickUpdateCartfileButton:", forTarget: self)
             
+            self.updateView.setPrimaryButtonTitle(NSLocalizedString("Cancel", comment: "Button title to cancel current build"))
             self.updateView.setPrimaryButtonAction("didClickUpdateCartfileButton:", forTarget: self)
             
             // done configuring, don't do it again when cell is recycled
@@ -179,25 +198,25 @@ final class CartListTableCellViewController: NSTableCellView {
             )
             |> flatten(.Concat)
             |> on(started: {
-                self.currentLayout = .Updating
                 println("Dependencies Started")
+                self.cartfileUpdateStarted()
             })
             |> start(
                 error: { error in
-                    self.currentLayout = .Normal
                     println("Dependencies Error: \(error)")
+                    self.cartfileUpdateErrorOcurred(error)
                 }, completed: {
                     println("Dependencies Finished.")
                     self.currentOperation = self.buildJobs(jobs)
                 }, interrupted: {
-                    self.currentLayout = .Normal
                     println("Dependencies Interrupted.")
+                    self.cartfileUpdateInterrupted()
                 }, next: { build in
                     jobs += [build]
             })
     }
     
-    private func buildJobs<T, E>(jobs: [SignalProducer<T, E>]) -> Disposable {
+    private func buildJobs<T, E: ErrorType>(jobs: [SignalProducer<T, E>]) -> Disposable {
         var completedJobs = 0
         return SignalProducer(values: jobs)
             |> flatMap(.Concat) { job in
@@ -205,24 +224,25 @@ final class CartListTableCellViewController: NSTableCellView {
                     |> on(completed: {
                         completedJobs++
                         println("\(completedJobs) of \(jobs.count) Finished")
+                        self.cartfileUpdateBuildProgressPercentageChanged(Double(completedJobs) / Double(jobs.count))
                     })
             }
             |> on(started: {
-                self.currentLayout = .Updating
                 println("\(jobs.count) Jobs Started")
+                self.cartfileUpdateBuildProgressPercentageChanged(Double(completedJobs) / Double(jobs.count))
             })
             |> start(
                 error: { error in
-                    self.currentLayout = .Normal
                     println("Jobs Error: \(error)")
+                    self.cartfileUpdateErrorOcurred(error)
                 },
                 completed: {
-                    self.currentLayout = .Normal
                     println("\(jobs.count) Jobs Finished")
+                    self.cartfileUpdateFinished()
                 },
                 interrupted: {
-                    self.currentLayout = .Normal
                     println("Jobs Interrupted")
+                    self.cartfileUpdateInterrupted()
                 })
     }
     
@@ -230,5 +250,40 @@ final class CartListTableCellViewController: NSTableCellView {
     
     var viewHeightForTableRowHeightCalculation: CGFloat {
         return self.contentView.viewHeightForTableRowHeightCalculation
+    }
+}
+
+extension CartListTableCellViewController: CartfileUpdateControllerDelegate {
+    func cartfileUpdateErrorOcurred<E: ErrorType>(error: E?) {
+        self.currentOperation = .None
+        self.currentLayout = .Normal
+        log.warning("Cartfile Update failed with Error: \(error)")
+        if let error = error {
+            let alert = NSAlert(error: error.nsError)
+            dispatch_async(dispatch_get_main_queue()) {
+                alert.beginSheetModalForWindow(self.parentWindow!, completionHandler: { untypedResponse in
+                    self.log.error("Cartfile Update Error Ocurred. User received Error and then clicked OK: \(error)")
+                })
+            }
+        }
+    }
+    func cartfileUpdateInterrupted() {
+        self.currentOperation = .None
+        self.currentLayout = .Normal
+        log.warning("Cartfile Update was Interrupted")
+    }
+    func cartfileUpdateBuildProgressPercentageChanged(progressPercentage: Double) {
+        self.updateView.setProgressIndicatorAnimation(false)
+        self.updateView.progressIndicatorType = .Determinate
+        self.updateView.progressIndicatorProgress = progressPercentage * 100
+    }
+    func cartfileUpdateStarted() {
+        self.updateView.progressIndicatorType = .Indeterminate
+        self.updateView.setProgressIndicatorAnimation(true)
+        self.currentLayout = .Updating
+    }
+    func cartfileUpdateFinished() {
+        self.currentOperation = .None
+        self.currentLayout = .Normal
     }
 }

@@ -31,7 +31,7 @@ import XCGLogger
 // MARK: Class for Subcontrollers
 
 class CartListChildController: NSObject {
-    weak var controller: protocol<CartfileModelControllable, CartfileDataSourceControllable>?
+    weak var controller: protocol<CartfileModelControllable, CartfileDataSourceControllable, CartfileWindowControllable>?
     weak var windowObserver: CartListWindowObserver?
 }
 
@@ -139,6 +139,12 @@ struct URLEnumeration {
 }
 
 // MARK: Fixing Broken AppKit Stuff
+
+extension NSProgressIndicator {
+    enum IndicatorType {
+        case Indeterminate, Determinate
+    }
+}
 
 struct CWLayoutPriority {
     static var Required: NSLayoutPriority = 1000

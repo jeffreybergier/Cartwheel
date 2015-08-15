@@ -54,7 +54,7 @@ class CartListTableViewDelegate: CartListChildController, NSTableViewDelegate {
         else {
             cellView = CartListTableCellViewController()
         }
-        cellView.configureViewIfNeeded()
+        cellView.configureViewWithWindow(self.controller?.window)
         cellView.cartfile = self.controller?.cartfiles?[safe: row]
         return cellView
     }

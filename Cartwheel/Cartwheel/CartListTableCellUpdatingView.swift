@@ -26,22 +26,95 @@
 //
 
 import Cocoa
+import PureLayout_Mac
 
 class CartListTableCellUpdatingView: NSView {
     
-    var primaryButton = NSButton(roundedBezelStyle: true)
+    private let primaryButton = NSButton(roundedBezelStyle: true)
+    private let progressIndicator = NSProgressIndicator()
+    private var viewConstraints = [NSLayoutConstraint]()
     
     func viewDidLoad() {
         self.wantsLayer = true
-        self.layer?.backgroundColor = NSColor.redColor().CGColor
+        self.progressIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.progressIndicator)
         self.addSubview(self.primaryButton)
-        self.primaryButton.frame = NSRect(x: 0, y: 0, width: 80, height: 40)
         
+        self.configureLayoutConstraints()
+    }
+    
+    private func configureLayoutConstraints() {
+        let defaultInset = CGFloat(8.0)
+        let smallInset = round(defaultInset / 1.5)
+        
+        self.viewConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
+            self.primaryButton.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
+            self.primaryButton.autoPinEdgeToSuperviewEdge(.Top, withInset: smallInset)
+            self.primaryButton.autoPinEdgeToSuperviewEdge(.Bottom, withInset: smallInset)
+            
+            self.progressIndicator.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
+            self.progressIndicator.autoPinEdgeToSuperviewEdge(.Top, withInset: smallInset)
+            self.progressIndicator.autoPinEdgeToSuperviewEdge(.Bottom, withInset: smallInset)
+            
+            self.primaryButton.autoPinEdge(.Leading, toEdge: .Trailing, ofView: self.progressIndicator, withOffset: defaultInset)
+
+            }.filter() { object -> Bool in
+                if let contraint = object as? NSLayoutConstraint { return true } else { return false }
+            }.map() { object -> NSLayoutConstraint in
+                return object as! NSLayoutConstraint
+        }
+        
+        self.addConstraints(self.viewConstraints)
+    }
+    
+    // MARK: Internal Methods to be used by controller
+    
+    var progressIndicatorType: NSProgressIndicator.IndicatorType {
+        get {
+            switch self.progressIndicator.indeterminate {
+            case false:
+                return .Determinate
+            default:
+                return .Indeterminate
+            }
+        }
+        set {
+            switch newValue {
+            case .Indeterminate:
+                self.progressIndicator.indeterminate = true
+            case .Determinate:
+                self.progressIndicator.indeterminate = false
+            }
+        }
+    }
+    
+    func setProgressIndicatorAnimation(animating: Bool) {
+        switch animating {
+        case true:
+            self.progressIndicator.startAnimation(nil)
+        default:
+            self.progressIndicator.stopAnimation(nil)
+        }
+    }
+    
+    var progressIndicatorProgress: Double {
+        get {
+            return self.progressIndicator.doubleValue
+        }
+        set {
+            dispatch_async(dispatch_get_main_queue()) {
+                self.progressIndicator.doubleValue = newValue
+            }
+        }
     }
     
     func setPrimaryButtonAction(action: Selector, forTarget target: NSObject) {
         self.primaryButton.target = target
         self.primaryButton.action = action
+    }
+    
+    func setPrimaryButtonTitle(newTitle: String) {
+        self.primaryButton.title = newTitle
     }
     
 }
