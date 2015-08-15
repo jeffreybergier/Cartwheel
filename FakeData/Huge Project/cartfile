@@ -1,2 +1,2 @@
-github "Carthage/Carthage" "master"
-#github "jeffreybergier/Carthage" "master"
+#github "Carthage/Carthage" "master"
+github "jeffreybergier/Carthage" "master"
