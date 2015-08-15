@@ -32,3 +32,11 @@ DerivedData
 #
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
 
+FakeData/Error Project/Carthage
+FakeData/Huge Project/Carthage
+FakeData/Error Project/Cartfile.resolved
+FakeData/Huge Project/Cartfile.resolved
+FakeData/Medium Project/Cartfile.resolved
+FakeData/Small Project/Carthage
+FakeData/Medium Project/Carthage
+FakeData/Small Project/Cartfile.resolved
