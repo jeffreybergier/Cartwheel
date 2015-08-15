@@ -32,8 +32,6 @@ import ReactiveCocoa
 import ReactiveTask
 
 final class CartListTableCellViewController: NSTableCellView {
-        
-    let contentView = CartListTableCellView()
     
     var cartfile: CWCartfile! {
         didSet {
@@ -46,6 +44,35 @@ final class CartListTableCellViewController: NSTableCellView {
     override var identifier: String? {
         get { return self.classForCoder.identifier }
         set { /* do nothing */ /* this setter is needed to please the compiler */ }
+    }
+    
+    private let contentView = CartListTableCellView()
+    private let updateView = CartListTableCellUpdatingView()
+    
+    private var normalLayoutConstraints = [NSLayoutConstraint]()
+    private var updatingLayoutConstraints = [NSLayoutConstraint]()
+    private var currentLayout: Layout = .Normal {
+        didSet {
+            dispatch_async(dispatch_get_main_queue()) {
+                NSAnimationContext.runAnimationGroup({ context in
+                    context.duration = 0.3
+                    context.allowsImplicitAnimation = true
+                    switch self.currentLayout {
+                    case .Normal:
+                        self.removeConstraints(self.updatingLayoutConstraints)
+                        self.addConstraints(self.normalLayoutConstraints)
+                    case .Updating:
+                        self.removeConstraints(self.normalLayoutConstraints)
+                        self.addConstraints(self.updatingLayoutConstraints)
+                    }
+                    self.layoutSubtreeIfNeeded()
+                }, completionHandler: nil)
+            }
+        }
+    }
+    
+    enum Layout {
+        case Normal, Updating
     }
     
     private func prepareCellForNewModelObject() {
@@ -64,22 +91,80 @@ final class CartListTableCellViewController: NSTableCellView {
     
     func configureViewIfNeeded() {
         if self.configured == false {
-            // configure the view
+            // add the views
             self.addSubview(self.contentView)
-            self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
+            self.addSubview(self.updateView)
+            
+            // configure the constraints
+            self.configureConstraints()
+            
+            // configure the views
             self.contentView.viewDidLoad()
+            self.updateView.viewDidLoad()
             
             // configure the button
             self.contentView.setPrimaryButtonTitle(NSLocalizedString("Update", comment: "Button to perform carthage update"))
             self.contentView.setPrimaryButtonAction("didClickUpdateCartfileButton:", forTarget: self)
+            
+            self.updateView.setPrimaryButtonAction("didClickUpdateCartfileButton:", forTarget: self)
+            
+            // done configuring, don't do it again when cell is recycled
             self.configured = true
         }
+    }
+    
+    private func configureConstraints() {
+        let defaultInset = CGFloat(8.0)
+        let smallInset = round(defaultInset / 1.5)
+        
+        self.updatingLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
+            self.contentView.autoPinEdgeToSuperviewEdge(.Top, withInset: 0)
+            self.contentView.autoPinEdgeToSuperviewEdge(.Bottom, withInset: 0)
+            self.contentView.autoPinEdge(.Trailing, toEdge: .Leading, ofView: self.updateView, withOffset: 0)
+            
+            self.updateView.autoPinEdgeToSuperviewEdge(.Top, withInset: 0)
+            self.updateView.autoPinEdgeToSuperviewEdge(.Leading, withInset: 0)
+            self.updateView.autoPinEdgeToSuperviewEdge(.Bottom, withInset: 0)
+            
+            self.contentView.autoMatchDimension(.Width, toDimension: .Width, ofView: self)
+            self.updateView.autoMatchDimension(.Width, toDimension: .Width, ofView: self)
+            
+            }.filter() { object -> Bool in
+                if let contraint = object as? NSLayoutConstraint { return true } else { return false }
+            }.map() { object -> NSLayoutConstraint in
+                return object as! NSLayoutConstraint
+        }
+        
+        self.normalLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
+            self.contentView.autoPinEdgeToSuperviewEdge(.Top, withInset: 0)
+            self.contentView.autoPinEdgeToSuperviewEdge(.Leading, withInset: 0)
+            self.contentView.autoPinEdgeToSuperviewEdge(.Bottom, withInset: 0)
+            self.contentView.autoPinEdge(.Trailing, toEdge: .Leading, ofView: self.updateView, withOffset: 0)
+            
+            self.updateView.autoPinEdgeToSuperviewEdge(.Top, withInset: 0)
+            self.updateView.autoPinEdgeToSuperviewEdge(.Bottom, withInset: 0)
+            
+            self.contentView.autoMatchDimension(.Width, toDimension: .Width, ofView: self)
+            self.updateView.autoMatchDimension(.Width, toDimension: .Width, ofView: self)
+
+            }.filter() { object -> Bool in
+                if let contraint = object as? NSLayoutConstraint { return true } else { return false }
+            }.map() { object -> NSLayoutConstraint in
+                return object as! NSLayoutConstraint
+        }
+        
+        self.addConstraints(self.normalLayoutConstraints)
     }
     
     private var currentOperation: Disposable?
     
     @objc private func didClickUpdateCartfileButton(sender: NSButton) {
-        self.updateCartfileProject(self.cartfile.project)
+        if let currentOperation = currentOperation {
+            currentOperation.dispose()
+            self.currentOperation = .None
+        } else {
+            self.currentOperation = self.updateCartfileProject(self.cartfile.project)
+        }
     }
     
     private func updateCartfileProject(project: Project) -> Disposable {
@@ -94,15 +179,18 @@ final class CartListTableCellViewController: NSTableCellView {
             )
             |> flatten(.Concat)
             |> on(started: {
+                self.currentLayout = .Updating
                 println("Dependencies Started")
             })
             |> start(
                 error: { error in
+                    self.currentLayout = .Normal
                     println("Dependencies Error: \(error)")
                 }, completed: {
                     println("Dependencies Finished.")
                     self.currentOperation = self.buildJobs(jobs)
                 }, interrupted: {
+                    self.currentLayout = .Normal
                     println("Dependencies Interrupted.")
                 }, next: { build in
                     jobs += [build]
@@ -116,18 +204,24 @@ final class CartListTableCellViewController: NSTableCellView {
                 return job
                     |> on(completed: {
                         completedJobs++
-                        println("\(completedJobs) of \(jobs.count) finished")
+                        println("\(completedJobs) of \(jobs.count) Finished")
                     })
             }
-            |> on(started: { println("\(jobs.count) Jobs Started") })
+            |> on(started: {
+                self.currentLayout = .Updating
+                println("\(jobs.count) Jobs Started")
+            })
             |> start(
                 error: { error in
+                    self.currentLayout = .Normal
                     println("Jobs Error: \(error)")
                 },
                 completed: {
+                    self.currentLayout = .Normal
                     println("\(jobs.count) Jobs Finished")
                 },
                 interrupted: {
+                    self.currentLayout = .Normal
                     println("Jobs Interrupted")
                 })
     }

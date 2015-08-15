@@ -29,4 +29,19 @@ import Cocoa
 
 class CartListTableCellUpdatingView: NSView {
     
+    var primaryButton = NSButton(roundedBezelStyle: true)
+    
+    func viewDidLoad() {
+        self.wantsLayer = true
+        self.layer?.backgroundColor = NSColor.redColor().CGColor
+        self.addSubview(self.primaryButton)
+        self.primaryButton.frame = NSRect(x: 0, y: 0, width: 80, height: 40)
+        
+    }
+    
+    func setPrimaryButtonAction(action: Selector, forTarget target: NSObject) {
+        self.primaryButton.target = target
+        self.primaryButton.action = action
+    }
+    
 }
