@@ -29,15 +29,15 @@ import CarthageKit
 import ReactiveCocoa
 import ReactiveTask
 
-protocol CartfileUpdateControllerDelegate: class {
-    func cartfileUpdateErrorOcurred(error: CarthageError?)
-    func cartfileUpdateInterrupted()
-    func cartfileUpdateBuildProgressPercentageChanged(progressPercentage: Double)
-    func cartfileUpdateStarted()
-    func cartfileUpdateFinished()
-}
+//protocol CartfileUpdateControllerDelegate: class {
+//    func cartfileUpdateErrorOcurred(error: CarthageError?)
+//    func cartfileUpdateInterrupted()
+//    func cartfileUpdateBuildProgressPercentageChanged(progressPercentage: Double)
+//    func cartfileUpdateStarted()
+//    func cartfileUpdateFinished()
+//}
 
-class CartfileUpdateController {
+class CartfileUpdater {
     let project: Project
     weak var delegate: CartfileUpdateControllerDelegate?
     private var currentOperation: Disposable?
@@ -89,7 +89,7 @@ class CartfileUpdateController {
     private func buildJobs<T, E>(jobs: [SignalProducer<T, E>]) -> Disposable {
         var completedJobs = 0
         return SignalProducer(values: jobs)
-            |> flatMap(.Concat) { job in
+            |> flatMap(.Concat) { job -> SignalProducer<T, E> in
                 return job
                     |> on(completed: {
                         completedJobs++
