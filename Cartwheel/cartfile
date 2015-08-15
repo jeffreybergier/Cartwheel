@@ -4,10 +4,12 @@ github "DaveWoodCom/XCGLogger" ~> 2.0.0
 github "duemunk/Async" ~> 1.2.1
 github "jeffreybergier/SwiftObserverSet" "master"
 
-## My own fork of Carthage that works and signs properly
-github "jeffreybergier/Carthage" "master"
-
 ## When using the official Carthage Github
-#github "Carthage/Carthage" ~> 1.0.0
-#github "Carthage/Commandant" ~> 0.6
-#github "jdhealy/PrettyColors" ~> 2.0
+github "Carthage/Carthage" "master"
+
+## Frameworks not listed in CarthageKit Cartfile but are required
+github "Carthage/Commandant" ~> 0.6.1
+github "jdhealy/PrettyColors" ~> 2.0
+
+## My own fork of Carthage that works and signs properly
+#github "jeffreybergier/Carthage" "master"
