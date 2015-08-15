@@ -349,8 +349,8 @@
 		73B458AA1B24B50F00A417AF /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				73C2F38E1AF04F97001B36DB /* CartListTableCellView.swift */,
 				7315196A1B7E531000451168 /* CartListTableCellUpdatingView.swift */,
+				73C2F38E1AF04F97001B36DB /* CartListTableCellView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -643,6 +643,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -662,6 +663,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

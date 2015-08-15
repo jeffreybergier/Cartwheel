@@ -30,15 +30,27 @@ import PureLayout_Mac
 
 class CartListTableCellUpdatingView: NSView {
     
-    private let primaryButton = NSButton(roundedBezelStyle: true)
+    private let cancelButton = NSButton(style: .Cancel)
+    private let retryButton = NSButton(style: .Retry)
+    private let warningButton = NSButton(style: .Warning)
+    private let buttonStackView = NSStackView()
     private let progressIndicator = NSProgressIndicator()
     private var viewConstraints = [NSLayoutConstraint]()
     
     func viewDidLoad() {
         self.wantsLayer = true
+        
         self.progressIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        self.retryButton.translatesAutoresizingMaskIntoConstraints = false
+        self.warningButton.translatesAutoresizingMaskIntoConstraints = false
+        self.buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        
         self.addSubview(self.progressIndicator)
-        self.addSubview(self.primaryButton)
+        self.addSubview(self.buttonStackView)
+        
+        self.buttonStackView.orientation = .Horizontal
+        self.state = .Normal
         
         self.configureLayoutConstraints()
     }
@@ -48,15 +60,15 @@ class CartListTableCellUpdatingView: NSView {
         let smallInset = round(defaultInset / 1.5)
         
         self.viewConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
-            self.primaryButton.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
-            self.primaryButton.autoPinEdgeToSuperviewEdge(.Top, withInset: smallInset)
-            self.primaryButton.autoPinEdgeToSuperviewEdge(.Bottom, withInset: smallInset)
+            self.buttonStackView.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
+            self.buttonStackView.autoPinEdgeToSuperviewEdge(.Top, withInset: smallInset)
+            self.buttonStackView.autoPinEdgeToSuperviewEdge(.Bottom, withInset: smallInset)
             
             self.progressIndicator.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
             self.progressIndicator.autoPinEdgeToSuperviewEdge(.Top, withInset: smallInset)
             self.progressIndicator.autoPinEdgeToSuperviewEdge(.Bottom, withInset: smallInset)
             
-            self.primaryButton.autoPinEdge(.Leading, toEdge: .Trailing, ofView: self.progressIndicator, withOffset: defaultInset)
+            self.buttonStackView.autoPinEdge(.Leading, toEdge: .Trailing, ofView: self.progressIndicator, withOffset: defaultInset)
 
             }.filter() { object -> Bool in
                 if let contraint = object as? NSLayoutConstraint { return true } else { return false }
@@ -68,6 +80,38 @@ class CartListTableCellUpdatingView: NSView {
     }
     
     // MARK: Internal Methods to be used by controller
+    
+    enum State {
+        case Normal, Warning
+    }
+    
+    private var _buttonState: State = .Normal
+    var state: State {
+        set {
+            _buttonState = newValue
+            dispatch_async(dispatch_get_main_queue()) {
+                for view in self.buttonStackView.views {
+                    self.buttonStackView.removeView(view as! NSView)
+                }
+
+                switch newValue {
+                case .Normal:
+                    self.buttonStackView.addView(self.cancelButton, inGravity: .Bottom)
+                case .Warning:
+                    self.buttonStackView.addView(self.retryButton, inGravity: .Bottom)
+                    self.buttonStackView.addView(self.warningButton, inGravity: .Top)
+                }
+                NSAnimationContext.runAnimationGroup({ context in
+                    context.duration = 0.3
+                    context.allowsImplicitAnimation = true
+                    self.layoutSubtreeIfNeeded()
+                }, completionHandler: nil)
+            }
+        }
+        get {
+            return _buttonState
+        }
+    }
     
     var progressIndicatorType: NSProgressIndicator.IndicatorType {
         get {
@@ -102,19 +146,24 @@ class CartListTableCellUpdatingView: NSView {
             return self.progressIndicator.doubleValue
         }
         set {
-            dispatch_async(dispatch_get_main_queue()) {
-                self.progressIndicator.doubleValue = newValue
+            if self.state == .Normal {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.progressIndicator.doubleValue = newValue
+                }
             }
         }
     }
     
-    func setPrimaryButtonAction(action: Selector, forTarget target: NSObject) {
-        self.primaryButton.target = target
-        self.primaryButton.action = action
+    func setCancelButtonAction(action: Selector, forTarget target: NSObject) {
+        self.cancelButton.target = target
+        self.cancelButton.action = action
+        self.retryButton.target = target
+        self.retryButton.action = action
     }
     
-    func setPrimaryButtonTitle(newTitle: String) {
-        self.primaryButton.title = newTitle
+    func setWarningButtonAction(action: Selector, forTarget target: NSObject) {
+        self.warningButton.target = target
+        self.warningButton.action = action
     }
     
 }

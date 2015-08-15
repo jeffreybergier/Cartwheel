@@ -37,8 +37,7 @@ protocol CartfileUpdateControllerDelegate: class {
     func cartfileUpdateFinished()
 }
 
-
-final class CartfileUpdateController {
+class CartfileUpdateController {
     let project: Project
     weak var delegate: CartfileUpdateControllerDelegate?
     private var currentOperation: Disposable?

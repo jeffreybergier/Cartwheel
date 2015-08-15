@@ -32,8 +32,8 @@ final class CartListView: NSView {
     
     // MARK: UI Element
     
-    let addButton = CWEventPassingButton(roundedBezelStyle: true)
-    let deleteButton = NSButton(roundedBezelStyle: true)
+    let addButton = CWEventPassingButton(style: .Default)
+    let deleteButton = NSButton(style: .Default)
     let tableView = NSTableView()
     let scrollView = NSScrollView()
     private let tableColumn = NSTableColumn(identifier: "CartListColumn")

@@ -264,10 +264,31 @@ extension Set {
 }
 
 extension NSButton {
-    convenience init(roundedBezelStyle: Bool = true) {
+    enum Style {
+        case Default, Cancel, Warning, Retry
+    }
+    
+    convenience init(style: Style) {
         self.init(frame: NSRect(x: 0, y: 0, width: 0, height: 0))
-        if roundedBezelStyle == true {
+        switch style {
+        case .Default:
             self.bezelStyle = .RoundedBezelStyle
+        case .Cancel:
+            self.bezelStyle = .TexturedRoundedBezelStyle
+            self.title = ""
+            self.bordered = false
+            self.image = NSImage(named: NSImageNameStopProgressFreestandingTemplate)
+        case .Retry:
+            self.bezelStyle = .TexturedRoundedBezelStyle
+            self.title = ""
+            self.bordered = false
+            self.image = NSImage(named: NSImageNameRefreshFreestandingTemplate)
+        case .Warning:
+            self.title = ""
+            self.bordered = false
+            self.bezelStyle = .TexturedRoundedBezelStyle
+            self.image = NSImage(named: NSImageNameCaution)
+            (self.cell() as? NSButtonCell)?.imageScaling = NSImageScaling.ImageScaleProportionallyDown
         }
     }
 }

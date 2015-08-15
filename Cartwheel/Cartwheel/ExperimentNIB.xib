@@ -14,6 +14,20 @@
                 <progressIndicator fixedFrame="YES" minValue="59" maxValue="100" doubleValue="59" displayedWhenStopped="NO" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="JeI-vf-Nje">
                     <rect key="frame" x="20" y="233" width="239" height="20"/>
                 </progressIndicator>
+                <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hkX-ZN-T2h">
+                    <rect key="frame" x="233" y="74" width="39" height="38"/>
+                    <buttonCell key="cell" type="round" bezelStyle="circular" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="n6L-we-Ten">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dwV-oi-grm">
+                    <rect key="frame" x="40" y="71" width="29" height="19"/>
+                    <buttonCell key="cell" type="recessed" bezelStyle="recessed" alignment="center" borderStyle="border" inset="2" id="Hgd-Us-CRG">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                        <font key="font" metaFont="systemBold" size="12"/>
+                    </buttonCell>
+                </button>
             </subviews>
             <animations/>
         </customView>

@@ -124,8 +124,8 @@ final class CartListTableCellViewController: NSTableCellView {
             self.contentView.setPrimaryButtonTitle(NSLocalizedString("Update", comment: "Button to perform carthage update"))
             self.contentView.setPrimaryButtonAction("didClickUpdateCartfileButton:", forTarget: self)
             
-            self.updateView.setPrimaryButtonTitle(NSLocalizedString("Cancel", comment: "Button title to cancel current build"))
-            self.updateView.setPrimaryButtonAction("didClickUpdateCartfileButton:", forTarget: self)
+            self.updateView.setCancelButtonAction("didClickUpdateCartfileButton:", forTarget: self)
+            self.updateView.setWarningButtonAction("didClickShowUpdateWarningsButton:", forTarget: self)
             
             // done configuring, don't do it again when cell is recycled
             self.configured = true
@@ -176,6 +176,7 @@ final class CartListTableCellViewController: NSTableCellView {
     }
     
     private var currentOperation: Disposable?
+    private var latestError: NSError?
     
     @objc private func didClickUpdateCartfileButton(sender: NSButton) {
         if let currentOperation = currentOperation {
@@ -183,6 +184,17 @@ final class CartListTableCellViewController: NSTableCellView {
             self.currentOperation = .None
         } else {
             self.currentOperation = self.updateCartfileProject(self.cartfile.project)
+        }
+    }
+    
+    @objc private func didClickShowUpdateWarningsButton(sender: NSButton) {
+        if let error = self.latestError {
+            let alert = NSAlert(error: error.nsError)
+            dispatch_async(dispatch_get_main_queue()) {
+                alert.beginSheetModalForWindow(self.parentWindow!, completionHandler: { untypedResponse in
+                    self.log.error("Cartfile Update Error Ocurred. User received Error and then clicked OK: \(error)")
+                })
+            }
         }
     }
     
@@ -256,16 +268,9 @@ final class CartListTableCellViewController: NSTableCellView {
 extension CartListTableCellViewController: CartfileUpdateControllerDelegate {
     func cartfileUpdateErrorOcurred<E: ErrorType>(error: E?) {
         self.currentOperation = .None
-        self.currentLayout = .Normal
+        self.latestError = error?.nsError
+        self.updateView.state = .Warning
         log.warning("Cartfile Update failed with Error: \(error)")
-        if let error = error {
-            let alert = NSAlert(error: error.nsError)
-            dispatch_async(dispatch_get_main_queue()) {
-                alert.beginSheetModalForWindow(self.parentWindow!, completionHandler: { untypedResponse in
-                    self.log.error("Cartfile Update Error Ocurred. User received Error and then clicked OK: \(error)")
-                })
-            }
-        }
     }
     func cartfileUpdateInterrupted() {
         self.currentOperation = .None
@@ -278,8 +283,10 @@ extension CartListTableCellViewController: CartfileUpdateControllerDelegate {
         self.updateView.progressIndicatorProgress = progressPercentage * 100
     }
     func cartfileUpdateStarted() {
+        self.latestError = .None
         self.updateView.progressIndicatorType = .Indeterminate
         self.updateView.setProgressIndicatorAnimation(true)
+        self.updateView.state = .Normal
         self.currentLayout = .Updating
     }
     func cartfileUpdateFinished() {
