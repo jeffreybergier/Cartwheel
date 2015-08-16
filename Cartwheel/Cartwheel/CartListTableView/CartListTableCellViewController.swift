@@ -32,14 +32,6 @@ import CarthageKit
 import ReactiveCocoa
 import ReactiveTask
 
-protocol CartfileUpdateControllerDelegate: class {
-    func cartfileUpdateErrorOcurred<E: ErrorType>(error: E?)
-    func cartfileUpdateInterrupted()
-    func cartfileUpdateBuildProgressPercentageChanged(progressPercentage: Double)
-    func cartfileUpdateStarted()
-    func cartfileUpdateFinished()
-}
-
 protocol CartfileWindowControllable: class {
     var window: NSWindow? { get }
 }
@@ -55,6 +47,7 @@ final class CartListTableCellViewController: NSTableCellView {
     
     private let log = XCGLogger.defaultInstance()
     private weak var parentWindow: NSWindow?
+    private weak var cartfileUpdateController: CartfileUpdaterController?
     
     static let identifier = "CartListTableCellViewController"
     override var identifier: String? {
@@ -67,47 +60,105 @@ final class CartListTableCellViewController: NSTableCellView {
     
     private var normalLayoutConstraints = [NSLayoutConstraint]()
     private var updatingLayoutConstraints = [NSLayoutConstraint]()
-    private var currentLayout: Layout = .Normal {
+    
+    private func switchToUpdatingLayout() {
+        self.removeConstraints(self.normalLayoutConstraints)
+        self.addConstraints(self.updatingLayoutConstraints)
+    }
+    
+    private func switchToNormalLayout() {
+        self.removeConstraints(self.updatingLayoutConstraints)
+        self.addConstraints(self.normalLayoutConstraints)
+    }
+    
+    private var performAnimationWhenChangingState = true
+    private var cartfileUpdateStatus: CartfileUpdater.Status = .NonExistant {
         didSet {
             dispatch_async(dispatch_get_main_queue()) {
-                NSAnimationContext.runAnimationGroup({ context in
-                    context.duration = 0.3
-                    context.allowsImplicitAnimation = true
-                    switch self.currentLayout {
-                    case .Normal:
-                        self.removeConstraints(self.updatingLayoutConstraints)
-                        self.addConstraints(self.normalLayoutConstraints)
-                    case .Updating:
-                        self.removeConstraints(self.normalLayoutConstraints)
-                        self.addConstraints(self.updatingLayoutConstraints)
-                    }
-                    self.layoutSubtreeIfNeeded()
-                }, completionHandler: nil)
+                switch self.cartfileUpdateStatus {
+                case .NotStarted:
+                    self.switchToNormalLayout()
+                    self.updateView.progressIndicatorState = .Determinate
+                    self.updateView.progressIndicatorProgress = 0
+                    self.updateView.buttonState = .Normal
+                case .InProgressIndeterminate:
+                    self.updateView.progressIndicatorState = .Indeterminate
+                    self.updateView.buttonState = .Normal
+                    self.switchToUpdatingLayout()
+                case .InProgressDeterminate(let percentage):
+                    self.updateView.progressIndicatorState = .Determinate
+                    self.updateView.progressIndicatorProgress = percentage * 100
+                    self.updateView.buttonState = .Normal
+                    self.switchToUpdatingLayout()
+                case .FinishedSuccess:
+                    self.switchToNormalLayout()
+                    self.updateView.progressIndicatorState = .Determinate
+                    self.updateView.progressIndicatorProgress = 0
+                    self.updateView.buttonState = .Normal
+                case .FinishedInterrupted:
+                    self.switchToNormalLayout()
+                    self.updateView.progressIndicatorState = .Determinate
+                    self.updateView.progressIndicatorProgress = 0
+                    self.updateView.buttonState = .Normal
+                case .FinishedError(let error):
+                    self.updateView.progressIndicatorState = .Determinate
+                    self.updateView.buttonState = .Warning
+                    self.switchToUpdatingLayout()
+                case .NonExistant:
+                    self.switchToNormalLayout()
+                    self.updateView.progressIndicatorState = .Determinate
+                    self.updateView.progressIndicatorProgress = 0
+                    self.updateView.buttonState = .Normal
+                }
+                if self.performAnimationWhenChangingState == true {
+                    NSAnimationContext.runAnimationGroup({ context in
+                        context.duration = 0.3
+                        context.allowsImplicitAnimation = true
+                        self.layoutSubtreeIfNeeded()
+                    }, completionHandler: nil
+                    )
+                } else {
+                    self.performAnimationWhenChangingState = true
+                }
             }
         }
     }
     
-    enum Layout {
-        case Normal, Updating
+    private func cartfileUpdateStatusChanged(cartfile: CWCartfile) {
+        if self.cartfile == cartfile { // don't do anything if the cartfile update is not mine
+            if let status = self.cartfileUpdateController?.statusForCartfile(cartfile) {
+                self.cartfileUpdateStatus = status
+            } else {
+                self.cartfileUpdateStatus = .NonExistant
+            }
+        }
     }
     
     private func prepareCellForNewModelObject() {
+        self.performAnimationWhenChangingState = false
+        self.cartfileUpdateStatus = .NonExistant
         self.contentView.clearCellContents()
     }
     
     private func updateCellWithNewModelObject() {
-        if let cartfileTitle = self.cartfile?.name {
-            self.contentView.setPrimaryTextFieldString(cartfileTitle)
+        if let cartfile = self.cartfile {
+            self.performAnimationWhenChangingState = false
+            self.cartfileUpdateStatusChanged(cartfile)
+            self.contentView.setPrimaryTextFieldString(cartfile.name)
         } else {
             self.contentView.clearCellContents()
         }
     }
     
     private var configured = false
-    func configureViewWithWindow(window: NSWindow?) {
+    func configureViewWithWindow(window: NSWindow?, updateController controller: CartfileUpdaterController?) {
         if self.configured == false {
             // set the window
             self.parentWindow = window
+            
+            // register with the observer
+            self.cartfileUpdateController = controller
+            self.cartfileUpdateController?.updateObserver.add(self, self.dynamicType.cartfileUpdateStatusChanged)
             
             // add the views
             self.addSubview(self.contentView)
@@ -175,122 +226,42 @@ final class CartListTableCellViewController: NSTableCellView {
         self.addConstraints(self.normalLayoutConstraints)
     }
     
-    private var currentOperation: Disposable?
-    private var latestError: NSError?
-    
     @objc private func didClickUpdateCartfileButton(sender: NSButton) {
-        if let currentOperation = currentOperation {
-            currentOperation.dispose()
-            self.currentOperation = .None
-        } else {
-            self.currentOperation = self.updateCartfileProject(self.cartfile.project)
+        switch self.cartfileUpdateController!.statusForCartfile(self.cartfile) {
+        case .NonExistant, .NotStarted, .FinishedSuccess, .FinishedInterrupted, .FinishedError(let _):
+            self.cartfileUpdateController?.updateCartfile(self.cartfile, forceRestart: true)
+        case .InProgressIndeterminate, .InProgressDeterminate(let _):
+            self.cartfileUpdateController?.cancelUpdateForCartfile(self.cartfile)
         }
     }
     
     @objc private func didClickShowUpdateWarningsButton(sender: NSButton) {
-        if let error = self.latestError {
+        switch self.cartfileUpdateController!.statusForCartfile(self.cartfile) {
+        case .FinishedError(let error):
             let alert = NSAlert(error: error.nsError)
+            alert.addButtonWithTitle(NSLocalizedString("Dismiss and Clear Error", comment: "Primary button in the build error alert box that closes the box and clears the error"))
+            alert.addButtonWithTitle(NSLocalizedString("Dismiss", comment: "Second button in the build error alert box that closes the box and does not clear the error"))
             dispatch_async(dispatch_get_main_queue()) {
                 alert.beginSheetModalForWindow(self.parentWindow!, completionHandler: { untypedResponse in
-                    self.log.error("Cartfile Update Error Ocurred. User received Error and then clicked OK: \(error)")
+                    if let response = NSAlert.Style.CartfileBuildErrorDismissResponse(rawValue: Int(untypedResponse.value)) {
+                        switch response {
+                        case .DismissButton:
+                            self.log.error("Cartfile Update Error Ocurred. User received Error and then clicked dismiss: \(error)")
+                        case .DismissAndClearButton:
+                            self.log.error("Cartfile Update Error Ocurred. User received Error and then clicked dismiss and clear: \(error)")
+                            self.cartfileUpdateController?.cancelUpdateForCartfile(self.cartfile)
+                        }
+                    }
                 })
             }
+        default:
+            break
         }
-    }
-    
-    private func updateCartfileProject(project: Project) -> Disposable {
-        var jobs = [SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>]()
-        //var jobs = [SignalProducer<T, ErrorType>]()
-        return project.updateDependencies()
-            |> then(SignalProducer(values: [
-                project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac),
-                project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS),
-                project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS)
-                ])
-            )
-            |> flatten(.Concat)
-            |> on(started: {
-                println("Dependencies Started")
-                self.cartfileUpdateStarted()
-            })
-            |> start(
-                error: { error in
-                    println("Dependencies Error: \(error)")
-                    self.cartfileUpdateErrorOcurred(error)
-                }, completed: {
-                    println("Dependencies Finished.")
-                    self.currentOperation = self.buildJobs(jobs)
-                }, interrupted: {
-                    println("Dependencies Interrupted.")
-                    self.cartfileUpdateInterrupted()
-                }, next: { build in
-                    jobs += [build]
-            })
-    }
-    
-    private func buildJobs<T, E: ErrorType>(jobs: [SignalProducer<T, E>]) -> Disposable {
-        var completedJobs = 0
-        return SignalProducer(values: jobs)
-            |> flatMap(.Concat) { job in
-                return job
-                    |> on(completed: {
-                        completedJobs++
-                        println("\(completedJobs) of \(jobs.count) Finished")
-                        self.cartfileUpdateBuildProgressPercentageChanged(Double(completedJobs) / Double(jobs.count))
-                    })
-            }
-            |> on(started: {
-                println("\(jobs.count) Jobs Started")
-                self.cartfileUpdateBuildProgressPercentageChanged(Double(completedJobs) / Double(jobs.count))
-            })
-            |> start(
-                error: { error in
-                    println("Jobs Error: \(error)")
-                    self.cartfileUpdateErrorOcurred(error)
-                },
-                completed: {
-                    println("\(jobs.count) Jobs Finished")
-                    self.cartfileUpdateFinished()
-                },
-                interrupted: {
-                    println("Jobs Interrupted")
-                    self.cartfileUpdateInterrupted()
-                })
     }
     
     // MARK: Special Property used to Calculate Row Height
     
     var viewHeightForTableRowHeightCalculation: CGFloat {
         return self.contentView.viewHeightForTableRowHeightCalculation
-    }
-}
-
-extension CartListTableCellViewController: CartfileUpdateControllerDelegate {
-    func cartfileUpdateErrorOcurred<E: ErrorType>(error: E?) {
-        self.currentOperation = .None
-        self.latestError = error?.nsError
-        self.updateView.state = .Warning
-        log.warning("Cartfile Update failed with Error: \(error)")
-    }
-    func cartfileUpdateInterrupted() {
-        self.currentOperation = .None
-        self.currentLayout = .Normal
-        log.warning("Cartfile Update was Interrupted")
-    }
-    func cartfileUpdateBuildProgressPercentageChanged(progressPercentage: Double) {
-        self.updateView.setProgressIndicatorAnimation(false)
-        self.updateView.progressIndicatorType = .Determinate
-        self.updateView.progressIndicatorProgress = progressPercentage * 100
-    }
-    func cartfileUpdateStarted() {
-        self.latestError = .None
-        self.updateView.progressIndicatorType = .Indeterminate
-        self.updateView.setProgressIndicatorAnimation(true)
-        self.updateView.state = .Normal
-        self.currentLayout = .Updating
-    }
-    func cartfileUpdateFinished() {
-        self.currentOperation = .None
-        self.currentLayout = .Normal
     }
 }

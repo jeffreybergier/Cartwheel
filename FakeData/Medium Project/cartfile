@@ -1,2 +1,1 @@
-github "thoughtbot/Argo" ~> 1.0.0
-#github "robrix/Box" "1.2.2"
+git "file:///Volumes/Ydesign/Source/Github/Argo" ~> 1.0.0

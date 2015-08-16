@@ -131,6 +131,12 @@ extension NSURL {
         // fixes a bug where we were sometimes returning an empty array
         if let URLs = URLs where URLs.isEmpty == false { return URLs } else { return .None }
     }
+    
+    var parentDirectory: NSURL {
+        var components = self.pathComponents!
+        components.removeLast()
+        return NSURL.fileURLWithPathComponents(components)!
+    }
 }
 
 struct URLEnumeration {
@@ -141,7 +147,7 @@ struct URLEnumeration {
 // MARK: Fixing Broken AppKit Stuff
 
 extension NSProgressIndicator {
-    enum IndicatorType {
+    enum IndicatorState {
         case Indeterminate, Determinate
     }
 }
@@ -331,6 +337,11 @@ extension NSAlert {
         enum CartfileRemoveConfirmResponse: Int {
             case RemoveButton = 1000
             case CancelButton = 1001
+        }
+        
+        enum CartfileBuildErrorDismissResponse: Int {
+            case DismissButton = 1001
+            case DismissAndClearButton = 1000
         }
     }
     

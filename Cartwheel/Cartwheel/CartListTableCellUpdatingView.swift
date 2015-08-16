@@ -50,7 +50,9 @@ class CartListTableCellUpdatingView: NSView {
         self.addSubview(self.buttonStackView)
         
         self.buttonStackView.orientation = .Horizontal
-        self.state = .Normal
+        self.buttonState = .Normal
+        self.progressIndicatorState = .Determinate
+        self.progressIndicatorProgress = 0
         
         self.configureLayoutConstraints()
     }
@@ -86,14 +88,13 @@ class CartListTableCellUpdatingView: NSView {
     }
     
     private var _buttonState: State = .Normal
-    var state: State {
+    var buttonState: State {
         set {
             _buttonState = newValue
             dispatch_async(dispatch_get_main_queue()) {
                 for view in self.buttonStackView.views {
                     self.buttonStackView.removeView(view as! NSView)
                 }
-
                 switch newValue {
                 case .Normal:
                     self.buttonStackView.addView(self.cancelButton, inGravity: .Bottom)
@@ -113,7 +114,7 @@ class CartListTableCellUpdatingView: NSView {
         }
     }
     
-    var progressIndicatorType: NSProgressIndicator.IndicatorType {
+    var progressIndicatorState: NSProgressIndicator.IndicatorState {
         get {
             switch self.progressIndicator.indeterminate {
             case false:
@@ -146,10 +147,8 @@ class CartListTableCellUpdatingView: NSView {
             return self.progressIndicator.doubleValue
         }
         set {
-            if self.state == .Normal {
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.progressIndicator.doubleValue = newValue
-                }
+            dispatch_async(dispatch_get_main_queue()) {
+                self.progressIndicator.doubleValue = newValue
             }
         }
     }

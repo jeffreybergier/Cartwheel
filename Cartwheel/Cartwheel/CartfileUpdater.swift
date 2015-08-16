@@ -28,27 +28,41 @@
 import CarthageKit
 import ReactiveCocoa
 import ReactiveTask
+import XCGLogger
 
-//protocol CartfileUpdateControllerDelegate: class {
-//    func cartfileUpdateErrorOcurred(error: CarthageError?)
-//    func cartfileUpdateInterrupted()
-//    func cartfileUpdateBuildProgressPercentageChanged(progressPercentage: Double)
-//    func cartfileUpdateStarted()
-//    func cartfileUpdateFinished()
-//}
+protocol CartfileUpdateControllerDelegate: class {
+    func cartfile(cartfile: CWCartfile, statusChanged status: CartfileUpdater.Status)
+}
+
+extension CartfileUpdater: Printable {
+    var description: String {
+        return "CartfileUpdater <\(self.cartfile.name)>"
+    }
+}
 
 class CartfileUpdater {
-    let project: Project
+    let cartfile: CWCartfile
     weak var delegate: CartfileUpdateControllerDelegate?
     private var currentOperation: Disposable?
+    private let log = XCGLogger.defaultInstance()
     
-    init(delegate: CartfileUpdateControllerDelegate, project: Project) {
+    init(cartfile: CWCartfile, delegate: CartfileUpdateControllerDelegate) {
         self.delegate = delegate
-        self.project = project
+        self.cartfile = cartfile
+    }
+    
+    enum Status {
+        case NotStarted, InProgressIndeterminate, InProgressDeterminate(percentage: Double), FinishedSuccess, FinishedInterrupted, FinishedError(error: ErrorType), NonExistant
+    }
+    
+    private(set) var status = Status.NotStarted {
+        didSet {
+            self.delegate?.cartfile(self.cartfile, statusChanged: self.status)
+        }
     }
     
     func start() {
-        self.currentOperation = self.updateCartfileProject(self.project)
+        self.currentOperation = self.updateCartfileProject(self.cartfile.project)
     }
     
     func cancel() {
@@ -68,19 +82,19 @@ class CartfileUpdater {
             )
             |> flatten(.Concat)
             |> on(started: {
-                println("Dependencies Started")
-                self.delegate?.cartfileUpdateStarted()
+                self.log.info("\(self): Downloading Dependencies Started")
+                self.status = .InProgressIndeterminate
             })
-            |> start(
+            |> ReactiveCocoa.start(
                 error: { error in
-                    println("Dependencies Error: \(error)")
-                    self.delegate?.cartfileUpdateErrorOcurred(error)
+                    self.log.warning("\(self): Downloading Dependencies Failed with Error: \(error)")
+                    self.status = .FinishedError(error: error)
                 }, completed: {
-                    println("Dependencies Finished.")
+                    self.log.info("\(self): Downloading Dependencies Finished")
                     self.currentOperation = self.buildJobs(jobs)
                 }, interrupted: {
-                    println("Dependencies Interrupted.")
-                    self.delegate?.cartfileUpdateInterrupted()
+                    self.log.warning("\(self): Downloading Dependencies Interrupted")
+                    self.status = .FinishedInterrupted
                 }, next: { build in
                     jobs += [build]
             })
@@ -93,26 +107,24 @@ class CartfileUpdater {
                 return job
                     |> on(completed: {
                         completedJobs++
-                        println("\(completedJobs) of \(jobs.count) Finished")
-                        self.delegate?.cartfileUpdateBuildProgressPercentageChanged(Double(completedJobs) / Double(jobs.count))
+                        self.log.info("\(self): Compiling \(completedJobs) of \(jobs.count)")
+                        self.status = .InProgressDeterminate(percentage: Double(completedJobs) / Double(jobs.count))
                     })
             }
             |> on(started: {
-                println("\(jobs.count) Jobs Started")
-                self.delegate?.cartfileUpdateBuildProgressPercentageChanged(Double(completedJobs) / Double(jobs.count))
+                self.log.info("\(self): Compiling Started")
+                self.status = .InProgressDeterminate(percentage: Double(completedJobs) / Double(jobs.count))
             })
-            |> start(
+            |> ReactiveCocoa.start(
                 error: { error in
-                    println("Jobs Error: \(error)")
-                    self.delegate?.cartfileUpdateErrorOcurred(error)
+                    self.log.warning("\(self): Compiling Failed with Error: \(error)")
+                    self.status = .FinishedError(error: error)
                 }, completed: {
-                    println("\(jobs.count) Jobs Finished")
-                    self.delegate?.cartfileUpdateFinished()
+                    self.log.info("\(self): Compiling Finished")
+                    self.status = .FinishedSuccess
                 }, interrupted: {
-                    println("Jobs Interrupted")
-                    self.delegate?.cartfileUpdateInterrupted()
-                }, next: { _ in
-                    //
+                    self.log.warning("\(self): Compiling Interrupted")
+                    self.status = .FinishedInterrupted
             })
     }
 }
