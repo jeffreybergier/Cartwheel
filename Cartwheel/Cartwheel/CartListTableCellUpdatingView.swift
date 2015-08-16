@@ -48,7 +48,7 @@ class CartListTableCellUpdatingView: NSView {
         
         self.addSubview(self.progressIndicator)
         self.addSubview(self.buttonStackView)
-        
+                
         self.buttonStackView.orientation = .Horizontal
         self.buttonState = .Normal
         self.progressIndicatorState = .Determinate

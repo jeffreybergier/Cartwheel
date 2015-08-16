@@ -358,12 +358,18 @@ extension NSAlert {
 }
 
 extension NSTextField {
-    class func nonEditableTextField() -> NSTextField {
-        let textField = NSTextField()
-        textField.bordered = false
-        (textField.cell() as? NSTextFieldCell)?.backgroundColor = NSColor.clearColor()
-        textField.editable = false
-        return textField
+    enum Style {
+        case TableRowCellTitle
+    }
+    
+    convenience init(style: Style) {
+        self.init()
+        switch style {
+        case .TableRowCellTitle:
+            self.bordered = false
+            (self.cell() as? NSTextFieldCell)?.backgroundColor = NSColor.clearColor()
+            self.editable = false
+        }
     }
 }
 

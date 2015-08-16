@@ -58,20 +58,6 @@ final class CartListTableCellViewController: NSTableCellView {
     private let contentView = CartListTableCellView()
     private let updateView = CartListTableCellUpdatingView()
     
-    private var normalLayoutConstraints = [NSLayoutConstraint]()
-    private var updatingLayoutConstraints = [NSLayoutConstraint]()
-    
-    private func switchToUpdatingLayout() {
-        self.removeConstraints(self.normalLayoutConstraints)
-        self.addConstraints(self.updatingLayoutConstraints)
-    }
-    
-    private func switchToNormalLayout() {
-        self.removeConstraints(self.updatingLayoutConstraints)
-        self.addConstraints(self.normalLayoutConstraints)
-    }
-    
-    private var performAnimationWhenChangingState = true
     private var cartfileUpdateStatus: CartfileUpdater.Status = .NonExistant {
         didSet {
             dispatch_async(dispatch_get_main_queue()) {
@@ -110,16 +96,11 @@ final class CartListTableCellViewController: NSTableCellView {
                     self.updateView.progressIndicatorProgress = 0
                     self.updateView.buttonState = .Normal
                 }
-                if self.performAnimationWhenChangingState == true {
-                    NSAnimationContext.runAnimationGroup({ context in
-                        context.duration = 0.3
-                        context.allowsImplicitAnimation = true
-                        self.layoutSubtreeIfNeeded()
-                    }, completionHandler: nil
-                    )
-                } else {
-                    self.performAnimationWhenChangingState = true
-                }
+                NSAnimationContext.runAnimationGroup({ context in
+                    context.duration = 0.3
+                    context.allowsImplicitAnimation = true
+                    self.layoutSubtreeIfNeeded()
+                    }, completionHandler: nil)
             }
         }
     }
@@ -135,14 +116,12 @@ final class CartListTableCellViewController: NSTableCellView {
     }
     
     private func prepareCellForNewModelObject() {
-        self.performAnimationWhenChangingState = false
         self.cartfileUpdateStatus = .NonExistant
         self.contentView.clearCellContents()
     }
     
     private func updateCellWithNewModelObject() {
         if let cartfile = self.cartfile {
-            self.performAnimationWhenChangingState = false
             self.cartfileUpdateStatusChanged(cartfile)
             self.contentView.setPrimaryTextFieldString(cartfile.name)
         } else {
@@ -158,7 +137,7 @@ final class CartListTableCellViewController: NSTableCellView {
             
             // register with the observer
             self.cartfileUpdateController = controller
-            self.cartfileUpdateController?.updateObserver.add(self, self.dynamicType.cartfileUpdateStatusChanged)
+            self.cartfileUpdateController?.changeNotifier.add(self, self.dynamicType.cartfileUpdateStatusChanged)
             
             // add the views
             self.addSubview(self.contentView)
@@ -181,6 +160,19 @@ final class CartListTableCellViewController: NSTableCellView {
             // done configuring, don't do it again when cell is recycled
             self.configured = true
         }
+    }
+    
+    private var normalLayoutConstraints = [NSLayoutConstraint]()
+    private var updatingLayoutConstraints = [NSLayoutConstraint]()
+    
+    private func switchToUpdatingLayout() {
+        self.removeConstraints(self.normalLayoutConstraints)
+        self.addConstraints(self.updatingLayoutConstraints)
+    }
+    
+    private func switchToNormalLayout() {
+        self.removeConstraints(self.updatingLayoutConstraints)
+        self.addConstraints(self.normalLayoutConstraints)
     }
     
     private func configureConstraints() {

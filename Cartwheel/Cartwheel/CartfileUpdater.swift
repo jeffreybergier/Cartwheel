@@ -29,47 +29,51 @@ import CarthageKit
 import ReactiveCocoa
 import ReactiveTask
 import XCGLogger
+import ObserverSet
 
+// MARK: Delegate Protocol
 protocol CartfileUpdateControllerDelegate: class {
-    func cartfile(cartfile: CWCartfile, statusChanged status: CartfileUpdater.Status)
-}
-
-extension CartfileUpdater: Printable {
-    var description: String {
-        return "CartfileUpdater <\(self.cartfile.name)>"
-    }
+    var changeNotifier: ObserverSet<CWCartfile> { get }
 }
 
 class CartfileUpdater {
-    let cartfile: CWCartfile
-    weak var delegate: CartfileUpdateControllerDelegate?
-    private var currentOperation: Disposable?
+    // MARK: Logging
     private let log = XCGLogger.defaultInstance()
     
+    // MARK: Cartfile storage
+    let cartfile: CWCartfile
+    private lazy var project: Project = {
+        return Project(directoryURL: self.cartfile.url.parentDirectory)
+    }()
+    
+    // MARK: Initialization
     init(cartfile: CWCartfile, delegate: CartfileUpdateControllerDelegate) {
         self.delegate = delegate
         self.cartfile = cartfile
     }
     
-    enum Status {
-        case NotStarted, InProgressIndeterminate, InProgressDeterminate(percentage: Double), FinishedSuccess, FinishedInterrupted, FinishedError(error: ErrorType), NonExistant
-    }
-    
-    private(set) var status = Status.NotStarted {
-        didSet {
-            self.delegate?.cartfile(self.cartfile, statusChanged: self.status)
-        }
-    }
+    // MARK: Handle Starting and Stopping
+    private var currentOperation: Disposable?
     
     func start() {
-        self.currentOperation = self.updateCartfileProject(self.cartfile.project)
+        self.currentOperation = self.updateCartfileProject(self.project)
     }
     
     func cancel() {
         self.currentOperation?.dispose()
         self.currentOperation = .None
     }
-
+    
+    // MARK: Notify the Delegate of Changes
+    weak var delegate: CartfileUpdateControllerDelegate?
+    
+    private(set) var status = Status.NotStarted {
+        didSet {
+            self.delegate?.changeNotifier.notify(self.cartfile)
+        }
+    }
+    
+    // MARK: Do the actual work
     private func updateCartfileProject(project: Project) -> Disposable {
         var jobs = [SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>]()
         //var jobs = [SignalProducer<T, ErrorType>]()
@@ -126,5 +130,24 @@ class CartfileUpdater {
                     self.log.warning("\(self): Compiling Interrupted")
                     self.status = .FinishedInterrupted
             })
+    }
+    
+    // MARK: Internal Enum
+    enum Status {
+        case NotStarted,
+        InProgressIndeterminate,
+        InProgressDeterminate(percentage: Double),
+        FinishedSuccess,
+        FinishedInterrupted,
+        FinishedError(error: ErrorType),
+        NonExistant
+    }
+}
+
+
+// MARK: Printable
+extension CartfileUpdater: Printable {
+    var description: String {
+        return "CartfileUpdater <\(self.cartfile.name)>"
     }
 }

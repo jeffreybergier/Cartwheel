@@ -31,10 +31,6 @@ import CarthageKit
 
 struct CWCartfile {
     var url: NSURL
-    var project: Project
-    var parentDirectory: NSURL {
-        return self.url.parentDirectory
-    }
     var name: String {
         return self.url.parentDirectory.lastPathComponent!
     }
@@ -42,7 +38,6 @@ struct CWCartfile {
     init?(url: NSURL) {
         if url.lastPathComponent?.lowercaseString == CWCartfile.defaultsPlist.cartfileFileName.lowercaseString {
             self.url = url
-            self.project = CarthageKit.Project(directoryURL: url.parentDirectory)
         } else {
             return nil
         }
