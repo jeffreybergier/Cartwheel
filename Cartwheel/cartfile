@@ -5,11 +5,11 @@ github "duemunk/Async" ~> 1.2.1
 github "jeffreybergier/SwiftObserverSet" "master"
 
 ## When using the official Carthage Github
-github "Carthage/Carthage" ~> 0.8
+github "Carthage/Carthage" "cba1b0d838bc4d3fd785868418dc0bd936032f80"
 
 ## Frameworks not listed in CarthageKit Cartfile but are required
-github "Carthage/Commandant" ~> 0.6.1
-github "jdhealy/PrettyColors" ~> 2.0
+#github "Carthage/Commandant" ~> 0.6.1
+#github "jdhealy/PrettyColors" ~> 2.0
 
 ## My own fork of Carthage that works and signs properly
 #github "jeffreybergier/Carthage" "master"
