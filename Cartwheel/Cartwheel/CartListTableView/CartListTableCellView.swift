@@ -105,7 +105,7 @@ final class CartListTableCellView: NSView {
     }
     
     struct InterfaceElements {
-        var primaryTextField = NSTextField.nonEditableTextField()
+        var primaryTextField = NSTextField(style: .TableRowCellTitle)
         var primaryButton = NSButton(style: .Default)
         var stackView = NSStackView()
         var allViewsWithinStackView: [NSView]

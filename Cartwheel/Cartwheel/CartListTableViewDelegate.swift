@@ -30,6 +30,8 @@ import ObserverSet
 
 class CartListTableViewDelegate: CartListChildController, NSTableViewDelegate {
     
+    private let cartfileUpdateController = CartfileUpdaterController()
+    
     // MARK: Handle RowViews and CellViews
     
     func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
@@ -54,7 +56,7 @@ class CartListTableViewDelegate: CartListChildController, NSTableViewDelegate {
         else {
             cellView = CartListTableCellViewController()
         }
-        cellView.configureViewWithWindow(self.controller?.window)
+        cellView.configureViewWithWindow(self.controller?.window, updateController: self.cartfileUpdateController)
         cellView.cartfile = self.controller?.cartfiles?[safe: row]
         return cellView
     }

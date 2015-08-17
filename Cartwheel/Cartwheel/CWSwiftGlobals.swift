@@ -131,6 +131,12 @@ extension NSURL {
         // fixes a bug where we were sometimes returning an empty array
         if let URLs = URLs where URLs.isEmpty == false { return URLs } else { return .None }
     }
+    
+    var parentDirectory: NSURL {
+        var components = self.pathComponents!
+        components.removeLast()
+        return NSURL.fileURLWithPathComponents(components)!
+    }
 }
 
 struct URLEnumeration {
@@ -141,7 +147,7 @@ struct URLEnumeration {
 // MARK: Fixing Broken AppKit Stuff
 
 extension NSProgressIndicator {
-    enum IndicatorType {
+    enum IndicatorState {
         case Indeterminate, Determinate
     }
 }
@@ -332,6 +338,11 @@ extension NSAlert {
             case RemoveButton = 1000
             case CancelButton = 1001
         }
+        
+        enum CartfileBuildErrorDismissResponse: Int {
+            case DismissButton = 1001
+            case DismissAndClearButton = 1000
+        }
     }
     
     convenience init(style: Style) {
@@ -347,12 +358,18 @@ extension NSAlert {
 }
 
 extension NSTextField {
-    class func nonEditableTextField() -> NSTextField {
-        let textField = NSTextField()
-        textField.bordered = false
-        (textField.cell() as? NSTextFieldCell)?.backgroundColor = NSColor.clearColor()
-        textField.editable = false
-        return textField
+    enum Style {
+        case TableRowCellTitle
+    }
+    
+    convenience init(style: Style) {
+        self.init()
+        switch style {
+        case .TableRowCellTitle:
+            self.bordered = false
+            (self.cell() as? NSTextFieldCell)?.backgroundColor = NSColor.clearColor()
+            self.editable = false
+        }
     }
 }
 
