@@ -31,38 +31,6 @@ import ReactiveTask
 import XCGLogger
 import ObserverSet
 
-/// Represents the user’s chosen platform to build for.
-public enum BuildPlatform {
-    /// Build for all available platforms.
-    case All
-    
-    /// Build only for iOS.
-    case iOS
-    
-    /// Build only for OS X.
-    case Mac
-    
-    /// Build only for watchOS.
-    case watchOS
-    
-    /// The `Platform` corresponding to this setting.
-    public var platform: Platform? {
-        switch self {
-        case .All:
-            return nil
-            
-        case .iOS:
-            return .iOS
-            
-        case .Mac:
-            return .Mac
-            
-        case .watchOS:
-            return .watchOS
-        }
-    }
-}
-
 // MARK: Delegate Protocol
 protocol CartfileUpdateControllerDelegate: class {
     var changeNotifier: ObserverSet<CWCartfile> { get }
@@ -89,43 +57,6 @@ class CartfileUpdater {
     
     func start() {
         self.currentOperation = self.updateCartfileProject(self.project)
-        self.project.projectEvents
-            |> observe(next: { event in
-                switch event {
-                case .Cloning(let id):
-                    println("Cloning: \(id.name)")
-                case .Fetching(let id):
-                    println("Fetching: \(id.name)")
-                case .CheckingOut(let id, let string):
-                    println("Checking Out: \(id.name), string: \(string)")
-                case .DownloadingBinaries(let id, let string):
-                    println("Downloading Binaries: \(id.name), string: \(string)")
-                case .SkippedDownloadingBinaries(let id, let string):
-                    println("Skipped Downloading Binaries: \(id.name), string: \(string)")
-                }
-            })
-    }
-    
-    /// Builds the project in the given directory, using the given options.
-    ///
-    /// Returns a producer of producers, representing each scheme being built.
-    private func buildProjectInDirectoryURL(directoryURL: NSURL) -> SignalProducer<BuildSchemeProducer, CarthageError> {
-        let project = Project(directoryURL: directoryURL)
-        let buildProducer = project.loadCombinedCartfile()
-            |> map { _ in project }
-            |> catch { error in
-                return SignalProducer(error: error)
-            }
-            |> flatMap(.Merge) { project in
-                return project //.migrateIfNecessary(options.colorOptions)
-                    |> on(next: { next in println(next) })
-                    |> then(SignalProducer(value: project))
-            }
-            |> flatMap(.Merge) { project in
-                return project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .All)
-        }
-        
-        return buildProducer
     }
     
     func cancel() {
@@ -156,13 +87,14 @@ class CartfileUpdater {
                 self.log.info("\(self): Checking Out: \(id.name) \(version)")
             case .DownloadingBinaries(let id, let version):
                 self.log.info("\(self): Downloading Binaries: \(id.name) \(version)")
+            case .SkippedDownloadingBinaries(let id, let version):
+                self.log.info("\(self): Skipped Downloading Binaries: \(id.name) \(version)")
             }
         })
         
+        // do the work to checkout dependencies
         var jobs = [SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>]()
-        //var jobs = [SignalProducer<T, ErrorType>]()
         return project.updateDependencies()
-            |> then(project.checkoutResolvedDependencies())
             |> then(SignalProducer(values: [
                 project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac),
                 project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS),
@@ -190,6 +122,7 @@ class CartfileUpdater {
     }
     
     private func buildJobs(jobs: [SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>]) -> Disposable {
+        // compile the checked out dependencies
         var completedJobs = 0
         return SignalProducer(values: jobs)
             |> flatMap(.Concat) { job in
@@ -233,7 +166,6 @@ class CartfileUpdater {
         NonExistant
     }
 }
-
 
 // MARK: Printable
 extension CartfileUpdater: Printable {
