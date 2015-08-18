@@ -97,8 +97,8 @@ class CartfileUpdater {
         return project.updateDependencies()
             |> then(SignalProducer(values: [
                 project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .Mac),
-                project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS),
-                project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS)
+                project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .iOS)
+                //project.buildCheckedOutDependenciesWithConfiguration("", forPlatform: .watchOS)
                 ])
             )
             |> flatten(.Concat)
