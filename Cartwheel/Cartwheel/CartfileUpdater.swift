@@ -75,6 +75,21 @@ class CartfileUpdater {
     
     // MARK: Do the actual work
     private func updateCartfileProject(project: Project) -> Disposable {
+        // get updates to log
+        project.projectEvents
+        |> observe(next: { event in
+            switch event {
+            case .Cloning(let id):
+                self.log.info("\(self): Cloning: \(id.name)")
+            case .Fetching(let id):
+                self.log.info("\(self): Fetching: \(id.name)")
+            case .CheckingOut(let id, let version):
+                self.log.info("\(self): Checking Out: \(id.name) \(version)")
+            case .DownloadingBinaries(let id, let version):
+                self.log.info("\(self): Downloading Binaries: \(id.name) \(version)")
+            }
+        })
+        
         var jobs = [SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>]()
         //var jobs = [SignalProducer<T, ErrorType>]()
         return project.updateDependencies()
@@ -104,15 +119,20 @@ class CartfileUpdater {
             })
     }
     
-    private func buildJobs<T, E>(jobs: [SignalProducer<T, E>]) -> Disposable {
+    private func buildJobs(jobs: [SignalProducer<TaskEvent<(ProjectLocator, String)>, CarthageError>]) -> Disposable {
         var completedJobs = 0
         return SignalProducer(values: jobs)
-            |> flatMap(.Concat) { job -> SignalProducer<T, E> in
+            |> flatMap(.Concat) { job in
                 return job
                     |> on(completed: {
                         completedJobs++
                         self.log.info("\(self): Compiling \(completedJobs) of \(jobs.count)")
                         self.status = .InProgressDeterminate(percentage: Double(completedJobs) / Double(jobs.count))
+                    })
+                    |> on(next: { location in
+                        if let name = location.value?.1 {
+                            self.log.info("\(self): Successfuly Compiled: \(name)")
+                        }
                     })
             }
             |> on(started: {
