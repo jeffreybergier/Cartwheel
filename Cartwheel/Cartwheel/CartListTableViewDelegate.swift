@@ -30,7 +30,7 @@ import ObserverSet
 
 class CartListTableViewDelegate: CartListChildController, NSTableViewDelegate {
     
-    private let cartfileUpdateController = CartfileUpdaterController()
+    private let cartfileUpdaterManager = CartfileUpdaterManager()
     
     // MARK: Handle RowViews and CellViews
     
@@ -49,22 +49,23 @@ class CartListTableViewDelegate: CartListChildController, NSTableViewDelegate {
     }
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let cellView: CartListTableCellViewController
-        if let recycledCellView = tableView.makeViewWithIdentifier(CartListTableCellViewController.identifier, owner: nil) as? CartListTableCellViewController {
+        let cellView: CartListTableCellView
+        if let recycledCellView = tableView.makeViewWithIdentifier(CartListTableCellView.identifier, owner: nil) as? CartListTableCellView {
             cellView = recycledCellView
         }
         else {
-            cellView = CartListTableCellViewController()
+            cellView = CartListTableCellView()
         }
-        cellView.configureViewWithWindow(self.controller?.window, updateController: self.cartfileUpdateController)
-        cellView.cartfile = self.controller?.cartfiles?[safe: row]
+        
+        cellView.controller.configureViewWithWindow(self.controller!.window!, updateController: self.cartfileUpdaterManager)
+        cellView.controller.cartfile = self.controller?.cartfiles?[safe: row]
         return cellView
     }
     
     // MARK: Handle Cell Height
     
-    private lazy var cellHeightCalculationView: CartListTableCellView = {
-        let view = CartListTableCellView()
+    private lazy var cellHeightCalculationView: DefaultCartListTableCellView = {
+        let view = DefaultCartListTableCellView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.viewDidLoad()
         view.setPrimaryTextFieldString("TestString")

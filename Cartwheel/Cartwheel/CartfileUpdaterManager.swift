@@ -27,7 +27,7 @@
 import ReactiveCocoa
 import ObserverSet
 
-class CartfileUpdaterController: CartfileUpdateControllerDelegate {
+class CartfileUpdaterManager: CartfileUpdaterDelegate {
     
     let changeNotifier = ObserverSet<CWCartfile>()
     private var updatesInProgress = [CWCartfile : CartfileUpdater]()

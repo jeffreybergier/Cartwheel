@@ -28,7 +28,7 @@
 import Cocoa
 import PureLayout_Mac
 
-final class CartListTableCellView: NSView {
+final class DefaultCartListTableCellView: NSView {
     
     // MARK: Load and Configure the Views for this Row
     
@@ -76,7 +76,7 @@ final class CartListTableCellView: NSView {
         self.ui.primaryButton.title = newTitle
     }
     
-    func setPrimaryButtonAction(action: Selector, forTarget target: NSObject) {
+    func setPrimaryButtonAction(action: Selector, forTarget target: AnyObject) {
         self.ui.primaryButton.target = target
         self.ui.primaryButton.action = action
     }

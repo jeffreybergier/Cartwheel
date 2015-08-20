@@ -32,7 +32,7 @@ import XCGLogger
 import ObserverSet
 
 // MARK: Delegate Protocol
-protocol CartfileUpdateControllerDelegate: class {
+protocol CartfileUpdaterDelegate: class {
     var changeNotifier: ObserverSet<CWCartfile> { get }
 }
 
@@ -47,7 +47,7 @@ class CartfileUpdater {
     }()
     
     // MARK: Initialization
-    init(cartfile: CWCartfile, delegate: CartfileUpdateControllerDelegate) {
+    init(cartfile: CWCartfile, delegate: CartfileUpdaterDelegate) {
         self.delegate = delegate
         self.cartfile = cartfile
     }
@@ -65,7 +65,7 @@ class CartfileUpdater {
     }
     
     // MARK: Notify the Delegate of Changes
-    weak var delegate: CartfileUpdateControllerDelegate?
+    weak var delegate: CartfileUpdaterDelegate?
     
     private(set) var status = Status.NotStarted {
         didSet {

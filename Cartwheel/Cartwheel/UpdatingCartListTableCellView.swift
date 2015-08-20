@@ -28,7 +28,7 @@
 import Cocoa
 import PureLayout_Mac
 
-class CartListTableCellUpdatingView: NSView {
+class UpdatingCartListTableCellView: NSView {
     
     private let cancelButton = NSButton(style: .Cancel)
     private let retryButton = NSButton(style: .Retry)
@@ -153,14 +153,14 @@ class CartListTableCellUpdatingView: NSView {
         }
     }
     
-    func setCancelButtonAction(action: Selector, forTarget target: NSObject) {
+    func setCancelButtonAction(action: Selector, forTarget target: AnyObject) {
         self.cancelButton.target = target
         self.cancelButton.action = action
         self.retryButton.target = target
         self.retryButton.action = action
     }
     
-    func setWarningButtonAction(action: Selector, forTarget target: NSObject) {
+    func setWarningButtonAction(action: Selector, forTarget target: AnyObject) {
         self.warningButton.target = target
         self.warningButton.action = action
     }
