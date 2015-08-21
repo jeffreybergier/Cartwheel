@@ -29,30 +29,28 @@ import Foundation
 
 // MARK: Implement the Protocols
 
-protocol DependencyDefinable { //TODO: Figure out how to add in Printable, Hashable without creating errors
-    
+protocol DependencyDefinable: Printable { //TODO: Figure out how to add in Printable, Hashable without creating errors
     static func fileName() -> String //TODO: convert this to property when allowed by swift
+    static func writeEmptyToDirectory(directory: NSURL) -> NSError?
     var name: String { get set }
     var location: NSURL { get set }
     func encodableCopy() -> EncodableDependencyDefinable // because these should be implemented as structs, this will require that they be encodable to disk
     
 }
 
-protocol EncodableDependencyDefinable: NSCoding {
-    
+@objc protocol EncodableDependencyDefinable: class, NSCoding {
     var name: String { get set }
     var location: NSURL { get set }
-    //func decodedCopy<DD: DependencyDefinable>() -> DD
+    //func decodedCopy() -> DependencyDefinable
+}
+
+protocol ProtocolHackDependencyDefinable {
     func decodedCopy() -> DependencyDefinable
 }
 
 // MARK: Implement the Struct Type Cartfile
 
 struct Cartfile: DependencyDefinable {
-    
-    static func fileName() -> String {
-        return "Cartfile"
-    }
     
     var name: String
     var location: NSURL
@@ -64,6 +62,18 @@ struct Cartfile: DependencyDefinable {
     
     func encodableCopy() -> EncodableDependencyDefinable {
         return EncodableCartfile(location: self.location)
+    }
+    
+    static func fileName() -> String {
+        return "Cartfile"
+    }
+    
+    static func writeEmptyToDirectory(directory: NSURL) -> NSError? {
+        let blankFileURL = directory.URLByAppendingPathComponent(Cartfile.fileName(), isDirectory: false)
+        let blankData = NSData()
+        var error: NSError?
+        blankData.writeToURL(blankFileURL, options: NSDataWritingOptions.DataWritingWithoutOverwriting, error: &error)
+        return error
     }
     
 }
@@ -87,7 +97,7 @@ func ==(lhs: Cartfile, rhs: Cartfile) -> Bool {
 
 // MARK: Implement the Encodable Class Type
 
-final class EncodableCartfile: NSObject, EncodableDependencyDefinable {
+final class EncodableCartfile: NSObject, EncodableDependencyDefinable, ProtocolHackDependencyDefinable {
     
     var name: String
     var location: NSURL

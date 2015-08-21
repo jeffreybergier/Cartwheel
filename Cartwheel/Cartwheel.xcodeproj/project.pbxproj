@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		731BFB361B87856E00175F10 /* DependencyDefinableListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731BFB351B87856E00175F10 /* DependencyDefinableListModel.swift */; };
 		73358D1C1B7EAFFB00F0D367 /* UpdatingCartListTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7315196A1B7E531000451168 /* UpdatingCartListTableCellView.swift */; };
 		73468A591B80F60E0087A0D4 /* CartfileUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73530A281B7ECC88005FAFD3 /* CartfileUpdater.swift */; };
 		73468A5C1B80F7610087A0D4 /* CartfileUpdaterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73468A5A1B80F7610087A0D4 /* CartfileUpdaterManager.swift */; };
@@ -95,6 +96,7 @@
 		730091411B093A7F00719208 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		730309171B49C4D6004089B7 /* CWDebugExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWDebugExtensions.swift; sourceTree = "<group>"; };
 		7315196A1B7E531000451168 /* UpdatingCartListTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatingCartListTableCellView.swift; sourceTree = "<group>"; };
+		731BFB351B87856E00175F10 /* DependencyDefinableListModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyDefinableListModel.swift; sourceTree = "<group>"; };
 		732909AB1B437F7300A75914 /* CartListTableRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartListTableRowView.swift; sourceTree = "<group>"; };
 		73468A5A1B80F7610087A0D4 /* CartfileUpdaterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartfileUpdaterManager.swift; sourceTree = "<group>"; };
 		73530A281B7ECC88005FAFD3 /* CartfileUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartfileUpdater.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				739C39291B004D8F0088FAD2 /* CWCartfileDataSource.swift */,
+				731BFB351B87856E00175F10 /* DependencyDefinableListModel.swift */,
 				73B55EA81B86B1A400DD5931 /* DependencyDefinable.swift */,
 				739203871B1E5CF60024DE8C /* CWDefaultsPlist.swift */,
 				738E43CF1B0AFAA000BB3670 /* CWCartfile.swift */,
@@ -436,6 +439,7 @@
 				73814D9A1B4CB40400CEA6F1 /* CartListTableViewController.swift in Sources */,
 				73814D9B1B4CB40400CEA6F1 /* CWSwiftGlobals.swift in Sources */,
 				73814D9C1B4CB40400CEA6F1 /* CWDefaultsPlist.swift in Sources */,
+				731BFB361B87856E00175F10 /* DependencyDefinableListModel.swift in Sources */,
 				73468A5C1B80F7610087A0D4 /* CartfileUpdaterManager.swift in Sources */,
 				73814D9D1B4CB40400CEA6F1 /* CWCartfileDataSource.swift in Sources */,
 				73B992DC1B6C7B960023956C /* CartListWindowObserver.swift in Sources */,
