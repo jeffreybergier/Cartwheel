@@ -96,3 +96,7 @@ let file = Cartfile(location: NSURL(string: "file:///Volumes/Drobo")!)
 let encodable = file.encodableCopy()
 let fileCopy = encodable.decodedCopy()
 println(fileCopy)
+
+if let cartfile = fileCopy as? Cartfile {
+    println("yay!")
+}
