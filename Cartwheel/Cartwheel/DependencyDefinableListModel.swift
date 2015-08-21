@@ -30,6 +30,10 @@ import ObserverSet
 import XCGLogger
 import Async
 
+protocol DependencyDefinableListModelControllable: class {
+    var dataSource: DependencyDefinableListModel { get }
+}
+
 class DependencyDefinableListModel {
     
     // MARK: Properties (Private)
@@ -164,7 +168,7 @@ class DependencyDefinableListModel {
     private let fileManager = NSFileManager.defaultManager()
     private let storageFolder: NSURL = {
         let array = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)
-        return NSURL(fileURLWithPath: (array.last as! String).stringByAppendingPathComponent(CWDefaultsPlist().cartfileListSaveLocation))!
+        return NSURL(fileURLWithPath: (array.last as! String).stringByAppendingPathComponent(DefaultsPlist().storageDirectory))!
     }()
     
     private func cartfileStorageFolderExists() -> Bool {

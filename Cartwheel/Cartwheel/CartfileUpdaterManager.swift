@@ -29,10 +29,10 @@ import ObserverSet
 
 class CartfileUpdaterManager: CartfileUpdaterDelegate {
     
-    let changeNotifier = ObserverSet<CWCartfile>()
-    private var updatesInProgress = [CWCartfile : CartfileUpdater]()
+    let changeNotifier = ObserverSet<Cartfile>()
+    private var updatesInProgress = [Cartfile : CartfileUpdater]()
     
-    func updateCartfile(cartfile: CWCartfile, forceRestart force: Bool = false) {
+    func updateCartfile(cartfile: Cartfile, forceRestart force: Bool = false) {
         switch self.statusForCartfile(cartfile) {
         case .NonExistant:
             let updater = CartfileUpdater(cartfile: cartfile, delegate: self)
@@ -56,7 +56,7 @@ class CartfileUpdaterManager: CartfileUpdaterDelegate {
         self.changeNotifier.notify(cartfile)
     }
     
-    func cancelUpdateForCartfile(cartfile: CWCartfile) -> Bool {
+    func cancelUpdateForCartfile(cartfile: Cartfile) -> Bool {
         if let update = self.updatesInProgress[cartfile] {
             update.cancel()
             self.updatesInProgress.removeValueForKey(cartfile)
@@ -67,7 +67,7 @@ class CartfileUpdaterManager: CartfileUpdaterDelegate {
         return false
     }
     
-    func statusForCartfile(cartfile: CWCartfile) -> CartfileUpdater.Status {
+    func statusForCartfile(cartfile: Cartfile) -> CartfileUpdater.Status {
         if let update = self.updatesInProgress[cartfile] {
             return update.status
         }

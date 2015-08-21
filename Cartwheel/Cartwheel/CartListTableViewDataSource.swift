@@ -34,7 +34,7 @@ class CartListTableViewDataSource: CartListChildController, NSTableViewDataSourc
     
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         // return the actual number of rows
-        return self.controller?.cartfiles?.count ?? 0
+        return self.controller?.dependencyDefinables?.count ?? 0
     }
     
     // MARK: SearchFieldDelegate
@@ -63,14 +63,14 @@ class CartListTableViewDataSource: CartListChildController, NSTableViewDataSourc
         let activity = self.pasteboardActivity(info.draggingPasteboard(), quickMode: false)
         switch activity {
         case .DragFile(let url):
-            if let draggedCartfiles = CWCartfile.cartfilesFromURL(url) {
-                self.controller?.dataSource.insertCartfiles(draggedCartfiles, atIndex: row)
+            if let draggedDDs = DependencyDefinableType.fromURLs(url) {
+                self.controller?.dataSource.insertDependencyDefinables(draggedDDs, atIndex: row)
                 return true
             } else {
                 return false
             }
         case .MoveRow(let indexes):
-            self.controller?.dataSource.moveCartfilesAtIndexes(indexes, toIndex: row)
+            self.controller?.dataSource.moveDependencyDefinablesAtIndexes(indexes, toIndex: row)
             return true
         case .Unknown:
             return false

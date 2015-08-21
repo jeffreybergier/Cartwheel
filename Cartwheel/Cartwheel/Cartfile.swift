@@ -34,9 +34,29 @@ struct Cartfile: DependencyDefinable {
     var name: String
     var location: NSURL
     
-    init(location: NSURL) {
-        self.location = location
-        self.name = location.lastPathComponent!
+    init?(location: NSURL) {
+        let fileManager = NSFileManager.defaultManager()
+        if let path = location.path,
+            let lastPathComponent = location.lastPathComponent,
+            let possibleCartfilePath = location.URLByAppendingPathComponent(Cartfile.fileName()).path {
+                var isDirectory: ObjCBool = false
+                if fileManager.fileExistsAtPath(path, isDirectory: &isDirectory) == true {
+                    switch isDirectory.boolValue {
+                    case false where lastPathComponent.lowercaseString == Cartfile.fileName().lowercaseString:
+                        self.location = location.parentDirectory
+                        self.name = location.parentDirectory.lastPathComponent!
+                    case true where fileManager.fileExistsAtPath(possibleCartfilePath) == true:
+                        self.location = location
+                        self.name = location.lastPathComponent!
+                    default:
+                        return nil
+                    }
+                } else {
+                    return nil
+                }
+        } else {
+            return nil
+        }
     }
     
     func encodableCopy() -> EncodableDependencyDefinable {
@@ -54,7 +74,6 @@ struct Cartfile: DependencyDefinable {
         blankData.writeToURL(blankFileURL, options: NSDataWritingOptions.DataWritingWithoutOverwriting, error: &error)
         return error
     }
-    
 }
 
 extension Cartfile: Printable {
@@ -76,6 +95,15 @@ func ==(lhs: Cartfile, rhs: Cartfile) -> Bool {
 
 // MARK: Implement the Encodable Class Type
 
+extension Cartfile {
+    // special initializer created for when the user deletes a file that was previously on disk
+    // will create an invalid cartfile so the UI can reflect that.
+    init(dontVerifyLocation location: NSURL) {
+        self.location = location
+        self.name = location.lastPathComponent!
+    }
+}
+
 final class EncodableCartfile: NSObject, EncodableDependencyDefinable, ProtocolHackDependencyDefinable {
     
     var name: String
@@ -88,7 +116,9 @@ final class EncodableCartfile: NSObject, EncodableDependencyDefinable, ProtocolH
     }
     
     func decodedCopy() -> DependencyDefinable {
-        return Cartfile(location: self.location)
+        // special initializer created for when the user deletes a file that was previously on disk
+        // will create an invalid cartfile so the UI can reflect that.
+        return Cartfile(dontVerifyLocation: location)
     }
     
     required init(coder aDecoder: NSCoder) {

@@ -30,16 +30,16 @@ import PureLayout_Mac
 import XCGLogger
 import ObserverSet
 
-protocol CartfileModelControllable: class {
-    var cartfiles: [CWCartfile]? { get set }
+protocol DependencyDefinablesControllable: class {
+    var dependencyDefinables: [DependencyDefinable]? { get set }
 }
 
 @objc(CartListTableViewController)
-final class CartListTableViewController: NSViewController, CartfileDataSourceControllable, CartfileModelControllable, CartfileWindowControllable {
+final class CartListTableViewController: NSViewController, DependencyDefinableListModelControllable, DependencyDefinablesControllable, CartfileWindowControllable {
     
     // Model Object
-    let dataSource: CWCartfileDataSource
-    var cartfiles: [CWCartfile]? {
+    let dataSource: DependencyDefinableListModel
+    var dependencyDefinables: [DependencyDefinable]? {
         didSet {
             self.contentView.tableView.reloadData()
         }
@@ -68,9 +68,9 @@ final class CartListTableViewController: NSViewController, CartfileDataSourceCon
     
     // MARK: Init
     
-    init!(controller: NSWindowController, model: CWCartfileDataSource, windowObserver: CartListWindowObserver) {
+    init!(controller: NSWindowController, model: DependencyDefinableListModel, windowObserver: CartListWindowObserver) {
         self.dataSource = model
-        self.cartfiles = model.cartfiles // set the cartfiles on init. After init, the cartfiles will update themselves via SwiftObserver
+        self.dependencyDefinables = model.dependencyDefinables // set the cartfiles on init. After init, the cartfiles will update themselves via SwiftObserver
         self.parentWindowController = controller
         self.windowObserver = windowObserver
         super.init(nibName: .None, bundle: .None)
@@ -102,7 +102,7 @@ final class CartListTableViewController: NSViewController, CartfileDataSourceCon
         self.contentView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
         
         // register for data source changes
-        self.dataSource.cartfileObserver.add(self, self.dynamicType.contentModelDidChange)
+        self.dataSource.modelObserver.add(self, self.dynamicType.contentModelDidChange)
         
         // register for search delegate observing
         self.searchFieldDelegate.windowObserver!.searchDelegateObserver.add(self, self.dynamicType.searchResultedInFilteredCartfiles)
@@ -142,14 +142,14 @@ extension CartListTableViewController {
     // Data Source Observing
     private func contentModelDidChange() {
         if self.searchFieldDelegate.searchInProgress == false {
-            self.cartfiles = self.dataSource.cartfiles
+            self.dependencyDefinables = self.dataSource.dependencyDefinables
         }
     }
     
     // Search Delegate Observing
-    private func searchResultedInFilteredCartfiles(filteredCartfiles: [CWCartfile]?) {
+    private func searchResultedInFilteredCartfiles(filteredCartfiles: [DependencyDefinable]?) {
         if let filteredCartfiles = filteredCartfiles {
-            self.cartfiles = filteredCartfiles
+            self.dependencyDefinables = filteredCartfiles
         } else {
             self.contentModelDidChange()
         }
@@ -182,7 +182,7 @@ extension CartListTableViewController {
                 if let response = NSAlert.Style.CartfileRemoveConfirmResponse(rawValue: Int(untypedResponse.value)) {
                     switch response {
                     case .RemoveButton:
-                        self.dataSource.removeCartfilesAtIndexes(self.contentView.tableView.selectedRowIndexes.ranges)
+                        self.dataSource.removeDependencyDefinablesAtIndexes(self.contentView.tableView.selectedRowIndexes.ranges)
                     case .CancelButton:
                         self.log.info("User chose delete button but then cancelled the operation.")
                     }
@@ -209,8 +209,8 @@ extension CartListTableViewController: NSMenuDelegate {
             let result = NSOpenPanel.Response(rawValue: untypedResult)!
             switch result {
             case .SuccessButton:
-                if let cartfiles = CWCartfile.cartfilesFromURL(savePanel.URLs) {
-                    self.dataSource.appendCartfiles(cartfiles)
+                if let dependencyDefinables = DependencyDefinableType.fromURLs(savePanel.URLs) {
+                    self.dataSource.appendDependencyDefinables(dependencyDefinables)
                 }
             case .CancelButton:
                 self.log.info("File Chooser was cancelled by user.")
@@ -226,16 +226,18 @@ extension CartListTableViewController: NSMenuDelegate {
                 switch result {
                 case .SuccessButton:
                     if let selectedURL = savePanel.URL {
-                        let cartfileWriteResult = self.dataSource.writeBlankCartfileToDirectoryPath(selectedURL)
-                        if let error = cartfileWriteResult.error {
+                        let cartfileWriteResult = Cartfile.writeEmptyToDirectory(selectedURL)
+                        if let error = cartfileWriteResult {
                             let alert = NSAlert(error: error)
                             savePanel.orderOut(nil) // TODO: try to remove this later. Its not supposed to be needed.
                             alert.beginSheetModalForWindow(self.window!, completionHandler: nil)
                             self.log.error("\(error)")
                         } else {
-                            let cartfile = CWCartfile(url: cartfileWriteResult.finalURL)!
-                            self.dataSource.appendCartfile(cartfile)
-                            NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([cartfile.url])
+                            if let cartfile = Cartfile(location: selectedURL) {
+                                self.dataSource.appendDependencyDefinable(cartfile)
+                                let cartfileURL = cartfile.location.URLByAppendingPathComponent(Cartfile.fileName())
+                                NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([cartfileURL])
+                            }
                         }
                     }
                 case .CancelButton:

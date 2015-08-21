@@ -43,7 +43,7 @@ class CartListSearchFieldDelegate: CartListChildController, NSTextFieldDelegate,
     override func controlTextDidChange(notification: NSNotification) {
         self.searchInProgress = true
         
-        if let unfilteredCartfiles = self.controller?.dataSource.cartfiles,
+        if let unfilteredDDs = self.controller?.dataSource.dependencyDefinables,
             let userInfoDictionary = notification.userInfo,
             let filterTextField = userInfoDictionary["NSFieldEditor"] as? NSTextView,
             let stringValue = filterTextField.string {
@@ -51,7 +51,7 @@ class CartListSearchFieldDelegate: CartListChildController, NSTextFieldDelegate,
                     self.searchInProgress = false
                     self.windowObserver?.searchDelegateObserver.notify(.None)
                 } else {
-                    let filteredCartfiles = unfilteredCartfiles.filter() { cartfile -> Bool in
+                    let filteredCartfiles = unfilteredDDs.filter() { cartfile -> Bool in
                         let searchStringComponents = stringValue.lowercaseString.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                         var searchString = ""
                         for stringComponent in searchStringComponents {

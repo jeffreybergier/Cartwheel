@@ -65,7 +65,7 @@ final class CartListTableCellViewController: NSObject {
         super.init()
     }
     
-    var cartfile: CWCartfile! {
+    var cartfile: Cartfile! {
         didSet {
             self.prepareCellForNewModelObject()
             self.updateCellWithNewModelObject()
@@ -126,7 +126,7 @@ final class CartListTableCellViewController: NSObject {
         }
     }
     
-    private func cartfileUpdateStatusChanged(cartfile: CWCartfile) {
+    private func cartfileUpdateStatusChanged(cartfile: Cartfile) {
         if self.cartfile == cartfile { // don't do anything if the cartfile update is not mine
             if let status = self.cartfileUpdaterManager?.statusForCartfile(cartfile) {
                 self.cartfileUpdateStatus = status

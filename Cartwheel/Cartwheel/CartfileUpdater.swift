@@ -33,7 +33,7 @@ import ObserverSet
 
 // MARK: Delegate Protocol
 protocol CartfileUpdaterDelegate: class {
-    var changeNotifier: ObserverSet<CWCartfile> { get }
+    var changeNotifier: ObserverSet<Cartfile> { get }
 }
 
 class CartfileUpdater {
@@ -41,13 +41,13 @@ class CartfileUpdater {
     private let log = XCGLogger.defaultInstance()
     
     // MARK: Cartfile storage
-    let cartfile: CWCartfile
+    let cartfile: Cartfile
     private lazy var project: Project = {
-        return Project(directoryURL: self.cartfile.url.parentDirectory)
+        return Project(directoryURL: self.cartfile.location)
     }()
     
     // MARK: Initialization
-    init(cartfile: CWCartfile, delegate: CartfileUpdaterDelegate) {
+    init(cartfile: Cartfile, delegate: CartfileUpdaterDelegate) {
         self.delegate = delegate
         self.cartfile = cartfile
     }

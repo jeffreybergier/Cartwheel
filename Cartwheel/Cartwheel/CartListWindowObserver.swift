@@ -53,7 +53,7 @@ protocol WindowDidCloseObservable {
 }
 
 protocol SearchDelegateObservable {
-    var searchDelegateObserver: ObserverSet<[CWCartfile]?> { get }
+    var searchDelegateObserver: ObserverSet<[DependencyDefinable]?> { get }
 }
 
 class CartListWindowObserver:
@@ -114,7 +114,7 @@ class CartListWindowObserver:
     
     // MARK: SearchDelegateObservable
     
-    var searchDelegateObserver = ObserverSet<[CWCartfile]?>()
+    var searchDelegateObserver = ObserverSet<[DependencyDefinable]?>()
     
     // MARK: Handle Going Away
     

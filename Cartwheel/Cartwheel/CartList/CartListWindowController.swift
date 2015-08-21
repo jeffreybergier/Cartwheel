@@ -46,7 +46,7 @@ final class CartListWindowController: NSWindowController {
         self.window?.title = NSLocalizedString("Cartwheel", comment: "Cartwheel name for window title")
         
         // create the data source and distribute the reference
-        let dataSource = CWCartfileDataSource()
+        let dataSource = DependencyDefinableListModel()
         
         // configure the window observer
         self.windowObserver = CartListWindowObserver(windowToObserve: self.window)

@@ -47,3 +47,51 @@ protocol DependencyDefinable: Printable { //TODO: Figure out how to add in Print
 protocol ProtocolHackDependencyDefinable {
     func decodedCopy() -> DependencyDefinable
 }
+
+struct DependencyDefinableType {
+    static let implementedTypes = [
+        Cartfile.self
+    ]
+    
+    static func fromURL(url: NSURL) -> [DependencyDefinable]? {
+        var dependencyDefinables = [DependencyDefinable]()
+        
+        for implementedType in DependencyDefinableType.implementedTypes {
+            let found = url.extractFilesRecursionDepth(DependencyDefinableType.defaults.directorySearchRecursion)?.map() { url -> DependencyDefinable? in
+                return implementedType(location: url)
+                }.filter() { dd -> Bool in
+                    if let dd = dd { return true } else { return false }
+                }.map() { verifiedDD -> DependencyDefinable in
+                    return verifiedDD!
+            }
+            
+            if let found = found {
+                dependencyDefinables += found
+            }
+        }
+
+        
+        if dependencyDefinables.isEmpty == false { return dependencyDefinables } else { return .None }
+    }
+    
+    static func fromURLs(URLs: [AnyObject]) -> [DependencyDefinable]? {
+        var dependencyDefinables = [DependencyDefinable]()
+        
+        for url in URLs {
+            if let url = url as? NSURL {
+                if let found = DependencyDefinableType.fromURL(url) {
+                    dependencyDefinables += found
+                }
+            }
+        }
+
+        if dependencyDefinables.isEmpty == false { return dependencyDefinables } else { return .None }
+    }
+    
+    // defaultsPlist requires disk activity so I only want that to happen once in the lifecycle of the app
+    // however, every cartfile that is initalized needs to check to make sure it has a valid URL
+    // this defaults plist is where it gets the name it needs
+    // creating this private static constant allows me to always check for a valid URL
+    // while not having to read from disk every time a cartfile is initialized
+    private static let defaults = DefaultsPlist()
+}

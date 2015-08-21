@@ -31,7 +31,7 @@ import XCGLogger
 // MARK: Class for Subcontrollers
 
 class CartListChildController: NSObject {
-    weak var controller: protocol<CartfileModelControllable, CartfileDataSourceControllable, CartfileWindowControllable>?
+    weak var controller: protocol<DependencyDefinablesControllable, DependencyDefinableListModelControllable, CartfileWindowControllable>?
     weak var windowObserver: CartListWindowObserver?
 }
 
