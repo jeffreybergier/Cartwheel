@@ -2,13 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CartfileListSaveLocation</key>
+	<key>StorageDirectory</key>
 	<string>Cartwheel</string>
-	<key>CartfileDirectorySearchRecursion</key>
+	<key>StorageFile</key>
+	<string>cartwheel.bin</string>
+	<key>DirectorySearchRecursion</key>
 	<integer>10</integer>
-	<key>CartfileFileName</key>
-	<string>cartfile</string>
-	<key>CartfileListSaveName</key>
-	<string>cartfiles.bin</string>
 </dict>
 </plist>

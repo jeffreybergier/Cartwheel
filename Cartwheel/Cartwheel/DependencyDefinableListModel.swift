@@ -35,7 +35,7 @@ class DependencyDefinableListModel {
     // MARK: Properties (Private)
     
     private let log = XCGLogger.defaultInstance()
-    private let defaultsPlist = CWDefaultsPlist()
+    private let defaults = DefaultsPlist()
     
     // MARK: Properties (Internal)
     
@@ -49,17 +49,17 @@ class DependencyDefinableListModel {
                 }.userInitiated {
                     // save to disk in the background
                     if self.cartfileStorageFolderExists() == false {
-                        self.log.info("Cartfile storage folder does not exist, creating it.")
+                        self.log.info("Storage folder does not exist, creating it.")
                         self.createCartfileStorageFolder()
                     }
                     var writeToDiskError: NSError?
                     let encodableDDs = self.dependencyDefinables.map() { dd -> EncodableDependencyDefinable in
                         return dd.encodableCopy()
                     }
-                    NSKeyedArchiver.archivedDataWithRootObject(encodableDDs).writeToURL(self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName), options: nil, error: &writeToDiskError)
+                    NSKeyedArchiver.archivedDataWithRootObject(encodableDDs).writeToURL(self.storageFolder.URLByAppendingPathComponent(self.defaults.storageFile), options: nil, error: &writeToDiskError)
                     
                     if let error = writeToDiskError {
-                        self.log.error("Error saving cartfiles to disk: \(error)")
+                        self.log.error("Error saving files to disk: \(error)")
                     }
             }
         }
@@ -162,17 +162,17 @@ class DependencyDefinableListModel {
     // MARK: Writing to Disk (Private)
     
     private let fileManager = NSFileManager.defaultManager()
-    private let cartfileStorageFolder: NSURL = {
+    private let storageFolder: NSURL = {
         let array = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)
         return NSURL(fileURLWithPath: (array.last as! String).stringByAppendingPathComponent(CWDefaultsPlist().cartfileListSaveLocation))!
-        }()
+    }()
     
     private func cartfileStorageFolderExists() -> Bool {
-        return self.fileManager.fileExistsAtPath(self.cartfileStorageFolder.path!)
+        return self.fileManager.fileExistsAtPath(self.storageFolder.path!)
     }
     
     private func createCartfileStorageFolder() -> Bool {
-        return self.fileManager.createDirectoryAtPath(self.cartfileStorageFolder.path!, withIntermediateDirectories: true, attributes: nil, error: nil)
+        return self.fileManager.createDirectoryAtPath(self.storageFolder.path!, withIntermediateDirectories: true, attributes: nil, error: nil)
     }
     
     // MARK: Initialization
@@ -182,7 +182,7 @@ class DependencyDefinableListModel {
     }
     
     private func readDependencyDefinablesFromDisk() -> [DependencyDefinable] {
-        let fileURL = self.cartfileStorageFolder.URLByAppendingPathComponent(self.defaultsPlist.cartfileListSaveName)
+        let fileURL = self.storageFolder.URLByAppendingPathComponent(self.defaults.storageFile)
         
         var fileReachableError: NSError?
         let fileURLIsReachable = fileURL.checkResourceIsReachableAndReturnError(&fileReachableError)
