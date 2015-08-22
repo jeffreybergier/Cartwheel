@@ -92,7 +92,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		730091411B093A7F00719208 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
+		730091411B093A7F00719208 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = Cartwheel/MyPlayground.playground; sourceTree = "<group>"; };
 		730309171B49C4D6004089B7 /* CWDebugExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CWDebugExtensions.swift; path = Source/CWDebugExtensions.swift; sourceTree = "<group>"; };
 		7315196A1B7E531000451168 /* UpdatingCartListTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UpdatingCartListTableCellView.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableViewRows/Views/UpdatingCartListTableCellView.swift; sourceTree = "<group>"; };
 		731BFB351B87856E00175F10 /* DependencyDefinableListModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DependencyDefinableListModel.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Models/DependencyDefinableListModel.swift; sourceTree = "<group>"; };
@@ -103,13 +103,13 @@
 		7366ED341B0D801200AB6E77 /* CartwheelDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = CartwheelDefaults.plist; path = "Supporting Files/CartwheelDefaults.plist"; sourceTree = "<group>"; };
 		73814DC81B4CB40400CEA6F1 /* Cartwheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cartwheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73814DC91B4CB40400CEA6F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "/Volumes/Ydesign/Source/SaturdayApps/Cartwheel/Cartwheel/Cartwheel/Supporting Files/Info.plist"; sourceTree = "<absolute>"; };
-		7385AEF61B892EFE00CF1E03 /* CartListOpenPanelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListOpenPanelDelegate.swift; path = ../../../../../../../Users/jeffberg/Desktop/Cartwheel/Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Controllers/CartListOpenPanelDelegate.swift; sourceTree = "<group>"; };
-		7385AEF71B892EFE00CF1E03 /* CartListSearchFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListSearchFieldDelegate.swift; path = ../../../../../../../Users/jeffberg/Desktop/Cartwheel/Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Controllers/CartListSearchFieldDelegate.swift; sourceTree = "<group>"; };
-		7385AEF81B892EFE00CF1E03 /* CartListTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListTableViewDataSource.swift; path = ../../../../../../../Users/jeffberg/Desktop/Cartwheel/Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Controllers/CartListTableViewDataSource.swift; sourceTree = "<group>"; };
-		7385AEF91B892EFE00CF1E03 /* CartListTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListTableViewDelegate.swift; path = ../../../../../../../Users/jeffberg/Desktop/Cartwheel/Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Controllers/CartListTableViewDelegate.swift; sourceTree = "<group>"; };
-		7385AEFA1B892EFE00CF1E03 /* CWIndexSetPasteboardContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CWIndexSetPasteboardContainer.h; path = ../../../../../../../Users/jeffberg/Desktop/Cartwheel/Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Controllers/CWIndexSetPasteboardContainer.h; sourceTree = "<group>"; };
-		7385AEFB1B892EFE00CF1E03 /* CWIndexSetPasteboardContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CWIndexSetPasteboardContainer.m; path = ../../../../../../../Users/jeffberg/Desktop/Cartwheel/Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Controllers/CWIndexSetPasteboardContainer.m; sourceTree = "<group>"; };
-		7385AF021B89308600CF1E03 /* CartListWindowToolbarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListWindowToolbarController.swift; path = ../../../../../../../Users/jeffberg/Desktop/Cartwheel/Source/DependencyDefinableListWindow/CartListWindowToolbarController.swift; sourceTree = "<group>"; };
+		7385AEF61B892EFE00CF1E03 /* CartListOpenPanelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListOpenPanelDelegate.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Controllers/CartListOpenPanelDelegate.swift; sourceTree = "<group>"; };
+		7385AEF71B892EFE00CF1E03 /* CartListSearchFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListSearchFieldDelegate.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Controllers/CartListSearchFieldDelegate.swift; sourceTree = "<group>"; };
+		7385AEF81B892EFE00CF1E03 /* CartListTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListTableViewDataSource.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Controllers/CartListTableViewDataSource.swift; sourceTree = "<group>"; };
+		7385AEF91B892EFE00CF1E03 /* CartListTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListTableViewDelegate.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Controllers/CartListTableViewDelegate.swift; sourceTree = "<group>"; };
+		7385AEFA1B892EFE00CF1E03 /* CWIndexSetPasteboardContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CWIndexSetPasteboardContainer.h; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Controllers/CWIndexSetPasteboardContainer.h; sourceTree = "<group>"; };
+		7385AEFB1B892EFE00CF1E03 /* CWIndexSetPasteboardContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CWIndexSetPasteboardContainer.m; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Controllers/CWIndexSetPasteboardContainer.m; sourceTree = "<group>"; };
+		7385AF021B89308600CF1E03 /* CartListWindowToolbarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartListWindowToolbarController.swift; path = Source/DependencyDefinableListWindow/CartListWindowToolbarController.swift; sourceTree = "<group>"; };
 		739C39241B0029680088FAD2 /* CWSwiftGlobals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CWSwiftGlobals.swift; path = Source/CWSwiftGlobals.swift; sourceTree = "<group>"; };
 		73A2FBCE1B503A4600233D54 /* Argo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Argo.framework; path = Carthage/Build/Mac/Argo.framework; sourceTree = SOURCE_ROOT; };
 		73A2FBCF1B503A4600233D54 /* Async.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Async.framework; path = Carthage/Build/Mac/Async.framework; sourceTree = SOURCE_ROOT; };
@@ -473,7 +473,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Cartwheel/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = Cartwheel;
@@ -493,7 +493,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Cartwheel/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = Cartwheel;
