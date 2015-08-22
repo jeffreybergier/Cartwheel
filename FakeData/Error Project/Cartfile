@@ -1,2 +1,1 @@
-github "thoughtbot/Argo" ~> 1.0.0
-git "file:///Volumes/Ydesign/Source/SaturdayApps/Cartwheel/FakeData/ErrorProject" "master"
+github "SocialbitGmbH/SwiftAddressBook" "master"

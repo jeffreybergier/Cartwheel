@@ -106,6 +106,10 @@ typedef struct _NSZone NSZone;
 @end
 
 
+@interface NSURL (SWIFT_EXTENSION(CarthageKit))
+@end
+
+
 @interface NSURLSession (SWIFT_EXTENSION(CarthageKit))
 @end
 
