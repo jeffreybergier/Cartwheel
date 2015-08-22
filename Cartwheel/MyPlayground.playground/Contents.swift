@@ -92,10 +92,17 @@ final class EncodableCartfile: NSObject, EncodableDependencyDefinable {
 
 // MARK: Play with it in Playgrounds
 
+var mainArray = [DependencyDefinable]()
 let file = Cartfile(location: NSURL(string: "file:///Volumes/Drobo")!)
+mainArray += [file] as [DependencyDefinable]
+println(mainArray.count)
+
+
 let encodable = file.encodableCopy()
 let fileCopy = encodable.decodedCopy()
 println(fileCopy)
+
+
 
 if let cartfile = fileCopy as? Cartfile {
     println("yay!")

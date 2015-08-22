@@ -122,14 +122,14 @@ final class EncodableCartfile: NSObject, EncodableDependencyDefinable, ProtocolH
     }
     
     required init(coder aDecoder: NSCoder) {
-        let location = aDecoder.decodeObjectForKey("location") as! NSURL
-        self.location = location
-        self.name = location.lastPathComponent!
+        self.location = aDecoder.decodeObjectForKey("location") as! NSURL
+        self.name = aDecoder.decodeObjectForKey("name") as! String
         super.init()
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.location, forKey: "location")
+        aCoder.encodeObject(self.name, forKey: "name")
     }
     
 }
