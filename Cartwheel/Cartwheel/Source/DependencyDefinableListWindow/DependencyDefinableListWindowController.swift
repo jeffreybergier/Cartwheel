@@ -28,7 +28,7 @@
 import Cocoa
 import PureLayout_Mac
 
-@objc(CartListWindowController)
+@objc(DependencyDefinableListWindowController)
 final class DependencyDefinableListWindowController: NSWindowController {
     
     var windowObserver: DependencyDefinableListWindowObserver?
