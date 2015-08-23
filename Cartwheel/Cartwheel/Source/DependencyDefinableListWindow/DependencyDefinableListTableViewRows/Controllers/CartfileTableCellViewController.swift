@@ -35,12 +35,7 @@ protocol CartfileWindowControllable: class {
 
 final class CartfileTableCellViewController: NSObject {
     
-    weak var view: NSTableCellView!
-    
-    init(view: NSTableCellView) {
-        self.view = view
-        super.init()
-    }
+    var view: NSTableCellView!
     
     var cartfile: Cartfile! {
         didSet {

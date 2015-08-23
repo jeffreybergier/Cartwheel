@@ -57,9 +57,27 @@ class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildCont
             cellView = DependencyDefinableListTableCellView()
         }
         
-        cellView.controller.configureViewWithWindow(self.controller!.window!, updateController: self.cartfileUpdaterManager)
-        cellView.controller.cartfile = self.controller?.dependencyDefinables?[safe: row] as! Cartfile
+        let controller: CartfileTableCellViewController
+        if let existingController = self.cartfileCellViewControllerMappings[cellView] {
+            controller = existingController
+        } else {
+            controller = CartfileTableCellViewController()
+            self.cartfileCellViewControllerMappings[cellView] = controller
+        }
+        
+        controller.view = cellView
+        controller.configureViewWithWindow(self.controller!.window!, updateController: self.cartfileUpdaterManager)
+        controller.cartfile = self.controller?.dependencyDefinables?[safe: row] as! Cartfile
+        
         return cellView
+    }
+    
+    // MARK: Keep Track of Cell Views to Controller mappings
+    
+    private var cartfileCellViewControllerMappings = [DependencyDefinableListTableCellView : CartfileTableCellViewController]() {
+        didSet {
+            println("New Dictionary\n\(self.cartfileCellViewControllerMappings)")
+        }
     }
     
     // MARK: Handle Cell Height
