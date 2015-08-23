@@ -88,9 +88,11 @@ class CartfileUpdater {
             case .DownloadingBinaries(let id, let version):
                 self.log.info("\(self): Downloading Binaries: \(id.name) \(version)")
             case .SkippedDownloadingBinaries(let id, let version):
-                self.log.info("\(self): Skipped Downloading Building: \(id.name) \(version)")
+                self.log.info("\(self): Skipped Downloading Binaries: \(id.name) \(version)")
             case .SkippedBuilding(let id, let version):
-                self.log.info("\(self): Skipped Building Building: \(id.name) \(version)")
+                self.log.info("\(self): Skipped Building: \(id.name) \(version)")
+                // TODO: Need to make a place that the user can click to see warnings
+                // as opposed to errors
             }
         })
         
