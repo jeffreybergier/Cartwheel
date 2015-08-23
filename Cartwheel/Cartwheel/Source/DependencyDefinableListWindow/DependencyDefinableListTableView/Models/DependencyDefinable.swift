@@ -35,7 +35,7 @@ protocol DependencyDefinable: Printable { //TODO: Figure out how to add in Print
     var name: String { get set }
     var location: NSURL { get set }
     func encodableCopy() -> EncodableDependencyDefinable // because these should be implemented as structs, this will require that they be encodable to disk
-    
+    init?(location: NSURL)
 }
 
 @objc protocol EncodableDependencyDefinable: class, NSCoding {
@@ -50,29 +50,37 @@ protocol ProtocolHackDependencyDefinable {
 
 struct DependencyDefinableType {
     
-    let something = Cartfile.self
-    let somethingElse = Podfile.self
-    
-    static let implementedTypes = [
-        Cartfile.self
-        //Podfile.self
-    ]
-    
     static func fromURL(url: NSURL) -> [DependencyDefinable]? {
+        
+        let implementedTypes: [Any] = [ // Would rather use this code so I don't have to copy and paste code for every time
+            Cartfile.self, // however, I can't figure out how to get the type signature correct.
+            Podfile.self // TODO: Make this work
+        ]
+        
         var dependencyDefinables = [DependencyDefinable]()
         
-        for implementedType in DependencyDefinableType.implementedTypes {
-            let found = url.extractFilesRecursionDepth(DependencyDefinableType.defaults.directorySearchRecursion)?.map() { url -> DependencyDefinable? in
-                return implementedType(location: url)
-                }.filter() { dd -> Bool in
-                    if let dd = dd { return true } else { return false }
-                }.map() { verifiedDD -> DependencyDefinable in
-                    return verifiedDD!
-            }
-            
-            if let found = found {
-                dependencyDefinables += found
-            }
+        let foundCartfiles = url.extractFilesRecursionDepth(DependencyDefinableType.defaults.directorySearchRecursion)?.map() { url -> DependencyDefinable? in
+            return Cartfile(location: url)
+            }.filter() { dd -> Bool in
+                if let dd = dd { return true } else { return false }
+            }.map() { verifiedDD -> DependencyDefinable in
+                return verifiedDD!
+        }
+        
+        if let found = foundCartfiles {
+            dependencyDefinables += found
+        }
+        
+        let foundPodfiles = url.extractFilesRecursionDepth(DependencyDefinableType.defaults.directorySearchRecursion)?.map() { url -> DependencyDefinable? in
+            return Podfile(location: url)
+            }.filter() { dd -> Bool in
+                if let dd = dd { return true } else { return false }
+            }.map() { verifiedDD -> DependencyDefinable in
+                return verifiedDD!
+        }
+        
+        if let found = foundPodfiles {
+            dependencyDefinables += found
         }
 
         
