@@ -1,8 +1,0 @@
-## Frameworks needed for Cartwheel
-github "smileyborg/PureLayout" ~> 2.0.0
-github "DaveWoodCom/XCGLogger" ~> 2.0.0
-github "duemunk/Async" ~> 1.2.1
-github "jeffreybergier/SwiftObserverSet" "master"
-
-## When using the official Carthage Github
-github "Carthage/Carthage" "master"
