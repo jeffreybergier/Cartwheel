@@ -28,7 +28,7 @@
 import Cocoa
 import PureLayout_Mac
 
-class UpdatingDependencyDefinableListTableCellView: NSView {
+class UpdatingCartfileTableCellView: NSView {
     
     private let cancelButton = NSButton(style: .Cancel)
     private let retryButton = NSButton(style: .Retry)

@@ -48,8 +48,8 @@ final class CartfileTableCellViewController: NSObject {
     private weak var parentWindow: NSWindow!
     private weak var cartfileUpdaterManager: CartfileUpdaterManager!
     
-    private let defaultView = DefaultDependencyDefinableListTableCellView()
-    private let updatingView = UpdatingDependencyDefinableListTableCellView()
+    private let defaultView = DefaultCartfileTableCellView()
+    private let updatingView = UpdatingCartfileTableCellView()
     
     private var cartfileUpdateStatus: CartfileUpdater.Status = .NonExistant {
         didSet {

@@ -27,10 +27,12 @@
 
 import Cocoa
 import ObserverSet
+import XCGLogger
 
 class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildController, NSTableViewDelegate {
     
     private let cartfileUpdaterManager = CartfileUpdaterManager()
+    private let log = XCGLogger.defaultInstance()
     
     // MARK: Handle RowViews and CellViews
     
@@ -57,33 +59,33 @@ class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildCont
             cellView = DependencyDefinableListTableCellView()
         }
         
-        let controller: CartfileTableCellViewController
-        if let existingController = self.cartfileCellViewControllerMappings[cellView] {
-            controller = existingController
+        if let cartfile = self.controller?.dependencyDefinables?[safe: row] as? Cartfile {
+            let controller: CartfileTableCellViewController
+            if let existingController = self.cartfileCellViewControllerMappings[cellView] {
+                controller = existingController
+            } else {
+                controller = CartfileTableCellViewController()
+                self.cartfileCellViewControllerMappings[cellView] = controller
+            }
+            
+            controller.view = cellView
+            controller.configureViewWithWindow(self.controller!.window!, updateController: self.cartfileUpdaterManager)
+            controller.cartfile = cartfile
         } else {
-            controller = CartfileTableCellViewController()
-            self.cartfileCellViewControllerMappings[cellView] = controller
+            self.log.severe("Unknown DependencyDefinable type. TableViewCell loaded without controller. Data: \(self.controller?.dependencyDefinables?[safe: row])")
         }
-        
-        controller.view = cellView
-        controller.configureViewWithWindow(self.controller!.window!, updateController: self.cartfileUpdaterManager)
-        controller.cartfile = self.controller?.dependencyDefinables?[safe: row] as! Cartfile
         
         return cellView
     }
     
     // MARK: Keep Track of Cell Views to Controller mappings
     
-    private var cartfileCellViewControllerMappings = [DependencyDefinableListTableCellView : CartfileTableCellViewController]() {
-        didSet {
-            println("New Dictionary\n\(self.cartfileCellViewControllerMappings)")
-        }
-    }
+    private var cartfileCellViewControllerMappings = [DependencyDefinableListTableCellView : CartfileTableCellViewController]()
     
     // MARK: Handle Cell Height
     
-    private lazy var cellHeightCalculationView: DefaultDependencyDefinableListTableCellView = {
-        let view = DefaultDependencyDefinableListTableCellView()
+    private let cellHeightCalculationView: DefaultCartfileTableCellView = {
+        let view = DefaultCartfileTableCellView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.viewDidLoad()
         view.setPrimaryTextFieldString("TestString")
