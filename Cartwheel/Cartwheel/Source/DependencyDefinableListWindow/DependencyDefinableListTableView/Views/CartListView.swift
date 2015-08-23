@@ -28,11 +28,11 @@
 import Cocoa
 import PureLayout_Mac
 
-final class CartListView: NSView {
+final class DependencyDefinableListView: NSView {
     
     // MARK: UI Element
     
-    let addButton = CWEventPassingButton(style: .Default)
+    let addButton = EventPassingButton(style: .Default)
     let deleteButton = NSButton(style: .Default)
     let tableView = NSTableView()
     let scrollView = NSScrollView()

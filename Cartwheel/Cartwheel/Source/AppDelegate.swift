@@ -31,19 +31,19 @@ import XCGLogger
 @NSApplicationMain
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
-    private var cartListWindowController: CartListWindowController?
+    private var dependencyDefinableListWindowController: DependencyDefinableListWindowController?
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         XCGLogger.defaultInstance().setup(logLevel: .Verbose, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: nil, fileLogLevel: .Warning)
         
-        self.cartListWindowController = CartListWindowController()
-        self.cartListWindowController!.showWindow(self) // should crash if NIL at this point
+        self.dependencyDefinableListWindowController = DependencyDefinableListWindowController()
+        self.dependencyDefinableListWindowController!.showWindow(self) // should crash if NIL at this point
         
-        self.cartListWindowController?.windowObserver?.windowDidCloseObserver.add(self, self.dynamicType.cartListWindowControllerDidClose)
+        self.dependencyDefinableListWindowController?.windowObserver?.windowDidCloseObserver.add(self, self.dynamicType.dependencyDefinableListWindowControllerDidClose)
     }
     
-    private func cartListWindowControllerDidClose() {
-        self.cartListWindowController = nil // this allows the window to be deallocated
+    private func dependencyDefinableListWindowControllerDidClose() {
+        self.dependencyDefinableListWindowController = nil // this allows the window to be deallocated
     }
 }
 

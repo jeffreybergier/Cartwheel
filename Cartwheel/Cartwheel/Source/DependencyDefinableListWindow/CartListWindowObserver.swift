@@ -56,7 +56,7 @@ protocol SearchDelegateObservable {
     var searchDelegateObserver: ObserverSet<[DependencyDefinable]?> { get }
 }
 
-class CartListWindowObserver:
+class DependencyDefinableListWindowObserver:
     WindowMainStateObservable,
     TableViewRowSelectedStateObservable,
     TableViewRowIsDraggingObservable,

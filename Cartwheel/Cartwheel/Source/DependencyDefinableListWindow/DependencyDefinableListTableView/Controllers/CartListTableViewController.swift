@@ -34,8 +34,8 @@ protocol DependencyDefinablesControllable: class {
     var dependencyDefinables: [DependencyDefinable]? { get set }
 }
 
-@objc(CartListTableViewController)
-final class CartListTableViewController: NSViewController, DependencyDefinableListModelControllable, DependencyDefinablesControllable, CartfileWindowControllable {
+@objc(DependencyDefinableListTableViewController)
+final class DependencyDefinableListTableViewController: NSViewController, DependencyDefinableListModelControllable, DependencyDefinablesControllable, CartfileWindowControllable {
     
     // Model Object
     let dataSource: DependencyDefinableListModel
@@ -46,7 +46,7 @@ final class CartListTableViewController: NSViewController, DependencyDefinableLi
     }
     
     // View Object
-    private let contentView = CartListView()
+    private let contentView = DependencyDefinableListView()
     
     // Parent Controller
     var window: NSWindow? {
@@ -55,20 +55,20 @@ final class CartListTableViewController: NSViewController, DependencyDefinableLi
     private weak var parentWindowController: NSWindowController?
     
     // Window Observer
-    let windowObserver: CartListWindowObserver
+    let windowObserver: DependencyDefinableListWindowObserver
     
     // Logging Object
     private let log = XCGLogger.defaultInstance()
     
     // Child Controllers
-    private let tableViewDataSource = CartListTableViewDataSource()
-    private let tableViewDelegate = CartListTableViewDelegate()
-    private let searchFieldDelegate = CartListSearchFieldDelegate()
-    private let toolbarController = CartListWindowToolbarController()
+    private let tableViewDataSource = DependencyDefinableListTableViewDataSource()
+    private let tableViewDelegate = DependencyDefinableListTableViewDelegate()
+    private let searchFieldDelegate = DependencyDefinableListSearchFieldDelegate()
+    private let toolbarController = DependencyDefinableListWindowToolbarController()
     
     // MARK: Init
     
-    init!(controller: NSWindowController, model: DependencyDefinableListModel, windowObserver: CartListWindowObserver) {
+    init!(controller: NSWindowController, model: DependencyDefinableListModel, windowObserver: DependencyDefinableListWindowObserver) {
         self.dataSource = model
         self.dependencyDefinables = model.dependencyDefinables // set the cartfiles on init. After init, the cartfiles will update themselves via SwiftObserver
         self.parentWindowController = controller
@@ -138,7 +138,7 @@ final class CartListTableViewController: NSViewController, DependencyDefinableLi
 
 // MARK: Handle Content and State Changing
 
-extension CartListTableViewController {
+extension DependencyDefinableListTableViewController {
     // Data Source Observing
     private func contentModelDidChange() {
         if self.searchFieldDelegate.searchInProgress == false {
@@ -172,7 +172,7 @@ extension CartListTableViewController {
 
 // MARK: Handle Add / Delete Buttons
 
-extension CartListTableViewController {
+extension DependencyDefinableListTableViewController {
     @objc private func didClickDeleteButton(sender: NSButton) {
         // don't do anything if no rows are selected
         let selectedIndexes = self.contentView.tableView.selectedRowIndexes.ranges
@@ -191,7 +191,7 @@ extension CartListTableViewController {
         }
     }
     
-    private func didClickAddButton(sender: CWEventPassingButton, theEvent: NSEvent) {
+    private func didClickAddButton(sender: EventPassingButton, theEvent: NSEvent) {
         let menu = NSMenu(title: "Testing123")
         menu.delegate = self
         menu.addItemWithTitle(NSLocalizedString("Add Cartfiles", comment: "Title of add cartfiles open panel"), action: "didChooseAddCartfilesMenuItem:", keyEquivalent: "")
@@ -202,7 +202,7 @@ extension CartListTableViewController {
 
 // MARK: NSMenuDelegate
 
-extension CartListTableViewController: NSMenuDelegate {
+extension DependencyDefinableListTableViewController: NSMenuDelegate {
     @objc private func didChooseAddCartfilesMenuItem(sender: NSMenuItem) {
         let savePanel = NSOpenPanel(style: .AddCartfiles)
         savePanel.beginSheetModalForWindow(self.window!) { untypedResult in
@@ -251,8 +251,8 @@ extension CartListTableViewController: NSMenuDelegate {
 
 // MARK: EventPassingButtonDelegate
 
-extension CartListTableViewController: EventPassingButtonDelegate {
-    func didClickDownOnEventPassingButton(sender: CWEventPassingButton, theEvent: NSEvent) {
+extension DependencyDefinableListTableViewController: EventPassingButtonDelegate {
+    func didClickDownOnEventPassingButton(sender: EventPassingButton, theEvent: NSEvent) {
         self.didClickAddButton(sender, theEvent: theEvent)
     }
 }

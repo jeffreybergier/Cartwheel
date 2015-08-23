@@ -34,7 +34,7 @@ protocol SearchInProgressControllable: class {
     var searchInProgress: Bool { get set }
 }
 
-class CartListSearchFieldDelegate: CartListChildController, NSTextFieldDelegate, SearchInProgressControllable {
+class DependencyDefinableListSearchFieldDelegate: DependencyDefinableListChildController, NSTextFieldDelegate, SearchInProgressControllable {
     
     var searchInProgress = false
 

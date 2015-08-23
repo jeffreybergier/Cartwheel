@@ -29,7 +29,7 @@ import Cocoa
 import XCGLogger
 import PureLayout_Mac
 
-final class CartListWindowToolbarController: CartListChildController, NSToolbarDelegate {
+final class DependencyDefinableListWindowToolbarController: DependencyDefinableListChildController, NSToolbarDelegate {
     
     // MARK: Main Properties
     let toolbar = NSToolbar(identifier: "CartListWindowToolbar")
@@ -91,7 +91,7 @@ final class CartListWindowToolbarController: CartListChildController, NSToolbarD
 
 // MARK: NSTextFieldDelegate
 
-extension CartListWindowToolbarController: NSToolbarDelegate {
+extension DependencyDefinableListWindowToolbarController: NSToolbarDelegate {
     func toolbarAllowedItemIdentifiers(toolbar: NSToolbar) -> [AnyObject] {
         return [
             ToolbarItems.CartfilesSearchIdentifier,

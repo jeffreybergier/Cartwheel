@@ -30,9 +30,9 @@ import XCGLogger
 
 // MARK: Class for Subcontrollers
 
-class CartListChildController: NSObject {
+class DependencyDefinableListChildController: NSObject {
     weak var controller: protocol<DependencyDefinablesControllable, DependencyDefinableListModelControllable, CartfileWindowControllable>?
-    weak var windowObserver: CartListWindowObserver?
+    weak var windowObserver: DependencyDefinableListWindowObserver?
 }
 
 // MARK: Extend NSRange

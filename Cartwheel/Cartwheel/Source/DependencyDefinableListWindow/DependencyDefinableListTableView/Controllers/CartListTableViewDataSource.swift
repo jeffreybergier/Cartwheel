@@ -28,7 +28,7 @@
 import Cocoa
 import XCGLogger
 
-class CartListTableViewDataSource: CartListChildController, NSTableViewDataSource {
+class DependencyDefinableListTableViewDataSource: DependencyDefinableListChildController, NSTableViewDataSource {
     
     // MARK: NSTableViewDataSource
     
@@ -95,7 +95,7 @@ class CartListTableViewDataSource: CartListChildController, NSTableViewDataSourc
     }
 }
 
-extension CartListTableViewDataSource {
+extension DependencyDefinableListTableViewDataSource {
     private enum PasteboardActivity {
         case DragFile(URLs: [NSURL])
         case MoveRow(indexSet: NSIndexSet)

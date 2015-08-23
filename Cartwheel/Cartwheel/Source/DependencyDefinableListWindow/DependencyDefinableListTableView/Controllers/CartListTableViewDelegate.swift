@@ -28,7 +28,7 @@
 import Cocoa
 import ObserverSet
 
-class CartListTableViewDelegate: CartListChildController, NSTableViewDelegate {
+class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildController, NSTableViewDelegate {
     
     private let cartfileUpdaterManager = CartfileUpdaterManager()
     

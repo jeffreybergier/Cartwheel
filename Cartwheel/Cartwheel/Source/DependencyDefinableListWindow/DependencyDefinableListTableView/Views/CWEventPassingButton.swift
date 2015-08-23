@@ -29,13 +29,13 @@ import Cocoa
 import XCGLogger
 
 protocol EventPassingButtonDelegate: class {
-    func didClickDownOnEventPassingButton(sender: CWEventPassingButton, theEvent: NSEvent)
+    func didClickDownOnEventPassingButton(sender: EventPassingButton, theEvent: NSEvent)
 }
 
 // This button ignores the target and action set on it.
 // Instead it always sends the mouseDown event to its delegate
 
-class CWEventPassingButton: NSButton {
+class EventPassingButton: NSButton {
     
     // TODO: Find a way to actually override the type in target so to get better type safety
     override var target: AnyObject? {
