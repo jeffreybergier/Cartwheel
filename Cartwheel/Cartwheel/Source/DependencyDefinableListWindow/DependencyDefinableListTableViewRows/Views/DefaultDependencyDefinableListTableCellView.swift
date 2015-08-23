@@ -28,7 +28,7 @@
 import Cocoa
 import PureLayout_Mac
 
-final class DefaultCartListTableCellView: NSView {
+final class DefaultDependencyDefinableListTableCellView: NSView {
     
     // MARK: Load and Configure the Views for this Row
     

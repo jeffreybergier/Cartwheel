@@ -27,11 +27,11 @@
 import Cocoa
 import ObserverSet
 
-final class CartListTableRowView: NSTableRowView {
+final class DependencyDefinableListTableRowView: NSTableRowView {
     
     // MARK: Handle Intialization
     
-    static let identifier = "CartListTableRowView"
+    static let identifier = "DependencyDefinableListTableRowView"
     override var identifier: String? {
         get { return self.classForCoder.identifier }
         set { /* do nothing */ /* this setter is needed to please the compiler */ }

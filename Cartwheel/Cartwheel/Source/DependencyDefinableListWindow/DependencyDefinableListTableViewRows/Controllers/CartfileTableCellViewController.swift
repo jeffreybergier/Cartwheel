@@ -33,30 +33,7 @@ protocol CartfileWindowControllable: class {
     var window: NSWindow? { get }
 }
 
-// this is the cell the tableview deques
-// its only job is to load my custom controller 
-// which will then fill it with subviews
-
-final class CartListTableCellView: NSTableCellView {
-    private var _controller: CartListTableCellViewController?
-    var controller: CartListTableCellViewController {
-        if let controller = _controller {
-            return controller
-        } else {
-            let controller = CartListTableCellViewController(view: self)
-            _controller = controller
-            return controller
-        }
-    }
-    
-    static let identifier = "CartListTableCellViewController"
-    override var identifier: String? {
-        get { return self.classForCoder.identifier }
-        set { /* do nothing */ /* this setter is needed to please the compiler */ }
-    }
-}
-
-final class CartListTableCellViewController: NSObject {
+final class CartfileTableCellViewController: NSObject {
     
     weak var view: NSTableCellView!
     
@@ -76,8 +53,8 @@ final class CartListTableCellViewController: NSObject {
     private weak var parentWindow: NSWindow!
     private weak var cartfileUpdaterManager: CartfileUpdaterManager!
     
-    private let defaultView = DefaultCartListTableCellView()
-    private let updatingView = UpdatingCartListTableCellView()
+    private let defaultView = DefaultDependencyDefinableListTableCellView()
+    private let updatingView = UpdatingDependencyDefinableListTableCellView()
     
     private var cartfileUpdateStatus: CartfileUpdater.Status = .NonExistant {
         didSet {

@@ -35,11 +35,11 @@ class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildCont
     // MARK: Handle RowViews and CellViews
     
     func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
-        let rowView: CartListTableRowView
-        if let recycledRowView = tableView.makeViewWithIdentifier(CartListTableRowView.identifier, owner: nil) as? CartListTableRowView {
+        let rowView: DependencyDefinableListTableRowView
+        if let recycledRowView = tableView.makeViewWithIdentifier(DependencyDefinableListTableRowView.identifier, owner: nil) as? DependencyDefinableListTableRowView {
             rowView = recycledRowView
         } else {
-            rowView = CartListTableRowView()
+            rowView = DependencyDefinableListTableRowView()
         }
         if rowView.configuredOnce == false {
             self.windowObserver?.tableViewRowIsDraggingObserver.add(rowView, rowView.dynamicType.tableDraggingStateChanged)
@@ -49,12 +49,12 @@ class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildCont
     }
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let cellView: CartListTableCellView
-        if let recycledCellView = tableView.makeViewWithIdentifier(CartListTableCellView.identifier, owner: nil) as? CartListTableCellView {
+        let cellView: DependencyDefinableListTableCellView
+        if let recycledCellView = tableView.makeViewWithIdentifier(DependencyDefinableListTableCellView.identifier, owner: nil) as? DependencyDefinableListTableCellView {
             cellView = recycledCellView
         }
         else {
-            cellView = CartListTableCellView()
+            cellView = DependencyDefinableListTableCellView()
         }
         
         cellView.controller.configureViewWithWindow(self.controller!.window!, updateController: self.cartfileUpdaterManager)
@@ -64,8 +64,8 @@ class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildCont
     
     // MARK: Handle Cell Height
     
-    private lazy var cellHeightCalculationView: DefaultCartListTableCellView = {
-        let view = DefaultCartListTableCellView()
+    private lazy var cellHeightCalculationView: DefaultDependencyDefinableListTableCellView = {
+        let view = DefaultDependencyDefinableListTableCellView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.viewDidLoad()
         view.setPrimaryTextFieldString("TestString")
