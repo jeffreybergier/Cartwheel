@@ -35,32 +35,20 @@ struct Podfile: DependencyDefinable {
     var location: NSURL
     
     init?(location: NSURL) {
-        let fileManager = NSFileManager.defaultManager()
-        if let path = location.path,
-            let lastPathComponent = location.lastPathComponent,
-            let possiblePodfilePath = location.URLByAppendingPathComponent(Podfile.fileName()).path {
-                var isDirectory: ObjCBool = false
-                if fileManager.fileExistsAtPath(path, isDirectory: &isDirectory) == true {
-                    switch isDirectory.boolValue {
-                    case false where lastPathComponent.lowercaseString == Podfile.fileName().lowercaseString:
-                        self.location = location.parentDirectory
-                        self.name = location.parentDirectory.lastPathComponent!
-                    case true where fileManager.fileExistsAtPath(possiblePodfilePath) == true:
-                        self.location = location
-                        self.name = location.lastPathComponent!
-                    default:
-                        return nil
-                    }
-                } else {
-                    return nil
-                }
-        } else {
+        switch Podfile.determineInitOption(location) {
+        case .File:
+            self.location = location.parentDirectory
+            self.name = location.parentDirectory.lastPathComponent!
+        case .Directory:
+            self.location = location
+            self.name = location.lastPathComponent!
+        case .Fail:
             return nil
         }
     }
     
     func encodableCopy() -> EncodableDependencyDefinable {
-        return EncodablePodfile(location: self.location)
+        return EncodablePodfile(location: self.location)!
     }
     
     static func fileName() -> String {
@@ -93,6 +81,28 @@ func ==(lhs: Podfile, rhs: Podfile) -> Bool {
     if lhs.hashValue == rhs.hashValue { return true } else { return false }
 }
 
+extension Podfile {
+    static func determineInitOption(location: NSURL) -> DependencyDefinableInitOption {
+        let fileManager = NSFileManager.defaultManager()
+        var isDirectory: ObjCBool = false
+        
+        if let path = location.path,
+            let lastPathComponent = location.lastPathComponent,
+            let possiblePodfilePath = location.URLByAppendingPathComponent(Podfile.fileName()).path
+            where fileManager.fileExistsAtPath(path, isDirectory: &isDirectory) == true {
+                switch isDirectory.boolValue {
+                case false where lastPathComponent.lowercaseString == Podfile.fileName().lowercaseString:
+                    return .File
+                case true where fileManager.fileExistsAtPath(possiblePodfilePath) == true:
+                    return .Directory
+                default:
+                    return .Fail
+                }
+        }
+        return .Fail
+    }
+}
+
 // MARK: Implement the Encodable Class Type
 
 extension Podfile {
@@ -106,13 +116,25 @@ extension Podfile {
 
 final class EncodablePodfile: NSObject, EncodableDependencyDefinable, ProtocolHackDependencyDefinable {
     
-    var name: String
-    var location: NSURL
+    let name: String
+    let location: NSURL
     
-    init(location: NSURL) {
-        self.location = location
-        self.name = location.lastPathComponent!
-        super.init()
+    init?(location: NSURL) {
+        switch Podfile.determineInitOption(location) {
+        case .File:
+            self.location = location.parentDirectory
+            self.name = location.parentDirectory.lastPathComponent!
+            super.init()
+        case .Directory:
+            self.location = location
+            self.name = location.lastPathComponent!
+            super.init()
+        case .Fail:
+            self.location = location
+            self.name = "INVALID"
+            super.init()
+            return nil
+        }
     }
     
     func decodedCopy() -> DependencyDefinable {

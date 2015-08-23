@@ -35,32 +35,20 @@ struct Cartfile: DependencyDefinable {
     var location: NSURL
     
     init?(location: NSURL) {
-        let fileManager = NSFileManager.defaultManager()
-        if let path = location.path,
-            let lastPathComponent = location.lastPathComponent,
-            let possibleCartfilePath = location.URLByAppendingPathComponent(Cartfile.fileName()).path {
-                var isDirectory: ObjCBool = false
-                if fileManager.fileExistsAtPath(path, isDirectory: &isDirectory) == true {
-                    switch isDirectory.boolValue {
-                    case false where lastPathComponent.lowercaseString == Cartfile.fileName().lowercaseString:
-                        self.location = location.parentDirectory
-                        self.name = location.parentDirectory.lastPathComponent!
-                    case true where fileManager.fileExistsAtPath(possibleCartfilePath) == true:
-                        self.location = location
-                        self.name = location.lastPathComponent!
-                    default:
-                        return nil
-                    }
-                } else {
-                    return nil
-                }
-        } else {
+        switch Cartfile.determineInitOption(location) {
+        case .File:
+            self.location = location.parentDirectory
+            self.name = location.parentDirectory.lastPathComponent!
+        case .Directory:
+            self.location = location
+            self.name = location.lastPathComponent!
+        case .Fail:
             return nil
         }
     }
     
     func encodableCopy() -> EncodableDependencyDefinable {
-        return EncodableCartfile(location: self.location)
+        return EncodableCartfile(location: self.location)!
     }
     
     static func fileName() -> String {
@@ -73,6 +61,28 @@ struct Cartfile: DependencyDefinable {
         var error: NSError?
         blankData.writeToURL(blankFileURL, options: NSDataWritingOptions.DataWritingWithoutOverwriting, error: &error)
         return error
+    }
+}
+
+extension Cartfile {
+    static func determineInitOption(location: NSURL) -> DependencyDefinableInitOption {
+        let fileManager = NSFileManager.defaultManager()
+        var isDirectory: ObjCBool = false
+        
+        if let path = location.path,
+            let lastPathComponent = location.lastPathComponent,
+            let possibleCartfilePath = location.URLByAppendingPathComponent(Cartfile.fileName()).path
+            where fileManager.fileExistsAtPath(path, isDirectory: &isDirectory) == true {
+                switch isDirectory.boolValue {
+                case false where lastPathComponent.lowercaseString == Cartfile.fileName().lowercaseString:
+                    return .File
+                case true where fileManager.fileExistsAtPath(possibleCartfilePath) == true:
+                    return .Directory
+                default:
+                    return .Fail
+                }
+        }
+        return .Fail
     }
 }
 
@@ -106,13 +116,25 @@ extension Cartfile {
 
 final class EncodableCartfile: NSObject, EncodableDependencyDefinable, ProtocolHackDependencyDefinable {
     
-    var name: String
-    var location: NSURL
+    let name: String
+    let location: NSURL
     
-    init(location: NSURL) {
-        self.location = location
-        self.name = location.lastPathComponent!
-        super.init()
+    init?(location: NSURL) {
+        switch Cartfile.determineInitOption(location) {
+        case .File:
+            self.location = location.parentDirectory
+            self.name = location.parentDirectory.lastPathComponent!
+            super.init()
+        case .Directory:
+            self.location = location
+            self.name = location.lastPathComponent!
+            super.init()
+        case .Fail:
+            self.name = "empty"
+            self.location = location
+            super.init()
+            return nil
+        }
     }
     
     func decodedCopy() -> DependencyDefinable {

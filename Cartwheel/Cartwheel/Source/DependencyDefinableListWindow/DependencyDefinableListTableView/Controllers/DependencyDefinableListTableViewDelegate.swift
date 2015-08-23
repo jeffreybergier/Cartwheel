@@ -71,6 +71,18 @@ class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildCont
             controller.view = cellView
             controller.configureViewWithWindow(self.controller!.window!, updateController: self.cartfileUpdaterManager)
             controller.cartfile = cartfile
+        } else if let podfile = self.controller?.dependencyDefinables?[safe: row] as? Podfile {
+            let controller: PodfileTableCellViewController
+            if let existingController = self.podfileCellViewControllerMappings[cellView] {
+                controller = existingController
+            } else {
+                controller = PodfileTableCellViewController()
+                self.podfileCellViewControllerMappings[cellView] = controller
+            }
+            
+            controller.view = cellView
+            controller.configureViewWithWindow(self.controller!.window!)
+            controller.podfile = podfile
         } else {
             self.log.severe("Unknown DependencyDefinable type. TableViewCell loaded without controller. Data: \(self.controller?.dependencyDefinables?[safe: row])")
         }
@@ -81,6 +93,7 @@ class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildCont
     // MARK: Keep Track of Cell Views to Controller mappings
     
     private var cartfileCellViewControllerMappings = [DependencyDefinableListTableCellView : CartfileTableCellViewController]()
+    private var podfileCellViewControllerMappings = [DependencyDefinableListTableCellView : PodfileTableCellViewController]()
     
     // MARK: Handle Cell Height
     

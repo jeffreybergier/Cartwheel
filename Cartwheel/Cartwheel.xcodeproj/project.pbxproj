@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		731BFB361B87856E00175F10 /* DependencyDefinableListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731BFB351B87856E00175F10 /* DependencyDefinableListModel.swift */; };
 		73358D1C1B7EAFFB00F0D367 /* UpdatingCartfileTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7315196A1B7E531000451168 /* UpdatingCartfileTableCellView.swift */; };
+		7337742F1B8A429E008B31A1 /* PodfileTableCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7337742E1B8A429E008B31A1 /* PodfileTableCellViewController.swift */; };
 		73468A591B80F60E0087A0D4 /* CartfileUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73530A281B7ECC88005FAFD3 /* CartfileUpdater.swift */; };
 		73468A5C1B80F7610087A0D4 /* CartfileUpdaterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73468A5A1B80F7610087A0D4 /* CartfileUpdaterManager.swift */; };
 		73530A0D1B7EB63A005FAFD3 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73A2FBCE1B503A4600233D54 /* Argo.framework */; };
@@ -99,6 +100,7 @@
 		7315196A1B7E531000451168 /* UpdatingCartfileTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UpdatingCartfileTableCellView.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableViewRows/Views/UpdatingCartfileTableCellView.swift; sourceTree = "<group>"; };
 		731BFB351B87856E00175F10 /* DependencyDefinableListModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DependencyDefinableListModel.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Models/DependencyDefinableListModel.swift; sourceTree = "<group>"; };
 		732909AB1B437F7300A75914 /* DependencyDefinableListTableRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DependencyDefinableListTableRowView.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableViewRows/Views/DependencyDefinableListTableRowView.swift; sourceTree = "<group>"; };
+		7337742E1B8A429E008B31A1 /* PodfileTableCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PodfileTableCellViewController.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableViewRows/Controllers/PodfileTableCellViewController.swift; sourceTree = "<group>"; };
 		73468A5A1B80F7610087A0D4 /* CartfileUpdaterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartfileUpdaterManager.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableViewRows/Controllers/CartfileUpdaterManager.swift; sourceTree = "<group>"; };
 		73530A281B7ECC88005FAFD3 /* CartfileUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartfileUpdater.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableViewRows/Controllers/CartfileUpdater.swift; sourceTree = "<group>"; };
 		7353B9321B001B140038861D /* ExperimentNIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ExperimentNIB.xib; path = Cartwheel/ExperimentNIB.xib; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 		73B458A91B24B4EC00A417AF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				7337742E1B8A429E008B31A1 /* PodfileTableCellViewController.swift */,
 				73C2F3901AF05147001B36DB /* CartfileTableCellViewController.swift */,
 				73468A5A1B80F7610087A0D4 /* CartfileUpdaterManager.swift */,
 				73530A281B7ECC88005FAFD3 /* CartfileUpdater.swift */,
@@ -433,6 +436,7 @@
 				7385AEFE1B892EFE00CF1E03 /* DependencyDefinableListTableViewDataSource.swift in Sources */,
 				73B72BEB1B8954D00012C225 /* DependencyDefinableListWindowObserver.swift in Sources */,
 				73B992D31B6C617D0023956C /* EventPassingButton.swift in Sources */,
+				7337742F1B8A429E008B31A1 /* PodfileTableCellViewController.swift in Sources */,
 				73B55EA91B86B1A400DD5931 /* DependencyDefinable.swift in Sources */,
 				73D8F5881B87B2FF00D575B6 /* Cartfile.swift in Sources */,
 				73814D971B4CB40400CEA6F1 /* DependencyDefinableListWindowController.swift in Sources */,

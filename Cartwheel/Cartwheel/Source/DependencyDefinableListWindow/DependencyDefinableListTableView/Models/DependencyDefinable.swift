@@ -39,8 +39,9 @@ protocol DependencyDefinable: Printable { //TODO: Figure out how to add in Print
 }
 
 @objc protocol EncodableDependencyDefinable: class, NSCoding {
-    var name: String { get set }
-    var location: NSURL { get set }
+    var name: String { get }
+    var location: NSURL { get }
+    init?(location: NSURL)
     //func decodedCopy() -> DependencyDefinable
 }
 
@@ -48,15 +49,13 @@ protocol ProtocolHackDependencyDefinable {
     func decodedCopy() -> DependencyDefinable
 }
 
+enum DependencyDefinableInitOption {
+    case File, Directory, Fail
+}
+
 struct DependencyDefinableType {
     
     static func fromURL(url: NSURL) -> [DependencyDefinable]? {
-        
-        let implementedTypes: [Any] = [ // Would rather use this code so I don't have to copy and paste code for every time
-            Cartfile.self, // however, I can't figure out how to get the type signature correct.
-            Podfile.self // TODO: Make this work
-        ]
-        
         var dependencyDefinables = [DependencyDefinable]()
         
         let foundCartfiles = url.extractFilesRecursionDepth(DependencyDefinableType.defaults.directorySearchRecursion)?.map() { url -> DependencyDefinable? in
@@ -82,10 +81,36 @@ struct DependencyDefinableType {
         if let found = foundPodfiles {
             dependencyDefinables += found
         }
-
+        
         
         if dependencyDefinables.isEmpty == false { return dependencyDefinables } else { return .None }
     }
+    
+    //TODO: Make this work. This code is causing a segmentation fault in swift
+//    static func fromURL(url: NSURL) -> [DependencyDefinable]? {
+//        var dependencyDefinables = [DependencyDefinable]()
+//        
+//        // this must be done with the OBJC protocol. It does not yet work with Swift protocols
+//        let implementedTypes: [EncodableDependencyDefinable.Type] = [
+//            EncodableCartfile.self,
+//            EncodablePodfile.self
+//        ]
+//        
+//        for implementedType in implementedTypes {
+//            if let urls = url.extractFilesRecursionDepth(DependencyDefinableType.defaults.directorySearchRecursion) {
+//                let found = urls.map() { url -> EncodableDependencyDefinable? in
+//                    return implementedType(location: url)
+//                    }.filter() { dd -> Bool in
+//                        if let dd = dd as? ProtocolHackDependencyDefinable { return true } else { return false }
+//                    }.map() { encodableDD -> DependencyDefinable in
+//                        return (encodableDD as! ProtocolHackDependencyDefinable).decodedCopy()
+//                }
+//                dependencyDefinables += found
+//            }
+//        }
+//        
+//        if dependencyDefinables.isEmpty == false { return dependencyDefinables } else { return .None }
+//    }
     
     static func fromURLs(URLs: [AnyObject]) -> [DependencyDefinable]? {
         var dependencyDefinables = [DependencyDefinable]()
