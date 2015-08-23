@@ -49,8 +49,13 @@ protocol ProtocolHackDependencyDefinable {
 }
 
 struct DependencyDefinableType {
+    
+    let something = Cartfile.self
+    let somethingElse = Podfile.self
+    
     static let implementedTypes = [
         Cartfile.self
+        //Podfile.self
     ]
     
     static func fromURL(url: NSURL) -> [DependencyDefinable]? {

@@ -64,6 +64,7 @@
 		73B992D31B6C617D0023956C /* EventPassingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B992D11B6C617D0023956C /* EventPassingButton.swift */; };
 		73D8F5861B87AFE700D575B6 /* DefaultsPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D8F5851B87AFE700D575B6 /* DefaultsPlist.swift */; };
 		73D8F5881B87B2FF00D575B6 /* Cartfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D8F5871B87B2FF00D575B6 /* Cartfile.swift */; };
+		73DC22FF1B8970D300CDA550 /* Podfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DC22FE1B8970D300CDA550 /* Podfile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -141,6 +142,7 @@
 		73C4386C1B470F5100DF94EC /* DependencyDefinableListTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DependencyDefinableListTableViewController.xib; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Views/DependencyDefinableListTableViewController.xib; sourceTree = "<group>"; };
 		73D8F5851B87AFE700D575B6 /* DefaultsPlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DefaultsPlist.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Models/DefaultsPlist.swift; sourceTree = "<group>"; };
 		73D8F5871B87B2FF00D575B6 /* Cartfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Cartfile.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Models/Cartfile.swift; sourceTree = "<group>"; };
+		73DC22FE1B8970D300CDA550 /* Podfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Podfile.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Models/Podfile.swift; sourceTree = "<group>"; };
 		73FBF23C1AEF269500970223 /* DependencyDefinableListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DependencyDefinableListView.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Views/DependencyDefinableListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -310,6 +312,7 @@
 				73B55EA81B86B1A400DD5931 /* DependencyDefinable.swift */,
 				73D8F5851B87AFE700D575B6 /* DefaultsPlist.swift */,
 				73D8F5871B87B2FF00D575B6 /* Cartfile.swift */,
+				73DC22FE1B8970D300CDA550 /* Podfile.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -436,6 +439,7 @@
 				73468A591B80F60E0087A0D4 /* CartfileUpdater.swift in Sources */,
 				73814D981B4CB40400CEA6F1 /* DefaultCartfileTableCellView.swift in Sources */,
 				73814D991B4CB40400CEA6F1 /* AppDelegate.swift in Sources */,
+				73DC22FF1B8970D300CDA550 /* Podfile.swift in Sources */,
 				7385AF001B892EFE00CF1E03 /* CWIndexSetPasteboardContainer.m in Sources */,
 				7385AF031B89308600CF1E03 /* DependencyDefinableListWindowToolbarController.swift in Sources */,
 				7385AEFF1B892EFE00CF1E03 /* DependencyDefinableListTableViewDelegate.swift in Sources */,
