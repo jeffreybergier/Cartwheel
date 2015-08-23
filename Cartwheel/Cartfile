@@ -5,4 +5,4 @@ github "duemunk/Async" ~> 1.2.1
 github "jeffreybergier/SwiftObserverSet" "master"
 
 ## When using the official Carthage Github
-github "Carthage/Carthage" "master"
+github "Carthage/Carthage" "e31113bb34fb28c66f40fbdcb0b5442b72906fb9"
