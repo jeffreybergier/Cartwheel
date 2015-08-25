@@ -94,10 +94,10 @@ final class DependencyDefinableListTableRowView: NSTableRowView {
             // drawHighlightInRect
             let selectionPath = NSBezierPath(roundedRect: dirtyRect, xRadius: 0, yRadius: 0)
             let fillColor: Void = NSColor.whiteColor().colorWithAlphaComponent(0.15).setFill()
-            selectionPath.fill()
+            //selectionPath.fill()
         } else {
             // drawUnhighlightInRect
-            super.drawBackgroundInRect(dirtyRect)
+            //super.drawBackgroundInRect(dirtyRect)
         }
     }
     

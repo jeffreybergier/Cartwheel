@@ -61,11 +61,11 @@ class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildCont
         
         if let cartfile = self.controller?.dependencyDefinables?[safe: row] as? Cartfile {
             let controller: CartfileTableCellViewController
-            if let existingController = self.cartfileCellViewControllerMappings[cellView] {
+            if let existingController = self.cellViewControllerMappings[cellView] as? CartfileTableCellViewController {
                 controller = existingController
             } else {
                 controller = CartfileTableCellViewController()
-                self.cartfileCellViewControllerMappings[cellView] = controller
+                self.cellViewControllerMappings[cellView] = controller
             }
             
             controller.view = cellView
@@ -73,11 +73,11 @@ class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildCont
             controller.cartfile = cartfile
         } else if let podfile = self.controller?.dependencyDefinables?[safe: row] as? Podfile {
             let controller: PodfileTableCellViewController
-            if let existingController = self.podfileCellViewControllerMappings[cellView] {
+            if let existingController = self.cellViewControllerMappings[cellView] as? PodfileTableCellViewController {
                 controller = existingController
             } else {
                 controller = PodfileTableCellViewController()
-                self.podfileCellViewControllerMappings[cellView] = controller
+                self.cellViewControllerMappings[cellView] = controller
             }
             
             controller.view = cellView
@@ -92,8 +92,7 @@ class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildCont
     
     // MARK: Keep Track of Cell Views to Controller mappings
     
-    private var cartfileCellViewControllerMappings = [DependencyDefinableListTableCellView : CartfileTableCellViewController]()
-    private var podfileCellViewControllerMappings = [DependencyDefinableListTableCellView : PodfileTableCellViewController]()
+    private var cellViewControllerMappings = [DependencyDefinableListTableCellView : AnyObject]()
     
     // MARK: Handle Cell Height
     
