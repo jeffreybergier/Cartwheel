@@ -51,48 +51,55 @@ class DependencyDefinableListTableViewDelegate: DependencyDefinableListChildCont
     }
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let cellView: DependencyDefinableListTableCellView
-        if let recycledCellView = tableView.makeViewWithIdentifier(DependencyDefinableListTableCellView.identifier, owner: nil) as? DependencyDefinableListTableCellView {
-            cellView = recycledCellView
-        }
-        else {
-            cellView = DependencyDefinableListTableCellView()
-        }
-        
         if let cartfile = self.controller?.dependencyDefinables?[safe: row] as? Cartfile {
+            let cellView: CartfileTableCellView
+            if let recycledCellView = tableView.makeViewWithIdentifier(CartfileTableCellView.identifier, owner: nil) as? CartfileTableCellView {
+                cellView = recycledCellView
+            }
+            else {
+                cellView = CartfileTableCellView()
+            }
+            
             let controller: CartfileTableCellViewController
-            if let existingController = self.cellViewControllerMappings[cellView] as? CartfileTableCellViewController {
+            if let existingController = cellView.controller {
                 controller = existingController
             } else {
                 controller = CartfileTableCellViewController()
-                self.cellViewControllerMappings[cellView] = controller
+                cellView.controller = controller
+                controller.view = cellView
             }
             
-            controller.view = cellView
             controller.configureViewWithWindow(self.controller!.window!, updateController: self.cartfileUpdaterManager)
             controller.cartfile = cartfile
+            
+            return cellView
         } else if let podfile = self.controller?.dependencyDefinables?[safe: row] as? Podfile {
+            let cellView: PodfileTableCellView
+            if let recycledCellView = tableView.makeViewWithIdentifier(PodfileTableCellView.identifier, owner: nil) as? PodfileTableCellView {
+                cellView = recycledCellView
+            }
+            else {
+                cellView = PodfileTableCellView()
+            }
+            
             let controller: PodfileTableCellViewController
-            if let existingController = self.cellViewControllerMappings[cellView] as? PodfileTableCellViewController {
+            if let existingController = cellView.controller {
                 controller = existingController
             } else {
                 controller = PodfileTableCellViewController()
-                self.cellViewControllerMappings[cellView] = controller
+                cellView.controller = controller
+                controller.view = cellView
             }
             
-            controller.view = cellView
             controller.configureViewWithWindow(self.controller!.window!)
             controller.podfile = podfile
+            
+            return cellView
         } else {
             self.log.severe("Unknown DependencyDefinable type. TableViewCell loaded without controller. Data: \(self.controller?.dependencyDefinables?[safe: row])")
+            return .None
         }
-        
-        return cellView
     }
-    
-    // MARK: Keep Track of Cell Views to Controller mappings
-    
-    private var cellViewControllerMappings = [DependencyDefinableListTableCellView : AnyObject]()
     
     // MARK: Handle Cell Height
     

@@ -61,7 +61,7 @@
 		7385AF031B89308600CF1E03 /* DependencyDefinableListWindowToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7385AF021B89308600CF1E03 /* DependencyDefinableListWindowToolbarController.swift */; };
 		73B55EA91B86B1A400DD5931 /* DependencyDefinable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B55EA81B86B1A400DD5931 /* DependencyDefinable.swift */; };
 		73B72BEB1B8954D00012C225 /* DependencyDefinableListWindowObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B72BEA1B8954D00012C225 /* DependencyDefinableListWindowObserver.swift */; };
-		73B72BED1B895C1B0012C225 /* DependencyDefinableListTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B72BEC1B895C1B0012C225 /* DependencyDefinableListTableCellView.swift */; };
+		73B72BED1B895C1B0012C225 /* DependencyDefinableListTableCellViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B72BEC1B895C1B0012C225 /* DependencyDefinableListTableCellViews.swift */; };
 		73B992D31B6C617D0023956C /* EventPassingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B992D11B6C617D0023956C /* EventPassingButton.swift */; };
 		73D8F5861B87AFE700D575B6 /* DefaultsPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D8F5851B87AFE700D575B6 /* DefaultsPlist.swift */; };
 		73D8F5881B87B2FF00D575B6 /* Cartfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D8F5871B87B2FF00D575B6 /* Cartfile.swift */; };
@@ -134,7 +134,7 @@
 		73B4DD161AEEE527007342C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		73B55EA81B86B1A400DD5931 /* DependencyDefinable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DependencyDefinable.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Models/DependencyDefinable.swift; sourceTree = "<group>"; };
 		73B72BEA1B8954D00012C225 /* DependencyDefinableListWindowObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DependencyDefinableListWindowObserver.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListWindowObserver.swift; sourceTree = "<group>"; };
-		73B72BEC1B895C1B0012C225 /* DependencyDefinableListTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DependencyDefinableListTableCellView.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableViewRows/Views/DependencyDefinableListTableCellView.swift; sourceTree = "<group>"; };
+		73B72BEC1B895C1B0012C225 /* DependencyDefinableListTableCellViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DependencyDefinableListTableCellViews.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableViewRows/Views/DependencyDefinableListTableCellViews.swift; sourceTree = "<group>"; };
 		73B992D11B6C617D0023956C /* EventPassingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventPassingButton.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableView/Views/EventPassingButton.swift; sourceTree = "<group>"; };
 		73C2F38E1AF04F97001B36DB /* DefaultCartfileTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DefaultCartfileTableCellView.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableViewRows/Views/DefaultCartfileTableCellView.swift; sourceTree = "<group>"; };
 		73C2F3901AF05147001B36DB /* CartfileTableCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CartfileTableCellViewController.swift; path = Source/DependencyDefinableListWindow/DependencyDefinableListTableViewRows/Controllers/CartfileTableCellViewController.swift; sourceTree = "<group>"; };
@@ -249,7 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				732909AB1B437F7300A75914 /* DependencyDefinableListTableRowView.swift */,
-				73B72BEC1B895C1B0012C225 /* DependencyDefinableListTableCellView.swift */,
+				73B72BEC1B895C1B0012C225 /* DependencyDefinableListTableCellViews.swift */,
 				7315196A1B7E531000451168 /* UpdatingCartfileTableCellView.swift */,
 				73C2F38E1AF04F97001B36DB /* DefaultCartfileTableCellView.swift */,
 			);
@@ -451,7 +451,7 @@
 				73814D9B1B4CB40400CEA6F1 /* CWSwiftGlobals.swift in Sources */,
 				7385AEFD1B892EFE00CF1E03 /* DependencyDefinableListSearchFieldDelegate.swift in Sources */,
 				731BFB361B87856E00175F10 /* DependencyDefinableListModel.swift in Sources */,
-				73B72BED1B895C1B0012C225 /* DependencyDefinableListTableCellView.swift in Sources */,
+				73B72BED1B895C1B0012C225 /* DependencyDefinableListTableCellViews.swift in Sources */,
 				73468A5C1B80F7610087A0D4 /* CartfileUpdaterManager.swift in Sources */,
 				73814D9E1B4CB40400CEA6F1 /* CWDebugExtensions.swift in Sources */,
 				73814D9F1B4CB40400CEA6F1 /* DependencyDefinableListView.swift in Sources */,

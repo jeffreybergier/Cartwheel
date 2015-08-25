@@ -27,12 +27,20 @@
 
 import Cocoa
 
-// this is the cell the tableview deques
-// its only job is to load my custom controller
-// which will then fill it with subviews
+final class CartfileTableCellView: NSTableCellView {
+    var controller: CartfileTableCellViewController?
+    
+    static let identifier = "CartfileTableCellView"
+    override var identifier: String? {
+        get { return self.classForCoder.identifier }
+        set { /* do nothing */ /* this setter is needed to please the compiler */ }
+    }
+}
 
-final class DependencyDefinableListTableCellView: NSTableCellView {    
-    static let identifier = "DependencyDefinableListTableCellView"
+final class PodfileTableCellView: NSTableCellView {
+    var controller: PodfileTableCellViewController?
+    
+    static let identifier = "PodfileTableCellView"
     override var identifier: String? {
         get { return self.classForCoder.identifier }
         set { /* do nothing */ /* this setter is needed to please the compiler */ }

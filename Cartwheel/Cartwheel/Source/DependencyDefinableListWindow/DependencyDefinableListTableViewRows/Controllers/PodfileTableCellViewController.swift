@@ -31,7 +31,7 @@ import XCGLogger
 
 final class PodfileTableCellViewController: NSObject {
     
-    var view: NSTableCellView!
+    weak var view: NSTableCellView!
     
     var podfile: Podfile! {
         didSet {
