@@ -26,7 +26,7 @@
 //
 
 import Cocoa
-import PureLayout_Mac
+import PureLayout
 import XCGLogger
 import ObserverSet
 

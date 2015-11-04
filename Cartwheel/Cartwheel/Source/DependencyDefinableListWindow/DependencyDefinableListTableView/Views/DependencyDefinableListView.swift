@@ -26,7 +26,7 @@
 //
 
 import Cocoa
-import PureLayout_Mac
+import PureLayout
 
 final class DependencyDefinableListView: NSView {
     
@@ -95,7 +95,7 @@ final class DependencyDefinableListView: NSView {
         self.addConstraints(self.viewConstraints)
     }
     
-    func configure(#tableView: NSTableView, scrollView: NSScrollView, tableColumn: NSTableColumn) {
+    func configure(tableView tableView: NSTableView, scrollView: NSScrollView, tableColumn: NSTableColumn) {
         tableView.addTableColumn(self.tableColumn)
         scrollView.documentView = self.tableView
         scrollView.hasVerticalScroller = true
@@ -109,7 +109,7 @@ final class DependencyDefinableListView: NSView {
         scrollView.drawsBackground = false
     }
     
-    func configure(#addButton: NSButton, deleteButton: NSButton, withController controller: NSViewController?) {
+    func configure(addButton addButton: NSButton, deleteButton: NSButton, withController controller: NSViewController?) {
         let font = NSFont.systemFontOfSize(20)
         addButton.font = font
         deleteButton.font = font

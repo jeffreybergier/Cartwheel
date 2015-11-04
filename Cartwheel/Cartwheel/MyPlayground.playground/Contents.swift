@@ -43,7 +43,7 @@ struct Cartfile: DependencyDefinable {
     
 }
 
-extension Cartfile: Printable {
+extension Cartfile: CustomStringConvertible {
     var description: String {
         return "\(self.name) <\(self.location.path!)>"
     }
@@ -77,7 +77,7 @@ final class EncodableCartfile: NSObject, EncodableDependencyDefinable {
         return Cartfile(location: self.location)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         let location = aDecoder.decodeObjectForKey("location") as! NSURL
         self.location = location
         self.name = location.lastPathComponent!
@@ -95,15 +95,15 @@ final class EncodableCartfile: NSObject, EncodableDependencyDefinable {
 var mainArray = [DependencyDefinable]()
 let file = Cartfile(location: NSURL(string: "file:///Volumes/Drobo")!)
 mainArray += [file] as [DependencyDefinable]
-println(mainArray.count)
+print(mainArray.count)
 
 
 let encodable = file.encodableCopy()
 let fileCopy = encodable.decodedCopy()
-println(fileCopy)
+print(fileCopy)
 
 
 
 if let cartfile = fileCopy as? Cartfile {
-    println("yay!")
+    print("yay!")
 }

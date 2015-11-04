@@ -172,7 +172,7 @@ class CartfileUpdater {
 
 
 // MARK: Printable
-extension CartfileUpdater: Printable {
+extension CartfileUpdater: CustomStringConvertible {
     var description: String {
         return "CartfileUpdater <\(self.cartfile.name)>"
     }

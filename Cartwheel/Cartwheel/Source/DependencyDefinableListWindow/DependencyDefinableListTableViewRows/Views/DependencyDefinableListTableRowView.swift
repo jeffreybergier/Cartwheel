@@ -85,8 +85,8 @@ final class DependencyDefinableListTableRowView: NSTableRowView {
     
     // Implementing a tracking area is required for mouseEntering and mouseExiting events
     private lazy var trackingArea: NSTrackingArea = {
-        let options: NSTrackingAreaOptions = .ActiveInActiveApp | .InVisibleRect | .MouseEnteredAndExited
-        return NSTrackingArea(rect: NSRect.zeroRect, options: options, owner: self, userInfo: nil)
+        let options: NSTrackingAreaOptions = [.ActiveInActiveApp, .InVisibleRect, .MouseEnteredAndExited]
+        return NSTrackingArea(rect: NSRect.zero, options: options, owner: self, userInfo: nil)
     }()
 
     override func drawBackgroundInRect(dirtyRect: NSRect) {

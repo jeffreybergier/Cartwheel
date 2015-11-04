@@ -43,8 +43,9 @@ struct DefaultsPlist {
         var dataError: NSError?
         var plistError: NSError?
         if let plistURL = NSBundle.mainBundle().URLForResource("CartwheelDefaults", withExtension: "plist"),
-            let data = NSData(contentsOfURL: plistURL, options: nil, error: &dataError),
-            let plist = NSPropertyListSerialization.propertyListWithData(data, options: NSPropertyListReadOptions.allZeros, format: nil, error: &plistError) as? NSDictionary {
+            let data = try? NSData(contentsOfURL: plistURL, options: []),
+            let plistObject = try? NSPropertyListSerialization.propertyListWithData(data, options: .Immutable, format: nil),
+            let plist = plistObject as? NSDictionary { //NSPropertyListSerialization.propertyListWithData(data, options: NSPropertyListReadOptions.allZeros, format: nil) as? NSDictionary {
                 
                 // parse the plist
                 directorySearchRecursion = plist["DirectorySearchRecursion"] as? NSNumber

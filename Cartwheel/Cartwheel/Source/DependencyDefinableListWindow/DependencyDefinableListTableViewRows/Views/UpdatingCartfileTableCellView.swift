@@ -26,7 +26,7 @@
 //
 
 import Cocoa
-import PureLayout_Mac
+import PureLayout
 
 class UpdatingCartfileTableCellView: NSView {
     
@@ -61,7 +61,7 @@ class UpdatingCartfileTableCellView: NSView {
         let defaultInset = CGFloat(8.0)
         let smallInset = round(defaultInset / 1.5)
         
-        self.viewConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
+        self.viewConstraints = NSLayoutConstraint.autoCreateConstraintsWithoutInstalling() {
             self.buttonStackView.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)
             self.buttonStackView.autoPinEdgeToSuperviewEdge(.Top, withInset: smallInset)
             self.buttonStackView.autoPinEdgeToSuperviewEdge(.Bottom, withInset: smallInset)
@@ -93,7 +93,7 @@ class UpdatingCartfileTableCellView: NSView {
             _buttonState = newValue
             dispatch_async(dispatch_get_main_queue()) {
                 for view in self.buttonStackView.views {
-                    self.buttonStackView.removeView(view as! NSView)
+                    self.buttonStackView.removeView(view )
                 }
                 switch newValue {
                 case .Normal:

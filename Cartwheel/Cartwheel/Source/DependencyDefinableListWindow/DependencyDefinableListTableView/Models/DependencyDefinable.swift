@@ -29,7 +29,7 @@ import Foundation
 
 // MARK: Implement the Protocols
 
-protocol DependencyDefinable: Printable { //TODO: Figure out how to add in Printable, Hashable without creating errors
+protocol DependencyDefinable: CustomStringConvertible { //TODO: Figure out how to add in Printable, Hashable without creating errors
     static func fileName() -> String //TODO: convert this to property when allowed by swift
     static func writeEmptyToDirectory(directory: NSURL) -> NSError?
     var name: String { get set }

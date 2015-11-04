@@ -95,7 +95,7 @@ class DependencyDefinableListModel {
     
     private func removeItemsAtIndexes<T>(indexes: [Range<Int>], fromArray array: [T]) -> [T] {
         var mutableArray = array
-        for range in indexes.reverse() {
+        for range in Array(indexes.reverse()) {
             mutableArray.removeRange(range)
         }
         return mutableArray
@@ -132,7 +132,7 @@ class DependencyDefinableListModel {
     private func arrayByRemovingItemsAtIndexes<U>(indexes: [Range<Int>], fromArray collection: [U]) -> [U] {
         // TODO: remove this in swift 2.0
         var outputCollection = collection
-        for range in indexes.reverse() {
+        for range in Array(indexes.reverse()) {
             outputCollection.removeRange(range)
         }
         return outputCollection
@@ -168,7 +168,7 @@ class DependencyDefinableListModel {
     private let fileManager = NSFileManager.defaultManager()
     private let storageFolder: NSURL = {
         let array = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)
-        return NSURL(fileURLWithPath: (array.last as! String).stringByAppendingPathComponent(DefaultsPlist().storageDirectory))!
+        return NSURL(fileURLWithPath: (array.last! as NSString).stringByAppendingPathComponent(DefaultsPlist().storageDirectory))
     }()
     
     private func cartfileStorageFolderExists() -> Bool {
@@ -176,7 +176,12 @@ class DependencyDefinableListModel {
     }
     
     private func createCartfileStorageFolder() -> Bool {
-        return self.fileManager.createDirectoryAtPath(self.storageFolder.path!, withIntermediateDirectories: true, attributes: nil, error: nil)
+        do {
+            try self.fileManager.createDirectoryAtPath(self.storageFolder.path!, withIntermediateDirectories: true, attributes: nil)
+            return true
+        } catch _ {
+            return false
+        }
     }
     
     // MARK: Initialization
@@ -189,14 +194,21 @@ class DependencyDefinableListModel {
         let fileURL = self.storageFolder.URLByAppendingPathComponent(self.defaults.storageFile)
         
         var fileReachableError: NSError?
-        let fileURLIsReachable = fileURL.checkResourceIsReachableAndReturnError(&fileReachableError)
+        let fileURLIsReachable: Bool
+        do {
+            try fileURL.checkResourceIsReachableAndReturnError()
+            fileURLIsReachable = true
+        } catch var error as NSError {
+            fileReachableError = error
+            fileURLIsReachable = false
+        }
         if let error = fileReachableError {
             self.log.error("Error reading Cartfiles from disk: \(error)")
         }
         
         var readFromDiskError: NSError?
         if fileURLIsReachable == true {
-            if let dataOnDisk = NSData(contentsOfURL: fileURL, options: nil, error: &readFromDiskError),
+            if let dataOnDisk = NSData(contentsOfURL: fileURL, options: []),
                 let unarchivedObjects = NSKeyedUnarchiver.unarchiveObjectWithData(dataOnDisk) as? [AnyObject] {
                     let dependencyDefinables = unarchivedObjects.filter() { object -> Bool in
                         if let encodableCartfile = object as? ProtocolHackDependencyDefinable {

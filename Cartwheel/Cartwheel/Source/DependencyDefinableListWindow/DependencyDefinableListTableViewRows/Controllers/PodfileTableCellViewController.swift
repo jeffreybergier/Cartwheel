@@ -26,7 +26,7 @@
 //
 
 import Cocoa
-import PureLayout_Mac
+import PureLayout
 import XCGLogger
 
 final class PodfileTableCellViewController: NSObject {
@@ -87,7 +87,7 @@ final class PodfileTableCellViewController: NSObject {
         let defaultInset = CGFloat(8.0)
         let smallInset = round(defaultInset / 1.5)
         
-        self.normalLayoutConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
+        self.normalLayoutConstraints = NSLayoutConstraint.autoCreateConstraintsWithoutInstalling() {
             self.defaultView.autoPinEdgesToSuperviewEdgesWithInsets(NSEdgeInsetsZero)
 
             }.filter() { object -> Bool in

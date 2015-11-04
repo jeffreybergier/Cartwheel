@@ -30,8 +30,8 @@ import ObserverSet
 
 protocol WindowMainStateObservable {
     var windowMainStateObserver: ObserverSet<Bool> { get }
-    @objc func windowDidBecomeMain(notification: NSNotification)
-    @objc func windowDidResignMain(notification: NSNotification)
+    func windowDidBecomeMain(notification: NSNotification)
+    func windowDidResignMain(notification: NSNotification)
 }
 
 protocol TableViewRowSelectedStateObservable {
@@ -44,12 +44,12 @@ protocol TableViewRowIsDraggingObservable {
 
 protocol WindowDidChangeFrameObservable {
     var windowDidChangeFrameObserver: ObserverSet<NSRect?> { get }
-    @objc func windowDidChangeFrame(notification: NSNotification)
+    func windowDidChangeFrame(notification: NSNotification)
 }
 
 protocol WindowDidCloseObservable {
     var windowDidCloseObserver: ObserverSet<Void> { get }
-    @objc func windowDidClose(notification: NSNotification)
+    func windowDidClose(notification: NSNotification)
 }
 
 protocol SearchDelegateObservable {

@@ -50,7 +50,7 @@ class CartListOpenPanelDelegate: NSObject, NSOpenSavePanelDelegate {
     private var savePanelShouldOpenURL: NSURL?
     private var savePanelDidChangeToDirectoryURL: NSURL?
     
-    func panel(sender: AnyObject?, didChangeToDirectoryURL url: NSURL?) {
+    func panel(sender: AnyObject, didChangeToDirectoryURL url: NSURL?) {
         if self.savePanel === sender {
             self.savePanelDidChangeToDirectoryURL = url
         }
@@ -62,13 +62,13 @@ class CartListOpenPanelDelegate: NSObject, NSOpenSavePanelDelegate {
             where sender === self.savePanel {
                 if selectedURL == self.savePanelDidChangeToDirectoryURL {
                     // change the button back to normal
-                    sender.defaultButtonCell()?.target = sender
-                    sender.defaultButtonCell()?.title = CartListOpenPanelDelegate.savePanelOriginalButtonTitle
+                    sender.defaultButtonCell?.target = sender
+                    sender.defaultButtonCell?.title = CartListOpenPanelDelegate.savePanelOriginalButtonTitle
                 } else {
                     // Hijack the button
                     self.savePanelShouldOpenURL = selectedURL
-                    sender.defaultButtonCell()?.title = NSLocalizedString("Open Folder", comment: "text in the prompt button of the create new cartfile button when it is instructing the user to open the selected folder")
-                    sender.defaultButtonCell()?.target = self
+                    sender.defaultButtonCell?.title = NSLocalizedString("Open Folder", comment: "text in the prompt button of the create new cartfile button when it is instructing the user to open the selected folder")
+                    sender.defaultButtonCell?.target = self
                 }
         }
     }

@@ -26,7 +26,7 @@
 //
 
 import Cocoa
-import PureLayout_Mac
+import PureLayout
 
 final class DefaultCartfileTableCellView: NSView {
     
@@ -48,7 +48,7 @@ final class DefaultCartfileTableCellView: NSView {
         let defaultInset = CGFloat(8.0)
         let smallInset = round(defaultInset / 1.5)
         
-        let newConstraints = NSView.autoCreateConstraintsWithoutInstalling() {
+        let newConstraints = NSLayoutConstraint.autoCreateConstraintsWithoutInstalling() {
             self.ui.stackView.autoPinEdgeToSuperviewEdge(.Top, withInset: smallInset)
             self.ui.stackView.autoPinEdgeToSuperviewEdge(.Leading, withInset: defaultInset)
             self.ui.stackView.autoPinEdgeToSuperviewEdge(.Trailing, withInset: defaultInset)

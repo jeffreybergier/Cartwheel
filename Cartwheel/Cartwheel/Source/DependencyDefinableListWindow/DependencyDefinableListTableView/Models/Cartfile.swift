@@ -59,7 +59,11 @@ struct Cartfile: DependencyDefinable {
         let blankFileURL = directory.URLByAppendingPathComponent(Cartfile.fileName(), isDirectory: false)
         let blankData = NSData()
         var error: NSError?
-        blankData.writeToURL(blankFileURL, options: NSDataWritingOptions.DataWritingWithoutOverwriting, error: &error)
+        do {
+            try blankData.writeToURL(blankFileURL, options: NSDataWritingOptions.DataWritingWithoutOverwriting)
+        } catch let error1 as NSError {
+            error = error1
+        }
         return error
     }
 }
@@ -86,7 +90,7 @@ extension Cartfile {
     }
 }
 
-extension Cartfile: Printable {
+extension Cartfile: CustomStringConvertible {
     var description: String {
         return "\(self.name) <\(self.location.path!)>"
     }
@@ -143,7 +147,7 @@ final class EncodableCartfile: NSObject, EncodableDependencyDefinable, ProtocolH
         return Cartfile(dontVerifyLocation: location)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         self.location = aDecoder.decodeObjectForKey("location") as! NSURL
         self.name = aDecoder.decodeObjectForKey("name") as! String
         super.init()

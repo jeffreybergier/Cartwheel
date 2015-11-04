@@ -27,7 +27,7 @@
 
 import AppKit
 
-extension NSWindow: Printable {
+extension NSWindow: CustomStringConvertible {
     public override var description: String {
         let address = NSString(format: "%p", self)
         if let title = self.title {
@@ -37,13 +37,13 @@ extension NSWindow: Printable {
     }
 }
 
-extension NSURL: Printable {
+extension NSURL: CustomStringConvertible {
     override public var description: String {
         return self.path!
     }
 }
 
-extension NSOpenPanel.Response: Printable {
+extension NSOpenPanel.Response: CustomStringConvertible {
     var description: String {
         switch self {
         case CancelButton:
@@ -54,7 +54,7 @@ extension NSOpenPanel.Response: Printable {
     }
 }
 
-extension NSEdgeInsets: Printable {
+extension NSEdgeInsets: CustomStringConvertible {
     public var description: String {
         return "NSEdgeInset – Top: \(self.top) Left: \(self.left) Bottom: \(self.bottom) Right: \(self.right)"
     }

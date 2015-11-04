@@ -34,7 +34,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var dependencyDefinableListWindowController: DependencyDefinableListWindowController?
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        XCGLogger.defaultInstance().setup(logLevel: .Verbose, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: nil, fileLogLevel: .Warning)
+        XCGLogger.defaultInstance().setup(.Verbose, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: nil, fileLogLevel: .Warning)
         
         self.dependencyDefinableListWindowController = DependencyDefinableListWindowController()
         self.dependencyDefinableListWindowController!.showWindow(self) // should crash if NIL at this point

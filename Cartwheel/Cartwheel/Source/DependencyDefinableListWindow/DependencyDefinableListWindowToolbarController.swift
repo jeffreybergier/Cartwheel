@@ -27,7 +27,7 @@
 
 import Cocoa
 import XCGLogger
-import PureLayout_Mac
+import PureLayout
 
 final class DependencyDefinableListWindowToolbarController: DependencyDefinableListChildController, NSToolbarDelegate {
     
@@ -91,8 +91,8 @@ final class DependencyDefinableListWindowToolbarController: DependencyDefinableL
 
 // MARK: NSTextFieldDelegate
 
-extension DependencyDefinableListWindowToolbarController: NSToolbarDelegate {
-    func toolbarAllowedItemIdentifiers(toolbar: NSToolbar) -> [AnyObject] {
+extension DependencyDefinableListWindowToolbarController {
+    func toolbarAllowedItemIdentifiers(toolbar: NSToolbar) -> [String] {
         return [
             ToolbarItems.CartfilesSearchIdentifier,
             NSToolbarFlexibleSpaceItemIdentifier,
@@ -101,7 +101,7 @@ extension DependencyDefinableListWindowToolbarController: NSToolbarDelegate {
         ]
     }
     
-    func toolbarDefaultItemIdentifiers(toolbar: NSToolbar) -> [AnyObject] {
+    func toolbarDefaultItemIdentifiers(toolbar: NSToolbar) -> [String] {
         return [
             NSToolbarFlexibleSpaceItemIdentifier,
             ToolbarItems.CartfilesSearchIdentifier

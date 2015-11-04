@@ -74,10 +74,10 @@ extension NSURL {
     func filesAndDirectories() -> URLEnumeration? {
         let fileManager = NSFileManager.defaultManager()
         let urlKeys = [NSURLIsDirectoryKey]
-        let enumeratorOptions: NSDirectoryEnumerationOptions = .SkipsHiddenFiles | .SkipsPackageDescendants | .SkipsSubdirectoryDescendants
+        let enumeratorOptions: NSDirectoryEnumerationOptions = [.SkipsHiddenFiles, .SkipsPackageDescendants, .SkipsSubdirectoryDescendants]
         
         let enumerator = fileManager.enumeratorAtURL(self, includingPropertiesForKeys: urlKeys, options: enumeratorOptions) {
-            (url: NSURL?, error: NSError?) -> Bool in
+            (url: NSURL, error: NSError) -> Bool in
             XCGLogger.defaultInstance().error("NSEnumerator Error: \(error) with URL: \(url)")
             return true
         }
@@ -85,7 +85,7 @@ extension NSURL {
         if let enumeratorObjects = enumerator?.allObjects {
             let files = enumeratorObjects.filter() { object -> Bool in
                 if let url = object as? NSURL,
-                    let urlResources = url.resourceValuesForKeys(urlKeys, error: nil),
+                    let urlResources = try? url.resourceValuesForKeys(urlKeys),
                     let urlIsDirectory = urlResources[NSURLIsDirectoryKey] as? Bool
                     where urlIsDirectory == false {
                         return true
@@ -98,7 +98,7 @@ extension NSURL {
         
             let directories = enumeratorObjects.filter() { object -> Bool in
                 if let url = object as? NSURL,
-                    let urlResources = url.resourceValuesForKeys(urlKeys, error: nil),
+                    let urlResources = try? url.resourceValuesForKeys(urlKeys),
                     let urlIsDirectory = urlResources[NSURLIsDirectoryKey] as? Bool
                     where urlIsDirectory == true {
                         return true
@@ -162,42 +162,46 @@ struct CWLayoutPriority {
     static var FittingSizeCompression: NSLayoutPriority = 50
 }
 
-extension NSView {
-    func writeScreenShotToDiskWithName(name: String) -> NSError? {
-        // Capture original invisibility state
-        let originalHiddenState = self.hidden
-        let originalAlphaState = self.alphaValue
-        
-        // change view to be fully visible for screenshot
-        self.hidden = false
-        self.alphaValue = 1.0
-        
-        // create URL in App Support directory
-        let appSupport = (NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true).last as! String) + "/Cartwheel"
-        let appSupportURL = NSURL(fileURLWithPath: appSupport, isDirectory: true)
-        let screenshotFileURL = appSupportURL!.URLByAppendingPathComponent(name + ".tiff")
-        
-        // capture screenshot
-        let screenshot = NSImage(data: self.dataWithPDFInsideRect(self.bounds))
-        
-        // save to disk
-        var error: NSError?
-        screenshot?.TIFFRepresentation?.writeToURL(screenshotFileURL, options: NSDataWritingOptions.AtomicWrite, error: &error)
-        
-        // Restore invisiblity state
-        self.hidden = originalHiddenState
-        self.alphaValue = originalAlphaState
-        
-        // return error (if any)
-        return error
-    }
-}
+//extension NSView {
+//    func writeScreenShotToDiskWithName(name: String) -> NSError? {
+//        // Capture original invisibility state
+//        let originalHiddenState = self.hidden
+//        let originalAlphaState = self.alphaValue
+//        
+//        // change view to be fully visible for screenshot
+//        self.hidden = false
+//        self.alphaValue = 1.0
+//        
+//        // create URL in App Support directory
+//        let appSupport = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true).last! + "/Cartwheel"
+//        let appSupportURL = NSURL(fileURLWithPath: appSupport, isDirectory: true)
+//        let screenshotFileURL = appSupportURL.URLByAppendingPathComponent(name + ".tiff")
+//        
+//        // capture screenshot
+//        let screenshot = NSImage(data: self.dataWithPDFInsideRect(self.bounds))
+//        
+//        // save to disk
+//        var error: NSError?
+//        do {
+//            try screenshot?.TIFFRepresentation?.writeToURL(screenshotFileURL, options: NSDataWritingOptions.AtomicWrite)
+//        } catch var error1 as NSError {
+//            error = error1
+//        }
+//        
+//        // Restore invisiblity state
+//        self.hidden = originalHiddenState
+//        self.alphaValue = originalAlphaState
+//        
+//        // return error (if any)
+//        return error
+//    }
+//}
 
 // MARK: Extensions of Built in Types
 
 func indexOfItem<T: Equatable>(item: T, inCollection collection: [T]) -> Int? {
     // TODO: remove this in swift 2.0
-    for (index, collectionItem) in enumerate(collection) {
+    for (index, collectionItem) in collection.enumerate() {
         if item == collectionItem { return index }
     }
     return .None
@@ -210,7 +214,7 @@ extension Array {
         let rhsSet = Set(rhs)
         var outputArray = [E]()
         
-        func checkItem(item: E, #lhs: Set<E>, #rhs: Set<E>) -> [E] {
+        func checkItem(item: E, lhs: Set<E>, rhs: Set<E>) -> [E] {
             if !(lhs.contains(item) && rhs.contains(item)) { return [item] } else { return [] }
         }
         
@@ -224,20 +228,20 @@ extension Array {
         if outputArray.count > 0 { return outputArray } else { return .None }
     }
     
-    static func flatten(array: [[T]]) -> [T] {
+    static func flatten<T>(array: [[T]]) -> [T] {
         return array.reduce([T](), combine: +)
     }
     
-    static func merge(input: [[T]]) -> [T] {
-        var output = [T]()
+    static func merge(input: [[Element]]) -> [Element] {
+        var output = [Element]()
         for inputItem in input {
             output += inputItem
         }
         return output
     }
     
-    static func merge(input: [[T]?]) -> [T] {
-        var output = [T]()
+    static func merge(input: [[Element]?]) -> [Element] {
+        var output = [Element]()
         for inputItem in input {
             if let inputItem = inputItem {
                 output += inputItem
@@ -264,8 +268,8 @@ extension Array {
 }
 
 extension Set {
-    func map<U>(transform: (T) -> U) -> Set<U> {
-        return Set<U>(Swift.map(self, transform))
+    func map<U>(transform: (Element) -> U) -> Set<U> {
+        return Set<U>(self.map(transform))
     }
 }
 
@@ -294,7 +298,7 @@ extension NSButton {
             self.bordered = false
             self.bezelStyle = .TexturedRoundedBezelStyle
             self.image = NSImage(named: NSImageNameCaution)
-            (self.cell() as? NSButtonCell)?.imageScaling = NSImageScaling.ImageScaleProportionallyDown
+            (self.cell as? NSButtonCell)?.imageScaling = NSImageScaling.ScaleProportionallyDown
         }
     }
 }
@@ -367,7 +371,7 @@ extension NSTextField {
         switch style {
         case .TableRowCellTitle:
             self.bordered = false
-            (self.cell() as? NSTextFieldCell)?.backgroundColor = NSColor.clearColor()
+            (self.cell as? NSTextFieldCell)?.backgroundColor = NSColor.clearColor()
             self.editable = false
         }
     }
