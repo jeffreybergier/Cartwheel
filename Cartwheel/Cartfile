@@ -1,8 +1,9 @@
 ## Frameworks needed for Cartwheel
-github "smileyborg/PureLayout" ~> 2.0.0
-github "DaveWoodCom/XCGLogger" ~> 2.0.0
-github "duemunk/Async" ~> 1.2.1
+#github "PureLayout/PureLayout" ~> 3.0.0
+github "jeffreybergier/PureLayout" "master" ## needed for some code signing bug
+github "DaveWoodCom/XCGLogger" ~> 3.0.0
+github "duemunk/Async" ~> 1.4.0
 github "jeffreybergier/SwiftObserverSet" "master"
 
 ## When using the official Carthage Github
-github "Carthage/Carthage" "e31113bb34fb28c66f40fbdcb0b5442b72906fb9"
+github "Carthage/Carthage" "swift2" 
