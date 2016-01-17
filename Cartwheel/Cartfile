@@ -1,0 +1,6 @@
+## Frameworks needed for Cartwheel
+github "DaveWoodCom/XCGLogger" ~> 2.0.0
+github "duemunk/Async" ~> 1.2.1
+
+## When using the official Carthage Github
+github "Carthage/Carthage" ~> 0.11
