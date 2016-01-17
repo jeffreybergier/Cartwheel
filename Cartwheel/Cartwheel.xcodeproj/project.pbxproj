@@ -11,7 +11,72 @@
 		73DC6FD71C4C1D7100B5448A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DC6FD61C4C1D7100B5448A /* ViewController.swift */; };
 		73DC6FD91C4C1D7100B5448A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73DC6FD81C4C1D7100B5448A /* Assets.xcassets */; };
 		73DC6FDC1C4C1D7100B5448A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73DC6FDA1C4C1D7100B5448A /* Main.storyboard */; };
+		73DC6FED1C4C1E0600B5448A /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FE41C4C1DFF00B5448A /* Argo.framework */; };
+		73DC6FEE1C4C1E0600B5448A /* Argo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FE41C4C1DFF00B5448A /* Argo.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		73DC6FEF1C4C1E0600B5448A /* Async.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FE51C4C1DFF00B5448A /* Async.framework */; };
+		73DC6FF01C4C1E0600B5448A /* Async.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FE51C4C1DFF00B5448A /* Async.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		73DC6FF11C4C1E0600B5448A /* CarthageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FE61C4C1DFF00B5448A /* CarthageKit.framework */; };
+		73DC6FF21C4C1E0600B5448A /* CarthageKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FE61C4C1DFF00B5448A /* CarthageKit.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		73DC6FF31C4C1E0600B5448A /* Commandant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FE71C4C1DFF00B5448A /* Commandant.framework */; };
+		73DC6FF41C4C1E0600B5448A /* Commandant.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FE71C4C1DFF00B5448A /* Commandant.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		73DC6FF51C4C1E0600B5448A /* PrettyColors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FE81C4C1DFF00B5448A /* PrettyColors.framework */; };
+		73DC6FF61C4C1E0600B5448A /* PrettyColors.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FE81C4C1DFF00B5448A /* PrettyColors.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		73DC6FF71C4C1E0600B5448A /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FE91C4C1DFF00B5448A /* ReactiveCocoa.framework */; };
+		73DC6FF81C4C1E0600B5448A /* ReactiveCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FE91C4C1DFF00B5448A /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		73DC6FF91C4C1E0600B5448A /* ReactiveTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FEA1C4C1DFF00B5448A /* ReactiveTask.framework */; };
+		73DC6FFA1C4C1E0600B5448A /* ReactiveTask.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FEA1C4C1DFF00B5448A /* ReactiveTask.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		73DC6FFB1C4C1E0600B5448A /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FEB1C4C1DFF00B5448A /* Result.framework */; };
+		73DC6FFC1C4C1E0600B5448A /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FEB1C4C1DFF00B5448A /* Result.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		73DC6FFD1C4C1E0600B5448A /* XCGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FEC1C4C1DFF00B5448A /* XCGLogger.framework */; };
+		73DC6FFE1C4C1E0600B5448A /* XCGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73DC6FEC1C4C1DFF00B5448A /* XCGLogger.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		73DC70091C4C1E8000B5448A /* Argo.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 73DC70001C4C1E1700B5448A /* Argo.framework.dSYM */; };
+		73DC700A1C4C1E8000B5448A /* Async.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 73DC70011C4C1E1700B5448A /* Async.framework.dSYM */; };
+		73DC700B1C4C1E8000B5448A /* Commandant.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 73DC70021C4C1E1700B5448A /* Commandant.framework.dSYM */; };
+		73DC700C1C4C1E8000B5448A /* PrettyColors.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 73DC70031C4C1E1700B5448A /* PrettyColors.framework.dSYM */; };
+		73DC700D1C4C1E8000B5448A /* ReactiveCocoa.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 73DC70041C4C1E1700B5448A /* ReactiveCocoa.framework.dSYM */; };
+		73DC700E1C4C1E8000B5448A /* ReactiveTask.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 73DC70051C4C1E1700B5448A /* ReactiveTask.framework.dSYM */; };
+		73DC700F1C4C1E8000B5448A /* Result.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 73DC70061C4C1E1700B5448A /* Result.framework.dSYM */; };
+		73DC70101C4C1E8000B5448A /* XCGLogger.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 73DC70071C4C1E1700B5448A /* XCGLogger.framework.dSYM */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		73DC6FFF1C4C1E0600B5448A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				73DC6FEE1C4C1E0600B5448A /* Argo.framework in Embed Frameworks */,
+				73DC6FFA1C4C1E0600B5448A /* ReactiveTask.framework in Embed Frameworks */,
+				73DC6FF81C4C1E0600B5448A /* ReactiveCocoa.framework in Embed Frameworks */,
+				73DC6FFC1C4C1E0600B5448A /* Result.framework in Embed Frameworks */,
+				73DC6FF61C4C1E0600B5448A /* PrettyColors.framework in Embed Frameworks */,
+				73DC6FF21C4C1E0600B5448A /* CarthageKit.framework in Embed Frameworks */,
+				73DC6FF41C4C1E0600B5448A /* Commandant.framework in Embed Frameworks */,
+				73DC6FF01C4C1E0600B5448A /* Async.framework in Embed Frameworks */,
+				73DC6FFE1C4C1E0600B5448A /* XCGLogger.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		73DC70081C4C1E5300B5448A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				73DC70091C4C1E8000B5448A /* Argo.framework.dSYM in CopyFiles */,
+				73DC700A1C4C1E8000B5448A /* Async.framework.dSYM in CopyFiles */,
+				73DC700B1C4C1E8000B5448A /* Commandant.framework.dSYM in CopyFiles */,
+				73DC700C1C4C1E8000B5448A /* PrettyColors.framework.dSYM in CopyFiles */,
+				73DC700D1C4C1E8000B5448A /* ReactiveCocoa.framework.dSYM in CopyFiles */,
+				73DC700E1C4C1E8000B5448A /* ReactiveTask.framework.dSYM in CopyFiles */,
+				73DC700F1C4C1E8000B5448A /* Result.framework.dSYM in CopyFiles */,
+				73DC70101C4C1E8000B5448A /* XCGLogger.framework.dSYM in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		73DC6FD11C4C1D7100B5448A /* Cartwheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cartwheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -20,6 +85,23 @@
 		73DC6FD81C4C1D7100B5448A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		73DC6FDB1C4C1D7100B5448A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		73DC6FDD1C4C1D7100B5448A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		73DC6FE41C4C1DFF00B5448A /* Argo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Argo.framework; path = ../../Carthage/Build/Mac/Argo.framework; sourceTree = "<group>"; };
+		73DC6FE51C4C1DFF00B5448A /* Async.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Async.framework; path = ../../Carthage/Build/Mac/Async.framework; sourceTree = "<group>"; };
+		73DC6FE61C4C1DFF00B5448A /* CarthageKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CarthageKit.framework; path = ../../Carthage/Build/Mac/CarthageKit.framework; sourceTree = "<group>"; };
+		73DC6FE71C4C1DFF00B5448A /* Commandant.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Commandant.framework; path = ../../Carthage/Build/Mac/Commandant.framework; sourceTree = "<group>"; };
+		73DC6FE81C4C1DFF00B5448A /* PrettyColors.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PrettyColors.framework; path = ../../Carthage/Build/Mac/PrettyColors.framework; sourceTree = "<group>"; };
+		73DC6FE91C4C1DFF00B5448A /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = ../../Carthage/Build/Mac/ReactiveCocoa.framework; sourceTree = "<group>"; };
+		73DC6FEA1C4C1DFF00B5448A /* ReactiveTask.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveTask.framework; path = ../../Carthage/Build/Mac/ReactiveTask.framework; sourceTree = "<group>"; };
+		73DC6FEB1C4C1DFF00B5448A /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = ../../Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
+		73DC6FEC1C4C1DFF00B5448A /* XCGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCGLogger.framework; path = ../../Carthage/Build/Mac/XCGLogger.framework; sourceTree = "<group>"; };
+		73DC70001C4C1E1700B5448A /* Argo.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Argo.framework.dSYM; path = ../../Carthage/Build/Mac/Argo.framework.dSYM; sourceTree = "<group>"; };
+		73DC70011C4C1E1700B5448A /* Async.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Async.framework.dSYM; path = ../../Carthage/Build/Mac/Async.framework.dSYM; sourceTree = "<group>"; };
+		73DC70021C4C1E1700B5448A /* Commandant.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Commandant.framework.dSYM; path = ../../Carthage/Build/Mac/Commandant.framework.dSYM; sourceTree = "<group>"; };
+		73DC70031C4C1E1700B5448A /* PrettyColors.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = PrettyColors.framework.dSYM; path = ../../Carthage/Build/Mac/PrettyColors.framework.dSYM; sourceTree = "<group>"; };
+		73DC70041C4C1E1700B5448A /* ReactiveCocoa.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = ReactiveCocoa.framework.dSYM; path = ../../Carthage/Build/Mac/ReactiveCocoa.framework.dSYM; sourceTree = "<group>"; };
+		73DC70051C4C1E1700B5448A /* ReactiveTask.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = ReactiveTask.framework.dSYM; path = ../../Carthage/Build/Mac/ReactiveTask.framework.dSYM; sourceTree = "<group>"; };
+		73DC70061C4C1E1700B5448A /* Result.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Result.framework.dSYM; path = ../../Carthage/Build/Mac/Result.framework.dSYM; sourceTree = "<group>"; };
+		73DC70071C4C1E1700B5448A /* XCGLogger.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = XCGLogger.framework.dSYM; path = ../../Carthage/Build/Mac/XCGLogger.framework.dSYM; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +109,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73DC6FED1C4C1E0600B5448A /* Argo.framework in Frameworks */,
+				73DC6FF91C4C1E0600B5448A /* ReactiveTask.framework in Frameworks */,
+				73DC6FF71C4C1E0600B5448A /* ReactiveCocoa.framework in Frameworks */,
+				73DC6FFB1C4C1E0600B5448A /* Result.framework in Frameworks */,
+				73DC6FF51C4C1E0600B5448A /* PrettyColors.framework in Frameworks */,
+				73DC6FF11C4C1E0600B5448A /* CarthageKit.framework in Frameworks */,
+				73DC6FF31C4C1E0600B5448A /* Commandant.framework in Frameworks */,
+				73DC6FEF1C4C1E0600B5448A /* Async.framework in Frameworks */,
+				73DC6FFD1C4C1E0600B5448A /* XCGLogger.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,8 +148,33 @@
 				73DC6FD81C4C1D7100B5448A /* Assets.xcassets */,
 				73DC6FDA1C4C1D7100B5448A /* Main.storyboard */,
 				73DC6FDD1C4C1D7100B5448A /* Info.plist */,
+				73DC6FE31C4C1DCD00B5448A /* Frameworks - 3rd */,
 			);
 			path = Cartwheel;
+			sourceTree = "<group>";
+		};
+		73DC6FE31C4C1DCD00B5448A /* Frameworks - 3rd */ = {
+			isa = PBXGroup;
+			children = (
+				73DC6FE41C4C1DFF00B5448A /* Argo.framework */,
+				73DC6FE51C4C1DFF00B5448A /* Async.framework */,
+				73DC6FE61C4C1DFF00B5448A /* CarthageKit.framework */,
+				73DC6FE71C4C1DFF00B5448A /* Commandant.framework */,
+				73DC6FE81C4C1DFF00B5448A /* PrettyColors.framework */,
+				73DC6FE91C4C1DFF00B5448A /* ReactiveCocoa.framework */,
+				73DC6FEA1C4C1DFF00B5448A /* ReactiveTask.framework */,
+				73DC6FEB1C4C1DFF00B5448A /* Result.framework */,
+				73DC6FEC1C4C1DFF00B5448A /* XCGLogger.framework */,
+				73DC70001C4C1E1700B5448A /* Argo.framework.dSYM */,
+				73DC70011C4C1E1700B5448A /* Async.framework.dSYM */,
+				73DC70021C4C1E1700B5448A /* Commandant.framework.dSYM */,
+				73DC70031C4C1E1700B5448A /* PrettyColors.framework.dSYM */,
+				73DC70041C4C1E1700B5448A /* ReactiveCocoa.framework.dSYM */,
+				73DC70051C4C1E1700B5448A /* ReactiveTask.framework.dSYM */,
+				73DC70061C4C1E1700B5448A /* Result.framework.dSYM */,
+				73DC70071C4C1E1700B5448A /* XCGLogger.framework.dSYM */,
+			);
+			name = "Frameworks - 3rd";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,6 +187,8 @@
 				73DC6FCD1C4C1D7100B5448A /* Sources */,
 				73DC6FCE1C4C1D7100B5448A /* Frameworks */,
 				73DC6FCF1C4C1D7100B5448A /* Resources */,
+				73DC6FFF1C4C1E0600B5448A /* Embed Frameworks */,
+				73DC70081C4C1E5300B5448A /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -93,7 +211,6 @@
 				TargetAttributes = {
 					73DC6FD01C4C1D7100B5448A = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = V6ESYGU6CV;
 					};
 				};
 			};
@@ -235,8 +352,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../Carthage/Build/Mac";
 				INFOPLIST_FILE = Cartwheel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -249,8 +367,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../Carthage/Build/Mac";
+				GCC_OPTIMIZATION_LEVEL = fast;
 				INFOPLIST_FILE = Cartwheel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -278,6 +398,7 @@
 				73DC6FE21C4C1D7100B5448A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
