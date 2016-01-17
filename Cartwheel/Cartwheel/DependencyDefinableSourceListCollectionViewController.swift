@@ -1,5 +1,5 @@
 //
-//  AppDelegate.swift
+//  DependencyDefinableSourceListCollectionViewController.swift
 //  Cartwheel
 //
 //  Created by Jeffrey Bergier on 1/17/16.
@@ -27,19 +27,11 @@
 
 import Cocoa
 
-@NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
-
-
-
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
+class DependencyDefinableSourceListViewController: NSViewController {
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
     }
-
-    func applicationWillTerminate(aNotification: NSNotification) {
-        // Insert code here to tear down your application
-    }
-
-
 }
-

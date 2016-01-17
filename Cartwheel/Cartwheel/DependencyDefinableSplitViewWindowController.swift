@@ -1,5 +1,5 @@
 //
-//  AppDelegate.swift
+//  File.swift
 //  Cartwheel
 //
 //  Created by Jeffrey Bergier on 1/17/16.
@@ -27,19 +27,12 @@
 
 import Cocoa
 
-@NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
-
-
-
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
+class DependencyDefinableSplitViewWindowController: NSWindowController {
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        self.window?.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
     }
-
-    func applicationWillTerminate(aNotification: NSNotification) {
-        // Insert code here to tear down your application
-    }
-
-
+    
 }
-
