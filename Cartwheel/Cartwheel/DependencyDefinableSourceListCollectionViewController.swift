@@ -27,35 +27,86 @@
 
 import Cocoa
 
-class Node: NSObject {
-    let data: String
-    var children: [Node] = []
-    init(data: String) {
-        self.data = data
+class Parent {
+    let title: String
+    let children: [String]
+    
+    init(title: String, children: [String]) {
+        self.title = title
+        self.children = children
     }
-    func isLeaf() -> Bool {
-        if children.isEmpty {
+}
+
+class DependencyDefinableSourceListViewController: NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate {
+    
+    @IBOutlet private weak var sidebarSourceListView: NSOutlineView?
+    private var sidebarItems = [Parent]()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.sidebarSourceListView?.setDataSource(self)
+        self.sidebarSourceListView?.setDelegate(self)
+        
+        let parentA = Parent(title: "Parent A", children: ["Child1A", "Child2A"])
+        let parentB = Parent(title: "Parent B", children: ["Child1B", "Child2B"])
+        self.sidebarItems += [parentA] + [parentB]
+    }
+    
+    // MARK: NSOutlineViewDataSource
+    
+    func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
+        if let item = item as? Parent {
+            return item.children.count
+        } else {
+            return self.sidebarItems.count
+        }
+    }
+    
+    func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
+        if let item = item as? Parent {
+            return item.children[index]
+        } else {
+            return "Explosion!"
+        }
+    }
+    
+    func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
+        if let _ = item as? Parent {
             return true
         } else {
             return false
         }
     }
+    
+    // MARK: NSOutlineViewDelegate
+    
+    func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
+        let view = NSView()
+        view.wantsLayer = true
+        view.layer!.backgroundColor = NSColor.redColor().CGColor
+        return view
+    }
+    
+    func outlineView(outlineView: NSOutlineView, isGroupItem item: AnyObject) -> Bool {
+        if let _ = item as? Parent {
+            return true
+        } else {
+            return false
+        }
+    }
+
 }
 
-class DependencyDefinableSourceListViewController: NSViewController {
-    
-    dynamic var sidebarItems = [Node]()
-    @IBOutlet var treeController: NSTreeController!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let aNode = Node(data: "Parent A")
-        aNode.children.append(Node(data: "Child1 A"))
-        aNode.children.append(Node(data: "Child2 A"))
-        self.treeController.addObject(aNode)
-        let bNode = Node(data: "Parent B")
-        bNode.children.append(Node(data: "Child1 B"))
-        bNode.children.append(Node(data: "Child2 B"))
-        self.treeController.addObject(bNode)
-    }
-}
+
+
+
+
+
+
+
+
+
+
+
+

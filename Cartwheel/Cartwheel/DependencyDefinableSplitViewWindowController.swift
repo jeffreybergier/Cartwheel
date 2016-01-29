@@ -32,7 +32,7 @@ class DependencyDefinableSplitViewWindowController: NSWindowController {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        //self.window?.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
+        self.window?.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
     }
     
 }
