@@ -709,20 +709,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="240" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ui3-ns-0IT">
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ui3-ns-0IT">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="300"/>
                                 <clipView key="contentView" drawsBackground="NO" id="eUb-30-JWp">
-                                    <rect key="frame" x="1" y="1" width="238" height="298"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="240" height="300"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="14" outlineTableColumn="Uaz-46-CHl" id="Jsi-fY-H0r">
-                                            <rect key="frame" x="0.0" y="0.0" width="238" height="298"/>
+                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="14" outlineTableColumn="Uaz-46-CHl" id="Jsi-fY-H0r">
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="0.0"/>
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="235" minWidth="16" maxWidth="1000" id="Uaz-46-CHl">
+                                                <tableColumn width="237" minWidth="16" maxWidth="1000" id="Uaz-46-CHl">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -736,7 +736,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="HeaderCell" id="Uc8-kO-jKt">
-                                                            <rect key="frame" x="1" y="0.0" width="235" height="17"/>
+                                                            <rect key="frame" x="1" y="0.0" width="237" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u66-hk-7jH">
@@ -753,7 +753,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="DataCell" id="Wdp-hp-5mN">
-                                                            <rect key="frame" x="1" y="17" width="235" height="17"/>
+                                                            <rect key="frame" x="1" y="17" width="237" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dbP-xQ-CKB">
@@ -782,7 +782,7 @@
                                     <nil key="backgroundColor"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="45t-jL-gzs">
-                                    <rect key="frame" x="1" y="381.909064412117" width="147.65484523773193" height="16"/>
+                                    <rect key="frame" x="1" y="381" width="147.5" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="1QV-4R-V7H">

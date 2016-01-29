@@ -27,13 +27,17 @@
 
 import Cocoa
 
-class Parent {
+class Parent: CustomStringConvertible {
     let title: String
     let children: [String]
     
     init(title: String, children: [String]) {
         self.title = title
         self.children = children
+    }
+    
+    var description: String {
+        return "Parent<\(self.title)>"
     }
 }
 
@@ -42,32 +46,47 @@ class DependencyDefinableSourceListViewController: NSViewController, NSOutlineVi
     @IBOutlet private weak var sidebarSourceListView: NSOutlineView?
     private var sidebarItems = [Parent]()
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let parentA = Parent(title: "Parent A", children: ["Child1A", "Child2A", "Child3A", "Child4A"])
+        let parentB = Parent(title: "Parent B", children: ["Child1B", "Child2B", "Child3B"])
+        let parentC = Parent(title: "Parent C", children: ["Child1C", "Child2C"])
+        self.sidebarItems += [parentA] + [parentB] + [parentC]
         
         self.sidebarSourceListView?.setDataSource(self)
         self.sidebarSourceListView?.setDelegate(self)
         
-        let parentA = Parent(title: "Parent A", children: ["Child1A", "Child2A"])
-        let parentB = Parent(title: "Parent B", children: ["Child1B", "Child2B"])
-        self.sidebarItems += [parentA] + [parentB]
+        //self.sidebarSourceListView?.reloadData()
     }
     
     // MARK: NSOutlineViewDataSource
     
     func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
         if let item = item as? Parent {
-            return item.children.count
+            let count = item.children.count
+            print("numberOfChildrenOfItem: Item: \(item) Return Count: \(count)")
+            return count
         } else {
-            return self.sidebarItems.count
+            let count = self.sidebarItems.count
+            print("numberOfChildrenOfItem: Item: \(item) Return Count: \(count)")
+            return count
         }
     }
     
     func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
         if let item = item as? Parent {
-            return item.children[index]
+            let returnObject = item.children[index]
+            print("numberOfChildrenOfItem: Item: \(item) Return Object: \(returnObject) atIndex: \(index)")
+            return returnObject
         } else {
-            return "Explosion!"
+            let returnObject = self.sidebarItems[index]
+            print("numberOfChildrenOfItem: Item: \(item) Return Object: \(returnObject) atIndex: \(index)")
+            return returnObject
         }
     }
     
@@ -82,13 +101,25 @@ class DependencyDefinableSourceListViewController: NSViewController, NSOutlineVi
     // MARK: NSOutlineViewDelegate
     
     func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
-        let view = NSView()
-        view.wantsLayer = true
-        view.layer!.backgroundColor = NSColor.redColor().CGColor
-        return view
+        print("viewForTableColumn: \(item)")
+        if let item = item as? Parent {
+            let cell = outlineView.makeViewWithIdentifier("HeaderCell", owner: self) as! NSTableCellView
+            cell.textField!.stringValue = item.title
+            return cell
+        } else if let item = item as? String {
+            let cell = outlineView.makeViewWithIdentifier("DataCell", owner: self) as! NSTableCellView
+            cell.textField!.stringValue = item
+            return cell
+        } else {
+            let cell = outlineView.makeViewWithIdentifier("DataCell", owner: self) as! NSTableCellView
+            cell.textField!.stringValue = "Something Went Wrong"
+            return cell
+        }
     }
     
     func outlineView(outlineView: NSOutlineView, isGroupItem item: AnyObject) -> Bool {
+        return false // temporary while troubleshooting
+        
         if let _ = item as? Parent {
             return true
         } else {
