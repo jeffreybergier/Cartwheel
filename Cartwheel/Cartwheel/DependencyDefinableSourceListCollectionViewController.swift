@@ -27,11 +27,35 @@
 
 import Cocoa
 
+class Node: NSObject {
+    let data: String
+    var children: [Node] = []
+    init(data: String) {
+        self.data = data
+    }
+    func isLeaf() -> Bool {
+        if children.isEmpty {
+            return true
+        } else {
+            return false
+        }
+    }
+}
+
 class DependencyDefinableSourceListViewController: NSViewController {
     
+    dynamic var sidebarItems = [Node]()
+    @IBOutlet var treeController: NSTreeController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let aNode = Node(data: "Parent A")
+        aNode.children.append(Node(data: "Child1 A"))
+        aNode.children.append(Node(data: "Child2 A"))
+        self.treeController.addObject(aNode)
+        let bNode = Node(data: "Parent B")
+        bNode.children.append(Node(data: "Child1 B"))
+        bNode.children.append(Node(data: "Child2 B"))
+        self.treeController.addObject(bNode)
     }
 }
