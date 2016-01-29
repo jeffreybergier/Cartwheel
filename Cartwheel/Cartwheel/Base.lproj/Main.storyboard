@@ -722,7 +722,7 @@
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="237" minWidth="16" maxWidth="1000" id="Uaz-46-CHl">
+                                                <tableColumn identifier="" width="237" minWidth="16" maxWidth="1000" id="Uaz-46-CHl">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -739,8 +739,8 @@
                                                             <rect key="frame" x="1" y="0.0" width="237" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u66-hk-7jH">
-                                                                    <rect key="frame" x="0.0" y="1" width="145" height="14"/>
+                                                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u66-hk-7jH">
+                                                                    <rect key="frame" x="-2" y="1" width="241" height="14"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="HEADER CELL" id="9eP-pz-TZp">
                                                                         <font key="font" metaFont="smallSystemBold"/>
                                                                         <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -748,6 +748,11 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                             </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="u66-hk-7jH" firstAttribute="centerY" secondItem="Uc8-kO-jKt" secondAttribute="centerY" id="K0B-hJ-cb7"/>
+                                                                <constraint firstAttribute="trailing" secondItem="u66-hk-7jH" secondAttribute="trailing" id="e7N-l3-O0F"/>
+                                                                <constraint firstItem="u66-hk-7jH" firstAttribute="leading" secondItem="Uc8-kO-jKt" secondAttribute="leading" id="vEp-A2-Bih"/>
+                                                            </constraints>
                                                             <connections>
                                                                 <outlet property="textField" destination="u66-hk-7jH" id="gUo-hd-UnF"/>
                                                             </connections>
@@ -756,12 +761,8 @@
                                                             <rect key="frame" x="1" y="17" width="237" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dbP-xQ-CKB">
-                                                                    <rect key="frame" x="3" y="0.0" width="17" height="17"/>
-                                                                    <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="NSActionTemplate" id="hhJ-os-CJZ"/>
-                                                                </imageView>
-                                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bbl-CG-AcG">
-                                                                    <rect key="frame" x="25" y="0.0" width="120" height="17"/>
+                                                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bbl-CG-AcG">
+                                                                    <rect key="frame" x="-2" y="0.0" width="241" height="17"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="Ayp-0h-RWU">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -769,8 +770,12 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                             </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="Bbl-CG-AcG" firstAttribute="leading" secondItem="Wdp-hp-5mN" secondAttribute="leading" id="EpC-nd-59m"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Bbl-CG-AcG" secondAttribute="trailing" id="Vq6-Lw-gCw"/>
+                                                                <constraint firstItem="Bbl-CG-AcG" firstAttribute="centerY" secondItem="Wdp-hp-5mN" secondAttribute="centerY" id="YxT-bh-ltR"/>
+                                                            </constraints>
                                                             <connections>
-                                                                <outlet property="imageView" destination="dbP-xQ-CKB" id="kqV-GP-WpE"/>
                                                                 <outlet property="textField" destination="Bbl-CG-AcG" id="Ean-Ko-ZqJ"/>
                                                             </connections>
                                                         </tableCellView>
@@ -882,7 +887,4 @@
             <point key="canvasLocation" x="229" y="1353"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="NSActionTemplate" width="14" height="14"/>
-    </resources>
 </document>

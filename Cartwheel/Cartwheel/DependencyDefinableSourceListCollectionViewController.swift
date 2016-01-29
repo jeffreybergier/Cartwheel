@@ -27,16 +27,18 @@
 
 import Cocoa
 
-class Parent: CustomStringConvertible {
+class Parent: NSObject {
     let title: String
     let children: [String]
     
     init(title: String, children: [String]) {
         self.title = title
         self.children = children
+        
+        super.init()
     }
     
-    var description: String {
+    override var description: String {
         return "Parent<\(self.title)>"
     }
 }
@@ -61,32 +63,24 @@ class DependencyDefinableSourceListViewController: NSViewController, NSOutlineVi
         self.sidebarSourceListView?.setDataSource(self)
         self.sidebarSourceListView?.setDelegate(self)
         
-        //self.sidebarSourceListView?.reloadData()
+        self.sidebarSourceListView?.expandItem(.None, expandChildren: true)
     }
     
     // MARK: NSOutlineViewDataSource
     
     func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
         if let item = item as? Parent {
-            let count = item.children.count
-            print("numberOfChildrenOfItem: Item: \(item) Return Count: \(count)")
-            return count
+            return item.children.count
         } else {
-            let count = self.sidebarItems.count
-            print("numberOfChildrenOfItem: Item: \(item) Return Count: \(count)")
-            return count
+            return self.sidebarItems.count
         }
     }
     
     func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
         if let item = item as? Parent {
-            let returnObject = item.children[index]
-            print("numberOfChildrenOfItem: Item: \(item) Return Object: \(returnObject) atIndex: \(index)")
-            return returnObject
+            return NSString(string: item.children[index])
         } else {
-            let returnObject = self.sidebarItems[index]
-            print("numberOfChildrenOfItem: Item: \(item) Return Object: \(returnObject) atIndex: \(index)")
-            return returnObject
+            return self.sidebarItems[index]
         }
     }
     
@@ -101,25 +95,25 @@ class DependencyDefinableSourceListViewController: NSViewController, NSOutlineVi
     // MARK: NSOutlineViewDelegate
     
     func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
-        print("viewForTableColumn: \(item)")
+        let cell: NSTableCellView?
+        
         if let item = item as? Parent {
-            let cell = outlineView.makeViewWithIdentifier("HeaderCell", owner: self) as! NSTableCellView
-            cell.textField!.stringValue = item.title
+            cell = outlineView.makeViewWithIdentifier("HeaderCell", owner: self) as? NSTableCellView
+            cell?.textField?.stringValue = item.title
             return cell
         } else if let item = item as? String {
-            let cell = outlineView.makeViewWithIdentifier("DataCell", owner: self) as! NSTableCellView
-            cell.textField!.stringValue = item
+            cell = outlineView.makeViewWithIdentifier("DataCell", owner: self) as? NSTableCellView
+            cell?.textField?.stringValue = item
+            cell?.imageView?.image = .None
             return cell
         } else {
-            let cell = outlineView.makeViewWithIdentifier("DataCell", owner: self) as! NSTableCellView
-            cell.textField!.stringValue = "Something Went Wrong"
-            return cell
+            cell = .None
         }
+        
+        return cell
     }
     
     func outlineView(outlineView: NSOutlineView, isGroupItem item: AnyObject) -> Bool {
-        return false // temporary while troubleshooting
-        
         if let _ = item as? Parent {
             return true
         } else {
