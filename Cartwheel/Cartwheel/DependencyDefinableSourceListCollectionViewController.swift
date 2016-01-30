@@ -27,66 +27,54 @@
 
 import Cocoa
 
-class Parent: NSObject {
-    let title: String
-    let children: [String]
-    
-    init(title: String, children: [String]) {
-        self.title = title
-        self.children = children
-        
-        super.init()
-    }
-    
-    override var description: String {
-        return "Parent<\(self.title)>"
-    }
-}
-
 class DependencyDefinableSourceListViewController: NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate {
     
-    @IBOutlet private weak var sidebarSourceListView: NSOutlineView?
-    private var sidebarItems = [Parent]()
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
+    @IBOutlet private weak var outlineView: NSOutlineView?
+    private var content = [SourceListNode]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let parentA = Parent(title: "Parent A", children: ["Child1A", "Child2A", "Child3A", "Child4A"])
-        let parentB = Parent(title: "Parent B", children: ["Child1B", "Child2B", "Child3B"])
-        let parentC = Parent(title: "Parent C", children: ["Child1C", "Child2C"])
-        self.sidebarItems += [parentA] + [parentB] + [parentC]
+        let subChild = SourceListNode(title: "Subchild")
+        let parentA = SourceListNode(title: "ParentA", children: [SourceListNode(title: "Child1A"), SourceListNode(title: "Child2A"), SourceListNode(title: "Child3A"), SourceListNode(title: "Child4A")])
+        let parentB = SourceListNode(title: "ParentB", children: [SourceListNode(title: "Child1B"), SourceListNode(title: "Child2B", children: [subChild]), SourceListNode(title: "Child3B")])
+        let parentC = SourceListNode(title: "ParentC", children: [SourceListNode(title: "Child1C"), SourceListNode(title: "Child2C")])
         
-        self.sidebarSourceListView?.setDataSource(self)
-        self.sidebarSourceListView?.setDelegate(self)
+        self.content += [parentA] + [parentB] + [parentC]
         
-        self.sidebarSourceListView?.expandItem(.None, expandChildren: true)
+        self.outlineView?.setDataSource(self)
+        self.outlineView?.setDelegate(self)
+        
+        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
+        dispatch_after(dispatchTime, dispatch_get_main_queue()) {
+            // causes crash on launch if not delayed
+            self.outlineView?.expandItem(.None, expandChildren: true)
+        }
     }
     
     // MARK: NSOutlineViewDataSource
     
     func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
-        if let item = item as? Parent {
-            return item.children.count
-        } else {
-            return self.sidebarItems.count
+        guard let item = item as? SourceListNode else {
+            // if this is NIL, that means the table is asking for the root level
+            return self.content.count
         }
+        
+        return item.children.count
     }
     
     func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
-        if let item = item as? Parent {
-            return NSString(string: item.children[index])
-        } else {
-            return self.sidebarItems[index]
+        guard let item = item as? SourceListNode else {
+            // if this is NIL, that means the table is asking for the root level
+            return self.content[index]
         }
+        
+        return item.children[index]
     }
     
     func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
-        if let _ = item as? Parent {
-            return true
+        if let item = item as? SourceListNode {
+            return item.children.count > 0
         } else {
             return false
         }
@@ -95,29 +83,54 @@ class DependencyDefinableSourceListViewController: NSViewController, NSOutlineVi
     // MARK: NSOutlineViewDelegate
     
     func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
-        let cell: NSTableCellView?
-        
-        if let item = item as? Parent {
-            cell = outlineView.makeViewWithIdentifier("HeaderCell", owner: self) as? NSTableCellView
-            cell?.textField?.stringValue = item.title
-            return cell
-        } else if let item = item as? String {
-            cell = outlineView.makeViewWithIdentifier("DataCell", owner: self) as? NSTableCellView
-            cell?.textField?.stringValue = item
-            cell?.imageView?.image = .None
-            return cell
-        } else {
-            cell = .None
+        if let item = item as? SourceListNode {
+            if item.children.count > 0 && item.parent == nil {
+                let cell = outlineView.makeViewWithIdentifier("HeaderCell", owner: self) as? NSTableCellView
+                cell?.textField?.stringValue = item.title
+                return cell
+            } else {
+                let cell = outlineView.makeViewWithIdentifier("DataCell", owner: self) as? NSTableCellView
+                cell?.textField?.stringValue = item.title
+                cell?.imageView?.image = .None
+                return cell
+            }
         }
-        
-        return cell
+        return .None
     }
     
     func outlineView(outlineView: NSOutlineView, isGroupItem item: AnyObject) -> Bool {
-        if let _ = item as? Parent {
+        if let item = item as? SourceListNode where item.parent == nil {
             return true
         } else {
             return false
+        }
+    }
+    
+    func outlineView(outlineView: NSOutlineView, shouldSelectItem item: AnyObject) -> Bool {
+        if let item = item as? SourceListNode, let _ = item.parent {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // MARK: Custom Classes
+    
+    private class SourceListNode {
+        let title: String
+        let children: [SourceListNode]
+        weak var parent: SourceListNode?
+        
+        init(title: String, children: [SourceListNode]) {
+            self.title = title
+            self.children = children
+            for child in children {
+                child.parent = self
+            }
+        }
+        
+        convenience init(title: String) {
+            self.init(title: title, children: [])
         }
     }
 
