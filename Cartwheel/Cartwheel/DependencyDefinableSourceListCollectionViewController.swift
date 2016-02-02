@@ -29,16 +29,17 @@ import Cocoa
 
 class DependencyDefinableSourceListViewController: NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate {
     
-    @IBOutlet private weak var outlineView: NSOutlineView?
-    private var content = [SourceListNode]()
+    var content = [SourceListNode<String>]()
+    
+    @IBOutlet weak var outlineView: NSOutlineView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let subChild = SourceListNode(title: "Subchild")
-        let parentA = SourceListNode(title: "ParentA", children: [SourceListNode(title: "Child1A"), SourceListNode(title: "Child2A"), SourceListNode(title: "Child3A"), SourceListNode(title: "Child4A")])
-        let parentB = SourceListNode(title: "ParentB", children: [SourceListNode(title: "Child1B"), SourceListNode(title: "Child2B", children: [subChild]), SourceListNode(title: "Child3B")])
-        let parentC = SourceListNode(title: "ParentC", children: [SourceListNode(title: "Child1C"), SourceListNode(title: "Child2C")])
+        let subChild = SourceListNode<String>(title: "Subchild")
+        let parentA = SourceListNode<String>(title: "ParentA", children: [SourceListNode<String>(title: "Child1A"), SourceListNode<String>(title: "Child2A"), SourceListNode<String>(title: "Child3A"), SourceListNode<String>(title: "Child4A")])
+        let parentB = SourceListNode<String>(title: "ParentB", children: [SourceListNode<String>(title: "Child1B"), SourceListNode<String>(title: "Child2B", children: [subChild]), SourceListNode<String>(title: "Child3B")])
+        let parentC = SourceListNode<String>(title: "ParentC", children: [SourceListNode<String>(title: "Child1C"), SourceListNode<String>(title: "Child2C")])
         
         self.content += [parentA] + [parentB] + [parentC]
         
@@ -55,7 +56,7 @@ class DependencyDefinableSourceListViewController: NSViewController, NSOutlineVi
     // MARK: NSOutlineViewDataSource
     
     func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
-        guard let item = item as? SourceListNode else {
+        guard let item = item as? SourceListNode<String> else {
             // if this is NIL, that means the table is asking for the root level
             return self.content.count
         }
@@ -64,7 +65,7 @@ class DependencyDefinableSourceListViewController: NSViewController, NSOutlineVi
     }
     
     func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
-        guard let item = item as? SourceListNode else {
+        guard let item = item as? SourceListNode<String> else {
             // if this is NIL, that means the table is asking for the root level
             return self.content[index]
         }
@@ -73,17 +74,13 @@ class DependencyDefinableSourceListViewController: NSViewController, NSOutlineVi
     }
     
     func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
-        if let item = item as? SourceListNode {
-            return item.children.count > 0
-        } else {
-            return false
-        }
+        if let item = item as? SourceListNode<String> { return item.hasChildren } else { return false }
     }
     
     // MARK: NSOutlineViewDelegate
     
     func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
-        if let item = item as? SourceListNode {
+        if let item = item as? SourceListNode<String> {
             if item.children.count > 0 && item.parent == nil {
                 let cell = outlineView.makeViewWithIdentifier("HeaderCell", owner: self) as? NSTableCellView
                 cell?.textField?.stringValue = item.title
@@ -99,41 +96,51 @@ class DependencyDefinableSourceListViewController: NSViewController, NSOutlineVi
     }
     
     func outlineView(outlineView: NSOutlineView, isGroupItem item: AnyObject) -> Bool {
-        if let item = item as? SourceListNode where item.parent == nil {
-            return true
-        } else {
-            return false
-        }
+        if let item = item as? SourceListNode<String> { return item.shouldDisplayAsGroupItem } else { return false }
     }
     
     func outlineView(outlineView: NSOutlineView, shouldSelectItem item: AnyObject) -> Bool {
-        if let item = item as? SourceListNode, let _ = item.parent {
-            return true
-        } else {
-            return false
-        }
+        if let item = item as? SourceListNode<String> { return item.selectable } else { return false }
     }
     
-    // MARK: Custom Classes
-    
-    private class SourceListNode {
-        let title: String
-        let children: [SourceListNode]
-        weak var parent: SourceListNode?
-        
-        init(title: String, children: [SourceListNode]) {
-            self.title = title
-            self.children = children
-            for child in children {
-                child.parent = self
-            }
-        }
-        
-        convenience init(title: String) {
-            self.init(title: title, children: [])
-        }
-    }
 
+}
+
+// MARK: Custom Classe
+
+class SourceListNode<T> {
+    let title: String
+    let children: [SourceListNode]
+    var item: T?
+    weak var parent: SourceListNode?
+    
+    var shouldDisplayAsGroupItem: Bool {
+        if let _ = self.parent { return false } else { return true }
+    }
+    
+    var selectable: Bool {
+        if let _ = self.parent { return true } else { return false }
+    }
+    
+    var hasChildren: Bool {
+        return self.children.count > 0
+    }
+        
+    init(title: String, item: T?, children: [SourceListNode]) {
+        self.title = title
+        self.children = children
+        for child in children {
+            child.parent = self
+        }
+    }
+    
+    convenience init(title: String, children: [SourceListNode]) {
+        self.init(title: title, item: .None, children: children)
+    }
+    
+    convenience init(title: String) {
+        self.init(title: title, item: .None, children: [])
+    }
 }
 
 
