@@ -29,11 +29,11 @@ import Cocoa
 
 class SourceListNode<T> {
     let title: String
-    let children: [SourceListNode]
+    let children: [SourceListNode<T>]
     var item: T?
     weak var parent: SourceListNode?
     
-    init(title: String, item: T?, children: [SourceListNode]) {
+    init(title: String, item: T?, children: [SourceListNode<T>]) {
         self.title = title
         self.children = children
         for child in children {
@@ -41,12 +41,16 @@ class SourceListNode<T> {
         }
     }
     
-    convenience init(title: String, children: [SourceListNode]) {
+    convenience init(title: String, children: [SourceListNode<T>]) {
         self.init(title: title, item: .None, children: children)
     }
     
     convenience init(title: String) {
         self.init(title: title, item: .None, children: [])
+    }
+    
+    convenience init(title: String, item: T) {
+        self.init(title: title, item: item, children: [])
     }
     
     var shouldDisplayAsGroupItem: Bool {
@@ -59,6 +63,12 @@ class SourceListNode<T> {
     
     var hasChildren: Bool {
         return self.children.count > 0
+    }
+    
+    func nodeByAppendingChildren(newChildren: [SourceListNode<T>]) -> SourceListNode<T> {
+        let allChildren = self.children + newChildren
+        let newNode = SourceListNode(title: self.title, item: self.item, children: allChildren)
+        return newNode
     }
 }
 

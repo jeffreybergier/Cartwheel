@@ -29,18 +29,16 @@ import Cocoa
 
 class DependencyDefinableSourceListViewController: NSViewController {
     
-    private let sidebarController = SourceListController<String>()
+    private let sidebarController = SourceListController<NSURL>()
     @IBOutlet private weak var outlineView: NSOutlineView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let subChild = SourceListNode<String>(title: "Subchild")
-        let parentA = SourceListNode<String>(title: "ParentA", children: [SourceListNode<String>(title: "Child1A"), SourceListNode<String>(title: "Child2A"), SourceListNode<String>(title: "Child3A"), SourceListNode<String>(title: "Child4A")])
-        let parentB = SourceListNode<String>(title: "ParentB", children: [SourceListNode<String>(title: "Child1B"), SourceListNode<String>(title: "Child2B", children: [subChild]), SourceListNode<String>(title: "Child3B")])
-        let parentC = SourceListNode<String>(title: "ParentC", children: [SourceListNode<String>(title: "Child1C"), SourceListNode<String>(title: "Child2C")])
+        let cartfileParent = SourceListNode<NSURL>(title: "Cartfile")
+        let podfileParent = SourceListNode<NSURL>(title: "Podfile")
         
-        let content = [parentA] + [parentB] + [parentC]
+        let content = [cartfileParent] + [podfileParent]
         
         self.sidebarController.sourceListView = self.outlineView
         self.sidebarController.content = content
@@ -57,7 +55,26 @@ class DependencyDefinableSourceListViewController: NSViewController {
     }
     
     private func openExistingButtonClicked(sender: NSButton?) {
-        print("openExistingButtonClicked")
+        let openPanel = NSOpenPanel()
+        openPanel.prompt = "Choose File"
+        openPanel.worksWhenModal = true
+        openPanel.allowsMultipleSelection = true
+        openPanel.canChooseDirectories = true
+        openPanel.canChooseFiles = true
+        openPanel.resolvesAliases = true
+        openPanel.beginSheetModalForWindow(self.view.window!) { response in
+            if response == 1 { // file chosen
+                for url in openPanel.URLs {
+                    let titleURL = url.URLByDeletingLastPathComponent
+                    let title = titleURL?.lastPathComponent ?? "Unknown Directory"
+                    let childNode = SourceListNode<NSURL>(title: title, item: url)
+                    if let cartfileNode = self.sidebarController.content.first {
+                        let newNode = cartfileNode.nodeByAppendingChildren([childNode])
+                        self.sidebarController.content[0] = newNode
+                    }
+                }
+            }
+        }
     }
     
     override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
