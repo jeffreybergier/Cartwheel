@@ -47,16 +47,16 @@ class SourceListNode<T> {
 
 class SourceListController<T>:NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate {
     
-    weak var outlineView: NSOutlineView? {
+    var content = [SourceListNode<T>]() {
         didSet {
-            self.outlineView?.setDelegate(self)
-            self.outlineView?.setDataSource(self)
+            self.sourceListView?.reloadData()
         }
     }
     
-    var content = [SourceListNode<T>]() {
+    weak var sourceListView: NSOutlineView? {
         didSet {
-            self.outlineView?.reloadData()
+            self.sourceListView?.setDelegate(self)
+            self.sourceListView?.setDataSource(self)
         }
     }
     

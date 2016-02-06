@@ -42,7 +42,7 @@ class DependencyDefinableSourceListViewController: NSViewController {
         
         let content = [parentA] + [parentB] + [parentC]
         
-        self.sidebarController.outlineView = self.outlineView
+        self.sidebarController.sourceListView = self.outlineView
         self.sidebarController.content = content
         
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
