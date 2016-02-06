@@ -51,7 +51,26 @@ class DependencyDefinableSourceListViewController: NSViewController {
             self.outlineView?.expandItem(.None, expandChildren: true)
         }
     }
-
+    
+    private func createNewButtonClicked(sender: NSButton?) {
+        print("createNewButtonClicked")
+    }
+    
+    private func openExistingButtonClicked(sender: NSButton?) {
+        print("openExistingButtonClicked")
+    }
+    
+    override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
+        guard let segueID = StoryboardSegue.optionalRawValue(segue.identifier) else { return }
+        switch segueID {
+        case .AddDependencyDefinablePopover:
+            guard let destinationVC = segue.destinationController as? TwoButtonViewController else { return }
+            destinationVC.button1ActionClosure = self.createNewButtonClicked
+            destinationVC.button2ActionClosure = self.openExistingButtonClicked
+            break
+        }
+    }
+    
 }
 
 

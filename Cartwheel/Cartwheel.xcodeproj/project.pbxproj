@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5A251BF51C65703100EAAE89 /* SourceListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A251BF41C65703100EAAE89 /* SourceListController.swift */; };
+		5A251BF71C6674A800EAAE89 /* TwoButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A251BF61C6674A800EAAE89 /* TwoButtonViewController.swift */; };
+		5A251BF91C66761E00EAAE89 /* StoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A251BF81C66761E00EAAE89 /* StoryboardSegue.swift */; };
 		733BA8E31C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733BA8E21C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift */; };
 		73B75BF11C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B75BF01C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift */; };
 		73DC6FD51C4C1D7100B5448A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DC6FD41C4C1D7100B5448A /* AppDelegate.swift */; };
@@ -82,6 +84,8 @@
 
 /* Begin PBXFileReference section */
 		5A251BF41C65703100EAAE89 /* SourceListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceListController.swift; sourceTree = "<group>"; };
+		5A251BF61C6674A800EAAE89 /* TwoButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoButtonViewController.swift; sourceTree = "<group>"; };
+		5A251BF81C66761E00EAAE89 /* StoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardSegue.swift; sourceTree = "<group>"; };
 		733BA8E21C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyDefinableSourceListCollectionViewController.swift; sourceTree = "<group>"; };
 		73B75BF01C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyDefinableSplitViewWindowController.swift; sourceTree = "<group>"; };
 		73DC6FD11C4C1D7100B5448A /* Cartwheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cartwheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,6 +155,8 @@
 				73B75BF01C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift */,
 				733BA8E21C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift */,
 				5A251BF41C65703100EAAE89 /* SourceListController.swift */,
+				5A251BF61C6674A800EAAE89 /* TwoButtonViewController.swift */,
+				5A251BF81C66761E00EAAE89 /* StoryboardSegue.swift */,
 				73DC6FD81C4C1D7100B5448A /* Assets.xcassets */,
 				73DC6FDA1C4C1D7100B5448A /* Main.storyboard */,
 				73DC6FDD1C4C1D7100B5448A /* Info.plist */,
@@ -255,7 +261,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A251BF91C66761E00EAAE89 /* StoryboardSegue.swift in Sources */,
 				73DC6FD51C4C1D7100B5448A /* AppDelegate.swift in Sources */,
+				5A251BF71C6674A800EAAE89 /* TwoButtonViewController.swift in Sources */,
 				73B75BF11C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift in Sources */,
 				5A251BF51C65703100EAAE89 /* SourceListController.swift in Sources */,
 				733BA8E31C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift in Sources */,

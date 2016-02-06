@@ -3,6 +3,8 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -714,7 +716,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="14" outlineTableColumn="Uaz-46-CHl" id="Jsi-fY-H0r">
-                                            <rect key="frame" x="0.0" y="0.0" width="240" height="0.0"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="300"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="0.0"/>
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -785,7 +787,7 @@
                                     <nil key="backgroundColor"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="45t-jL-gzs">
-                                    <rect key="frame" x="1" y="381" width="147.5" height="16"/>
+                                    <rect key="frame" x="0.0" y="284" width="240" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="1QV-4R-V7H">
@@ -793,12 +795,52 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CtQ-PA-SDD">
+                                <rect key="frame" x="4" y="4" width="54" height="25"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OdR-dj-2wb">
+                                        <rect key="frame" x="-6" y="-7" width="37" height="36"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="25" id="Rpo-Kh-2vc"/>
+                                            <constraint firstAttribute="width" secondItem="OdR-dj-2wb" secondAttribute="height" multiplier="1:1" id="rFb-8L-8bK"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSAddTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oq0-pS-WKj">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <segue destination="o2v-si-ScL" kind="popover" identifier="AddDependencyDefinablePopover" popoverAnchorView="OdR-dj-2wb" popoverBehavior="t" preferredEdge="maxY" id="mTk-95-UIh"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pqQ-ad-nT6">
+                                        <rect key="frame" x="23" y="-7" width="37" height="36"/>
+                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRemoveTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Be8-Rd-eSi">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="pqQ-ad-nT6" firstAttribute="height" secondItem="OdR-dj-2wb" secondAttribute="height" id="ndL-Fa-0Zf"/>
+                                    <constraint firstItem="pqQ-ad-nT6" firstAttribute="width" secondItem="OdR-dj-2wb" secondAttribute="width" id="zkB-rQ-YeY"/>
+                                </constraints>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="CtQ-PA-SDD" firstAttribute="leading" secondItem="yae-IE-Rxv" secondAttribute="leading" constant="4" id="LOM-ja-Juv"/>
                             <constraint firstItem="Ui3-ns-0IT" firstAttribute="leading" secondItem="yae-IE-Rxv" secondAttribute="leading" id="NAB-pe-36y"/>
                             <constraint firstAttribute="bottom" secondItem="Ui3-ns-0IT" secondAttribute="bottom" id="O9l-B1-Bd2"/>
                             <constraint firstItem="Ui3-ns-0IT" firstAttribute="top" secondItem="yae-IE-Rxv" secondAttribute="top" id="aEH-JO-FU1"/>
                             <constraint firstAttribute="trailing" secondItem="Ui3-ns-0IT" secondAttribute="trailing" id="aOa-3z-vj0"/>
+                            <constraint firstAttribute="bottom" secondItem="CtQ-PA-SDD" secondAttribute="bottom" constant="4" id="guE-ZX-IHV"/>
                         </constraints>
                     </view>
                     <connections>
@@ -808,6 +850,68 @@
                 <customObject id="bf5-9n-BhY" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-127" y="1353"/>
+        </scene>
+        <!--Two Button View Controller-->
+        <scene sceneID="bsM-ZN-Y7e">
+            <objects>
+                <viewController id="o2v-si-ScL" customClass="TwoButtonViewController" customModule="Cartwheel" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" wantsLayer="YES" id="Kfm-KD-bSo">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="90"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xie-5c-gZE">
+                                <rect key="frame" x="20" y="20" width="200" height="50"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Xu-Ll-gbS">
+                                        <rect key="frame" x="-6" y="22" width="212" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Create New Cartfile" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Wb8-5T-Lde">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="button1Clicked:" target="o2v-si-ScL" id="nIo-Vc-TpX"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Grh-SB-gcO">
+                                        <rect key="frame" x="-6" y="-7" width="212" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Open Existing Cartfile" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="o7d-Wb-Ji8">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="button2Clicked:" target="o2v-si-ScL" id="rln-89-aFz"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Grh-SB-gcO" firstAttribute="width" secondItem="xie-5c-gZE" secondAttribute="width" id="cHO-zu-gDR"/>
+                                    <constraint firstItem="2Xu-Ll-gbS" firstAttribute="width" secondItem="xie-5c-gZE" secondAttribute="width" id="qP0-Pv-YX7"/>
+                                </constraints>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="xie-5c-gZE" firstAttribute="leading" secondItem="Kfm-KD-bSo" secondAttribute="leading" constant="20" symbolic="YES" id="20D-DS-Nt7"/>
+                            <constraint firstAttribute="trailing" secondItem="xie-5c-gZE" secondAttribute="trailing" constant="20" symbolic="YES" id="Gqn-ze-nYc"/>
+                            <constraint firstItem="xie-5c-gZE" firstAttribute="top" secondItem="Kfm-KD-bSo" secondAttribute="top" constant="20" symbolic="YES" id="PWE-MP-CJi"/>
+                            <constraint firstAttribute="bottom" secondItem="xie-5c-gZE" secondAttribute="bottom" constant="20" symbolic="YES" id="pHB-AM-HAV"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="button1" destination="2Xu-Ll-gbS" id="sqt-pj-qi2"/>
+                        <outlet property="button2" destination="Grh-SB-gcO" id="qtI-Kh-39r"/>
+                    </connections>
+                </viewController>
+                <customObject id="atJ-ON-6Ld" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-127" y="1708"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Llz-c8-vEP">
@@ -857,7 +961,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="Bix-Vg-uan">
-                                            <rect key="frame" x="435" y="0.0" width="15" height="300"/>
+                                            <rect key="frame" x="434" y="0.0" width="16" height="300"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
