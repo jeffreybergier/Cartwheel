@@ -652,23 +652,21 @@
             <objects>
                 <windowController id="B8D-0N-5wS" customClass="DependencyDefinableSplitViewWindowController" customModule="Cartwheel" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Cartwheel" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-                        <toolbar key="toolbar" implicitIdentifier="3ECF2AEA-7580-43AA-A8DA-7FC6BB35794D" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="fsm-BH-Wy3">
+                        <toolbar key="toolbar" implicitIdentifier="26C3E363-9519-4D41-BFA4-6761B07248E7" displayMode="iconOnly" sizeMode="small" id="oWf-QW-GbR">
                             <allowedToolbarItems>
-                                <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="3UY-tP-JUB"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="Vkr-ai-fF0"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="wbE-av-Ru2"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="MYR-dE-OM6"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="jCd-lS-tYE"/>
+                                <toolbarItem implicitItemIdentifier="E0DA769B-13FE-452F-9795-22A0DF26705D" label="Add" paletteLabel="Add" tag="-1" image="NSAddTemplate" id="vW2-1F-26D"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="Zci-sW-uCs"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="F2T-PM-9Ee"/>
+                                <toolbarItem implicitItemIdentifier="CFA2C428-135A-4A06-A61B-CE2CD6C9A5A5" label="Delete" paletteLabel="Delete" tag="-1" image="NSRemoveTemplate" id="ssf-xD-EaP"/>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
-                                <toolbarItem reference="3UY-tP-JUB"/>
-                                <toolbarItem reference="Vkr-ai-fF0"/>
-                                <toolbarItem reference="jCd-lS-tYE"/>
-                                <toolbarItem reference="wbE-av-Ru2"/>
+                                <toolbarItem reference="vW2-1F-26D"/>
+                                <toolbarItem reference="ssf-xD-EaP"/>
+                                <toolbarItem reference="F2T-PM-9Ee"/>
                             </defaultToolbarItems>
                         </toolbar>
                     </window>
@@ -688,7 +686,7 @@
                         <splitViewItem canCollapse="YES" holdingPriority="251" id="nK5-LO-7IL"/>
                         <splitViewItem id="9Il-f5-H66"/>
                     </splitViewItems>
-                    <splitView key="splitView" dividerStyle="thin" vertical="YES" id="afA-Fs-sty">
+                    <splitView key="splitView" vertical="YES" id="afA-Fs-sty">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </splitView>
@@ -859,7 +857,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="Bix-Vg-uan">
-                                            <rect key="frame" x="435" y="0.0" width="15" height="300"/>
+                                            <rect key="frame" x="434" y="0.0" width="16" height="300"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
@@ -887,4 +885,8 @@
             <point key="canvasLocation" x="229" y="1353"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSRemoveTemplate" width="11" height="11"/>
+    </resources>
 </document>
