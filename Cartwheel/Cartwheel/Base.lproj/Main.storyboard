@@ -658,19 +658,6 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-                        <toolbar key="toolbar" implicitIdentifier="26C3E363-9519-4D41-BFA4-6761B07248E7" displayMode="iconOnly" sizeMode="small" id="oWf-QW-GbR">
-                            <allowedToolbarItems>
-                                <toolbarItem implicitItemIdentifier="E0DA769B-13FE-452F-9795-22A0DF26705D" label="Add" paletteLabel="Add" tag="-1" image="NSAddTemplate" id="vW2-1F-26D"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="Zci-sW-uCs"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="F2T-PM-9Ee"/>
-                                <toolbarItem implicitItemIdentifier="CFA2C428-135A-4A06-A61B-CE2CD6C9A5A5" label="Delete" paletteLabel="Delete" tag="-1" image="NSRemoveTemplate" id="ssf-xD-EaP"/>
-                            </allowedToolbarItems>
-                            <defaultToolbarItems>
-                                <toolbarItem reference="vW2-1F-26D"/>
-                                <toolbarItem reference="ssf-xD-EaP"/>
-                                <toolbarItem reference="F2T-PM-9Ee"/>
-                            </defaultToolbarItems>
-                        </toolbar>
                     </window>
                     <connections>
                         <segue destination="Dgm-AO-ECG" kind="relationship" relationship="window.shadowedContentViewController" id="fbF-O3-pRn"/>
@@ -716,7 +703,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="14" outlineTableColumn="Uaz-46-CHl" id="Jsi-fY-H0r">
-                                            <rect key="frame" x="0.0" y="0.0" width="240" height="300"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="0.0"/>
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -961,7 +948,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="Bix-Vg-uan">
-                                            <rect key="frame" x="434" y="0.0" width="16" height="300"/>
+                                            <rect key="frame" x="435" y="0.0" width="15" height="300"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>

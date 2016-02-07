@@ -48,8 +48,7 @@ class DependencyDefinableSourceListViewController: NSViewController {
         
         let contentDictionary: [String : [NSDictionary]]?
         do {
-            let untypedDictionary = try self.diskManager.dictionaryByReadingPLISTFromDiskLocation(.AppDirectoryWithinAppSupportDirectory(lastPathComponent: "Cartwheel.plist"))
-            contentDictionary = untypedDictionary as? [String : [NSDictionary]]
+            contentDictionary = try self.diskManager.dictionaryByReadingPLISTFromDiskLocation(.AppDirectoryWithinAppSupportDirectory(lastPathComponent: "Cartwheel.plist")) as? [String : [NSDictionary]]
         } catch {
             contentDictionary = .None
         }
