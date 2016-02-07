@@ -35,17 +35,6 @@ class DependencyDefinableSourceListViewController: NSViewController {
     private var content = DependencyDefinableContent() {
         didSet {
             self.sidebarController.content = self.content.nodeVersion()
-            let writableCartfiles = self.content.cartfiles.map() { cartfile -> NSDictionary in
-                return cartfile.dictionaryVersion()
-            }
-            let writeablePodfiles = self.content.podfiles.map() { podfile -> NSDictionary in
-                return podfile.dictionaryVersion()
-            }
-            let dictionary = [
-                "Cartfile" : writableCartfiles,
-                "Podfile" : writeablePodfiles
-            ]
-            try! self.diskManager.writePreferencesDictionary(dictionary, toLocation: .AppDirectoryWithinAppSupportDirectory(lastPathComponent: "Cartwheel"), options: .AtomicWrite)
         }
     }
     
@@ -56,7 +45,50 @@ class DependencyDefinableSourceListViewController: NSViewController {
         super.viewDidLoad()
         
         self.sidebarController.sourceListView = self.outlineView
-        self.sidebarController.content = self.content.nodeVersion()
+        
+        let contentDictionary: [String : [NSDictionary]]?
+        do {
+            let untypedDictionary = try self.diskManager.dictionaryByReadingPLISTFromDiskLocation(.AppDirectoryWithinAppSupportDirectory(lastPathComponent: "Cartwheel.plist"))
+            contentDictionary = untypedDictionary as? [String : [NSDictionary]]
+        } catch {
+            contentDictionary = .None
+        }
+        
+        let cartfilesArray: [Cartfile]
+        if let cartfileDictionaryArray = contentDictionary?["Cartfile"] {
+            cartfilesArray = cartfileDictionaryArray.map() { dictionary -> Cartfile? in
+                return Cartfile(dictionary: dictionary)
+                }.filter() { cartfile -> Bool in
+                    return cartfile != nil
+                }.map() { cartfile -> Cartfile in
+                    return cartfile!
+            }
+        } else {
+            cartfilesArray = []
+        }
+        
+        let podfilesArray: [DependencyDefinable] = []
+        self.content = DependencyDefinableContent(cartfiles: cartfilesArray, podfiles: podfilesArray)
+    }
+    
+    private func updateContentAndSaveToDisk(newContent: DependencyDefinableContent) throws {
+        let writableCartfiles = newContent.cartfiles.map() { cartfile -> NSDictionary in
+            return cartfile.dictionaryVersion()
+        }
+        let writeablePodfiles = newContent.podfiles.map() { podfile -> NSDictionary in
+            return podfile.dictionaryVersion()
+        }
+        let dictionary = [
+            "Cartfile" : writableCartfiles,
+            "Podfile" : writeablePodfiles
+        ]
+        
+        do {
+            try self.diskManager.writePLISTDictionary(dictionary, toLocation: .AppDirectoryWithinAppSupportDirectory(lastPathComponent: "Cartwheel.plist"), options: .AtomicWrite)
+            self.content = newContent
+        } catch {
+            throw error
+        }
     }
     
     private func createNewButtonClicked(sender: NSButton?) {
@@ -80,7 +112,7 @@ class DependencyDefinableSourceListViewController: NSViewController {
                     }.map() { cartfile -> Cartfile in
                         return cartfile!
                 }
-                self.content.cartfiles += newCartfiles
+                try! self.updateContentAndSaveToDisk(DependencyDefinableContent(cartfiles: self.content.cartfiles + newCartfiles, podfiles: self.content.podfiles))
             }
         }
     }
@@ -103,6 +135,11 @@ class DependencyDefinableSourceListViewController: NSViewController {
         init() {
             self.cartfiles = []
             self.podfiles = []
+        }
+        
+        init(cartfiles: [Cartfile], podfiles: [DependencyDefinable]) {
+            self.cartfiles = cartfiles
+            self.podfiles = podfiles
         }
         
         func nodeVersion() -> [SourceListNode<DependencyDefinable>] {
