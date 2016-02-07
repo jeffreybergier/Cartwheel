@@ -11,7 +11,7 @@ import Foundation
 protocol DependencyDefinable {
     var title: String { get set }
     var url: NSURL { get set }
-    init(url: NSURL)
+    init?(url: NSURL)
     init?(dictionary: NSDictionary)
     func dictionaryVersion() -> NSDictionary
 }
@@ -20,13 +20,20 @@ struct Cartfile: DependencyDefinable {
     var title: String
     var url: NSURL
     
-    init(url: NSURL) {
-        self.title = url.URLByDeletingLastPathComponent!.lastPathComponent!
-        self.url = url
+    init?(url: NSURL) {
+        if let fileName = url.lastPathComponent,
+            let title = url.URLByDeletingLastPathComponent?.lastPathComponent
+            where fileName.lowercaseString == "Cartfile".lowercaseString
+        {
+            self.title = title
+            self.url = url
+        } else {
+            return nil
+        }
     }
     
     init?(dictionary: NSDictionary) {
-        if let url = dictionary["url"] as? NSURL {
+        if let urlData = dictionary["URLDataBlob"] as? NSData, url = NSKeyedUnarchiver.unarchiveObjectWithData(urlData) as? NSURL {
             self.init(url: url)
         } else {
             return nil
@@ -34,6 +41,7 @@ struct Cartfile: DependencyDefinable {
     }
     
     func dictionaryVersion() -> NSDictionary {
-        return ["url" : self.url]
+        let data = NSKeyedArchiver.archivedDataWithRootObject(self.url)
+        return ["URLDataBlob" : data]
     }
 }
