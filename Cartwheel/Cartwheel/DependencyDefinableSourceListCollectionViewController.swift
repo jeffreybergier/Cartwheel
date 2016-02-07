@@ -29,25 +29,21 @@ import Cocoa
 
 class DependencyDefinableSourceListViewController: NSViewController {
     
-    private let sidebarController = SourceListController<NSURL>()
     @IBOutlet private weak var outlineView: NSOutlineView?
+    
+    private var content = DependencyDefinableContent(cartfiles: [], podfiles: []) {
+        didSet {
+            self.sidebarController.content = self.content.nodeVersion()
+        }
+    }
+    
+    private let sidebarController = SourceListController<DependencyDefinable>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let cartfileParent = SourceListNode<NSURL>(title: "Cartfile")
-        let podfileParent = SourceListNode<NSURL>(title: "Podfile")
-        
-        let content = [cartfileParent] + [podfileParent]
-        
         self.sidebarController.sourceListView = self.outlineView
-        self.sidebarController.content = content
-        
-        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
-        dispatch_after(dispatchTime, dispatch_get_main_queue()) {
-            // causes crash on launch if not delayed
-            self.outlineView?.expandItem(.None, expandChildren: true)
-        }
+        self.sidebarController.content = self.content.nodeVersion()
     }
     
     private func createNewButtonClicked(sender: NSButton?) {
@@ -65,13 +61,8 @@ class DependencyDefinableSourceListViewController: NSViewController {
         openPanel.beginSheetModalForWindow(self.view.window!) { response in
             if response == 1 { // file chosen
                 for url in openPanel.URLs {
-                    let titleURL = url.URLByDeletingLastPathComponent
-                    let title = titleURL?.lastPathComponent ?? "Unknown Directory"
-                    let childNode = SourceListNode<NSURL>(title: title, item: url)
-                    if let cartfileNode = self.sidebarController.content.first {
-                        let newNode = cartfileNode.nodeByAppendingChildren([childNode])
-                        self.sidebarController.content[0] = newNode
-                    }
+                    let cartfile = Cartfile(url: url)
+                    self.content.cartfiles.append(cartfile)
                 }
             }
         }
@@ -88,6 +79,23 @@ class DependencyDefinableSourceListViewController: NSViewController {
         }
     }
     
+    struct DependencyDefinableContent {
+        var cartfiles: [Cartfile]
+        var podfiles: [DependencyDefinable]
+        
+        func nodeVersion() -> [SourceListNode<DependencyDefinable>] {
+            let cartfileChildren = self.cartfiles.map() { cartfile -> SourceListNode<DependencyDefinable> in
+                return SourceListNode(title: cartfile.title, item: cartfile)
+            }
+            let podfileChildren = self.podfiles.map() { podfile -> SourceListNode<DependencyDefinable> in
+                return SourceListNode(title: podfile.title, item: podfile)
+            }
+            let cartfileParent = SourceListNode(title: "Cartfiles", children: cartfileChildren)
+            let podfileParent = SourceListNode(title: "Podfiles", children: podfileChildren)
+            
+            return [cartfileParent] + [podfileParent]
+        }
+    }
 }
 
 
