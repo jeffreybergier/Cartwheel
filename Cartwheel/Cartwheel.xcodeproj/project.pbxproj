@@ -11,6 +11,9 @@
 		5A251BF71C6674A800EAAE89 /* TwoButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A251BF61C6674A800EAAE89 /* TwoButtonViewController.swift */; };
 		5A251BF91C66761E00EAAE89 /* StoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A251BF81C66761E00EAAE89 /* StoryboardSegue.swift */; };
 		5A5A6E0B1C66C7A4001DC88D /* SourceListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5A6E0A1C66C7A4001DC88D /* SourceListNode.swift */; };
+		5A5A6E0F1C66C8A3001DC88D /* JSBUtils.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 5A5A6E0D1C66C8A3001DC88D /* JSBUtils.framework.dSYM */; };
+		5A5A6E101C66C8B0001DC88D /* JSBUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A5A6E0C1C66C8A3001DC88D /* JSBUtils.framework */; };
+		5A5A6E111C66C8B0001DC88D /* JSBUtils.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5A5A6E0C1C66C8A3001DC88D /* JSBUtils.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		733BA8E31C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733BA8E21C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift */; };
 		73B75BF11C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B75BF01C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift */; };
 		73DC6FD51C4C1D7100B5448A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DC6FD41C4C1D7100B5448A /* AppDelegate.swift */; };
@@ -57,6 +60,7 @@
 				73DC6FFC1C4C1E0600B5448A /* Result.framework in Embed Frameworks */,
 				73DC6FF61C4C1E0600B5448A /* PrettyColors.framework in Embed Frameworks */,
 				73DC6FF21C4C1E0600B5448A /* CarthageKit.framework in Embed Frameworks */,
+				5A5A6E111C66C8B0001DC88D /* JSBUtils.framework in Embed Frameworks */,
 				73DC6FF41C4C1E0600B5448A /* Commandant.framework in Embed Frameworks */,
 				73DC6FF01C4C1E0600B5448A /* Async.framework in Embed Frameworks */,
 				73DC6FFE1C4C1E0600B5448A /* XCGLogger.framework in Embed Frameworks */,
@@ -88,6 +92,8 @@
 		5A251BF61C6674A800EAAE89 /* TwoButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoButtonViewController.swift; sourceTree = "<group>"; };
 		5A251BF81C66761E00EAAE89 /* StoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardSegue.swift; sourceTree = "<group>"; };
 		5A5A6E0A1C66C7A4001DC88D /* SourceListNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceListNode.swift; sourceTree = "<group>"; };
+		5A5A6E0C1C66C8A3001DC88D /* JSBUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSBUtils.framework; path = ../../Carthage/Build/Mac/JSBUtils.framework; sourceTree = "<group>"; };
+		5A5A6E0D1C66C8A3001DC88D /* JSBUtils.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = JSBUtils.framework.dSYM; path = ../../Carthage/Build/Mac/JSBUtils.framework.dSYM; sourceTree = "<group>"; };
 		733BA8E21C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyDefinableSourceListCollectionViewController.swift; sourceTree = "<group>"; };
 		73B75BF01C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyDefinableSplitViewWindowController.swift; sourceTree = "<group>"; };
 		73DC6FD11C4C1D7100B5448A /* Cartwheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cartwheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +131,7 @@
 				73DC6FFB1C4C1E0600B5448A /* Result.framework in Frameworks */,
 				73DC6FF51C4C1E0600B5448A /* PrettyColors.framework in Frameworks */,
 				73DC6FF11C4C1E0600B5448A /* CarthageKit.framework in Frameworks */,
+				5A5A6E101C66C8B0001DC88D /* JSBUtils.framework in Frameworks */,
 				73DC6FF31C4C1E0600B5448A /* Commandant.framework in Frameworks */,
 				73DC6FEF1C4C1E0600B5448A /* Async.framework in Frameworks */,
 				73DC6FFD1C4C1E0600B5448A /* XCGLogger.framework in Frameworks */,
@@ -171,6 +178,7 @@
 		73DC6FE31C4C1DCD00B5448A /* Frameworks - 3rd */ = {
 			isa = PBXGroup;
 			children = (
+				5A5A6E0C1C66C8A3001DC88D /* JSBUtils.framework */,
 				73DC6FE41C4C1DFF00B5448A /* Argo.framework */,
 				73DC6FE51C4C1DFF00B5448A /* Async.framework */,
 				73DC6FE61C4C1DFF00B5448A /* CarthageKit.framework */,
@@ -181,6 +189,7 @@
 				73DC6FEB1C4C1DFF00B5448A /* Result.framework */,
 				73DC6FEC1C4C1DFF00B5448A /* XCGLogger.framework */,
 				73DC70001C4C1E1700B5448A /* Argo.framework.dSYM */,
+				5A5A6E0D1C66C8A3001DC88D /* JSBUtils.framework.dSYM */,
 				73DC70011C4C1E1700B5448A /* Async.framework.dSYM */,
 				73DC70021C4C1E1700B5448A /* Commandant.framework.dSYM */,
 				73DC70031C4C1E1700B5448A /* PrettyColors.framework.dSYM */,
@@ -254,6 +263,7 @@
 			files = (
 				73DC6FD91C4C1D7100B5448A /* Assets.xcassets in Resources */,
 				73DC6FDC1C4C1D7100B5448A /* Main.storyboard in Resources */,
+				5A5A6E0F1C66C8A3001DC88D /* JSBUtils.framework.dSYM in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
