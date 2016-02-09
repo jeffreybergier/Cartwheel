@@ -29,8 +29,10 @@ import Cocoa
 import JSBUtils
 
 class DependencyDefinableSourceListViewController: NSViewController {
+    
+    // MARK: Properties
 
-    private var content = DependencyDefinableContent() {
+    private var content = DDSourceListViewControllerContent() {
         didSet {
             self.sidebarController.content = self.content.nodeVersion()
         }
@@ -46,9 +48,16 @@ class DependencyDefinableSourceListViewController: NSViewController {
         return possibleDetailVCs?.first
     }
     
+    // MARK: Helper Controllers
+    
     private let sidebarController = SourceListController<DependencyDefinable>()
     private let diskManager = JSBDictionaryPLISTPreferenceManager()
+    
+    // MARK: Interface Builder
+    
     @IBOutlet private weak var outlineView: NSOutlineView?
+    
+    // MARK: View Loading
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,50 +69,11 @@ class DependencyDefinableSourceListViewController: NSViewController {
                 name: NSOutlineViewSelectionDidChangeNotification,
                 object: outlineView)
         }
-        
-        let contentDictionary: [String : [NSDictionary]]?
-        do {
-            contentDictionary = try self.diskManager.dictionaryByReadingPLISTFromDiskLocation(.AppDirectoryWithinAppSupportDirectory(lastPathComponent: "Cartwheel.plist")) as? [String : [NSDictionary]]
-        } catch {
-            contentDictionary = .None
-        }
-        
-        let cartfilesArray: [Cartfile]
-        if let cartfileDictionaryArray = contentDictionary?["Cartfile"] {
-            cartfilesArray = cartfileDictionaryArray.map() { dictionary -> Cartfile? in
-                return Cartfile(dictionary: dictionary)
-                }.filter() { cartfile -> Bool in
-                    return cartfile != nil
-                }.map() { cartfile -> Cartfile in
-                    return cartfile!
-            }
-        } else {
-            cartfilesArray = []
-        }
-        
-        let podfilesArray: [DependencyDefinable] = []
-        self.content = DependencyDefinableContent(cartfiles: cartfilesArray, podfiles: podfilesArray)
+
+        self.content = DDSourceListViewControllerContent(diskManager: self.diskManager)
     }
     
-    private func updateContentAndSaveToDisk(newContent: DependencyDefinableContent) throws {
-        let writableCartfiles = newContent.cartfiles.map() { cartfile -> NSDictionary in
-            return cartfile.dictionaryVersion()
-        }
-        let writeablePodfiles = newContent.podfiles.map() { podfile -> NSDictionary in
-            return podfile.dictionaryVersion()
-        }
-        let dictionary = [
-            "Cartfile" : writableCartfiles,
-            "Podfile" : writeablePodfiles
-        ]
-        
-        do {
-            try self.diskManager.writePLISTDictionary(dictionary, toLocation: .AppDirectoryWithinAppSupportDirectory(lastPathComponent: "Cartwheel.plist"), options: .AtomicWrite)
-            self.content = newContent
-        } catch {
-            throw error
-        }
-    }
+    // MARK: Handle User Input
     
     @objc private func outlineViewSelectionDidChange(notification: NSNotification) {
         guard let outlineView = notification.object as? NSOutlineView else { return }
@@ -127,6 +97,7 @@ class DependencyDefinableSourceListViewController: NSViewController {
         openPanel.resolvesAliases = true
         openPanel.beginSheetModalForWindow(self.view.window!) { response in
             if response == 1 { // file chosen
+                
                 let newCartfiles = openPanel.URLs.map() { url -> Cartfile? in
                         return Cartfile(url: url)
                     }.filter() { cartfile -> Bool in
@@ -134,7 +105,15 @@ class DependencyDefinableSourceListViewController: NSViewController {
                     }.map() { cartfile -> Cartfile in
                         return cartfile!
                 }
-                try! self.updateContentAndSaveToDisk(DependencyDefinableContent(cartfiles: self.content.cartfiles + newCartfiles, podfiles: self.content.podfiles))
+                
+                let originalContent = self.content
+                do {
+                    self.content.appendContent(newCartfiles, newPodfiles: [])
+                    try self.content.saveToDiskWithManager(self.diskManager)
+                } catch {
+                    print("Error Saving to Disk: Reverting Content to Content Before Save was Attempted.")
+                    self.content = originalContent
+                }
             }
         }
     }
@@ -147,34 +126,6 @@ class DependencyDefinableSourceListViewController: NSViewController {
             destinationVC.button1ActionClosure = self.createNewButtonClicked
             destinationVC.button2ActionClosure = self.openExistingButtonClicked
             break
-        }
-    }
-    
-    struct DependencyDefinableContent {
-        var cartfiles: [Cartfile]
-        var podfiles: [DependencyDefinable]
-        
-        init() {
-            self.cartfiles = []
-            self.podfiles = []
-        }
-        
-        init(cartfiles: [Cartfile], podfiles: [DependencyDefinable]) {
-            self.cartfiles = cartfiles
-            self.podfiles = podfiles
-        }
-        
-        func nodeVersion() -> [SourceListNode<DependencyDefinable>] {
-            let cartfileChildren = self.cartfiles.map() { cartfile -> SourceListNode<DependencyDefinable> in
-                return SourceListNode(title: cartfile.title, item: cartfile)
-            }
-            let podfileChildren = self.podfiles.map() { podfile -> SourceListNode<DependencyDefinable> in
-                return SourceListNode(title: podfile.title, item: podfile)
-            }
-            let cartfileParent = SourceListNode(title: "Cartfiles", children: cartfileChildren)
-            let podfileParent = SourceListNode(title: "Podfiles", children: podfileChildren)
-
-            return [cartfileParent] + [podfileParent]
         }
     }
 }
