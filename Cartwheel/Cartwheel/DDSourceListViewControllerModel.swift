@@ -29,7 +29,7 @@ import JSBUtils
 import Foundation
 
 extension DependencyDefinableSourceListViewController {
-    struct DDSourceListViewControllerContent {
+    struct Model {
         var cartfiles: [Cartfile]
         var podfiles: [DependencyDefinable]
         

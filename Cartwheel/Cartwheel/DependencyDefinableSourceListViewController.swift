@@ -32,7 +32,7 @@ class DependencyDefinableSourceListViewController: NSViewController {
     
     // MARK: Properties
 
-    private var content = DDSourceListViewControllerContent() {
+    private var content = Model() {
         didSet {
             self.sidebarController.content = self.content.nodeVersion()
         }
@@ -70,7 +70,7 @@ class DependencyDefinableSourceListViewController: NSViewController {
                 object: outlineView)
         }
 
-        self.content = DDSourceListViewControllerContent(diskManager: self.diskManager)
+        self.content = Model(diskManager: self.diskManager)
     }
     
     // MARK: Handle User Input
@@ -106,13 +106,13 @@ class DependencyDefinableSourceListViewController: NSViewController {
                         return cartfile!
                 }
                 
-                let originalContent = self.content
                 do {
-                    self.content.appendContent(newCartfiles, newPodfiles: [])
+                    var content = self.content
+                    content.appendContent(newCartfiles, newPodfiles: [])
                     try self.content.saveToDiskWithManager(self.diskManager)
+                    self.content = content
                 } catch {
-                    print("Error Saving to Disk: Reverting Content to Content Before Save was Attempted.")
-                    self.content = originalContent
+                    print("Error Saving to Disk \(error)")
                 }
             }
         }
