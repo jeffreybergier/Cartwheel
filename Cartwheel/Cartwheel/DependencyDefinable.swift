@@ -45,3 +45,14 @@ struct Cartfile: DependencyDefinable {
         return ["URLDataBlob" : data]
     }
 }
+
+extension Cartfile: Hashable {
+    var hashValue: Int {
+        return self.url.hashValue
+    }
+}
+
+extension Cartfile: Equatable {}
+func ==(lhs: Cartfile, rhs: Cartfile) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}

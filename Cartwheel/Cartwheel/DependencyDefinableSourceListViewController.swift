@@ -76,11 +76,17 @@ class DependencyDefinableSourceListViewController: NSViewController {
     // MARK: Handle User Input
     
     @objc private func outlineViewSelectionDidChange(notification: NSNotification) {
-        guard let outlineView = notification.object as? NSOutlineView else { return }
-        guard let selectedItem = outlineView.itemAtRow(outlineView.selectedRow) as? SourceListNode<DependencyDefinable> else { return }
-        
+        let selectedItem = self.sidebarController.selectedItem()
         print(selectedItem)
-        self.detailViewController?.content = selectedItem.item
+        self.detailViewController?.content = selectedItem
+    }
+    
+    @IBAction func deleteButtonClicked(sender: NSButton?) {
+        var mutableContent = self.content
+        try! mutableContent.removeItem(self.sidebarController.selectedItem())
+        let immutableContent = mutableContent
+        try! immutableContent.saveToDiskWithManager(self.diskManager)
+        self.content = immutableContent
     }
     
     private func createNewButtonClicked(sender: NSButton?) {
@@ -107,10 +113,11 @@ class DependencyDefinableSourceListViewController: NSViewController {
                 }
                 
                 do {
-                    var content = self.content
-                    content.appendContent(newCartfiles, newPodfiles: [])
-                    try self.content.saveToDiskWithManager(self.diskManager)
-                    self.content = content
+                    var mutableContent = self.content
+                    mutableContent.appendContent(newCartfiles, newPodfiles: [])
+                    let immutableContent = mutableContent
+                    try immutableContent.saveToDiskWithManager(self.diskManager)
+                    self.content = immutableContent
                 } catch {
                     print("Error Saving to Disk \(error)")
                 }

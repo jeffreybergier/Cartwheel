@@ -73,6 +73,31 @@ extension DependencyDefinableSourceListViewController {
             self.podfiles += newPodfiles
         }
         
+        enum UnableToRemove: ErrorType {
+            case ItemTypeNotHandlable(DependencyDefinable)
+            case ItemNotFound(DependencyDefinable)
+            case ItemWasNIL
+        }
+        
+        mutating func removeItem(itemToDelete: DependencyDefinable?) throws {
+            guard let itemToDelete = itemToDelete else {
+                throw UnableToRemove.ItemWasNIL
+            }
+            
+            if (itemToDelete is Cartfile) == false && (itemToDelete is String) == false {
+                throw UnableToRemove.ItemTypeNotHandlable(itemToDelete)
+            }
+            
+            if let cartfile = itemToDelete as? Cartfile, let deleteIndex = self.cartfiles.indexOf(cartfile) {
+                self.cartfiles.removeAtIndex(deleteIndex)
+            } else {
+                throw UnableToRemove.ItemTypeNotHandlable(itemToDelete)
+            }
+//            else if let podfile = DependencyDefinable as? Podfile, let deleteIndex = self.podfiles.indexOf(podfile) {
+//                self.podfiles.removeAtIndex(deleteIndex)
+//            }
+        }
+        
         func nodeVersion() -> [SourceListNode<DependencyDefinable>] {
             let cartfileChildren = self.cartfiles.map() { cartfile -> SourceListNode<DependencyDefinable> in
                 return SourceListNode(title: cartfile.title, item: cartfile)

@@ -47,6 +47,13 @@ class SourceListController<T>:NSObject, NSOutlineViewDataSource, NSOutlineViewDe
         }
     }
     
+    // MARK: Helper Methods
+    
+    func selectedItem() -> T? {
+        guard let outlineView = self.sourceListView else { return .None }
+        return (outlineView.itemAtRow(outlineView.selectedRow) as? SourceListNode<T>)?.item
+    }
+    
     // MARK: NSOutlineViewDataSource
     
     func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
