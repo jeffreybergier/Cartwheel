@@ -900,10 +900,10 @@
             </objects>
             <point key="canvasLocation" x="-127" y="1708"/>
         </scene>
-        <!--View Controller-->
+        <!--Dependency Definable Detail View Controller-->
         <scene sceneID="Llz-c8-vEP">
             <objects>
-                <viewController id="pjN-AW-VaQ" sceneMemberID="viewController">
+                <viewController id="pjN-AW-VaQ" customClass="DependencyDefinableDetailViewController" customModule="Cartwheel" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="CpS-Of-hNu">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -948,7 +948,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="Bix-Vg-uan">
-                                            <rect key="frame" x="435" y="0.0" width="15" height="300"/>
+                                            <rect key="frame" x="434" y="0.0" width="16" height="300"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>

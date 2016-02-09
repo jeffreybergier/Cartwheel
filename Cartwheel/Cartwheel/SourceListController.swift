@@ -73,13 +73,6 @@ class SourceListController<T>:NSObject, NSOutlineViewDataSource, NSOutlineViewDe
     
     // MARK: NSOutlineViewDelegate
     
-    func outlineViewSelectionDidChange(notification: NSNotification) {
-        guard let outlineView = notification.object as? NSOutlineView else { return }
-        guard let selectedItem = outlineView.itemAtRow(outlineView.selectedRow) as? SourceListNode<T> else { return }
-        
-        print(selectedItem.title)
-    }
-    
     func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
         if let item = item as? SourceListNode<T> {
             if item.children.count > 0 && item.parent == nil {

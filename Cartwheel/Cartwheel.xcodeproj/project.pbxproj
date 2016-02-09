@@ -15,7 +15,8 @@
 		5A5A6E101C66C8B0001DC88D /* JSBUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A5A6E0C1C66C8A3001DC88D /* JSBUtils.framework */; };
 		5A5A6E111C66C8B0001DC88D /* JSBUtils.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5A5A6E0C1C66C8A3001DC88D /* JSBUtils.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5A5A6E131C66C8D9001DC88D /* DependencyDefinable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5A6E121C66C8D9001DC88D /* DependencyDefinable.swift */; };
-		733BA8E31C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733BA8E21C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift */; };
+		5A5A6E151C697ECC001DC88D /* DependencyDefinableDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5A6E141C697ECC001DC88D /* DependencyDefinableDetailViewController.swift */; };
+		733BA8E31C4C2F7B007AA158 /* DependencyDefinableSourceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733BA8E21C4C2F7B007AA158 /* DependencyDefinableSourceListViewController.swift */; };
 		73B75BF11C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B75BF01C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift */; };
 		73DC6FD51C4C1D7100B5448A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DC6FD41C4C1D7100B5448A /* AppDelegate.swift */; };
 		73DC6FD91C4C1D7100B5448A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73DC6FD81C4C1D7100B5448A /* Assets.xcassets */; };
@@ -96,7 +97,8 @@
 		5A5A6E0C1C66C8A3001DC88D /* JSBUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSBUtils.framework; path = ../../Carthage/Build/Mac/JSBUtils.framework; sourceTree = "<group>"; };
 		5A5A6E0D1C66C8A3001DC88D /* JSBUtils.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = JSBUtils.framework.dSYM; path = ../../Carthage/Build/Mac/JSBUtils.framework.dSYM; sourceTree = "<group>"; };
 		5A5A6E121C66C8D9001DC88D /* DependencyDefinable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyDefinable.swift; sourceTree = "<group>"; };
-		733BA8E21C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyDefinableSourceListCollectionViewController.swift; sourceTree = "<group>"; };
+		5A5A6E141C697ECC001DC88D /* DependencyDefinableDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyDefinableDetailViewController.swift; sourceTree = "<group>"; };
+		733BA8E21C4C2F7B007AA158 /* DependencyDefinableSourceListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyDefinableSourceListViewController.swift; sourceTree = "<group>"; };
 		73B75BF01C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyDefinableSplitViewWindowController.swift; sourceTree = "<group>"; };
 		73DC6FD11C4C1D7100B5448A /* Cartwheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cartwheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73DC6FD41C4C1D7100B5448A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -165,7 +167,8 @@
 				73DC6FD41C4C1D7100B5448A /* AppDelegate.swift */,
 				5A5A6E121C66C8D9001DC88D /* DependencyDefinable.swift */,
 				73B75BF01C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift */,
-				733BA8E21C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift */,
+				733BA8E21C4C2F7B007AA158 /* DependencyDefinableSourceListViewController.swift */,
+				5A5A6E141C697ECC001DC88D /* DependencyDefinableDetailViewController.swift */,
 				5A251BF41C65703100EAAE89 /* SourceListController.swift */,
 				5A5A6E0A1C66C7A4001DC88D /* SourceListNode.swift */,
 				5A251BF61C6674A800EAAE89 /* TwoButtonViewController.swift */,
@@ -281,10 +284,11 @@
 				73DC6FD51C4C1D7100B5448A /* AppDelegate.swift in Sources */,
 				5A251BF71C6674A800EAAE89 /* TwoButtonViewController.swift in Sources */,
 				5A5A6E0B1C66C7A4001DC88D /* SourceListNode.swift in Sources */,
+				5A5A6E151C697ECC001DC88D /* DependencyDefinableDetailViewController.swift in Sources */,
 				73B75BF11C4C25D4004681D7 /* DependencyDefinableSplitViewWindowController.swift in Sources */,
 				5A5A6E131C66C8D9001DC88D /* DependencyDefinable.swift in Sources */,
 				5A251BF51C65703100EAAE89 /* SourceListController.swift in Sources */,
-				733BA8E31C4C2F7B007AA158 /* DependencyDefinableSourceListCollectionViewController.swift in Sources */,
+				733BA8E31C4C2F7B007AA158 /* DependencyDefinableSourceListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

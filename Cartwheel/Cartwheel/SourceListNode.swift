@@ -29,11 +29,13 @@
 class SourceListNode<T> {
     let title: String
     let children: [SourceListNode<T>]
-    var item: T?
+    let item: T?
+    
     weak var parent: SourceListNode?
     
     init(title: String, item: T?, children: [SourceListNode<T>]) {
         self.title = title
+        self.item = item
         self.children = children
         for child in children {
             child.parent = self
@@ -68,5 +70,11 @@ class SourceListNode<T> {
         let allChildren = self.children + newChildren
         let newNode = SourceListNode(title: self.title, item: self.item, children: allChildren)
         return newNode
+    }
+}
+
+extension SourceListNode: CustomDebugStringConvertible {
+    var debugDescription: String {
+        return "\(self.dynamicType): Title: \(self.title), HasChildren: \(self.children.count > 0), Item: \(self.item)"
     }
 }

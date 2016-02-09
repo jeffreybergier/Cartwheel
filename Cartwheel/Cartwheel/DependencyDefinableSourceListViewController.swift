@@ -29,22 +29,37 @@ import Cocoa
 import JSBUtils
 
 class DependencyDefinableSourceListViewController: NSViewController {
-    
-    @IBOutlet private weak var outlineView: NSOutlineView?
-    
+
     private var content = DependencyDefinableContent() {
         didSet {
             self.sidebarController.content = self.content.nodeVersion()
         }
     }
     
+    private var detailViewController: DependencyDefinableDetailViewController? {
+        let splitVC = self.parentViewController as? NSSplitViewController
+        let possibleDetailVCs = splitVC?.childViewControllers.filter() { vc -> Bool in
+            return vc is DependencyDefinableDetailViewController
+            }.map() { vc -> DependencyDefinableDetailViewController in
+                return vc as! DependencyDefinableDetailViewController
+        }
+        return possibleDetailVCs?.first
+    }
+    
     private let sidebarController = SourceListController<DependencyDefinable>()
     private let diskManager = JSBDictionaryPLISTPreferenceManager()
+    @IBOutlet private weak var outlineView: NSOutlineView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.sidebarController.sourceListView = self.outlineView
+        if let outlineView = self.outlineView {
+            self.sidebarController.sourceListView = outlineView
+            NSNotificationCenter.defaultCenter().addObserver(self,
+                selector: "outlineViewSelectionDidChange:",
+                name: NSOutlineViewSelectionDidChangeNotification,
+                object: outlineView)
+        }
         
         let contentDictionary: [String : [NSDictionary]]?
         do {
@@ -88,6 +103,14 @@ class DependencyDefinableSourceListViewController: NSViewController {
         } catch {
             throw error
         }
+    }
+    
+    @objc private func outlineViewSelectionDidChange(notification: NSNotification) {
+        guard let outlineView = notification.object as? NSOutlineView else { return }
+        guard let selectedItem = outlineView.itemAtRow(outlineView.selectedRow) as? SourceListNode<DependencyDefinable> else { return }
+        
+        print(selectedItem)
+        self.detailViewController?.content = selectedItem.item
     }
     
     private func createNewButtonClicked(sender: NSButton?) {
@@ -150,7 +173,7 @@ class DependencyDefinableSourceListViewController: NSViewController {
             }
             let cartfileParent = SourceListNode(title: "Cartfiles", children: cartfileChildren)
             let podfileParent = SourceListNode(title: "Podfiles", children: podfileChildren)
-            
+
             return [cartfileParent] + [podfileParent]
         }
     }
