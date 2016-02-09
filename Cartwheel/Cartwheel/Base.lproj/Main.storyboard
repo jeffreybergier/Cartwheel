@@ -658,6 +658,17 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <toolbar key="toolbar" implicitIdentifier="6CB7D02C-FCEA-44A9-8602-EA86E6C7636E" autosavesConfiguration="NO" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconOnly" sizeMode="regular" id="JhK-2e-yqg">
+                            <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="316B9475-DD40-4C33-AC5F-C3D67F07BBEE" label="Cartwheel" paletteLabel="Cartwheel" tag="-1" image="NSApplicationIcon" autovalidates="NO" id="N3u-OG-1pF"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="09R-1K-ARn"/>
+                            </allowedToolbarItems>
+                            <defaultToolbarItems>
+                                <toolbarItem reference="09R-1K-ARn"/>
+                                <toolbarItem reference="N3u-OG-1pF"/>
+                                <toolbarItem reference="09R-1K-ARn"/>
+                            </defaultToolbarItems>
+                        </toolbar>
                     </window>
                     <connections>
                         <segue destination="Dgm-AO-ECG" kind="relationship" relationship="window.shadowedContentViewController" id="fbF-O3-pRn"/>
@@ -749,8 +760,8 @@
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bbl-CG-AcG">
-                                                                    <rect key="frame" x="-2" y="0.0" width="97" height="17"/>
-                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="Ayp-0h-RWU">
+                                                                    <rect key="frame" x="-2" y="0.0" width="78" height="17"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="CHILD CELL" id="Ayp-0h-RWU">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -951,7 +962,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="Bix-Vg-uan">
-                                            <rect key="frame" x="434" y="0.0" width="16" height="300"/>
+                                            <rect key="frame" x="435" y="0.0" width="15" height="300"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
@@ -981,6 +992,7 @@
     </scenes>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSApplicationIcon" width="128" height="128"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
     </resources>
 </document>

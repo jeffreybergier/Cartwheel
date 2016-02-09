@@ -102,11 +102,10 @@ class DependencyDefinableSourceListViewController: NSViewController {
         savePanel.resolvesAliases = true
         savePanel.beginSheetModalForWindow(self.view.window!) { response in
             if response == 1 {
-                guard let cartfileURL = savePanel.URL?.URLByAppendingPathComponent("Cartfile", isDirectory: false),
-                    let cartfile = Cartfile(url: cartfileURL) else
-                {
-                    fatalError()
-                }
+                guard
+                    let cartfileURL = savePanel.URL?.URLByAppendingPathComponent("Cartfile", isDirectory: false),
+                    let cartfile = Cartfile(url: cartfileURL)
+                    else { fatalError() }
                 
                 do {
                     // write the file to disk

@@ -33,6 +33,7 @@ class DependencyDefinableSplitViewWindowController: NSWindowController {
         super.awakeFromNib()
         
         self.window?.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
+        self.window?.titleVisibility = .Hidden
     }
     
 }
