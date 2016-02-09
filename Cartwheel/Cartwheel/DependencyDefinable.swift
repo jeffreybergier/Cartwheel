@@ -46,6 +46,19 @@ struct Cartfile: DependencyDefinable {
     }
 }
 
+extension Cartfile {
+    static func cartfilesFromURLs(URLs: [NSURL]) -> [Cartfile] {
+        let cartfiles = URLs.map() { url -> Cartfile? in
+            return Cartfile(url: url)
+            }.filter() { cartfile -> Bool in
+                return cartfile != nil
+            }.map() { cartfile -> Cartfile in
+                return cartfile!
+        }
+        return cartfiles
+    }
+}
+
 extension Cartfile: Hashable {
     var hashValue: Int {
         return self.url.hashValue

@@ -82,42 +82,67 @@ class DependencyDefinableSourceListViewController: NSViewController {
     }
     
     @IBAction func deleteButtonClicked(sender: NSButton?) {
-        var mutableContent = self.content
-        try! mutableContent.removeItem(self.sidebarController.selectedItem())
-        let immutableContent = mutableContent
-        try! immutableContent.saveToDiskWithManager(self.diskManager)
-        self.content = immutableContent
+        do {
+            var content = self.content
+            try content.removeItem(self.sidebarController.selectedItem())
+            try content.saveToDiskWithManager(self.diskManager)
+            self.content = content
+        } catch {
+            print("Failed to Delete: \(error)")
+        }
     }
     
     private func createNewButtonClicked(sender: NSButton?) {
-        print("createNewButtonClicked")
+        let savePanel = NSOpenPanel()
+        savePanel.prompt = "Choose Folder"
+        savePanel.worksWhenModal = true
+        savePanel.allowsMultipleSelection = false
+        savePanel.canChooseDirectories = true
+        savePanel.canChooseFiles = false
+        savePanel.resolvesAliases = true
+        savePanel.beginSheetModalForWindow(self.view.window!) { response in
+            if response == 1 {
+                guard let cartfileURL = savePanel.URL?.URLByAppendingPathComponent("Cartfile", isDirectory: false),
+                    let cartfile = Cartfile(url: cartfileURL) else
+                {
+                    fatalError()
+                }
+                
+                do {
+                    // write the file to disk
+                    let blankData = NSData()
+                    try blankData.writeToURL(cartfileURL, options: NSDataWritingOptions.AtomicWrite)
+                    
+                    // add the file to sidebar
+                    var content = self.content
+                    content.appendContent([cartfile], newPodfiles: [])
+                    try content.saveToDiskWithManager(self.diskManager)
+                    self.content = content
+                } catch {
+                    print("Failed with error: \(error)")
+                }
+            }
+        }
     }
     
     private func openExistingButtonClicked(sender: NSButton?) {
         let openPanel = NSOpenPanel()
-        openPanel.prompt = "Choose File"
+        openPanel.prompt = "Choose Cartfile"
         openPanel.worksWhenModal = true
         openPanel.allowsMultipleSelection = true
-        openPanel.canChooseDirectories = true
+        openPanel.canChooseDirectories = false
         openPanel.canChooseFiles = true
         openPanel.resolvesAliases = true
         openPanel.beginSheetModalForWindow(self.view.window!) { response in
             if response == 1 { // file chosen
                 
-                let newCartfiles = openPanel.URLs.map() { url -> Cartfile? in
-                        return Cartfile(url: url)
-                    }.filter() { cartfile -> Bool in
-                        return cartfile != nil
-                    }.map() { cartfile -> Cartfile in
-                        return cartfile!
-                }
+                let newCartfiles = Cartfile.cartfilesFromURLs(openPanel.URLs)
                 
                 do {
-                    var mutableContent = self.content
-                    mutableContent.appendContent(newCartfiles, newPodfiles: [])
-                    let immutableContent = mutableContent
-                    try immutableContent.saveToDiskWithManager(self.diskManager)
-                    self.content = immutableContent
+                    var content = self.content
+                    content.appendContent(newCartfiles, newPodfiles: [])
+                    try content.saveToDiskWithManager(self.diskManager)
+                    self.content = content
                 } catch {
                     print("Error Saving to Disk \(error)")
                 }
