@@ -27,6 +27,11 @@
 
 import Cocoa
 
+enum SourceListControllerSelectedItemError: ErrorType {
+    case NoRowSelected
+    case NoItemFoundInSelectedRow
+}
+
 class SourceListController<T>:NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate {
     
     var content = [SourceListNode<T>]() {
@@ -49,9 +54,16 @@ class SourceListController<T>:NSObject, NSOutlineViewDataSource, NSOutlineViewDe
     
     // MARK: Helper Methods
     
-    func selectedItem() -> T? {
-        guard let outlineView = self.sourceListView else { return .None }
-        return (outlineView.itemAtRow(outlineView.selectedRow) as? SourceListNode<T>)?.item
+    func selectedItem() throws -> T {
+        guard let outlineView = self.sourceListView where outlineView.selectedRow != -1 else {
+            throw SourceListControllerSelectedItemError.NoRowSelected
+        }
+        
+        guard let selectedItem = (outlineView.itemAtRow(outlineView.selectedRow) as? SourceListNode<T>)?.item else {
+            throw SourceListControllerSelectedItemError.NoItemFoundInSelectedRow
+        }
+        
+        return selectedItem
     }
     
     // MARK: NSOutlineViewDataSource

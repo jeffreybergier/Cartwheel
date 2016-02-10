@@ -76,9 +76,12 @@ class DependencyDefinableSourceListViewController: NSViewController {
     // MARK: Handle User Input
     
     @objc private func outlineViewSelectionDidChange(notification: NSNotification) {
-        let selectedItem = self.sidebarController.selectedItem()
-        print(selectedItem)
-        self.detailViewController?.content = selectedItem
+        do {
+            let selectedItem = try self.sidebarController.selectedItem()
+            self.detailViewController?.content = selectedItem
+        } catch {
+            print(error)
+        }
     }
     
     @IBAction func deleteButtonClicked(sender: NSButton?) {

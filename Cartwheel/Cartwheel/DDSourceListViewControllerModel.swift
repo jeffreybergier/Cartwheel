@@ -44,12 +44,9 @@ extension DependencyDefinableSourceListViewController {
         }
         
         init(diskManager: JSBDictionaryPLISTPreferenceManager) {
-            let contentDictionary: [String : [NSDictionary]]?
-            do {
-                contentDictionary = try diskManager.dictionaryByReadingPLISTFromDiskLocation(.AppDirectoryWithinAppSupportDirectory(lastPathComponent: "Cartwheel.plist")) as? [String : [NSDictionary]]
-            } catch {
-                contentDictionary = .None
-            }
+            let readLocation = JSBDictionaryPLISTPreferenceManager.UserFileLocation.AppDirectoryWithinAppSupportDirectory(lastPathComponent: "Cartwheel.plist")
+            let untypedDictionary = try? diskManager.dictionaryByReadingPLISTFromDiskLocation(readLocation)
+            let contentDictionary = untypedDictionary as? [String : [NSDictionary]]
             
             let cartfilesArray: [Cartfile]
             if let cartfileDictionaryArray = contentDictionary?["Cartfile"] {
@@ -73,25 +70,20 @@ extension DependencyDefinableSourceListViewController {
             self.podfiles += newPodfiles
         }
         
-        enum UnableToRemove: ErrorType {
-            case ItemTypeNotHandlable(DependencyDefinable)
-            case ItemNotFound(DependencyDefinable)
-            case ItemWasNIL
+        enum RemoveError: ErrorType {
+            case UnhandledType
+            case OriginalNotFound
         }
         
-        mutating func removeItem(itemToDelete: DependencyDefinable?) throws {
-            guard let itemToDelete = itemToDelete else {
-                throw UnableToRemove.ItemWasNIL
+        mutating func removeItem(itemToRemove: DependencyDefinable) throws {
+            if (itemToRemove is Cartfile) == false && (itemToRemove is String) == false {
+                throw RemoveError.UnhandledType
             }
             
-            if (itemToDelete is Cartfile) == false && (itemToDelete is String) == false {
-                throw UnableToRemove.ItemTypeNotHandlable(itemToDelete)
-            }
-            
-            if let cartfile = itemToDelete as? Cartfile, let deleteIndex = self.cartfiles.indexOf(cartfile) {
+            if let cartfile = itemToRemove as? Cartfile, let deleteIndex = self.cartfiles.indexOf(cartfile) {
                 self.cartfiles.removeAtIndex(deleteIndex)
             } else {
-                throw UnableToRemove.ItemTypeNotHandlable(itemToDelete)
+                throw RemoveError.OriginalNotFound
             }
 //            else if let podfile = DependencyDefinable as? Podfile, let deleteIndex = self.podfiles.indexOf(podfile) {
 //                self.podfiles.removeAtIndex(deleteIndex)
