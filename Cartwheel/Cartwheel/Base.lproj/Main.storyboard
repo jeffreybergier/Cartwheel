@@ -1045,8 +1045,9 @@ github "Carthage/Carthage" ~&gt; 0.11</string>
                     </view>
                     <connections>
                         <outlet property="fileContentsLabel" destination="UN1-I4-S7a" id="YYr-Wq-0qe"/>
-                        <outlet property="progressIndicatorView" destination="I5a-Ik-uHt" id="iMj-rG-GAd"/>
+                        <outlet property="progressIndicator" destination="I5a-Ik-uHt" id="Ywr-Qo-0vv"/>
                         <outlet property="titleLabel" destination="K4y-Bf-f0k" id="378-Nu-4Qh"/>
+                        <outlet property="updateButton" destination="4MU-Tt-fzV" id="ILZ-Ep-62z"/>
                     </connections>
                 </viewController>
                 <customObject id="nyR-Ua-vcH" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

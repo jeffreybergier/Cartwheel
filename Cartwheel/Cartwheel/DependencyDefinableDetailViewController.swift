@@ -31,14 +31,51 @@ class DependencyDefinableDetailViewController: NSViewController {
     
     var content: DependencyDefinable? {
         didSet {
-            print("\(self.content?.title)")
+            self.updateUIWithDependencyDefinable(self.content)
         }
     }
     
     @IBOutlet private weak var titleLabel: NSTextField?
     @IBOutlet private weak var fileContentsLabel: NSTextField?
-    @IBOutlet private weak var progressIndicatorView: NSProgressIndicator?
-    @IBAction private func updateButtonClicked(sender: NSButton?) {
+    @IBOutlet private weak var updateButton: NSButton?
+    @IBOutlet private weak var progressIndicator: NSProgressIndicator?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
         
+        self.updateUIWithDependencyDefinable(.None)
+    }
+    
+    private func updateUIWithDependencyDefinable(dd: DependencyDefinable?) {
+        // Always do the following when changing DD
+        self.progressIndicator?.indeterminate = true
+        self.progressIndicator?.stopAnimation(self)
+        
+        if let dd = dd {
+            self.titleLabel?.stringValue = dd.title
+            self.updateButton?.enabled = true
+            self.fileContentsLabel?.stringValue = (try? self.stringContentsOfDependencyDefinable(dd)) ?? "ERROR Reading File"
+            self.updateButton?.hidden = false
+            self.progressIndicator?.hidden = false
+        } else {
+            self.titleLabel?.stringValue = ""
+            self.updateButton?.enabled = false
+            self.fileContentsLabel?.stringValue = ""
+            self.updateButton?.hidden = true
+            self.progressIndicator?.hidden = true
+        }
+    }
+    
+    @IBAction private func updateButtonClicked(sender: NSButton?) {
+        print("Update button clicked")
+    }
+    
+    private func stringContentsOfDependencyDefinable(dd: DependencyDefinable) throws -> String {
+        do {
+            let fileContents = try NSString(contentsOfURL: dd.url, encoding: NSUTF8StringEncoding)
+            return fileContents as String
+        } catch {
+            throw error
+        }
     }
 }
