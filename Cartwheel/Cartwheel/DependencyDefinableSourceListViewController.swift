@@ -56,11 +56,14 @@ class DependencyDefinableSourceListViewController: NSViewController {
     // MARK: Interface Builder
     
     @IBOutlet private weak var outlineView: NSOutlineView?
+    @IBOutlet private weak var removeButton: NSButton?
     
     // MARK: View Loading
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.removeButton?.enabled = false
         
         if let outlineView = self.outlineView {
             self.sidebarController.sourceListView = outlineView
@@ -79,6 +82,7 @@ class DependencyDefinableSourceListViewController: NSViewController {
         do {
             let selectedItem = try self.sidebarController.selectedItem()
             self.detailViewController?.content = selectedItem
+            self.removeButton?.enabled = true
         } catch {
             print(error)
         }
