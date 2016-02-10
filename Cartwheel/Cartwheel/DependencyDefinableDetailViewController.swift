@@ -35,4 +35,10 @@ class DependencyDefinableDetailViewController: NSViewController {
         }
     }
     
+    @IBOutlet private weak var titleLabel: NSTextField?
+    @IBOutlet private weak var fileContentsLabel: NSTextField?
+    @IBOutlet private weak var progressIndicatorView: NSProgressIndicator?
+    @IBAction private func updateButtonClicked(sender: NSButton?) {
+        
+    }
 }

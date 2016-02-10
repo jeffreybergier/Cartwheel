@@ -935,21 +935,79 @@
                                                 <view translatesAutoresizingMaskIntoConstraints="NO" id="y14-Aa-v4U">
                                                     <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                                                     <subviews>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dfM-1N-qo3">
-                                                            <rect key="frame" x="207" y="263" width="36" height="17"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Right" id="Ao6-15-8eI">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                        </textField>
+                                                        <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="12" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" misplaced="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c1C-5O-njQ">
+                                                            <rect key="frame" x="20" y="92" width="410" height="188"/>
+                                                            <subviews>
+                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K4y-Bf-f0k" userLabel="Project">
+                                                                    <rect key="frame" x="-2" y="164" width="113" height="24"/>
+                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Cartfile Title" id="daE-Os-Up5">
+                                                                        <font key="font" metaFont="system" size="20"/>
+                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                </textField>
+                                                                <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" misplaced="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fEe-Ba-y0h">
+                                                                    <rect key="frame" x="0.0" y="131" width="410" height="21"/>
+                                                                    <subviews>
+                                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4MU-Tt-fzV">
+                                                                            <rect key="frame" x="-6" y="-7" width="85" height="32"/>
+                                                                            <buttonCell key="cell" type="push" title="Update" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2s4-QB-arL">
+                                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                <font key="font" metaFont="system"/>
+                                                                            </buttonCell>
+                                                                            <connections>
+                                                                                <action selector="updateButtonClicked:" target="pjN-AW-VaQ" id="fC3-rI-iGi"/>
+                                                                            </connections>
+                                                                        </button>
+                                                                        <progressIndicator wantsLayer="YES" verticalHuggingPriority="750" maxValue="100" indeterminate="YES" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="I5a-Ik-uHt">
+                                                                            <rect key="frame" x="81" y="1" width="329" height="20"/>
+                                                                        </progressIndicator>
+                                                                    </subviews>
+                                                                    <visibilityPriorities>
+                                                                        <integer value="1000"/>
+                                                                        <integer value="1000"/>
+                                                                    </visibilityPriorities>
+                                                                    <customSpacing>
+                                                                        <real value="3.4028234663852886e+38"/>
+                                                                        <real value="3.4028234663852886e+38"/>
+                                                                    </customSpacing>
+                                                                </stackView>
+                                                                <textField verticalHuggingPriority="749" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="UN1-I4-S7a">
+                                                                    <rect key="frame" x="-2" y="0.0" width="414" height="119"/>
+                                                                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="f02-ta-b0e">
+                                                                        <font key="font" metaFont="system"/>
+                                                                        <string key="title">## Frameworks needed for Cartwheel
+github "DaveWoodCom/XCGLogger" ~&gt; 3.2
+github "duemunk/Async" ~&gt; 1.4
+github "jeffreybergier/SwiftUtils" "master"
+
+## When using the official Carthage Github
+github "Carthage/Carthage" ~&gt; 0.11</string>
+                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                </textField>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="UN1-I4-S7a" firstAttribute="width" secondItem="c1C-5O-njQ" secondAttribute="width" id="2dh-Si-SXj"/>
+                                                            </constraints>
+                                                            <visibilityPriorities>
+                                                                <integer value="1000"/>
+                                                                <integer value="1000"/>
+                                                                <integer value="1000"/>
+                                                            </visibilityPriorities>
+                                                            <customSpacing>
+                                                                <real value="3.4028234663852886e+38"/>
+                                                                <real value="3.4028234663852886e+38"/>
+                                                                <real value="3.4028234663852886e+38"/>
+                                                            </customSpacing>
+                                                        </stackView>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="dfM-1N-qo3" firstAttribute="centerX" secondItem="y14-Aa-v4U" secondAttribute="centerX" id="GVe-ow-xul"/>
-                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="dfM-1N-qo3" secondAttribute="bottom" id="Lly-nX-QVJ"/>
-                                                        <constraint firstItem="dfM-1N-qo3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="y14-Aa-v4U" secondAttribute="leading" id="NXY-J7-yO3"/>
-                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dfM-1N-qo3" secondAttribute="trailing" id="Y1m-fA-Mre"/>
-                                                        <constraint firstItem="dfM-1N-qo3" firstAttribute="top" secondItem="y14-Aa-v4U" secondAttribute="top" constant="20" symbolic="YES" id="tNs-IP-nVH"/>
+                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="c1C-5O-njQ" secondAttribute="bottom" constant="20" symbolic="YES" id="7Ld-Sg-2C5"/>
+                                                        <constraint firstItem="c1C-5O-njQ" firstAttribute="leading" secondItem="y14-Aa-v4U" secondAttribute="leading" constant="20" symbolic="YES" id="7YX-mM-7LX"/>
+                                                        <constraint firstItem="c1C-5O-njQ" firstAttribute="top" secondItem="y14-Aa-v4U" secondAttribute="top" constant="20" symbolic="YES" id="KI0-IS-TQE"/>
+                                                        <constraint firstAttribute="trailing" secondItem="c1C-5O-njQ" secondAttribute="trailing" constant="20" symbolic="YES" id="Vah-Q7-bSl"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -985,10 +1043,15 @@
                             <constraint firstItem="dGE-tP-o45" firstAttribute="top" secondItem="CpS-Of-hNu" secondAttribute="top" id="tFX-Wz-NQ3"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="fileContentsLabel" destination="UN1-I4-S7a" id="YYr-Wq-0qe"/>
+                        <outlet property="progressIndicatorView" destination="I5a-Ik-uHt" id="iMj-rG-GAd"/>
+                        <outlet property="titleLabel" destination="K4y-Bf-f0k" id="378-Nu-4Qh"/>
+                    </connections>
                 </viewController>
                 <customObject id="nyR-Ua-vcH" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="229" y="1353"/>
+            <point key="canvasLocation" x="230" y="1353"/>
         </scene>
     </scenes>
     <resources>
